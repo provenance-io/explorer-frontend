@@ -78,12 +78,12 @@ const Status = styled.div`
 
 const ValidatorSpotlight = () => {
   const [showNote, setShowNote] = useState(false);
-  const { getvalidatorSpotlight, validatorSpotlight } = useValidators();
+  const { getValidatorSpotlight, validatorSpotlight } = useValidators();
   const { validatorId } = useParams();
 
   useEffect(() => {
-    getvalidatorSpotlight(validatorId);
-  }, [getvalidatorSpotlight, validatorId]);
+    getValidatorSpotlight(validatorId);
+  }, [getValidatorSpotlight, validatorId]);
 
   const {
     image,

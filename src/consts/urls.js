@@ -26,10 +26,10 @@ export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 export const TX_INFO_URL = `${BASE_URL}/tx`;
 export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
 export const TX_HISTORY_URL = `${BASE_URL}/txs/history`;
-export const TXS_BY_BLOCK_URL = `${BASE_URL}/txs`;
+export const TXS_BY_BLOCK_URL = `${BASE_URL}/txs/height`;
 export const TXS_BY_ADDRESS_URL = `${BASE_URL}/txs`;
 // -- Validators
-export const VALIDATOR_INFO_URL = `${BASE_URL}/validator`;
+export const VALIDATOR_INFO_URL = `${BASE_URL}/validators`;
 export const VALIDATORS_RECENT_URL = `${BASE_URL}/validators/recent`;
 export const BLOCK_VALIDATORS_URL = `${BASE_URL}/validators`;
 export const VALIDATOR_COMMISSION_URL = `${BASE_URL}/validator/commission`;

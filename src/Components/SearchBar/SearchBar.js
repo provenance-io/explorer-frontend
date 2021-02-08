@@ -133,7 +133,7 @@ const SearchBar = () => {
               runSearch();
             }
           }}
-          placeholder="Search by address, hash, asset or height"
+          placeholder="Enter Search Value"
           value={searchTerms}
         />
       </TextInputContainer>
