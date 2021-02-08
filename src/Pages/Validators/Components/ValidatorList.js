@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Table, Filters } from 'Components';
+// import { Table, Filters } from 'Components';
+import { Table } from 'Components';
 import { useValidators, useApp } from 'redux/hooks';
 import { formatTableData } from 'utils';
-import { VALIDATOR_TYPE_OPTIONS } from 'consts';
+// import { VALIDATOR_STATUS_OPTIONS } from 'consts';
 
 const ValidatorListContainer = styled.div`
   width: 100%;
@@ -11,7 +12,7 @@ const ValidatorListContainer = styled.div`
 
 const ValidatorList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const [tableFilterType, setTableFilterType] = useState('active');
+  // const [tableFilterStatus, setTableFilterStatus] = useState('active');
   const {
     validators: tableData,
     validatorsPages: tablePages,
@@ -21,8 +22,9 @@ const ValidatorList = () => {
   const { tableCount } = useApp();
 
   useEffect(() => {
-    getTableData({ page: tableCurrentPage, count: tableCount, type: tableFilterType });
-  }, [getTableData, tableCount, tableCurrentPage, tableFilterType]);
+    // getTableData({ page: tableCurrentPage, count: tableCount, status: tableFilterStatus });
+    getTableData({ page: tableCurrentPage, count: tableCount });
+  }, [getTableData, tableCount, tableCurrentPage]);
 
   // Table header values in order
   const tableHeaders = [
@@ -39,18 +41,18 @@ const ValidatorList = () => {
   // Format the raw table data into the form we need it to be displayed
   const formattedTableData = formatTableData(tableData, 'validators');
   // Data to populate table filters
-  const filterData = [
-    {
-      title: 'Validator Type:',
-      type: 'dropdown',
-      options: VALIDATOR_TYPE_OPTIONS,
-      action: setTableFilterType,
-    },
-  ];
+  // const filterData = [
+  //   {
+  //     title: 'Validator Status:',
+  //     type: 'dropdown',
+  //     options: VALIDATOR_STATUS_OPTIONS,
+  //     action: setTableFilterStatus,
+  //   },
+  // ];
 
   return (
     <ValidatorListContainer>
-      <Filters filterData={filterData} />
+      {/* <Filters filterData={filterData} /> */}
       <Table
         tableHeaders={tableHeaders}
         tableData={formattedTableData}

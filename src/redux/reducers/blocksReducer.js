@@ -1,26 +1,26 @@
 import { handleActions } from 'redux-actions';
 import {
   GET_BLOCK_INFO,
-  GET_BLOCK_HEIGHT,
   GET_BLOCKS_RECENT,
   GET_BLOCK_SPOTLIGHT,
   SET_RECENT_BLOCKS_COUNT,
+  GET_BLOCKS_CURRENT_HEIGHT,
 } from '../actions/blocksActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
   // Blocks
-  blockHeight: '',
   blockInfo: {},
   blocks: [],
   blockLatest: {},
   blockPages: 0,
   avgBlockTime: 0,
   recentBlocksCount: 10,
+  currentHeight: '',
   // Loading states
   blockSpotlightLoading: false,
   blocksRecentLoading: false,
-  blockHeightLoading: false,
+  blocksCurrentHeightLoading: false,
   blockInfoLoading: false,
 };
 
@@ -89,28 +89,25 @@ const reducer = handleActions(
       };
     },
     /* -----------------
-    GET_BLOCK_HEIGHT
+    GET_BLOCKS_CURRENT_HEIGHT
     -------------------*/
-    [`${GET_BLOCK_HEIGHT}_${REQUEST}`](state) {
+    [`${GET_BLOCKS_CURRENT_HEIGHT}_${REQUEST}`](state) {
       return {
         ...state,
-        blockHeightLoading: true,
+        blocksCurrentHeightLoading: true,
       };
     },
-    [`${GET_BLOCK_HEIGHT}_${SUCCESS}`](state, { payload: blockLatest }) {
-      const { height: blockHeight } = blockLatest;
-
+    [`${GET_BLOCKS_CURRENT_HEIGHT}_${SUCCESS}`](state, { payload: currentHeight }) {
       return {
         ...state,
-        blockLatest,
-        blockHeight,
-        blockHeightLoading: false,
+        currentHeight,
+        blocksCurrentHeightLoading: false,
       };
     },
-    [`${GET_BLOCK_HEIGHT}_${FAILURE}`](state) {
+    [`${GET_BLOCKS_CURRENT_HEIGHT}_${FAILURE}`](state) {
       return {
         ...state,
-        blockHeightLoading: false,
+        blocksCurrentHeightLoading: false,
       };
     },
     /* -----------------

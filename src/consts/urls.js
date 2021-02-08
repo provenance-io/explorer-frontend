@@ -14,22 +14,23 @@ if (!isLocal && (isDev || isTest)) {
   ENVIRONMENT = `${process.env.REACT_APP_TEST_HOSTNAME}`;
 }
 
-export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v1` : `https://${ENVIRONMENT}/explorer/secured/api/v1`;
+export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : `https://${ENVIRONMENT}/explorer/secured/api/v2`;
 
 // Actual API URLs
 // -- Blocks
-export const BLOCK_INFO_URL = `${BASE_URL}/block`;
-export const BLOCKS_RECENT_URL = `${BASE_URL}/recent/blocks`;
+export const BLOCK_CURRENT_HEIGHT_URL = `${BASE_URL}/blocks/currentHeight`;
+export const BLOCK_INFO_URL = `${BASE_URL}/blocks/height`;
+export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 // -- Txs
 export const TX_INFO_URL = `${BASE_URL}/tx`;
-export const TXS_RECENT_URL = `${BASE_URL}/recent/txs`;
+export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
 export const TX_HISTORY_URL = `${BASE_URL}/txs/history`;
 export const TXS_BY_BLOCK_URL = `${BASE_URL}/txs`;
 export const TXS_BY_ADDRESS_URL = `${BASE_URL}/txs`;
 // -- Validators
 export const VALIDATOR_INFO_URL = `${BASE_URL}/validator`;
-export const VALIDATORS_RECENT_URL = `${BASE_URL}/recent/validators`;
+export const VALIDATORS_RECENT_URL = `${BASE_URL}/validators/recent`;
 export const BLOCK_VALIDATORS_URL = `${BASE_URL}/validators`;
 export const VALIDATOR_COMMISSION_URL = `${BASE_URL}/validator/commission`;
 export const VALIDATOR_DELEGATIONS_URL = `${BASE_URL}/validator/delegations`;

@@ -19,14 +19,14 @@ const PaginationValue = styled.div`
 `;
 
 const BlockPagination = () => {
-  const { getBlockHeight, blockHeight: globalBlockHeight } = useBlocks();
+  const { getBlocksCurrentHeight, currentHeight: globalBlockHeight } = useBlocks();
   const { blockHeight: pageBlockHeight } = useParams();
 
   // Whenever the pageBlockHeight changes (user clicks next arrow) get the latest global block height
   useEffect(() => {
     // Run the first time to get the latest block (for latest block height)
-    getBlockHeight();
-  }, [pageBlockHeight, getBlockHeight]);
+    getBlocksCurrentHeight();
+  }, [pageBlockHeight, getBlocksCurrentHeight]);
 
   const history = useHistory();
   // Need to convert the pageBlockHeight into a number (when pulling from params it's a string)
