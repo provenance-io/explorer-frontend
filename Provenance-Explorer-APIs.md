@@ -2,7 +2,7 @@
   - _Updated Tuesday Feb 9th ~3:45pm MST_
 ## Contents
   * [Pages](#pages)
-  * [APIs with _Missing_ data](#list-of-apis-with-_missing_-data)
+  * [APIs with missing data](#list-of-apis-with-missing-data)
   * [All APIs](#apis)
 ## Pages
   * [Account Details](#account-details-accountsaddress)
@@ -50,7 +50,7 @@
 ### Validators List (/validators)
   * [/validators/recent](#validatorsrecent)
 
-## List of APIs with _missing_ data
+## List of APIs with missing data
   * [/accounts/{address}](#accountsaddress)
   * [/accounts/{address}/txs](#accountsaddresstxs)
   * [/assets/{id}/detail](#assetsiddetail)
