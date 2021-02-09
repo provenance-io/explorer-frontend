@@ -17,13 +17,13 @@ if (!isLocal && (isDev || isTest)) {
 export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : `https://${ENVIRONMENT}/explorer/secured/api/v2`;
 
 // Actual API URLs
-// -- Address
-export const ADDRESS_INFO_URL = `${BASE_URL}/address`;
+// -- Accounts
+export const ACCOUNT_INFO_URL = `${BASE_URL}/accounts`;
 // -- Assets
 export const ASSET_DETAIL_URL = `${BASE_URL}/assets`;
 export const ASSET_TRANSACTIONS_URL = `${BASE_URL}/asset/transactions`;
 // -- Blocks
-export const BLOCK_CURRENT_HEIGHT_URL = `${BASE_URL}/blocks/currentHeight`;
+export const BLOCK_HEIGHT_URL = `${BASE_URL}/blocks/height`;
 export const BLOCK_INFO_URL = `${BASE_URL}/blocks/height`;
 export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;

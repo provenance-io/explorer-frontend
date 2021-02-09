@@ -26,7 +26,7 @@ const AssetsInformation = () => {
 
   const summaryData = [
     { title: 'Asset Name', value: marker },
-    { title: 'Owner', value: ownerAddress, link: `/address/${ownerAddress}`, copy: ownerAddress },
+    { title: 'Owner', value: ownerAddress, link: `/accounts/${ownerAddress}`, copy: ownerAddress },
     { title: 'Supply', value: numberFormat(totalSupply) },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Price', value: numberFormat(price, 6, 'currency'), change: priceChange },

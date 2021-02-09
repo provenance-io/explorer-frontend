@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useAddress } from 'redux/hooks';
+import { useAccounts } from 'redux/hooks';
 import { Content, Section, CopyValue, Sprite } from 'Components';
 
 const Column = styled.div`
@@ -22,13 +22,13 @@ const Value = styled.div`
 `;
 const TokenIcon = styled.div``;
 
-const AddressSpotlight = () => {
-  const { getAddressInfo, addressInfo } = useAddress();
+const AccountSpotlight = () => {
+  const { getAccountInfo, accountInfo } = useAccounts();
   const { addressId } = useParams();
 
   useEffect(() => {
-    getAddressInfo(addressId);
-  }, [getAddressInfo, addressId]);
+    getAccountInfo(addressId);
+  }, [getAccountInfo, addressId]);
 
   const {
     token = '[N/A]',
@@ -37,7 +37,7 @@ const AddressSpotlight = () => {
     delegated = '[N/A]',
     unbonding = '[N/A]',
     rewards = '[N/A]',
-  } = addressInfo;
+  } = accountInfo;
 
   return (
     <Section>
@@ -95,4 +95,4 @@ const AddressSpotlight = () => {
   );
 };
 
-export default AddressSpotlight;
+export default AccountSpotlight;

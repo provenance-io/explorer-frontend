@@ -8,5 +8,5 @@ export { default as Tx } from './Tx';
 export { default as Txs } from './Txs';
 export { default as Validator } from './Validator';
 export { default as Validators } from './Validators';
-export { default as Address } from './Address';
+export { default as Accounts } from './Accounts';
 export { default as NoMatch404 } from './NoMatch404';

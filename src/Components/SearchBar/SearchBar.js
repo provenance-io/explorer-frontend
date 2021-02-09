@@ -110,7 +110,7 @@ const SearchBar = () => {
         break;
       }
       case 'address': {
-        history.push(`/address/${searchTerms}`);
+        history.push(`/accounts/${searchTerms}`);
         break;
       }
       case 'asset': {

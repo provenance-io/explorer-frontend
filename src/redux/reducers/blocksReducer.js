@@ -4,7 +4,7 @@ import {
   GET_BLOCKS_RECENT,
   GET_BLOCK_SPOTLIGHT,
   SET_RECENT_BLOCKS_COUNT,
-  GET_BLOCKS_CURRENT_HEIGHT,
+  GET_BLOCKS_HEIGHT,
 } from '../actions/blocksActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -16,11 +16,11 @@ export const initialState = {
   blockPages: 0,
   avgBlockTime: 0,
   recentBlocksCount: 10,
-  currentHeight: '',
+  blocksHeight: '',
   // Loading states
   blockSpotlightLoading: false,
   blocksRecentLoading: false,
-  blocksCurrentHeightLoading: false,
+  blocksHeightLoading: false,
   blockInfoLoading: false,
 };
 
@@ -89,25 +89,27 @@ const reducer = handleActions(
       };
     },
     /* -----------------
-    GET_BLOCKS_CURRENT_HEIGHT
+    GET_BLOCKS_HEIGHT
     -------------------*/
-    [`${GET_BLOCKS_CURRENT_HEIGHT}_${REQUEST}`](state) {
+    [`${GET_BLOCKS_HEIGHT}_${REQUEST}`](state) {
       return {
         ...state,
-        blocksCurrentHeightLoading: true,
+        blocksHeightLoading: true,
       };
     },
-    [`${GET_BLOCKS_CURRENT_HEIGHT}_${SUCCESS}`](state, { payload: currentHeight }) {
+    [`${GET_BLOCKS_HEIGHT}_${SUCCESS}`](state, { payload }) {
+      const { height: blocksHeight } = payload;
+
       return {
         ...state,
-        currentHeight,
-        blocksCurrentHeightLoading: false,
+        blocksHeight,
+        blocksHeightLoading: false,
       };
     },
-    [`${GET_BLOCKS_CURRENT_HEIGHT}_${FAILURE}`](state) {
+    [`${GET_BLOCKS_HEIGHT}_${FAILURE}`](state) {
       return {
         ...state,
-        blocksCurrentHeightLoading: false,
+        blocksHeightLoading: false,
       };
     },
     /* -----------------

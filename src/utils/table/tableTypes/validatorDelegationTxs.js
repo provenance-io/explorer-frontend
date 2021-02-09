@@ -21,7 +21,7 @@ export const validatorDelegationTxsTable = (data) =>
         case 'from':
           finalObj['from'] = {
             value: maxLength(value, 11, 3),
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
           };
           break;
         case 'amount':
@@ -35,7 +35,7 @@ export const validatorDelegationTxsTable = (data) =>
         case 'to':
           finalObj['to'] = {
             value: maxLength(value, 11, 3),
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
           };
           break;
         case 'txType':
@@ -52,7 +52,7 @@ export const validatorDelegationTxsTable = (data) =>
         case 'signer':
           finalObj['signer'] = {
             value: maxLength(value, 11, 3),
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
           };
           break;
         case 'status':

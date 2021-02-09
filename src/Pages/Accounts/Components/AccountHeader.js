@@ -11,7 +11,7 @@ const Value = styled.div`
   user-select: none;
 `;
 
-const AddressHeader = () => {
+const AccountHeader = () => {
   const { addressId } = useParams();
 
   return (
@@ -22,4 +22,4 @@ const AddressHeader = () => {
   );
 };
 
-export default AddressHeader;
+export default AccountHeader;

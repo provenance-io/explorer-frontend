@@ -4,7 +4,7 @@
   * [APIs with _Missing_ data](#list-of-apis-with-_missing_-data)
   * [All APIs](#apis)
 ## Pages
-  * [Address Details](#address-details-addressaddressid)
+  * [Account Details](#account-details-accountsaddress)
   * [Asset Details](#asset-details-assetsassetid)
   * [Block Details](#block-details-blockblockheight)
   * [Blocks List](#blocks-list-blocks)
@@ -13,20 +13,20 @@
   * [Transactions List](#transactions-list-txs)
   * [Validator Details](#validator-details-validatorvalidatorid)
   * [Validators List](#validators-list-validators)
-### Address Details (/address/{addressId})
-  * [/address/{id}](#addressid)
-  * [/address/{id}/txs](#addressidtxs)
+### Account Details (/accounts/{address})
+  * [/accounts/{address}](#accountsaddress)
+  * [/accounts/{address}/txs](#accountsaddresstxs)
 ### Asset Details (/assets/{assetId})
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
   * [/asset/{id}/txs](#assetidtxs)
 ### Block Details (/block/{blockHeight})
-  * [/blocks/currentHeight](#blockscurrentheight)
+  * [/blocks/height](#blocksheight)
   * [/blocks/height/{height}](#blocksheightheight)
   * [/validators/height/{height}](#validatorsheightheight)
   * [/txs/height/{height}](#txsheightheight)
 ### Blocks List (/blocks)
-  * [/blocks/currentHeight](#blockscurrentheight)
+  * [/blocks/height](#blocksheight)
   * [/blocks/recent](#blocksrecent)
 ### Dashboard (/)
   * [/spotlight](#spotlight)
@@ -50,12 +50,11 @@
   * [/validators/recent](#validatorsrecent)
 
 ## List of APIs with _missing_ data
-  * [/address/{id}](#addressid)
-  * [/address/{id}/txs](#addressidtxs)
+  * [/accounts/{address}](#accountsaddress)
+  * [/accounts/{address}/txs](#accountsaddresstxs)
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
   * [/asset/{id}/txs](#assetidtxs)
-  * [/blocks/currentHeight](#blockscurrentheight)
   * [/blocks/height/{height}](#blocksheightheight)
   * [/txs/{hash}](#txshash)
   * [/txs/{hash}/json](#txshashjson)
@@ -71,9 +70,9 @@
   * [/validators/{id}/txs](#validatorsidtxs)
 
 ## APIs
-  ### Address
-  * [/address/{id}](#addressid)
-  * [/address/{id}/txs](#addressidtxs)
+  ### Accounts
+  * [/accounts/{address}](#accountsaddress)
+  * [/accounts/{address}/txs](#accountsaddresstxs)
   ### Assets
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
@@ -99,7 +98,7 @@
   * [/validators/{id}/txs](#validatorsidtxs)
   * [/validators/recent](#validatorsrecent)
 
-### /address/{id}
+### /accounts/{address}
 | Data | Type | Status |
 | --- | --- | --- |
 |address | string | **missing** |
@@ -115,7 +114,7 @@
 |rewards | number | **missing** |
 |rewardsDenomination | string | **missing** |
 
-### /address/{id}/txs
+### /accounts/{address}/txs
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | **missing** |
@@ -198,10 +197,18 @@
 | results.validatorstotal | number | done |
 | results.votingPower | number | done |
 
-### /blocks/currentHeight
+### /blocks/height
 | Data | Type | Status |
 | --- | --- | --- |
-| height | string | **missing** |
+| height | number | done |
+| hash | string | done |
+| icon | string | done |
+| moniker | string | done |
+| numValidators | number | done |
+| proposerAddress | string | done |
+| time | string | done |
+| txNum | number | done |
+| votingPower | number | done |
 
 ### /blocks/height/{height}
 | Data | Type | Status |

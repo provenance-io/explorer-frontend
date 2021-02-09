@@ -3,7 +3,7 @@ export { default as useApp } from './useApp';
 export { default as useBlocks } from './useBlocks';
 export { default as useTxs } from './useTxs';
 export { default as useValidators } from './useValidators';
-export { default as useAddress } from './useAddress';
+export { default as useAccounts } from './useAccounts';
 export { default as useInterval } from './useInterval';
 export { default as useMediaQuery } from './useMediaQuery';
 export { default as useAssets } from './useAssets';

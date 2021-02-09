@@ -12,11 +12,11 @@ const Value = styled.div`
 `;
 
 const Blocks = () => {
-  const { currentHeight } = useBlocks();
+  const { blocksHeight } = useBlocks();
 
   return (
     <HeaderContainer>
-      <Value>Current Height: {currentHeight === '' ? 'N/A' : <Link to={`/block/${currentHeight}`}>{currentHeight}</Link>}</Value>
+      <Value>Current Height: {blocksHeight === '' ? 'N/A' : <Link to={`/block/${blocksHeight}`}>{blocksHeight}</Link>}</Value>
     </HeaderContainer>
   );
 };

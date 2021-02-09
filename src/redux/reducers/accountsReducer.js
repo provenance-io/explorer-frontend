@@ -1,36 +1,36 @@
 import { handleActions } from 'redux-actions';
-import { GET_ADDRESS_INFO } from '../actions/addressActions';
+import { GET_ACCOUNT_INFO } from '../actions/accountsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
-  // Address
-  addressInfo: {},
+  // Accounts
+  accountInfo: {},
   // Loading states
-  addressInfoLoading: false,
+  accountInfoLoading: false,
 };
 
 const reducer = handleActions(
   {
     /* -----------------
-    GET_ADDRESS_INFO
+    GET_ACCOUNT_INFO
     -------------------*/
-    [`${GET_ADDRESS_INFO}_${REQUEST}`](state) {
+    [`${GET_ACCOUNT_INFO}_${REQUEST}`](state) {
       return {
         ...state,
-        addressInfoLoading: true,
+        accountInfoLoading: true,
       };
     },
-    [`${GET_ADDRESS_INFO}_${SUCCESS}`](state, { payload: addressInfo }) {
+    [`${GET_ACCOUNT_INFO}_${SUCCESS}`](state, { payload: addressInfo }) {
       return {
         ...state,
-        addressInfoLoading: false,
-        addressInfo: {},
+        accountInfoLoading: false,
+        accountInfo: {},
       };
     },
-    [`${GET_ADDRESS_INFO}_${FAILURE}`](state) {
+    [`${GET_ACCOUNT_INFO}_${FAILURE}`](state) {
       return {
         ...state,
-        addressInfoLoading: false,
+        accountInfoLoading: false,
       };
     },
   },

@@ -18,7 +18,7 @@ export const assetTransactionsTable = (data) =>
           finalObj['txtype'] = { value: capitalize(value) };
           break;
         case 'address':
-          finalObj['address'] = { value: maxLength(value, 11, 3), link: `/address/${value}` };
+          finalObj['address'] = { value: maxLength(value, 11, 3), link: `/accounts/${value}` };
           break;
         case 'value':
           finalObj['value'] = { value: numberFormat(value, 8) };

@@ -47,7 +47,7 @@ export const validatorTxsTable = (data) =>
         case 'signer':
           finalObj['signer'] = {
             value: maxLength(value, 11, 3),
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
           };
           break;
         case 'status':

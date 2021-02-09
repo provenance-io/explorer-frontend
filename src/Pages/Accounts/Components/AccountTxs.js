@@ -50,7 +50,7 @@ const Pagination = styled(BasePagination)`
   margin-left: auto;
 `;
 
-const AddressTxs = () => {
+const AccountTxs = () => {
   const {
     getTxsByAddress,
     txsByAddress,
@@ -121,4 +121,4 @@ const AddressTxs = () => {
   );
 };
 
-export default AddressTxs;
+export default AccountTxs;

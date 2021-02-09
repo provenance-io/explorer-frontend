@@ -29,7 +29,7 @@ export const transactionsTable = (data) =>
           finalObj['signer'] = {
             value: maxLength(value, 11, 3),
             hover: value,
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
           };
           break;
         case 'time':

@@ -10,7 +10,7 @@ export const assetHoldersTable = (data) =>
         case 'ownerAddress':
           finalObj['address'] = {
             value: maxLength(value, 11, 3),
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
             hover: value,
           };
           break;

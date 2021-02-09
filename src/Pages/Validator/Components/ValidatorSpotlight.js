@@ -146,14 +146,14 @@ const ValidatorSpotlight = () => {
         <DataRow>
           <DataTitle>Owner Address:</DataTitle>
           <DataValue title={validatorId}>
-            <Link to={`/address/${validatorId}`}>{maxLength(validatorId, 11, 3)}</Link>
+            <Link to={`/accounts/${validatorId}`}>{maxLength(validatorId, 11, 3)}</Link>
             <CopyValue title="Copy Owner Address" value={validatorId} />
           </DataValue>
         </DataRow>
         <DataRow>
           <DataTitle>Withdraw Address:</DataTitle>
           <DataValue title={validatorId}>
-            <Link to={`/address/${validatorId}`}>{maxLength(validatorId, 11, 3)}</Link>
+            <Link to={`/accounts/${validatorId}`}>{maxLength(validatorId, 11, 3)}</Link>
             <CopyValue title="Copy Withdraw Address" value={validatorId} />
           </DataValue>
         </DataRow>

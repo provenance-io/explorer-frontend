@@ -9,7 +9,7 @@ const BlocksList = () => {
   const {
     getBlocksRecent: getTableData,
     blocks: tableData,
-    getBlocksCurrentHeight,
+    getBlocksHeight,
     blockPages: tablePages,
     blocksRecentLoading: tableLoading,
   } = useBlocks();
@@ -18,8 +18,8 @@ const BlocksList = () => {
   useEffect(() => {
     getTableData({ page: tableCurrentPage, count: tableCount });
     // Get the latest block height each time the page changes
-    getBlocksCurrentHeight();
-  }, [getTableData, tableCount, tableCurrentPage, getBlocksCurrentHeight]);
+    getBlocksHeight();
+  }, [getTableData, tableCount, tableCurrentPage, getBlocksHeight]);
 
   // Table header values in order
   const tableHeaders = ['Block', 'Proposer', 'Transactions', 'Validators', 'Voting Power', 'Timestamp'];

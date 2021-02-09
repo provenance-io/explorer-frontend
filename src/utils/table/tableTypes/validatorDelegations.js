@@ -11,7 +11,7 @@ export const validatorDelegationsTable = (data) =>
         case 'address':
           finalObj['address'] = {
             value: maxLength(value, 11, 3),
-            link: `/address/${value}`,
+            link: `/accounts/${value}`,
           };
           break;
         case 'amount':
