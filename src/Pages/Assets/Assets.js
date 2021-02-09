@@ -11,10 +11,10 @@ const Assets = () => (
       <AssetsInformation />
     </Section>
     <Section>
-      <AssetsTxsList />
+      <AssetsHolders />
     </Section>
     <Section>
-      <AssetsHolders />
+      <AssetsTxsList />
     </Section>
   </Wrapper>
 );

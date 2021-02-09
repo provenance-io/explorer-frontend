@@ -13,24 +13,25 @@ const AssetsInformation = () => {
   }, [assetId, getAssetInfo]);
 
   const {
-    owner = '[N/A]',
-    supply = '[N/A]',
+    marker = '[N/A]',
+    ownerAddress = '[N/A]',
+    totalSupply = '[N/A]',
     mintable = '[N/A]',
     price = '[N/A]',
     priceChange = '[N/A]',
-    holders = '[N/A]',
-    transactions = '[N/A]',
+    holderCount = '[N/A]',
+    txnCount = '[N/A]',
     website = '[N/A]',
   } = assetInfo;
 
   const summaryData = [
-    { title: 'Asset Name', value: assetId },
-    { title: 'Owner', value: owner, link: `/address/${owner}`, copy: owner },
-    { title: 'Supply', value: numberFormat(supply) },
-    { title: 'Mintable', value: mintable },
+    { title: 'Asset Name', value: marker },
+    { title: 'Owner', value: ownerAddress, link: `/address/${ownerAddress}`, copy: ownerAddress },
+    { title: 'Supply', value: numberFormat(totalSupply) },
+    { title: 'Mintable', value: `${mintable}` },
     { title: 'Price', value: numberFormat(price, 6, 'currency'), change: priceChange },
-    { title: 'Holders', value: holders },
-    { title: 'Transactions', value: numberFormat(transactions) },
+    { title: 'Holders', value: holderCount },
+    { title: 'Transactions', value: txnCount ? numberFormat(txnCount) : '[N/A]' },
     { title: 'Website', value: website, externalLink: website },
   ];
 

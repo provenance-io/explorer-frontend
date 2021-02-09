@@ -54,7 +54,9 @@ const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, i
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
   const showPagination = dataExists && !isLoading && hasPagination && totalPages;
-  let finalTableHeaders = showIndex ? ['#', ...tableHeaders] : tableHeaders;
+  // If showIndex is requested, determine the symbol for it
+  const showIndexSymbol = typeof showIndex === 'string' ? showIndex : '#';
+  let finalTableHeaders = showIndex ? [showIndexSymbol, ...tableHeaders] : tableHeaders;
   finalTableHeaders = showAge ? [...tableHeaders, 'Age'] : finalTableHeaders;
 
   const loaderRow = () => (
@@ -70,7 +72,7 @@ const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, i
   const buildSingleRow = (rowData, index) =>
     finalTableHeaders.map((columnHeader) => {
       // If it's just the index, we don't need to get any real value\
-      if (showIndex && columnHeader === '#') {
+      if (showIndex && columnHeader === showIndexSymbol) {
         return <TableData key={columnHeader}>{(index + 1) * currentPage}</TableData>;
       }
       // If we want the age take the string key and render the timestamp
@@ -143,7 +145,7 @@ Table.propTypes = {
   changePage: PropTypes.func,
   totalPages: PropTypes.number,
   isLoading: PropTypes.bool,
-  showIndex: PropTypes.bool,
+  showIndex: PropTypes.any,
   showAge: PropTypes.string,
   size: PropTypes.string,
 };

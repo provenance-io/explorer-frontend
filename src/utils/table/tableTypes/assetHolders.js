@@ -7,28 +7,25 @@ export const assetHoldersTable = (data) =>
     Object.keys(dataObj).forEach((key) => {
       const value = dataObj[key];
       switch (key) {
-        case 'rank':
-          finalObj['rank'] = {
-            value,
-          };
-          break;
-        case 'address':
+        case 'ownerAddress':
           finalObj['address'] = {
             value: maxLength(value, 11, 3),
             link: `/address/${value}`,
             hover: value,
           };
           break;
-        case 'quantity':
+        case 'balance':
           finalObj['quantity'] = {
             value: numberFormat(value, 2),
           };
           break;
-        case 'percentage':
+        case 'percentage': {
+          const finalValue = value < 0.01 ? '<0.01%' : `${numberFormat(value * 100, 2)}%`;
           finalObj['percentage'] = {
-            value: `${value}%`,
+            value: finalValue,
           };
           break;
+        }
         default:
           break;
       }

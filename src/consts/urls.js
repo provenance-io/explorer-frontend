@@ -17,11 +17,22 @@ if (!isLocal && (isDev || isTest)) {
 export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : `https://${ENVIRONMENT}/explorer/secured/api/v2`;
 
 // Actual API URLs
+// -- Address
+export const ADDRESS_INFO_URL = `${BASE_URL}/address`;
+// -- Assets
+export const ASSET_DETAIL_URL = `${BASE_URL}/assets`;
+export const ASSET_TRANSACTIONS_URL = `${BASE_URL}/asset/transactions`;
 // -- Blocks
 export const BLOCK_CURRENT_HEIGHT_URL = `${BASE_URL}/blocks/currentHeight`;
 export const BLOCK_INFO_URL = `${BASE_URL}/blocks/height`;
 export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
+// -- Chaincode id
+export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
+// -- Social Media/Contact Information
+export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
+export const SOCIAL_DISCORD_URL = 'https://discord.com/';
+export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
 // -- Txs
 export const TX_INFO_URL = `${BASE_URL}/tx`;
 export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
@@ -37,15 +48,3 @@ export const VALIDATOR_DELEGATIONS_URL = `${BASE_URL}/validator/delegations`;
 export const VALIDATOR_UNBONDING_DELEGATIONS_URL = `${BASE_URL}/validator/delegations/unbonding`;
 export const VALIDATOR_DELEGATION_TXS_URL = `${BASE_URL}/validator/delegations/txs`;
 export const VALIDATOR_TXS_URL = `${BASE_URL}/validator/txs`;
-// -- Address
-export const ADDRESS_INFO_URL = `${BASE_URL}/address`;
-// -- Chaincode id
-export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
-// -- Assets
-export const ASSET_INFO_URL = `${BASE_URL}/asset`;
-export const ASSET_TRANSACTIONS_URL = `${BASE_URL}/asset/transactions`;
-export const ASSET_HOLDERS_URL = `${BASE_URL}/asset/holders`;
-// -- Social Media/Contact Information
-export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
-export const SOCIAL_DISCORD_URL = 'https://discord.com/';
-export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';

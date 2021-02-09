@@ -17,16 +17,14 @@ const AssetsHolders = () => {
   const tableCount = 10;
 
   useEffect(() => {
-    getTableData({
-      page: tableCurrentPage,
-      count: tableCount,
-      asset: assetId,
-    });
+    getTableData(assetId);
   }, [getTableData, assetId, tableCount, tableCurrentPage]);
 
-  const tableHeaders = ['Rank', 'Address', 'Quantity', 'Percentage'];
+  // TEMP: Api is missing a sort param, so manually sort highest to lowest
+  const flippedTableData = tableData ? [...tableData].reverse() : [];
+  const tableHeaders = ['Address', 'Quantity', 'Percentage'];
   // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'assetHolders');
+  const formattedTableData = formatTableData(flippedTableData, 'assetHolders');
 
   return (
     <Table
@@ -37,6 +35,7 @@ const AssetsHolders = () => {
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Asset Holders"
+      showIndex="Rank"
     />
   );
 };

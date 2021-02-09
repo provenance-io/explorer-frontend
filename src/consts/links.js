@@ -14,7 +14,7 @@ export const Links = {
     title: 'Transfer',
   },
   assets: {
-    url: `${Path.ASSETS_URL}/HASH`,
+    url: `${Path.ASSETS_URL}/nhash`,
     title: 'Assets',
   },
 };
