@@ -159,10 +159,9 @@
 
 | Data | Type | Status |
 | --- | --- | --- |
-| rank | number | **missing** |
-| address | string | **missing** |
-| quantity | number | **missing** |
-| percentage | number | **missing** |
+| ownerAddress | string | done |
+| balance | number | done |
+| percentage | number | done |
 
 ### /asset/{id}/txs
 | Param | Description | Status |
