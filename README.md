@@ -21,6 +21,7 @@ There are two commands to start up the Frontend Explorer.
   * Once that is up and running, initiate `npm run local` to start up the frontend
 2) Local frontend with provenance backend services
   * Doesn't exist yet, will update this section once this changes
+  * Run `npm run start`
 
 ## Status
 [![Latest Release][release-badge]][release-latest]

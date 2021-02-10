@@ -9,6 +9,7 @@ import {
   validatorDelegationTxsTable,
   validatorTxsTable,
   assetTransactionsTable,
+  assetsTable,
 } from './tableTypes';
 
 // Format tables based on the table type so that they look correct in the UI.
@@ -34,6 +35,8 @@ export const formatTableData = (data = [], type) => {
       return blocksTable(data);
     case 'assetHolders':
       return assetHoldersTable(data);
+    case 'assets':
+      return assetsTable(data);
     case 'assetTransactions':
       return assetTransactionsTable(data);
     default:

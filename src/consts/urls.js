@@ -21,7 +21,8 @@ export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : `https://${EN
 export const ACCOUNT_INFO_URL = `${BASE_URL}/accounts`;
 // -- Assets
 export const ASSET_DETAIL_URL = `${BASE_URL}/assets`;
-export const ASSET_TRANSACTIONS_URL = `${BASE_URL}/asset/transactions`;
+export const ASSET_TRANSACTIONS_URL = `${BASE_URL}/assets/transactions`;
+export const ASSETS_LIST_URL = `${BASE_URL}/assets/all`;
 // -- Blocks
 export const BLOCK_HEIGHT_URL = `${BASE_URL}/blocks/height`;
 export const BLOCK_INFO_URL = `${BASE_URL}/blocks/height`;

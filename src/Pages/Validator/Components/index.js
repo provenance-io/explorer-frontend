@@ -1,4 +1,3 @@
-export { default as ValidatorHeader } from './ValidatorHeader';
 export { default as ValidatorSpotlight } from './ValidatorSpotlight';
 export { default as ValidatorCommission } from './ValidatorCommission';
 export { default as ValidatorDelegations } from './ValidatorDelegations';

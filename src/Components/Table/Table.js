@@ -87,10 +87,10 @@ const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, i
       }
 
       if (!rowData[columnHeader.toLowerCase()]) {
-        console.error('Critical Table Error! Data not found: ', { rowData, columnHeader });
+        console.error(`Critical Table Error! Data not found (rowData["${columnHeader.toLowerCase()}"]): `, { rowData, columnHeader });
       }
 
-      const { link, value = '[N/A]', hover } = rowData[columnHeader.toLowerCase()];
+      const { link = false, value = '[N/A]', hover = false } = rowData[columnHeader.toLowerCase()] || {};
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
       const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;

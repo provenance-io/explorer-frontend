@@ -4,7 +4,7 @@ import { Content, Summary, Loading } from 'Components';
 import { numberFormat } from 'utils';
 import { useAssets } from 'redux/hooks';
 
-const AssetsInformation = () => {
+const AssetInformation = () => {
   const { assetId } = useParams();
   const { getAssetInfo, assetInfo, assetInformationLoading } = useAssets();
 
@@ -38,4 +38,4 @@ const AssetsInformation = () => {
   return <Content title="Asset Information">{assetInformationLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
 };
 
-export default AssetsInformation;
+export default AssetInformation;

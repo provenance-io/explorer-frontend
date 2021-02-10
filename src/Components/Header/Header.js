@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 import { breakpoints } from 'consts';
+import CopyValue from '../CopyValue';
 
 const HeaderContainer = styled.div`
   position: absolute;
@@ -30,26 +31,55 @@ const Title = styled.div``;
 const Line = styled.div`
   margin: 0 12px;
 `;
+const ValueContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const Value = styled.div`
+  user-select: none;
+`;
 
-const Header = ({ title, children }) => (
-  <HeaderContainer>
-    <Title>{title}</Title>
-    {children && (
-      <>
-        <Line>|</Line>
-        {children}
-      </>
-    )}
-  </HeaderContainer>
-);
+const Header = ({ title, copyValue, copyTitle, value, valueLink, children }) => {
+  const showLine = value || children;
+
+  const renderValueContainer = () => (
+    <ValueContainer>
+      {valueLink ? (
+        <Link to={valueLink}>
+          <Value>{value}</Value>
+        </Link>
+      ) : (
+        <Value>{value}</Value>
+      )}
+      {copyValue ? <CopyValue value={copyValue} title={copyTitle || copyValue} /> : null}
+    </ValueContainer>
+  );
+
+  return (
+    <HeaderContainer>
+      <Title>{title}</Title>
+      {showLine && <Line>|</Line>}
+      {children}
+      {value ? renderValueContainer() : null}
+    </HeaderContainer>
+  );
+};
 
 Header.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.any,
+  value: PropTypes.node,
+  copyValue: PropTypes.node,
+  copyTitle: PropTypes.string,
+  valueLink: PropTypes.string,
 };
 
 Header.defaultProps = {
   children: null,
+  value: null,
+  copyValue: null,
+  copyTitle: '',
+  valueLink: null,
 };
 
 export default Header;

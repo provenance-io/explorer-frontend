@@ -1,17 +1,20 @@
 import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
-import { AccountHeader, AccountSpotlight, AccountTxs } from './Components';
+import { useParams } from 'react-router-dom';
+import { AccountSpotlight, AccountTxs } from './Components';
 
-const Accounts = () => (
-  <Wrapper>
-    <Section>
-      <Header title="Account Details">
-        <AccountHeader />
-      </Header>
-      <AccountSpotlight />
-      <AccountTxs />
-    </Section>
-  </Wrapper>
-);
+const Accounts = () => {
+  const { addressId } = useParams();
+
+  return (
+    <Wrapper>
+      <Section>
+        <Header title="Account Details" value={addressId} copyValue={addressId} copyTitle="Copy Address" />
+        <AccountSpotlight />
+        <AccountTxs />
+      </Section>
+    </Wrapper>
+  );
+};
 
 export default Accounts;

@@ -6,7 +6,8 @@
   * [All APIs](#apis)
 ## Pages
   * [Account Details](#account-details-accountsaddress)
-  * [Asset Details](#asset-details-assetsassetid)
+  * [Asset Details](#asset-details-assetassetid)
+  * [Assets List](#assets-list-assetsall)
   * [Block Details](#block-details-blockblockheight)
   * [Blocks List](#blocks-list-blocks)
   * [Dashboard](#dashboard)
@@ -17,10 +18,12 @@
 ### Account Details (/accounts/{address})
   * [/accounts/{address}](#accountsaddress)
   * [/accounts/{address}/txs](#accountsaddresstxs)
-### Asset Details (/assets/{assetId})
+### Asset Details (/asset/{assetId})
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
-  * [/asset/{id}/txs](#assetidtxs)
+  * [/assets/{id}/txs](#assetsidtxs)
+### Assets List (/assets/all)
+  * [/assets/all](#assetsall)
 ### Block Details (/block/{blockHeight})
   * [/blocks/height](#blocksheight)
   * [/blocks/height/{height}](#blocksheightheight)
@@ -53,9 +56,10 @@
 ## List of APIs with missing data
   * [/accounts/{address}](#accountsaddress)
   * [/accounts/{address}/txs](#accountsaddresstxs)
+  * [/assets/all](#assetsall)
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
-  * [/asset/{id}/txs](#assetidtxs)
+  * [/assets/{id}/txs](#assetsidtxs)
   * [/blocks/height/{height}](#blocksheightheight)
   * [/txs/{hash}](#txshash)
   * [/txs/{hash}/json](#txshashjson)
@@ -75,9 +79,10 @@
   * [/accounts/{address}](#accountsaddress)
   * [/accounts/{address}/txs](#accountsaddresstxs)
   ### Assets
+  * [/assets/all](#assetsall)
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
-  * [/asset/{id}/txs](#assetidtxs)
+  * [/assets/{id}/txs](#assetsidtxs)
   ### Blocks
   * [/blocks/recent](#blocksrecent)
   * [/blocks/currentHeight](#blockscurrentheight)
@@ -137,6 +142,16 @@
 |status | string | **missing** |
 |timestamp | string | **missing** |
 
+### /assets/all
+| Data | Type | Status |
+| --- | --- | --- |
+| marker | string | done |
+| circulation | number | done |
+| totalSupply | string | done |
+| ownerAddress | number | done |
+| price | number | **missing** |
+| priceChange | number | **missing** |
+
 ### /assets/{id}/detail
 | Data | Type | Status |
 | --- | --- | --- |
@@ -163,7 +178,7 @@
 | balance | number | done |
 | percentage | number | done |
 
-### /asset/{id}/txs
+### /assets/{id}/txs
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | **missing** |

@@ -1,7 +1,6 @@
 export { default as Dashboard } from './Dashboard';
 export { default as Assets } from './Assets';
-export { default as Gov } from './Gov';
-export { default as Stats } from './Stats';
+export { default as Asset } from './Asset';
 export { default as Block } from './Block';
 export { default as Blocks } from './Blocks';
 export { default as Tx } from './Tx';

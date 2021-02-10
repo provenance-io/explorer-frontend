@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { GET_ASSET_INFO, GET_ASSET_TRANSACTIONS, GET_ASSET_HOLDERS } from '../actions/assetsActions';
+import { GET_ASSET_INFO, GET_ASSET_TRANSACTIONS, GET_ASSET_HOLDERS, GET_ASSETS_LIST } from '../actions/assetsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -14,6 +14,9 @@ export const initialState = {
   assetHolders: [],
   assetHoldersLoading: false,
   assetHoldersPages: 1,
+  // Assets List
+  assets: [],
+  assetsLoading: false,
 };
 
 const reducer = handleActions(
@@ -68,6 +71,28 @@ const reducer = handleActions(
       return {
         ...state,
         assetTransactionsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ASSETS_LIST
+    -------------------*/
+    [`${GET_ASSETS_LIST}_${REQUEST}`](state) {
+      return {
+        ...state,
+        assetsLoading: true,
+      };
+    },
+    [`${GET_ASSETS_LIST}_${SUCCESS}`](state, { payload: assets }) {
+      return {
+        ...state,
+        assets,
+        assetsLoading: false,
+      };
+    },
+    [`${GET_ASSETS_LIST}_${FAILURE}`](state) {
+      return {
+        ...state,
+        assetsLoading: false,
       };
     },
     /* -----------------

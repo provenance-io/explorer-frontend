@@ -4,7 +4,7 @@ import { Table } from 'Components';
 import { formatTableData } from 'utils';
 import { useAssets } from 'redux/hooks';
 
-const AssetsTxsList = () => {
+const AssetTxsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { assetId } = useParams();
   const {
@@ -42,4 +42,4 @@ const AssetsTxsList = () => {
   );
 };
 
-export default AssetsTxsList;
+export default AssetTxsList;
