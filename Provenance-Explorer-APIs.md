@@ -84,7 +84,7 @@
   * [/assets/{id}/txs](#assetsidtxs)
   ### Blocks
   * [/blocks/recent](#blocksrecent)
-  * [/blocks/currentHeight](#blockscurrentheight)
+  * [/blocks/height](#blocksheight)
   * [/blocks/height/{height}](#blocksheightheight)
   * [/spotlight](#spotlight)
   ### Spotlight
