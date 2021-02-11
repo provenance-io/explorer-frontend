@@ -1,5 +1,6 @@
 import { maxLength } from '../../string/maxLength';
 import { capitalize } from '../../string/capitalize';
+import { numberFormat } from '../../number/numberFormat';
 
 export const transactionsTable = (data) =>
   data.map((dataObj) => {
@@ -37,7 +38,7 @@ export const transactionsTable = (data) =>
           break;
         case 'fee':
           finalObj['fee'] = finalObj['fee'] || { value: [] };
-          finalObj['fee'].value[0] = value;
+          finalObj['fee'].value[0] = numberFormat(value);
           break;
         case 'denomination':
           finalObj['fee'] = finalObj['fee'] || { value: [] };

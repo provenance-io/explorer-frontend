@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useAccounts } from 'redux/hooks';
-import { Content, Section, CopyValue, Sprite } from 'Components';
+import { Content, CopyValue, Sprite } from 'Components';
 
 const Column = styled.div`
   ${({ flexBasis }) => flexBasis && `flex-basis: ${flexBasis};`}
@@ -30,68 +30,63 @@ const AccountSpotlight = () => {
     getAccountInfo(addressId);
   }, [getAccountInfo, addressId]);
 
-  const {
-    token = '[N/A]',
-    totalAmount = '[N/A]',
-    balance = '[N/A]',
-    delegated = '[N/A]',
-    unbonding = '[N/A]',
-    rewards = '[N/A]',
-  } = accountInfo;
+  const { accountType = '[N/A]', publicKey = '[N/A]', accountNumber = '[N/A]', sequence = '[N/A]' } = accountInfo;
 
   return (
-    <Section>
-      <Content justify="flex-start">
-        <Column flexBasis="10%">
-          <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
-        </Column>
-        <Column flexBasis="45%">
-          <Row>
-            <Title>Address:</Title>
-            <Value title={addressId}>
-              {addressId}
-              <CopyValue value={addressId} title="Copy Address" />
-            </Value>
-          </Row>
-          <Row>
-            <Title>Token:</Title>
-            <Value>{token}</Value>
-          </Row>
-          <Row>
-            <Title>Total Amount:</Title>
-            <Value>
-              {totalAmount} {token}
-            </Value>
-          </Row>
-        </Column>
-        <Column flexBasis="45%">
-          <Row>
-            <Title>Balance:</Title>
-            <Value>
-              {balance} {token}
-            </Value>
-          </Row>
-          <Row>
-            <Title>Delegated:</Title>
-            <Value>
-              {delegated} {token}
-            </Value>
-          </Row>
-          <Row>
-            <Title>UnBonding:</Title>
-            <Value>
-              {unbonding} {token}
-            </Value>
-          </Row>
-          <Row>
-            <Title>Rewards:</Title>
-            <Value>
-              {rewards} {token}
-            </Value>
-          </Row>
-        </Column>
-      </Content>
-    </Section>
+    <Content justify="flex-start">
+      <Column flexBasis="10%">
+        <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
+      </Column>
+      <Column flexBasis="45%">
+        <Row>
+          <Title>Address:</Title>
+          <Value title={addressId}>
+            {addressId}
+            <CopyValue value={addressId} title="Copy Address" />
+          </Value>
+        </Row>
+        <Row>
+          <Title>Account Type:</Title>
+          <Value>{accountType}</Value>
+        </Row>
+        <Row>
+          <Title>Account Number:</Title>
+          <Value>{accountNumber}</Value>
+        </Row>
+      </Column>
+      <Column flexBasis="45%">
+        <Row>
+          <Title>Public Key:</Title>
+          <Value>
+            {publicKey?.key ? (
+              <>
+                {publicKey.key}
+                <CopyValue value={publicKey.key} title="Copy Public Key" />
+              </>
+            ) : (
+              'N/A'
+            )}
+          </Value>
+        </Row>
+        <Row>
+          <Title>Public Key Type:</Title>
+          <Value>
+            {publicKey?.['@type'] ? (
+              <>
+                {publicKey['@type']}
+                <CopyValue value={publicKey['@type']} title="Copy Public Key" />
+              </>
+            ) : (
+              'N/A'
+            )}
+          </Value>
+        </Row>
+        <Row>
+          <Title>Sequence:</Title>
+          <Value>{sequence}</Value>
+        </Row>
+      </Column>
+    </Content>
   );
 };
 

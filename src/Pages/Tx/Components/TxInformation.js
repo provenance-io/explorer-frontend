@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { maxLength, getUTCTime, capitalize } from 'utils';
+import { maxLength, getUTCTime, capitalize, numberFormat } from 'utils';
 import { Section, Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
@@ -88,10 +88,10 @@ const TxInformation = () => {
       method: ['click', 'hover'],
       fontColor: 'FONT_WHITE',
       data: [
-        { title: 'Gas Price', value: `${gasPrice} ${feeDenomination}` },
-        { title: 'Gas Used', value: gasUsed },
-        { title: 'Gas Wanted', value: gasWanted },
-        { title: 'Gas Limit', value: gasLimit },
+        { title: 'Gas Price', value: `${numberFormat(gasPrice)} ${feeDenomination}` },
+        { title: 'Gas Used', value: numberFormat(gasUsed) },
+        { title: 'Gas Wanted', value: numberFormat(gasWanted) },
+        { title: 'Gas Limit', value: numberFormat(gasLimit) },
       ],
     };
 
@@ -99,8 +99,8 @@ const TxInformation = () => {
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
       { title: 'Timestamp', value: `${utcTime}+UTC` },
-      { title: 'Fee', value: `${fee ? fee : '[N/A]'} ${feeDenomination ? feeDenomination : '[N/A]'}` },
-      { title: 'Gas Used', value: gasUsed, popupNote },
+      { title: 'Fee', value: `${fee ? numberFormat(fee) : '[N/A]'} ${feeDenomination ? feeDenomination : '[N/A]'}` },
+      { title: 'Gas Used', value: numberFormat(gasUsed), popupNote },
       { title: 'Signer', value: maxLength(signer, 24, 10), link: `/accounts/${signer}`, copy: signer },
       { title: 'Memo', value: maxLength(memo, 100), copy: memo },
     ];
@@ -114,7 +114,7 @@ const TxInformation = () => {
     const summaryData = [
       { title: 'Tx Type', value: capitalize(txType) },
       { title: 'From', value: from || '[N/A]', link: `/accounts/${from}`, copy: from },
-      { title: 'Amount', value: `${amount || '[N/A]'} ${denomination || '[N/A]'}` },
+      { title: 'Amount', value: `${numberFormat(amount) || '[N/A]'} ${denomination || '[N/A]'}` },
       { title: 'To', value: to || '[N/A]', link: `/accounts/${to}`, copy: to },
     ];
 

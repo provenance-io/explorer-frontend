@@ -1,5 +1,5 @@
 # Provenance Explorer V2 API Endpoints
-  - _Updated Tuesday Feb 10th ~2:00pm MST_
+  - _Updated Tuesday Feb 11th ~3:30pm MST_
 ## Contents
   * [Pages](#pages)
   * [APIs with missing data](#list-of-apis-with-missing-data)
@@ -54,15 +54,14 @@
   * [/validators/recent](#validatorsrecent)
 
 ## List of APIs with missing data
-  * [/accounts/{address}](#accountsaddress)
   * [/accounts/{address}/txs](#accountsaddresstxs)
   * [/assets/all](#assetsall)
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
   * [/assets/{id}/txs](#assetsidtxs)
+  * [/blocks/height](#blocksheight)
   * [/blocks/height/{height}](#blocksheightheight)
-  * [/txs/{hash}](#txshash)
-  * [/txs/{hash}/json](#txshashjson)
+  * [/spotlight](#spotlight)
   * [/txs/height/{height}](#txsheightheight)
   * [/txs/recent](#txsrecent)
   * [/validators/height/{height}](#validatorsheightheight)
@@ -88,6 +87,8 @@
   * [/blocks/currentHeight](#blockscurrentheight)
   * [/blocks/height/{height}](#blocksheightheight)
   * [/spotlight](#spotlight)
+  ### Spotlight
+  * [/spotlight](#spotlight)
   ### Transactions
   * [/txs/{hash}](#txshash)
   * [/txs/{hash}/json](#txshashjson)
@@ -107,18 +108,16 @@
 ### /accounts/{address}
 | Data | Type | Status |
 | --- | --- | --- |
-|address | string | **missing** |
-|token | string | **missing** |
-|amount | number | **missing** |
-|amountDenomination | string | **missing** |
-|balance | number | **missing** |
-|balanceDenomination | string | **missing** |
-|delegated | number | **missing** |
-|delegatedDenomination | string | **missing** |
-|unbonding | number | **missing** |
-|unbondingDenomination | string | **missing** |
-|rewards | number | **missing** |
-|rewardsDenomination | string | **missing** |
+|accountNumber | number | done |
+|accountType | string | done |
+|address | string | done |
+|balances | array | done |
+|balances.denom | string | done |
+|balances.amount | string | done |
+|publicKey | object | done |
+|publicKey.key | string | done |
+|publicKey.type | string | done |
+|sequence | number | done |
 
 ### /accounts/{address}/txs
 | Param | Description | Status |
@@ -216,15 +215,15 @@
 ### /blocks/height
 | Data | Type | Status |
 | --- | --- | --- |
-| height | number | done |
-| hash | string | done |
-| icon | string | done |
-| moniker | string | done |
-| numValidators | number | done |
-| proposerAddress | string | done |
-| time | string | done |
-| txNum | number | done |
-| votingPower | number | done |
+| height | number | **missing** |
+| hash | string | **missing** |
+| icon | string | **missing** |
+| moniker | string | **missing** |
+| numValidators | number | **missing** |
+| proposerAddress | string | **missing** |
+| time | string | **missing** |
+| txNum | number | **missing** |
+| votingPower | number | **missing** |
 
 ### /blocks/height/{height}
 | Data | Type | Status |
@@ -245,83 +244,83 @@
 ### /spotlight
 | Data | Type | Status |
 | --- | --- | --- |
-| avgBlockTime | number | done |
-| bondedTokenAmount | number | done |
-| bondedTokenPercet | number | done |
-| bondedTokenTotal | number | done |
-| latestBlock | shape | done |
-| latestBlock.hash | string | done |
-| latestBlock.height | number | done |
-| latestBlock.icon | string | done |
-| latestBlock.moniker | string | done |
-| latestBlock.numValidators | number | done |
-| latestBlock.proposerAddress | string | done |
-| latestBlock.time | string | done |
-| latestBlock.txNum | number | done |
-| latestBlock.votingPower | number | done |
+| avgBlockTime | number | **missing** |
+| bondedTokenAmount | number | **missing** |
+| bondedTokenPercet | number | **missing** |
+| bondedTokenTotal | number | **missing** |
+| latestBlock | shape | **missing** |
+| latestBlock.hash | string | **missing** |
+| latestBlock.height | number | **missing** |
+| latestBlock.icon | string | **missing** |
+| latestBlock.moniker | string | **missing** |
+| latestBlock.numValidators | number | **missing** |
+| latestBlock.proposerAddress | string | **missing** |
+| latestBlock.time | string | **missing** |
+| latestBlock.txNum | number | **missing** |
+| latestBlock.votingPower | number | **missing** |
 
 ### /txs/{hash}
 | Data | Type | Status |
 | --- | --- | --- |
-| fee | number | **missing** |
-| feeDenomination | string | **missing** |
-| gasLimit | number | **missing** |
-| gasPrice | number | **missing** |
-| gasUsed | number | **missing** |
-| gasWanted | number | **missing** |
-| height | number | **missing** |
-| memo | string | **missing** |
-| signer | string | **missing** |
-| status | string | **missing** |
-| time | string | **missing** |
-| amount | number | **missing** |
-| denomination | string | **missing** |
-| from | string | **missing** |
-| to | string | **missing** |
-| txType | string | **missing** |
+| fee | number | done |
+| feeDenomination | string | done |
+| gasLimit | number | done |
+| gasPrice | number | done |
+| gasUsed | number | done |
+| gasWanted | number | done |
+| height | number | done |
+| memo | string | done |
+| signer | string | done |
+| status | string | done |
+| time | string | done |
+| amount | number | done |
+| denomination | string | done |
+| from | string | done |
+| to | string | done |
+| txType | string | done |
 
 ### /txs/{hash}/json
 | Data | Type | Status |
 | --- | --- | --- |
-| code | **null** | **missing** |
-| codespace | **null** | **missing** |
-| gasUsed | string | **missing** |
-| gasWanted | string | **missing** |
-| height | string | **missing** |
-| timestamp | string | **missing** |
-| txhash | string | **missing** |
-| logs | array | **missing** |
-| logs.log | string | **missing** |
-| logs.msgIndex | number | **missing** |
-| logs.events | array | **missing** |
-| logs.events.type | string | **missing** |
-| logs.events.attributes | array | **missing** |
-| logs.events.attributes.key | string | **missing** |
-| logs.events.attributes.value | string | **missing** |
-| tx | string | **missing** |
-| tx.type | string | **missing** |
-| tx.value | object | **missing** |
-| tx.value.memo | string | **missing** |
-| tx.value.fee | object | **missing** |
-| tx.value.fee.gas | string | **missing** |
-| tx.value.fee.amount | array | **missing** |
-| tx.value.fee.amount.amount | string | **missing** |
-| tx.value.fee.amount.denom | string | **missing** |
-| tx.value.msg | array | **missing** |
-| tx.value.msg.type | string | **missing** |
-| tx.value.msg.value | object | **missing** |
-| tx.value.msg.value.contract | string | **missing** |
-| tx.value.msg.value.executionID | string | **missing** |
-| tx.value.msg.value.groupID | string | **missing** |
-| tx.value.msg.value.notary | string | **missing** |
-| tx.value.msg.value.scopeID | string | **missing** |
-| tx.value.msg.value.scopeRefID | string | **missing** |
-| tx.value.msg.value.signatures | string | **missing** |
-| tx.value.signatures | array | **missing** |
-| tx.value.signatures.signature | string | **missing** |
-| tx.value.signatures.pubKey | object | **missing** |
-| tx.value.signatures.pubKey.type | string | **missing** |
-| tx.value.signatures.pubKey.value | string | **missing** |
+| code | **null** | done |
+| codespace | **null** | done |
+| gasUsed | string | done |
+| gasWanted | string | done |
+| height | string | done |
+| timestamp | string | done |
+| txhash | string | done |
+| logs | array | done |
+| logs.log | string | done |
+| logs.msgIndex | number | done |
+| logs.events | array | done |
+| logs.events.type | string | done |
+| logs.events.attributes | array | done |
+| logs.events.attributes.key | string | done |
+| logs.events.attributes.value | string | done |
+| tx | string | done |
+| tx.type | string | done |
+| tx.value | object | done |
+| tx.value.memo | string | done |
+| tx.value.fee | object | done |
+| tx.value.fee.gas | string | done |
+| tx.value.fee.amount | array | done |
+| tx.value.fee.amount.amount | string | done |
+| tx.value.fee.amount.denom | string | done |
+| tx.value.msg | array | done |
+| tx.value.msg.type | string | done |
+| tx.value.msg.value | object | done |
+| tx.value.msg.value.contract | string | done |
+| tx.value.msg.value.executionID | string | done |
+| tx.value.msg.value.groupID | string | done |
+| tx.value.msg.value.notary | string | done |
+| tx.value.msg.value.scopeID | string | done |
+| tx.value.msg.value.scopeRefID | string | done |
+| tx.value.msg.value.signatures | string | done |
+| tx.value.signatures | array | done |
+| tx.value.signatures.signature | string | done |
+| tx.value.signatures.pubKey | object | done |
+| tx.value.signatures.pubKey.type | string | done |
+| tx.value.signatures.pubKey.value | string | done |
 
 ### /txs/height/{height}
 | Data | Type | Status |
@@ -360,16 +359,16 @@
 | --- | --- | --- |
 | pages | number | done |
 | results | array | done |
-| results.blockHeight | number | **missing** |
-| results.codespace | **null** | **missing** |
-| results.denomination | number | **missing** |
-| results.errorCode | **null** | **missing** |
-| results.fee | number | **missing** |
-| results.signer | string | **missing** |
-| results.status | string | **missing** |
-| results.time | string | **missing** |
-| results.txHash | string | **missing** |
-| results.type | string | **missing** |
+| results.blockHeight | number | done |
+| results.codespace | **null** | done |
+| results.denomination | number | done |
+| results.errorCode | **null** | done |
+| results.fee | number | done |
+| results.signer | string | done |
+| results.status | string | done |
+| results.time | string | done |
+| results.txHash | string | done |
+| results.type | string | done |
 
 ### /validators/height/{height}
 | Param | Description | Status |

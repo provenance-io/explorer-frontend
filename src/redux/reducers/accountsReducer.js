@@ -1,12 +1,15 @@
 import { handleActions } from 'redux-actions';
-import { GET_ACCOUNT_INFO } from '../actions/accountsActions';
+import { GET_ACCOUNT_INFO, GET_ACCOUNT_TXS } from '../actions/accountsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
-  // Accounts
+  // Account
   accountInfo: {},
-  // Loading states
   accountInfoLoading: false,
+  // Account Txs
+  accountTxsLoading: false,
+  accountTxs: [],
+  accountTxsPages: 0,
 };
 
 const reducer = handleActions(
@@ -20,17 +23,42 @@ const reducer = handleActions(
         accountInfoLoading: true,
       };
     },
-    [`${GET_ACCOUNT_INFO}_${SUCCESS}`](state, { payload: addressInfo }) {
+    [`${GET_ACCOUNT_INFO}_${SUCCESS}`](state, { payload: accountInfo }) {
       return {
         ...state,
         accountInfoLoading: false,
-        accountInfo: {},
+        accountInfo,
       };
     },
     [`${GET_ACCOUNT_INFO}_${FAILURE}`](state) {
       return {
         ...state,
         accountInfoLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ACCOUNT_TXS
+    -------------------*/
+    [`${GET_ACCOUNT_TXS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        accountTxsLoading: true,
+      };
+    },
+    [`${GET_ACCOUNT_TXS}_${SUCCESS}`](state, { payload }) {
+      const { pages: accountTxsPages, results: accountTxs } = payload;
+
+      return {
+        ...state,
+        accountTxsLoading: false,
+        accountTxs,
+        accountTxsPages,
+      };
+    },
+    [`${GET_ACCOUNT_TXS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        accountTxsLoading: false,
       };
     },
   },

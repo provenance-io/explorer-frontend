@@ -1,4 +1,5 @@
 import { maxLength } from '../../string/maxLength';
+import { numberFormat } from '../../number/numberFormat';
 
 // Validator list has: Moniker, Operator, Commision, Bonded Tokens, Voting Power, Uptime, Self Bonded, Delagators, and Bond Height
 export const validatorsTable = (data) =>
@@ -25,7 +26,7 @@ export const validatorsTable = (data) =>
           break;
         case 'bondedTokens':
           finalObj['bonded tokens'] = finalObj['bonded tokens'] || { value: [] };
-          finalObj['bonded tokens'].value[0] = value;
+          finalObj['bonded tokens'].value[0] = numberFormat(value);
           break;
         case 'bondedTokensDenomination':
           finalObj['bonded tokens'] = finalObj['bonded tokens'] || { value: [] };
@@ -39,7 +40,7 @@ export const validatorsTable = (data) =>
           break;
         case 'selfBonded':
           finalObj['self bonded'] = finalObj['self bonded'] || { value: [] };
-          finalObj['self bonded'].value[0] = value;
+          finalObj['self bonded'].value[0] = numberFormat(value);
           break;
         case 'selfBondedDenomination':
           finalObj['self bonded'] = finalObj['self bonded'] || { value: [] };

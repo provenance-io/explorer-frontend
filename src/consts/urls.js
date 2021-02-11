@@ -35,7 +35,7 @@ export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-fron
 export const SOCIAL_DISCORD_URL = 'https://discord.com/';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
 // -- Txs
-export const TX_INFO_URL = `${BASE_URL}/tx`;
+export const TX_INFO_URL = `${BASE_URL}/txs`;
 export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
 export const TX_HISTORY_URL = `${BASE_URL}/txs/history`;
 export const TXS_BY_BLOCK_URL = `${BASE_URL}/txs/height`;
