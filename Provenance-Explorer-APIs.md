@@ -59,9 +59,7 @@
   * [/assets/{id}/detail](#assetsiddetail)
   * [/assets/{id}/holders](#assetsidholders)
   * [/assets/{id}/txs](#assetsidtxs)
-  * [/blocks/height](#blocksheight)
   * [/blocks/height/{height}](#blocksheightheight)
-  * [/spotlight](#spotlight)
   * [/txs/height/{height}](#txsheightheight)
   * [/txs/recent](#txsrecent)
   * [/validators/height/{height}](#validatorsheightheight)
@@ -215,15 +213,15 @@
 ### /blocks/height
 | Data | Type | Status |
 | --- | --- | --- |
-| height | number | **missing** |
-| hash | string | **missing** |
-| icon | string | **missing** |
-| moniker | string | **missing** |
-| numValidators | number | **missing** |
-| proposerAddress | string | **missing** |
-| time | string | **missing** |
-| txNum | number | **missing** |
-| votingPower | number | **missing** |
+| height | number | done |
+| hash | string | done |
+| icon | string | done |
+| moniker | string | done |
+| numValidators | number | done |
+| proposerAddress | string | done |
+| time | string | done |
+| txNum | number | done |
+| votingPower | number | done |
 
 ### /blocks/height/{height}
 | Data | Type | Status |
@@ -244,20 +242,20 @@
 ### /spotlight
 | Data | Type | Status |
 | --- | --- | --- |
-| avgBlockTime | number | **missing** |
-| bondedTokenAmount | number | **missing** |
-| bondedTokenPercet | number | **missing** |
-| bondedTokenTotal | number | **missing** |
-| latestBlock | shape | **missing** |
-| latestBlock.hash | string | **missing** |
-| latestBlock.height | number | **missing** |
-| latestBlock.icon | string | **missing** |
-| latestBlock.moniker | string | **missing** |
-| latestBlock.numValidators | number | **missing** |
-| latestBlock.proposerAddress | string | **missing** |
-| latestBlock.time | string | **missing** |
-| latestBlock.txNum | number | **missing** |
-| latestBlock.votingPower | number | **missing** |
+| avgBlockTime | number | done |
+| bondedTokenAmount | number | done |
+| bondedTokenPercet | number | done |
+| bondedTokenTotal | number | done |
+| latestBlock | shape | done |
+| latestBlock.hash | string | done |
+| latestBlock.height | number | done |
+| latestBlock.icon | string | done |
+| latestBlock.moniker | string | done |
+| latestBlock.numValidators | number | done |
+| latestBlock.proposerAddress | string | done |
+| latestBlock.time | string | done |
+| latestBlock.txNum | number | done |
+| latestBlock.votingPower | number | done |
 
 ### /txs/{hash}
 | Data | Type | Status |
