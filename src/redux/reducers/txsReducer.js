@@ -73,8 +73,9 @@ const reducer = handleActions(
         txsByBlockLoading: true,
       };
     },
-    [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload }) {
-      const { items: txsByBlock = [], count: txsByBlockPages = 1 } = payload;
+    [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload: txsByBlock }) {
+      // Missing pagination and count
+      const txsByBlockPages = 1;
 
       return {
         ...state,

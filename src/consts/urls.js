@@ -43,7 +43,7 @@ export const TXS_BY_ADDRESS_URL = `${BASE_URL}/txs`;
 // -- Validators
 export const VALIDATOR_INFO_URL = `${BASE_URL}/validators`;
 export const VALIDATORS_RECENT_URL = `${BASE_URL}/validators/recent`;
-export const BLOCK_VALIDATORS_URL = `${BASE_URL}/validators`;
+export const BLOCK_VALIDATORS_URL = `${BASE_URL}/validators/height`;
 export const VALIDATOR_COMMISSION_URL = `${BASE_URL}/validator/commission`;
 export const VALIDATOR_DELEGATIONS_URL = `${BASE_URL}/validator/delegations`;
 export const VALIDATOR_UNBONDING_DELEGATIONS_URL = `${BASE_URL}/validator/delegations/unbonding`;

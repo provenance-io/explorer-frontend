@@ -1,5 +1,5 @@
 # Provenance Explorer V2 API Endpoints
-  - _Updated Tuesday Feb 11th ~4:45pm MST_
+  - _Updated Tuesday Feb 12th ~12:00pm MST_
 ## Contents
   * [Pages](#pages)
   * [APIs with missing data](#list-of-apis-with-missing-data)
@@ -321,13 +321,18 @@
 | tx.value.signatures.pubKey.value | string | done |
 
 ### /txs/height/{height}
+| Param | Description | Status |
+| --- | --- | --- |
+| page | current page of results | **missing** |
+| count | count per page returned | **missing** |
+
 | Data | Type | Status |
 | --- | --- | --- |
 | txHash | string | **missing** |
-| txType |string | **missing** |
-| fee | number | **missing** |
-| feeDenomination | string | **missing** |
-| signer | string | **missing** |
+| txType |string | done |
+| fee | number | done |
+| feeDenomination | string | done |
+| signer | string | done |
 
 ### /txs/history
 | Param | Description | Status |

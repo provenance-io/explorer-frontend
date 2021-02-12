@@ -50,7 +50,19 @@ const Pagination = styled(BasePagination)`
 `;
 const LoadingContainer = styled.td``;
 
-const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, isLoading, showIndex, title, showAge, size }) => {
+const Table = ({
+  tableHeaders,
+  tableData,
+  currentPage,
+  changePage,
+  totalPages,
+  isLoading,
+  showIndex,
+  title,
+  showAge,
+  size,
+  noResults,
+}) => {
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
   const showPagination = dataExists && !isLoading && hasPagination && totalPages;
@@ -118,7 +130,7 @@ const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, i
               buildAllRows()
             ) : (
               <Row>
-                <TableData colSpan="1000">No data available, refresh page to retry</TableData>
+                <TableData colSpan="1000">{noResults}</TableData>
               </Row>
             )}
           </TableBody>
@@ -148,6 +160,7 @@ Table.propTypes = {
   showIndex: PropTypes.any,
   showAge: PropTypes.string,
   size: PropTypes.string,
+  noResults: PropTypes.string,
 };
 Table.defaultProps = {
   tableData: [],
@@ -159,6 +172,7 @@ Table.defaultProps = {
   title: '',
   size: '100%',
   showAge: '',
+  noResults: 'No data available, refresh page to retry',
 };
 
 export default Table;
