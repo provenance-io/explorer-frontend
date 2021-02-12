@@ -106,10 +106,11 @@ const Table = ({
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
       const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;
+      const valueMissing = value === 'N/A' || value === '' || value === '[N/A]';
 
       return (
         <TableData title={hover || value} key={columnHeader}>
-          {link ? <Link to={link}>{finalValue}</Link> : value}
+          {link && !valueMissing ? <Link to={link}>{finalValue}</Link> : value}
         </TableData>
       );
     });

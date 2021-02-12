@@ -1,5 +1,5 @@
 # Provenance Explorer V2 API Endpoints
-  - _Updated Tuesday Feb 12th ~12:00pm MST_
+  - _Updated Tuesday Feb 12th ~12:15pm MST_
 ## Contents
   * [Pages](#pages)
   * [APIs with missing data](#list-of-apis-with-missing-data)
@@ -62,7 +62,6 @@
   * [/blocks/height/{height}](#blocksheightheight)
   * [/txs/height/{height}](#txsheightheight)
   * [/txs/recent](#txsrecent)
-  * [/validators/height/{height}](#validatorsheightheight)
   * [/validators/{id}](#validatorsid)
   * [/validators/recent](#validatorsrecent)
   * [/validators/{id}/commission](#validatorsidcommission)
@@ -382,11 +381,11 @@
 
 | Data | Type | Status |
 | --- | --- | --- |
-| moniker | string | **missing** |
-| operator | string | **missing** |
-| consensusAddress | string | **missing** |
-| proposerPriority | number | **missing** |
-| votingPower | number | **missing** |
+| moniker | string | done |
+| operator | string | done |
+| consensusAddress | string | done |
+| proposerPriority | number | done |
+| votingPower | number | done |
 
 ### /validators/{id}
 | Data | Type | Status |
