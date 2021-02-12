@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useApp, useBlocks } from 'redux/hooks';
-import { formatTableData } from 'utils';
+import { maxLength } from 'utils';
 
 const BlocksList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -23,7 +23,49 @@ const BlocksList = () => {
 
   // Table header values in order
   const tableHeaders = ['Block', 'Proposer', 'Transactions', 'Validators', 'Voting Power', 'Timestamp'];
-  const formattedTableData = formatTableData(tableData, 'blocks');
+  const formattedTableData = tableData.map((dataObj) => {
+    const finalObj = {};
+    Object.keys(dataObj).forEach((key) => {
+      const value = dataObj[key];
+      switch (key) {
+        case 'height':
+          finalObj['block'] = {
+            value,
+            link: `/block/${value}`,
+          };
+          break;
+        case 'proposerAddress':
+          finalObj['proposer'] = {
+            value: maxLength(value, 11, 3),
+            hover: value,
+            link: `/validator/${value}`,
+          };
+          break;
+        case 'txNum':
+          finalObj['transactions'] = { value };
+          break;
+        case 'validatorsNum':
+          finalObj['validators'] = finalObj['validators'] || { value: [] };
+          finalObj['validators'].value[0] = value;
+          finalObj['validators'].value[1] = ' / ';
+          break;
+        case 'validatorsTotal':
+          finalObj['validators'] = finalObj['validators'] || { value: [] };
+          finalObj['validators'].value[2] = value;
+          break;
+        case 'votingPower':
+          finalObj['voting power'] = { value: `${value}%` };
+          break;
+        case 'time':
+          finalObj['timestamp'] = { value };
+          break;
+        default:
+          break;
+      }
+    });
+    return finalObj;
+  });
+
   return (
     <Table
       tableHeaders={tableHeaders}

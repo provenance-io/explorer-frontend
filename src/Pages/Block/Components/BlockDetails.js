@@ -28,15 +28,15 @@ const BlockDetails = () => {
   }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight]);
 
   const {
-    hash = '[N/A]',
+    hash,
     proposerAddress,
-    votingPower = 0,
-    txNum = '[N/A]',
+    votingPower,
+    txNum,
     numValidators,
-    totalValidators = '[N/A]',
-    inflation = '[N/A]',
+    totalValidators,
+    inflation,
     time,
-    denomination = '[N/A]',
+    denomination,
     userName,
   } = blockInfo;
 

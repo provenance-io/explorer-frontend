@@ -99,7 +99,7 @@ const TxInformation = () => {
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
       { title: 'Timestamp', value: `${utcTime}+UTC` },
-      { title: 'Fee', value: `${fee ? numberFormat(fee) : '[N/A]'} ${feeDenomination ? feeDenomination : '[N/A]'}` },
+      { title: 'Fee', value: `${numberFormat(fee)} ${feeDenomination}` },
       { title: 'Gas Used', value: numberFormat(gasUsed), popupNote },
       { title: 'Signer', value: maxLength(signer, 24, 10), link: `/accounts/${signer}`, copy: signer },
       { title: 'Memo', value: maxLength(memo, 100), copy: memo },
@@ -113,9 +113,9 @@ const TxInformation = () => {
 
     const summaryData = [
       { title: 'Tx Type', value: capitalize(txType) },
-      { title: 'From', value: from || '[N/A]', link: `/accounts/${from}`, copy: from },
-      { title: 'Amount', value: `${numberFormat(amount) || '[N/A]'} ${denomination || '[N/A]'}` },
-      { title: 'To', value: to || '[N/A]', link: `/accounts/${to}`, copy: to },
+      { title: 'From', value: from, link: `/accounts/${from}`, copy: from },
+      { title: 'Amount', value: `${numberFormat(amount)} ${denomination}` },
+      { title: 'To', value: to, link: `/accounts/${to}`, copy: to },
     ];
 
     return (

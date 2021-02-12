@@ -21,7 +21,7 @@ const AssetInformation = () => {
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Price', value: numberFormat(price, 6, 'currency'), change: priceChange },
     { title: 'Holders', value: holderCount },
-    { title: 'Transactions', value: txnCount ? numberFormat(txnCount) : null },
+    { title: 'Transactions', value: numberFormat(txnCount) },
     { title: 'Website', value: website, externalLink: website },
   ];
 

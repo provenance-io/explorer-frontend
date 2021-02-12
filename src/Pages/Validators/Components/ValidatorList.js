@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 // import { Table, Filters } from 'Components';
-import { Table } from 'Components';
+import { TableV2 } from 'Components';
 import { useValidators, useApp } from 'redux/hooks';
-import { formatTableData } from 'utils';
+import { newTableBuilder } from 'utils';
 // import { VALIDATOR_STATUS_OPTIONS } from 'consts';
 
 const ValidatorListContainer = styled.div`
@@ -27,19 +27,19 @@ const ValidatorList = () => {
   }, [getTableData, tableCount, tableCurrentPage]);
 
   // Table header values in order
-  const tableHeaders = [
-    'Moniker',
-    'Operator',
-    'Commission',
-    'Bonded Tokens',
-    'Voting Power',
-    'Uptime',
-    'Self Bonded',
-    'Delegators',
-    'Bond Height',
-  ];
+  const tableHeaders = {
+    Moniker: 'moniker',
+    Operator: 'operator',
+    Commission: 'commission',
+    'Bonded Tokens': 'bondedTokens',
+    'Voting Power': 'votingPower',
+    Uptime: 'uptime',
+    'Self Bonded': 'selfBonded',
+    Delegators: 'delegators',
+    'Bond Height': 'bondHeight',
+  };
   // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'validators');
+  const formattedTableData = newTableBuilder(tableData);
   // Data to populate table filters
   // const filterData = [
   //   {
@@ -53,7 +53,7 @@ const ValidatorList = () => {
   return (
     <ValidatorListContainer>
       {/* <Filters filterData={filterData} /> */}
-      <Table
+      <TableV2
         tableHeaders={tableHeaders}
         tableData={formattedTableData}
         currentPage={tableCurrentPage}

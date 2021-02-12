@@ -12,6 +12,7 @@ export { default as Sprite } from './Sprite';
 export { default as SpriteSheet } from './SpriteSheet';
 export { default as Pagination } from './Pagination';
 export { default as Table } from './Table';
+export { default as TableV2 } from './TableV2';
 export { default as Filters } from './Filters';
 export { default as Summary } from './Summary';
 export * from './Layout';
