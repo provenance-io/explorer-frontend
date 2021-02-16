@@ -32,11 +32,11 @@ const BlockDetails = () => {
     proposerAddress,
     votingPower,
     txNum,
-    numValidators,
-    totalValidators,
-    inflation,
+    numValidators = '[N/A]',
+    totalValidators = '[N/A]',
+    inflation = '[N/A]',
     time,
-    denomination,
+    denomination = '[N/A]',
     userName,
   } = blockInfo;
 

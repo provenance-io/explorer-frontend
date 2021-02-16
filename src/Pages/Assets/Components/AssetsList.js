@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
-import { formatTableData } from 'utils';
 import { useAssets } from 'redux/hooks';
 
 const AssetsList = () => {
@@ -19,14 +18,18 @@ const AssetsList = () => {
     });
   }, [getTableData, assetId, tableCount, tableCurrentPage]);
 
-  const tableHeaders = ['Name', 'Market Cap (USD)', 'Price (USD)', 'Supply', 'Owner'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'assets');
+  const tableHeaders = [
+    { displayName: 'Name', dataName: 'marker' },
+    { displayName: 'Market Cap (USD)', dataName: 'circulation' },
+    { displayName: 'Price (USD)', dataName: 'price' },
+    { displayName: 'Supply', dataName: 'totalSupply' },
+    { displayName: 'Owner', dataName: 'ownerAddress' },
+  ];
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}

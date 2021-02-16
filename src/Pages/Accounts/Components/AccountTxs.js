@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useApp, useAccounts } from 'redux/hooks';
-import { formatTableData } from 'utils';
 
 const AccountTxs = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -20,14 +19,17 @@ const AccountTxs = () => {
   }, [getTableData, addressId, tableCount, tablePages]);
 
   // Table header values in order
-  const tableHeaders = ['Tx Hash', 'TxType', 'Fee', 'Signer'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'accountTxs');
+  const tableHeaders = [
+    { displayName: 'Tx Hash', dataName: 'txHash' },
+    { displayName: 'TxType', dataName: 'txType' },
+    { displayName: 'Fee', dataName: 'fee' },
+    { displayName: 'Signer', dataName: 'signer' },
+  ];
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}

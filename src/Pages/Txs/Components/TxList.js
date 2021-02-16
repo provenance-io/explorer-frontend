@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { TRANSACTION_TYPE_OPTIONS, TRANSACTION_STATUS_OPTIONS, breakpoints } from 'consts';
 import { useTxs, useApp } from 'redux/hooks';
-import { formatTableData, subtractDays } from 'utils';
+import { subtractDays } from 'utils';
 
 const TxListContainer = styled.div`
   width: 100%;
@@ -110,9 +110,15 @@ const TxList = () => {
   };
 
   // Table header values in order
-  const tableHeaders = ['Tx Hash', 'Block', 'Tx Type', 'Fee', 'Signer', 'Status', 'Timestamp'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'transactions');
+  const tableHeaders = [
+    { displayName: 'Tx Hash', dataName: 'txHash' },
+    { displayName: 'Block', dataName: 'blockHeight' },
+    { displayName: 'Tx Type', dataName: 'type' },
+    { displayName: 'Fee', dataName: 'fee' },
+    { displayName: 'Signer', dataName: 'signer' },
+    { displayName: 'Status', dataName: 'status' },
+    { displayName: 'Timestamp', dataName: 'time' },
+  ];
   // Data to populate table filters
   const filterData = [
     {
@@ -161,7 +167,7 @@ const TxList = () => {
       </FiltersWrapper>
       <Table
         tableHeaders={tableHeaders}
-        tableData={formattedTableData}
+        tableData={tableData}
         currentPage={tableCurrentPage}
         changePage={changePage}
         totalPages={tablePages}

@@ -10,6 +10,10 @@ export const initialState = {
   accountTxsLoading: false,
   accountTxs: [],
   accountTxsPages: 0,
+  // Account Assets (Get brought in with account info)
+  accountAssetsLoading: false,
+  accountAssets: [],
+  accountAssetsPages: 0,
 };
 
 const reducer = handleActions(
@@ -21,19 +25,23 @@ const reducer = handleActions(
       return {
         ...state,
         accountInfoLoading: true,
+        accountAssetsLoading: true,
       };
     },
     [`${GET_ACCOUNT_INFO}_${SUCCESS}`](state, { payload: accountInfo }) {
       return {
         ...state,
         accountInfoLoading: false,
+        accountAssetsLoading: false,
         accountInfo,
+        accountAssets: accountInfo.balances || [],
       };
     },
     [`${GET_ACCOUNT_INFO}_${FAILURE}`](state) {
       return {
         ...state,
         accountInfoLoading: false,
+        accountAssetsLoading: false,
       };
     },
     /* -----------------

@@ -1,56 +1,11 @@
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
 import { capitalize } from '../string/capitalize';
-import {
-  transactionsTable,
-  validatorsTable,
-  blockValidatorsTable,
-  assetHoldersTable,
-  blocksTable,
-  validatorDelegationsTable,
-  validatorUnbondingDelegationsTable,
-  validatorDelegationTxsTable,
-  validatorTxsTable,
-  assetTransactionsTable,
-  assetsTable,
-} from './tableTypes';
-
-// Format tables based on the table type so that they look correct in the UI.
-// This like having a link, capitalizing letters, shortening length are all custom per table type
-export const formatTableData = (data = [], type) => {
-  if (!data.length) return data;
-  switch (type) {
-    case 'transactions':
-      return transactionsTable(data);
-    case 'validators':
-      return validatorsTable(data);
-    case 'validatorDelegations':
-      return validatorDelegationsTable(data);
-    case 'validatorDelegationTxs':
-      return validatorDelegationTxsTable(data);
-    case 'validatorTxs':
-      return validatorTxsTable(data);
-    case 'validatorUnbondingDelegations':
-      return validatorUnbondingDelegationsTable(data);
-    case 'blockValidators':
-      return blockValidatorsTable(data);
-    case 'blocks':
-      return blocksTable(data);
-    case 'assetHolders':
-      return assetHoldersTable(data);
-    case 'assets':
-      return assetsTable(data);
-    case 'assetTransactions':
-      return assetTransactionsTable(data);
-    default:
-      return data;
-  }
-};
 
 // Thought process here: There is a lot of repeating data that I've been cleaning and massaging.
 // Why not just look for any of these common values and have a standard format for them.
 // If a specific table needs to format the data further or differently they can do so after running this fx.
-export const newTableBuilder = (data) =>
+export const formatTableData = (data) =>
   data.map((dataObj) => {
     const finalObj = {};
     Object.keys(dataObj).forEach((key) => {
@@ -71,13 +26,15 @@ export const newTableBuilder = (data) =>
             link: `/validator/${value}`,
           };
           break;
+        case 'amount': // fallthrough
         case 'balance':
           finalObj[key] = {
             value: numberFormat(value, 2),
           };
           break;
         case 'block': // fallthrough
-        case 'blockHeight':
+        case 'blockHeight': // fallthrough
+        case 'height':
           finalObj[key] = {
             value,
             link: `/block/${value}`,
@@ -117,15 +74,10 @@ export const newTableBuilder = (data) =>
           break;
         case 'denomination': // fallthrough
         case 'feeDenomination':
-          finalObj['fee'] = finalObj[key] || { value: [] };
-          finalObj['fee'].value[1] = value;
+          finalObj['fee'] = finalObj['fee'] || { value: [] };
+          finalObj['fee'].value[1] = ` ${value}`;
           break;
-        case 'height':
-          finalObj[key] = {
-            value,
-            link: `/block/${value}`,
-          };
-          break;
+        case 'denom': // fallthrough
         case 'marker':
           finalObj[key] = {
             value,
@@ -181,7 +133,7 @@ export const newTableBuilder = (data) =>
           break;
         case 'selfBondedDenomination':
           finalObj['selfBonded'] = finalObj['selfBonded'] || { value: [] };
-          finalObj['selfBonded'].value[1] = value;
+          finalObj['selfBonded'].value[1] = ` ${value}`;
           break;
         case 'signer':
           finalObj[key] = {
@@ -195,7 +147,7 @@ export const newTableBuilder = (data) =>
           break;
         case 'time': // fallthrough
         case 'timestamp':
-          finalObj[key] = { value: `${value}+UTC` };
+          finalObj[key] = { value: `${value}+UTC`, raw: value };
           break;
         case 'totalSupply':
           finalObj[key] = {
@@ -212,9 +164,7 @@ export const newTableBuilder = (data) =>
         case 'txNum':
           finalObj[key] = { value };
           break;
-        case 'txType':
-          finalObj[key] = { value: capitalize(value) };
-          break;
+        case 'txType': // fallthrough
         case 'type':
           finalObj[key] = {
             value: capitalize(value.replaceAll('_', ' ')),
