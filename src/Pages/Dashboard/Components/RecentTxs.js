@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { maxLength, getUTCTime, capitalize } from 'utils';
+import { maxLength, getUTCTime, capitalize, numberFormat } from 'utils';
 import { Link } from 'react-router-dom';
 import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
 import { Content, TimeTicker, Loading } from 'Components';
@@ -29,7 +29,6 @@ const Type = styled.div`
   }
 `;
 const Denomination = styled.div`
-  text-transform: uppercase;
   display: inline-block;
   @media ${breakpoints.down('sm')} {
     font-size: 1rem;
@@ -101,7 +100,8 @@ const RecentTxs = () => {
           <TxLineRow>
             <Type>{capitalize(type)}</Type>
             <FeeLine>
-              <FeeTitle>Fee:</FeeTitle> {fee ? fee : '[N/A]'} <Denomination>{denomination ? denomination : 'VSPN'}</Denomination>
+              <FeeTitle>Fee:</FeeTitle> {fee ? numberFormat(fee) : '[N/A]'}{' '}
+              <Denomination>{denomination ? denomination : '[N/A]'}</Denomination>
             </FeeLine>
           </TxLineRow>
         </TxLineContainer>

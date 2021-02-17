@@ -54,21 +54,21 @@
   * [/validators/recent](#validatorsrecent)
 
 ## List of APIs with missing data
-  * [/accounts/{address}/txs](#accountsaddresstxs)
-  * [/assets/all](#assetsall)
-  * [/assets/{id}/detail](#assetsiddetail)
-  * [/assets/{id}/holders](#assetsidholders)
-  * [/assets/{id}/txs](#assetsidtxs)
-  * [/blocks/height/{height}](#blocksheightheight)
-  * [/txs/height/{height}](#txsheightheight)
-  * [/txs/recent](#txsrecent)
-  * [/validators/{id}](#validatorsid)
-  * [/validators/recent](#validatorsrecent)
-  * [/validators/{id}/commission](#validatorsidcommission)
-  * [/validators/{id}/delegations](#validatorsiddelegations)
-  * [/validators/{id}/delegations/unbonded](#validatorsiddelegationsunbonded)
-  * [/validators/{id}/delegations/txs](#validatorsiddelegationstxs)
-  * [/validators/{id}/txs](#validatorsidtxs)
+  * [/accounts/{address}/txs](#accountsaddresstxs) (Issue Created)
+  * [/assets/all](#assetsall) (Issue Created)
+  * [/assets/{id}/detail](#assetsiddetail) (Issue Created)
+  * [/assets/{id}/holders](#assetsidholders) (Issue Created)
+  * [/assets/{id}/txs](#assetsidtxs) (Issue Created)
+  * [/blocks/height/{height}](#blocksheightheight) (Issue Created)
+  * [/txs/height/{height}](#txsheightheight) (Issue Created)
+  * [/txs/recent](#txsrecent) (Issue Created)
+  * [/validators/{id}](#validatorsid) (Issue Created)
+  * [/validators/recent](#validatorsrecent) (Issue Created)
+  * [/validators/{id}/commission](#validatorsidcommission) (Issue Created)
+  * [/validators/{id}/delegations](#validatorsiddelegations) (Issue Created)
+  * [/validators/{id}/delegations/unbonded](#validatorsiddelegationsunbonded) (Issue Created)
+  * [/validators/{id}/delegations/txs](#validatorsiddelegationstxs) (Issue Created)
+  * [/validators/{id}/txs](#validatorsidtxs) (Issue Created)
 
 ## APIs
   ### Accounts
@@ -117,6 +117,7 @@
 |sequence | number | done |
 
 ### /accounts/{address}/txs
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/11)
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | **missing** |
@@ -139,6 +140,7 @@
 |timestamp | string | **missing** |
 
 ### /assets/all
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/12)
 | Data | Type | Status |
 | --- | --- | --- |
 | marker | string | done |
@@ -149,6 +151,7 @@
 | priceChange | number | **missing** |
 
 ### /assets/{id}/detail
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/12)
 | Data | Type | Status |
 | --- | --- | --- |
 | marker | string | done |
@@ -162,6 +165,7 @@
 | website | string | **missing** |
 
 ### /assets/{id}/holders
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/12)
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | **missing** |
@@ -175,6 +179,7 @@
 | percentage | number | done |
 
 ### /assets/{id}/txs
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/12)
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | **missing** |
@@ -223,6 +228,7 @@
 | votingPower | number | done |
 
 ### /blocks/height/{height}
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/13)
 | Data | Type | Status |
 | --- | --- | --- |
 | hash | string | done |
@@ -320,6 +326,7 @@
 | tx.value.signatures.pubKey.value | string | done |
 
 ### /txs/height/{height}
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/14)
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | **missing** |
@@ -347,6 +354,7 @@
 | [array].numberTxs | number | done |
 
 ### /txs/recent
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/14)
 | Param | Description | Status |
 | --- | --- | --- |
 | page | current page of results | done |
@@ -388,6 +396,7 @@
 | votingPower | number | done |
 
 ### /validators/{id}
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Data | Type | Status |
 | --- | --- | --- |
 | bondHeight | number | done |
@@ -405,6 +414,7 @@
 | url | string | **missing** |
 
 ### /validators/{id}/commission
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Data | Type | Status |
 | --- | --- | --- |
 | commissionRate | number | **missing** |
@@ -426,6 +436,7 @@
 | gasPriceMax | number | **missing** |
 
 ### /validators/{id}/delegations
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Param | Description | Status |
 | --- | --- | --- |
 | sort | acending or decending order | **missing** | 
@@ -441,6 +452,7 @@
 | block | number | **missing** |
 
 ### /validators/{id}/delegations/unbonded
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Param | Description | Status |
 | --- | --- | --- |
 | sort | acending or decending order | **missing** | 
@@ -455,6 +467,7 @@
 | end time | string | **missing** |
 
 ### /validators/{id}/delegations/txs
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Param | Description | Status |
 | --- | --- | --- |
 | sort | acending or decending order | **missing** | 
@@ -477,6 +490,7 @@
 | timestamp | string | **missing** |
 
 ### /validators/{id}/txs
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Param | Description | Status |
 | --- | --- | --- |
 | sort | acending or decending order | **missing** | 
@@ -499,6 +513,7 @@
 | timestamp | string | **missing** |
 
 ### /validators/recent
+[Github Issue](https://github.com/provenance-io/explorer-service/issues/15)
 | Param | Description | Status |
 | --- | --- | --- |
 | sort | acending or decending order | done | 

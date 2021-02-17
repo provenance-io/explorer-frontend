@@ -147,7 +147,7 @@ export const formatTableData = (data) =>
           break;
         case 'time': // fallthrough
         case 'timestamp':
-          finalObj[key] = { value: `${value}+UTC`, raw: value };
+          finalObj[key] = { value, raw: value };
           break;
         case 'totalSupply':
           finalObj[key] = {
