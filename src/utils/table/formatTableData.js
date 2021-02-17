@@ -167,7 +167,7 @@ export const formatTableData = (data) =>
         case 'txType': // fallthrough
         case 'type':
           finalObj[key] = {
-            value: capitalize(value.replaceAll('_', ' ')),
+            value: capitalize(value),
           };
           break;
         case 'uptime':

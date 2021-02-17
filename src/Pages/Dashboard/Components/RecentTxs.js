@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-import { maxLength, getUTCTime } from 'utils';
+import { maxLength, getUTCTime, capitalize } from 'utils';
 import { Link } from 'react-router-dom';
 import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
 import { Content, TimeTicker, Loading } from 'Components';
@@ -89,10 +88,8 @@ const RecentTxs = () => {
   const buildTxLines = () =>
     txs.map(({ txHash, fee, type = 'N/A', denomination = 'N/A', time }) => {
       const utcTime = time ? getUTCTime(time) : 'N/A';
-
-      // Remove underscores and capitalize the types
-      const cleanType = type.replaceAll('_', ' ');
       const txCharLength = isSmall ? 10 : 16;
+
       return (
         <TxLineContainer key={txHash}>
           <TxLineRow title={txHash}>
@@ -102,7 +99,7 @@ const RecentTxs = () => {
             <TimeTicker timestamp={utcTime} />
           </TxLineRow>
           <TxLineRow>
-            <Type>{cleanType}</Type>
+            <Type>{capitalize(type)}</Type>
             <FeeLine>
               <FeeTitle>Fee:</FeeTitle> {fee ? fee : '[N/A]'} <Denomination>{denomination ? denomination : 'VSPN'}</Denomination>
             </FeeLine>
