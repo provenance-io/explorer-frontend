@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
 import { Content, Loading, Sprite as BaseSprite, PopupNote } from 'Components';
-import { maxLength, getUTCTime } from 'utils';
+import { maxLength, getUTCTime, numberFormat } from 'utils';
 import { polling, breakpoints } from 'consts';
 
 const Group = styled.div`
@@ -157,7 +157,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="PARTICIPATION" size="1.8rem" /> Voting Power
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  {!isNaN(votingPower) ? votingPower : '[N/A]'}
+                  {!isNaN(votingPower) ? numberFormat(votingPower) : '[N/A]'}
                 </BlockItem>
                 <BlockItem>
                   <Link to={`/validators`}>{numValidators} Validators</Link>
@@ -186,8 +186,8 @@ const BlockSpotlight = () => {
                 <BlockItem>
                   <PopupContainer onMouseEnter={() => setShowBondedInfo(true)} onMouseLeave={() => setShowBondedInfo(false)}>
                     <PopupNote show={showBondedInfo} position="above">
-                      <div>Amount: {bondedTokenAmount}</div>
-                      <div>Total: {bondedTokenTotal}</div>
+                      <div>Amount: {numberFormat(bondedTokenAmount)}</div>
+                      <div>Total: {numberFormat(bondedTokenTotal)}</div>
                     </PopupNote>
                     <Sprite icon="HELP" size="1.7rem" onClick={() => setShowBondedInfo(!showBondedInfo)} />
                   </PopupContainer>

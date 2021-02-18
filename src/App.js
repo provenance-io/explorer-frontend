@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { useApp } from 'redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
 import { GlobalStyle, Themes } from 'theme';
-import { Block, Blocks, Dashboard, NoMatch404, Tx, Txs, Validator, Validators, Address, Assets } from './Pages';
+import { Block, Blocks, Dashboard, NoMatch404, Tx, Txs, Validator, Validators, Accounts, Assets, Asset } from './Pages';
 
 const App = () => {
   const { theme } = useApp();
@@ -29,8 +29,9 @@ const App = () => {
               <Route path="/txs" component={Txs} />
               <Route path="/validator/:validatorId" component={Validator} />
               <Route path="/validators" component={Validators} />
-              <Route path="/address/:addressId" component={Address} />
-              <Route path="/assets/:assetId" component={Assets} />
+              <Route path="/accounts/:addressId" component={Accounts} />
+              <Route path="/assets" component={Assets} />
+              <Route path="/asset/:assetId" component={Asset} />
               <Route component={NoMatch404} />
             </Switch>
             <Footer />

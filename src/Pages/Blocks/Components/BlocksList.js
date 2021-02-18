@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useApp, useBlocks } from 'redux/hooks';
-import { formatTableData } from 'utils';
 
 const BlocksList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -9,7 +8,7 @@ const BlocksList = () => {
   const {
     getBlocksRecent: getTableData,
     blocks: tableData,
-    getBlockHeight,
+    getBlocksHeight,
     blockPages: tablePages,
     blocksRecentLoading: tableLoading,
   } = useBlocks();
@@ -18,22 +17,29 @@ const BlocksList = () => {
   useEffect(() => {
     getTableData({ page: tableCurrentPage, count: tableCount });
     // Get the latest block height each time the page changes
-    getBlockHeight();
-  }, [getTableData, tableCount, tableCurrentPage, getBlockHeight]);
+    getBlocksHeight();
+  }, [getTableData, tableCount, tableCurrentPage, getBlocksHeight]);
 
   // Table header values in order
-  const tableHeaders = ['Block', 'Proposer', 'Transactions', 'Validators', 'Voting Power', 'Timestamp'];
-  const formattedTableData = formatTableData(tableData, 'blocks');
+  const tableHeaders = [
+    { displayName: 'Block', dataName: 'height' },
+    { displayName: 'Proposer', dataName: 'proposerAddress' },
+    { displayName: 'Transactions', dataName: 'txNum' },
+    { displayName: 'Validators', dataName: 'validators' },
+    { displayName: 'Voting Power', dataName: 'votingPower' },
+    { displayName: 'Timestamp', dataName: 'time' },
+  ];
+
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Blocks List"
-      showAge="timestamp"
+      showAge="time"
     />
   );
 };

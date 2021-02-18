@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useApp, useTxs } from 'redux/hooks';
+import { useApp, useAccounts } from 'redux/hooks';
 
-const BlockTxs = () => {
+const AccountTxs = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const {
-    getTxsByBlock: getTableData,
-    txsByBlock: tableData,
-    txsByBlockPages: tablePages,
-    txsByBlockLoading: tableLoading,
-  } = useTxs();
-  const { blockHeight: pageBlockHeight } = useParams();
+    getAccountTxs: getTableData,
+    accountTxsLoading: tableLoading,
+    accountTxs: tableData,
+    accountTxsPages: tablePages,
+  } = useAccounts();
+  const { addressId } = useParams();
   const { tableCount } = useApp();
 
   useEffect(() => {
-    getTableData(pageBlockHeight);
-  }, [getTableData, pageBlockHeight, tableCount, tablePages]);
+    getTableData(addressId);
+  }, [getTableData, addressId, tableCount, tablePages]);
 
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
-    { displayName: 'Tx Type', dataName: 'txType' },
+    { displayName: 'TxType', dataName: 'txType' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signer' },
   ];
@@ -35,10 +35,9 @@ const BlockTxs = () => {
       totalPages={tablePages}
       isLoading={tableLoading}
       showIndex
-      title="Block Transactions"
-      noResults={`Block ${pageBlockHeight} has no transactions`}
+      title="Account Transactions"
     />
   );
 };
 
-export default BlockTxs;
+export default AccountTxs;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
-import { formatTableData } from 'utils';
 import { useAssets } from 'redux/hooks';
 
-const AssetsHolders = () => {
+const AssetHolders = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { assetId } = useParams();
   const {
@@ -17,28 +16,30 @@ const AssetsHolders = () => {
   const tableCount = 10;
 
   useEffect(() => {
-    getTableData({
-      page: tableCurrentPage,
-      count: tableCount,
-      asset: assetId,
-    });
+    getTableData(assetId);
   }, [getTableData, assetId, tableCount, tableCurrentPage]);
 
-  const tableHeaders = ['Rank', 'Address', 'Quantity', 'Percentage'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'assetHolders');
+  const tableHeaders = [
+    { displayName: 'Address', dataName: 'ownerAddress' },
+    { displayName: 'Quantity', dataName: 'balance' },
+    { displayName: 'Percentage', dataName: 'percentage' },
+  ];
+
+  // TEMP: Table data from the server is un-sorted, sort it based on the quantity of the asset
+  const sortedTableData = tableData.sort((a, b) => (a.balance < b.balance ? 1 : -1));
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={sortedTableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Asset Holders"
+      showIndex="Rank"
     />
   );
 };
 
-export default AssetsHolders;
+export default AssetHolders;

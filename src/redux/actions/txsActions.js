@@ -23,11 +23,11 @@ export const getTxsRecent = ({ count = 10, page = 1, type = 'allTxTypes', status
       toDate ? `&toDate=${toDate}` : ''
     }${fromDate ? `&fromDate=${fromDate}` : ''}`
   );
-export const getTxInfo = (txHash) => async (dispatch) => ajaxGet(GET_TX_INFO, dispatch, `${TX_INFO_URL}?hash=${txHash}`);
+export const getTxInfo = (txHash) => async (dispatch) => ajaxGet(GET_TX_INFO, dispatch, `${TX_INFO_URL}/${txHash}`);
 export const getTxHistory = ({ toDate, fromDate, granularity = 'day' }) => async (dispatch) =>
   ajaxGet(GET_TX_HISTORY, dispatch, `${TX_HISTORY_URL}?toDate=${toDate}&fromDate=${fromDate}&granularity=${granularity}`);
 export const getTxsByBlock = (blockheight) => async (dispatch) =>
-  ajaxGet(GET_TXS_BY_BLOCK, dispatch, `${TXS_BY_BLOCK_URL}?height=${blockheight}`);
+  ajaxGet(GET_TXS_BY_BLOCK, dispatch, `${TXS_BY_BLOCK_URL}/${blockheight}`);
 export const getTxsByAddress = (address) => async (dispatch) =>
   ajaxGet(GET_TXS_BY_BLOCK, dispatch, `${TXS_BY_ADDRESS_URL}?address=${address}`);
 export const getTxFullJSON = (txHash) => async (dispatch) => ajaxGet(GET_TX_FULL_JSON, dispatch, `${TX_INFO_URL}/${txHash}/json`);

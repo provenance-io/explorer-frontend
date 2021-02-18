@@ -1,20 +1,12 @@
 import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
-import { AssetsHeader, AssetsInformation, AssetsTxsList, AssetsHolders } from './Components';
+import { AssetsList } from './Components';
 
 const Assets = () => (
   <Wrapper>
-    <Header title="Asset Details">
-      <AssetsHeader />
-    </Header>
+    <Header title="Assets" />
     <Section header>
-      <AssetsInformation />
-    </Section>
-    <Section>
-      <AssetsTxsList />
-    </Section>
-    <Section>
-      <AssetsHolders />
+      <AssetsList />
     </Section>
   </Wrapper>
 );

@@ -13,6 +13,16 @@ For more information about [Provenance Inc](https://provenance.io) visit https:/
 
 The Provenance Blockchain Explorer allows viewing transactions, validators, blocks, wallets and various other sets of information in near real-time.  This application is built using [React](https://reactjs.org/), [Redux](https://redux.js.org/), and [Styled Components](https://styled-components.com/).
 
+## Usage
+
+There are two commands to start up the Frontend Explorer.
+1) Full local setup with local Explorer-Service running
+  * Follow startup instructions found in [Explorer-Service's Readme.md](https://github.com/provenance-io/explorer-service/blob/main/README.md)
+  * Once that is up and running, initiate `npm run local` to start up the frontend
+2) Local frontend with provenance backend services
+  * Doesn't exist yet, will update this section once this changes
+  * Run `npm run start`
+
 ## Status
 [![Latest Release][release-badge]][release-latest]
 [![Apache 2.0 License][license-badge]][license-url]

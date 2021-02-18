@@ -1,53 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { Content, Loading, Summary } from 'Components';
 import { useParams } from 'react-router-dom';
 import { maxLength, getUTCTime } from 'utils';
 import { useBlocks } from 'redux/hooks';
 
-const DetailRow = styled.div`
-  flex-basis: 100%;
-  display: flex;
-  align-items: flex-start;
-  word-break: break-all;
-  margin: 10px 0;
-`;
-const DetailTitle = styled.div`
-  min-width: 200px;
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
-`;
-
 const BlockDetails = () => {
   const [loaded, setLoaded] = useState(false);
   const [localBlockHeight, setLocalBlockHeight] = useState('');
   const { blockHeight } = useParams();
-  const { blockInfo, getBlockInfo, blockHeight: globalBlockHeight, blockInfoLoading } = useBlocks();
-
-  const blockHeightValid = blockHeight <= globalBlockHeight;
+  const { blockInfo, getBlockInfo, blockInfoLoading } = useBlocks();
 
   useEffect(() => {
     // Not loaded, blockHeight exists, and blockHeight is a number
-    if (!loaded && blockHeight && !isNaN(blockHeight) && blockHeightValid) {
+    if (!loaded && blockHeight && !isNaN(blockHeight)) {
       getBlockInfo(blockHeight);
       setLocalBlockHeight(blockHeight);
       setLoaded(true);
     }
-  }, [getBlockInfo, loaded, setLoaded, blockHeight, blockHeightValid]);
+  }, [getBlockInfo, loaded, setLoaded, blockHeight]);
 
   useEffect(() => {
     // Loaded already, but the blockHeight has been changed
-    if (loaded && blockHeight !== localBlockHeight && blockHeightValid) {
+    if (loaded && blockHeight !== localBlockHeight) {
       getBlockInfo(blockHeight);
       setLocalBlockHeight(blockHeight);
     }
-  }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight, blockHeightValid]);
+  }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight]);
 
   const {
-    hash = '[N/A]',
+    hash,
     proposerAddress,
-    votingPower = 0,
-    txNum = '[N/A]',
-    numValidators,
+    votingPower,
+    txNum,
+    numValidators = '[N/A]',
     totalValidators = '[N/A]',
     inflation = '[N/A]',
     time,
@@ -72,23 +57,7 @@ const BlockDetails = () => {
     { title: 'Timestamp', value: `${utcTime}+UTC` },
   ];
 
-  return (
-    <Content size="100%">
-      {blockInfoLoading ? (
-        <Loading />
-      ) : (
-        <>
-          {blockHeightValid ? (
-            <Summary data={summaryData} />
-          ) : (
-            <DetailRow>
-              <DetailTitle>Block {blockHeight} does not exist</DetailTitle>
-            </DetailRow>
-          )}
-        </>
-      )}
-    </Content>
-  );
+  return <Content size="100%">{blockInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
 };
 
 export default BlockDetails;

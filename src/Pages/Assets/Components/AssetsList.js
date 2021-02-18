@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
-import { formatTableData } from 'utils';
 import { useAssets } from 'redux/hooks';
 
-const AssetsTxsList = () => {
+const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { assetId } = useParams();
-  const {
-    getAssetTransactions: getTableData,
-    assetTransactions: tableData,
-    assetTransactionsLoading: tableLoading,
-    assetTransactionsPages: tablePages,
-  } = useAssets();
+  const { getAssetsList: getTableData, assets: tableData, assetsLoading: tableLoading, assetsPages: tablePages } = useAssets();
   // How many results to display
   const tableCount = 10;
 
@@ -24,22 +18,25 @@ const AssetsTxsList = () => {
     });
   }, [getTableData, assetId, tableCount, tableCurrentPage]);
 
-  const tableHeaders = ['TxHash', 'TxType', 'Address', 'Value', 'Currency'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'assetTransactions');
+  const tableHeaders = [
+    { displayName: 'Name', dataName: 'marker' },
+    { displayName: 'Market Cap (USD)', dataName: 'circulation' },
+    { displayName: 'Price (USD)', dataName: 'price' },
+    { displayName: 'Supply', dataName: 'totalSupply' },
+    { displayName: 'Owner', dataName: 'ownerAddress' },
+  ];
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
-      title="Asset Transaction List"
-      showAge="timestamp"
+      title="Assets List"
     />
   );
 };
 
-export default AssetsTxsList;
+export default AssetsList;

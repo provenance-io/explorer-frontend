@@ -1,4 +1,4 @@
-export const VALIDATOR_TYPE_OPTIONS = {
+export const VALIDATOR_STATUS_OPTIONS = {
   active: { isDefault: true, title: 'Active' },
   candidate: { title: 'Candidate' },
   jailed: { title: 'Jailed' },

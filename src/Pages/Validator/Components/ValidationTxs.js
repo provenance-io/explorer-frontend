@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { formatTableData } from 'utils';
 
 const ValidationTxs = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -19,15 +18,25 @@ const ValidationTxs = () => {
   useEffect(() => {
     getTableData({ id: validatorId, page: tableCurrentPage, count: tableCount });
   }, [getTableData, tableCount, tableCurrentPage, validatorId]);
+
   // Table header values in order
-  const tableHeaders = ['TxHash', 'Block', 'Moniker', 'Operator', 'Self Bonded', 'TxType', 'Fee', 'Signer', 'Status', 'Timestamp'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'validatorTxs');
+  const tableHeaders = [
+    { displayName: 'TxHash', dataName: 'txHash' },
+    { displayName: 'Block', dataName: 'block' },
+    { displayName: 'Moniker', dataName: 'moniker' },
+    { displayName: 'Operator', dataName: 'operatorAddress' },
+    { displayName: 'Self Bonded', dataName: 'selfBonded' },
+    { displayName: 'TxType', dataName: 'txType' },
+    { displayName: 'Fee', dataName: 'fee' },
+    { displayName: 'Signer', dataName: 'signer' },
+    { displayName: 'Status', dataName: 'status' },
+    { displayName: 'Timestamp', dataName: 'timestamp' },
+  ];
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}

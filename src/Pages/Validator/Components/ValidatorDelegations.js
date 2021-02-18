@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { formatTableData } from 'utils';
 
 const ValidatorDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -19,15 +18,19 @@ const ValidatorDelegations = () => {
   useEffect(() => {
     getTableData({ id: validatorId, page: tableCurrentPage, count: tableCount });
   }, [getTableData, tableCount, tableCurrentPage, validatorId]);
+
   // Table header values in order
-  const tableHeaders = ['Address', 'Amount', 'Shares', 'Block'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'validatorDelegations');
+  const tableHeaders = [
+    { displayName: 'Address', dataName: 'addressId' },
+    { displayName: 'Amount', dataName: 'amount' },
+    { displayName: 'Shares', dataName: 'shares' },
+    { displayName: 'Block', dataName: 'block' },
+  ];
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}

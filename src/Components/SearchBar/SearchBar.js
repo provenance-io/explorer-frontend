@@ -110,7 +110,7 @@ const SearchBar = () => {
         break;
       }
       case 'address': {
-        history.push(`/address/${searchTerms}`);
+        history.push(`/accounts/${searchTerms}`);
         break;
       }
       case 'asset': {
@@ -133,7 +133,7 @@ const SearchBar = () => {
               runSearch();
             }
           }}
-          placeholder="Search by address, hash, asset or height"
+          placeholder="Enter Search Value"
           value={searchTerms}
         />
       </TextInputContainer>

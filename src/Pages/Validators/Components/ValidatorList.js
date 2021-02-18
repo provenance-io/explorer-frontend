@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Table, Filters } from 'Components';
+import { Table } from 'Components';
 import { useValidators, useApp } from 'redux/hooks';
-import { formatTableData } from 'utils';
-import { VALIDATOR_TYPE_OPTIONS } from 'consts';
 
 const ValidatorListContainer = styled.div`
   width: 100%;
@@ -11,7 +9,6 @@ const ValidatorListContainer = styled.div`
 
 const ValidatorList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const [tableFilterType, setTableFilterType] = useState('active');
   const {
     validators: tableData,
     validatorsPages: tablePages,
@@ -21,39 +18,27 @@ const ValidatorList = () => {
   const { tableCount } = useApp();
 
   useEffect(() => {
-    getTableData({ page: tableCurrentPage, count: tableCount, type: tableFilterType });
-  }, [getTableData, tableCount, tableCurrentPage, tableFilterType]);
+    getTableData({ page: tableCurrentPage, count: tableCount });
+  }, [getTableData, tableCount, tableCurrentPage]);
 
   // Table header values in order
   const tableHeaders = [
-    'Moniker',
-    'Operator',
-    'Commission',
-    'Bonded Tokens',
-    'Voting Power',
-    'Uptime',
-    'Self Bonded',
-    'Delegators',
-    'Bond Height',
-  ];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'validators');
-  // Data to populate table filters
-  const filterData = [
-    {
-      title: 'Validator Type:',
-      type: 'dropdown',
-      options: VALIDATOR_TYPE_OPTIONS,
-      action: setTableFilterType,
-    },
+    { displayName: 'Moniker', dataName: 'moniker' },
+    { displayName: 'Address', dataName: 'addressId' },
+    { displayName: 'Commission', dataName: 'commission' },
+    { displayName: 'Bonded Tokens', dataName: 'bondedTokens' },
+    { displayName: 'Voting Power', dataName: 'votingPower' },
+    { displayName: 'Uptime', dataName: 'uptime' },
+    { displayName: 'Self Bonded', dataName: 'selfBonded' },
+    { displayName: 'Delegators', dataName: 'delegators' },
+    { displayName: 'Bond Height', dataName: 'bondHeight' },
   ];
 
   return (
     <ValidatorListContainer>
-      <Filters filterData={filterData} />
       <Table
         tableHeaders={tableHeaders}
-        tableData={formattedTableData}
+        tableData={tableData}
         currentPage={tableCurrentPage}
         changePage={setTableCurrentPage}
         totalPages={tablePages}

@@ -124,12 +124,13 @@ const buildSummaryValue = (rowData) => {
 };
 
 const buildSummaryRow = (rowData) => {
-  const { title } = rowData;
+  const { title, value } = rowData;
+  const valueMissing = value === undefined || value === null || value === '';
 
   return (
     <SummaryRow key={title}>
       <SummaryTitle>{title}:</SummaryTitle>
-      <SummaryValue>{buildSummaryValue(rowData)}</SummaryValue>
+      <SummaryValue>{valueMissing ? '[N/A]' : buildSummaryValue(rowData)}</SummaryValue>
     </SummaryRow>
   );
 };
@@ -139,8 +140,8 @@ const Summary = ({ data }) => data.map((rowData) => buildSummaryRow(rowData));
 Summary.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      value: PropTypes.node.isRequired,
+      title: PropTypes.string,
+      value: PropTypes.node,
       link: PropTypes.string,
       change: PropTypes.string,
       externalLink: PropTypes.string,

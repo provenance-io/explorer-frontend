@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Content, Loading, Pagination as BasePagination, TimeTicker } from 'Components';
-import { getUTCTime } from 'utils';
+import { getUTCTime, formatTableData } from 'utils';
 
 const TableContainer = styled.div`
   flex-basis: 100%;
@@ -50,12 +50,32 @@ const Pagination = styled(BasePagination)`
 `;
 const LoadingContainer = styled.td``;
 
-const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, isLoading, showIndex, title, showAge, size }) => {
+const Table = ({
+  tableHeaders,
+  tableData: rawTableData,
+  currentPage,
+  changePage,
+  totalPages,
+  isLoading,
+  showIndex,
+  title,
+  showAge,
+  size,
+  noResults,
+}) => {
+  // Format the raw table data into the form we need it to be displayed
+  const tableData = formatTableData(rawTableData);
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
   const showPagination = dataExists && !isLoading && hasPagination && totalPages;
-  let finalTableHeaders = showIndex ? ['#', ...tableHeaders] : tableHeaders;
-  finalTableHeaders = showAge ? [...tableHeaders, 'Age'] : finalTableHeaders;
+  // If showIndex is requested, determine the symbol for it
+  const showIndexSymbol = typeof showIndex === 'string' ? showIndex : '#';
+  const showIndexHeader = { displayName: showIndexSymbol, dataName: 'index' };
+  // Add in index header if requested
+  let finalTableHeaders = showIndex ? [showIndexHeader, ...tableHeaders] : tableHeaders;
+  // Add in age header if requested
+  const showAgeHeader = { displayName: 'Age', dataName: showAge };
+  finalTableHeaders = showAge ? [...tableHeaders, showAgeHeader] : finalTableHeaders;
 
   const loaderRow = () => (
     <Row>
@@ -65,37 +85,40 @@ const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, i
     </Row>
   );
 
-  const buildTableHead = () => finalTableHeaders.map((key) => <TableHeadData key={key}>{key}</TableHeadData>);
+  const buildTableHead = () =>
+    finalTableHeaders.map(({ displayName }) => <TableHeadData key={displayName}>{displayName}</TableHeadData>);
 
   const buildSingleRow = (rowData, index) =>
-    finalTableHeaders.map((columnHeader) => {
-      // If it's just the index, we don't need to get any real value\
-      if (showIndex && columnHeader === '#') {
-        return <TableData key={columnHeader}>{(index + 1) * currentPage}</TableData>;
+    finalTableHeaders.map(({ dataName, displayName }) => {
+      // If it's just the index, we don't need to get any real value
+      if (showIndex && dataName === 'index') {
+        return <TableData key={displayName}>{(index + 1) * currentPage}</TableData>;
       }
       // If we want the age take the string key and render the timestamp
-      if (showAge && columnHeader === 'Age') {
-        const time = getUTCTime(rowData[showAge].value);
+      if (showAge && displayName === 'Age') {
+        // Pull the raw value since time will have a string of '+UTC' attached making it an invalid date
+        const time = getUTCTime(rowData[dataName].raw);
 
         return (
-          <TableData key={columnHeader}>
+          <TableData key={displayName}>
             <TimeTicker timestamp={time} text="" />
           </TableData>
         );
       }
 
-      if (!rowData[columnHeader.toLowerCase()]) {
-        console.error('Critical Table Error! Data not found: ', { rowData, columnHeader });
+      if (!rowData[dataName]) {
+        console.warn(`Table Error! Data not found (rowData.${dataName}): `, { rowData, dataName });
       }
 
-      const { link, value = '[N/A]', hover } = rowData[columnHeader.toLowerCase()];
+      const { link = false, value = '[N/A]', hover = false } = rowData[dataName] || {};
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
       const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;
+      const valueMissing = value === 'N/A' || value === '' || value === '[N/A]';
 
       return (
-        <TableData title={hover || value} key={columnHeader}>
-          {link ? <Link to={link}>{finalValue}</Link> : value}
+        <TableData title={hover || value} key={displayName}>
+          {link && !valueMissing ? <Link to={link}>{finalValue}</Link> : value}
         </TableData>
       );
     });
@@ -116,7 +139,7 @@ const Table = ({ tableHeaders, tableData, currentPage, changePage, totalPages, i
               buildAllRows()
             ) : (
               <Row>
-                <TableData colSpan="1000">No data available, refresh page to retry</TableData>
+                <TableData colSpan="1000">{noResults}</TableData>
               </Row>
             )}
           </TableBody>
@@ -143,9 +166,10 @@ Table.propTypes = {
   changePage: PropTypes.func,
   totalPages: PropTypes.number,
   isLoading: PropTypes.bool,
-  showIndex: PropTypes.bool,
+  showIndex: PropTypes.any,
   showAge: PropTypes.string,
   size: PropTypes.string,
+  noResults: PropTypes.string,
 };
 Table.defaultProps = {
   tableData: [],
@@ -157,6 +181,7 @@ Table.defaultProps = {
   title: '',
   size: '100%',
   showAge: '',
+  noResults: 'No data available, refresh page to retry',
 };
 
 export default Table;

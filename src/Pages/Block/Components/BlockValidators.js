@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useValidators, useApp } from 'redux/hooks';
-import { formatTableData } from 'utils';
 
 const BlockValidators = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -20,20 +19,25 @@ const BlockValidators = () => {
   }, [getTableData, tableCount, tableCurrentPage, pageBlockHeight]);
 
   // Table header values in order
-  const tableHeaders = ['Moniker', 'Operator', 'Consensus Address', 'Proposer Priority', 'Voting Power'];
-  // Format the raw table data into the form we need it to be displayed
-  const formattedTableData = formatTableData(tableData, 'blockValidators');
+  const tableHeaders = [
+    { displayName: 'Moniker', dataName: 'moniker' },
+    { displayName: 'Operator', dataName: 'addressId' },
+    { displayName: 'Consensus Address', dataName: 'consensusAddress' },
+    { displayName: 'Proposer Priority', dataName: 'proposerPriority' },
+    { displayName: 'Voting Power', dataName: 'votingPower' },
+  ];
 
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={formattedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
       showIndex
       title="Block Validators"
+      noResults={`Block ${pageBlockHeight} has no validators`}
     />
   );
 };
