@@ -46,6 +46,7 @@ export const Colors = {
   BORDER_PRIMARY: allColors.GRAY_LIGHTER,
   BORDER_SECONDARY: allColors.GRAY_PRIMARY,
   BORDER_THEME: allColors.BLUE_PRIMARY,
+  BORDER_DISABLED: allColors.BLACK,
   // Icon
   ICON_WHITE: allColors.WHITE,
   ICON_BLACK: allColors.BLACK,
@@ -68,6 +69,7 @@ export const Colors = {
   INPUT_BTN_DARK_TEXT: allColors.WHITE,
   INPUT_BG_THEME: allColors.BLUE_PRIMARY,
   INPUT_FONT_THEME: allColors.BLUE_PRIMARY,
+  INPUT_DISABLED: allColors.GRAY_LIGHTEST,
   // Pie-chart (colors for a top-10 split)
   CHART_PIE_A: allColors.BLUE_LIGHTEST,
   CHART_PIE_B: allColors.BLUE_LIGHTER,

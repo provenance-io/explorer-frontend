@@ -30,6 +30,8 @@ export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 // -- Chaincode id
 export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
+// -- Faucet
+export const FAUCET_URL = `http://localhost:42000`;
 // -- Social Media/Contact Information
 export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
 export const SOCIAL_DISCORD_URL = 'https://discord.com/';
