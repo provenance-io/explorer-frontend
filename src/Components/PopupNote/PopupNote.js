@@ -6,8 +6,22 @@ import Sprite from '../Sprite';
 
 const PopupContainer = styled.div`
   position: absolute;
-  ${({ positionAbove }) => (positionAbove ? 'bottom: 150%;' : 'top: 150%;')}
+  ${({ minWidth }) => minWidth && `min-width: ${minWidth};`};
   left: -30px;
+  ${({ position }) => {
+    switch (position) {
+      case 'above':
+        return 'bottom: 150%;';
+      case 'below':
+        return 'top: 150%;';
+      case 'left':
+        return 'right: -35%; left: auto; top: 125%;';
+      case 'right':
+        return 'left: -35%; top: 125%;';
+      default:
+        return '';
+    }
+  }}
   padding: 10px 16px;
   border-radius: 5px;
   background: ${({ theme }) => theme.BACKGROUND_THEME};
@@ -24,18 +38,42 @@ const PopupContainer = styled.div`
 `;
 const Caret = styled(Sprite)`
   position: absolute;
-  ${({ arrowPointUp }) => (arrowPointUp ? 'top: -14px;' : 'bottom: -14px;')}
   left: 30px;
+  ${({ position }) => {
+    switch (position) {
+      case 'above':
+        return `
+        bottom: -13px;
+      `;
+      case 'below':
+        return `
+        top: -13px;
+        transform: rotate(180deg);
+      `;
+      case 'right':
+        return `
+        top: -13px;
+        left: 10px;
+        transform: rotate(180deg);
+      `;
+      case 'left':
+        return `
+        top: -13px;
+        right: 10px;
+        left: auto;
+        transform: rotate(180deg);
+      `;
+      default:
+        return '';
+    }
+  }}
 `;
 
-const PopupNote = ({ show, children, position, delay, className }) => {
+const PopupNote = ({ show, children, position, delay, className, minWidth }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [fadingIn, setFadingIn] = useState(false);
   const [fadingOut, setFadingOut] = useState(false);
   const [timeoutInstance, setTimeoutInstance] = useState(null);
-  const positionAbove = position === 'above';
-  // When the message is above, the arrow points down, when msg above, points down (into origination)
-  const arrowPointUp = !positionAbove;
 
   useEffect(() => {
     const changed = showPopup !== show;
@@ -67,10 +105,9 @@ const PopupNote = ({ show, children, position, delay, className }) => {
   );
 
   return showPopup ? (
-    <PopupContainer delay={delay} positionAbove={positionAbove} className={`${className} ${show ? 'show' : 'hide'}`}>
-      {arrowPointUp && <Caret icon="CARET" size="1.8rem" flipY arrowPointUp={arrowPointUp} />}
+    <PopupContainer delay={delay} position={position} className={`${className} ${show ? 'show' : 'hide'}`} minWidth={minWidth}>
+      <Caret icon="CARET" size="1.8rem" position={position} />
       {children}
-      {!arrowPointUp && <Caret icon="CARET" size="1.8rem" flipY={false} />}
     </PopupContainer>
   ) : null;
 };
@@ -81,6 +118,7 @@ PopupNote.propTypes = {
   position: PropTypes.string,
   delay: PropTypes.number,
   className: PropTypes.string,
+  minWidth: PropTypes.string,
 };
 
 PopupNote.defaultProps = {
@@ -89,6 +127,7 @@ PopupNote.defaultProps = {
   position: 'below',
   delay: 250,
   className: '',
+  minWidth: '',
 };
 
 export default PopupNote;

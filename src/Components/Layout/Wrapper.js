@@ -12,7 +12,7 @@ const PageWrapper = styled.div`
     padding: ${({ noHeader }) => (noHeader ? '68px 10%' : '96px 10%')};
   }
   @media ${breakpoints.down('md')} {
-    padding: ${({ noHeader }) => (noHeader ? '46px 4%' : '86px 4%')};
+    padding: ${({ noHeader }) => (noHeader ? '96px 4%' : '110px 4%')};
   }
 `;
 
