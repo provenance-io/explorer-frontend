@@ -4,4 +4,5 @@ export const Path = {
   STAKING_URL: '/validators',
   TRANSFER_URL: '/txs',
   ASSETS_URL: '/assets',
+  FAUCET_URL: '/faucet',
 };

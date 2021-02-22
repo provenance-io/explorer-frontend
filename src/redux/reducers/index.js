@@ -4,6 +4,7 @@ import txsReducer from './txsReducer';
 import validatorsReducer from './validatorsReducer';
 import accountsReducer from './accountsReducer';
 import assetsReducer from './assetsReducer';
+import faucetReducer from './faucetReducer';
 
 const rootReducer = {
   appReducer,
@@ -12,6 +13,7 @@ const rootReducer = {
   validatorsReducer,
   accountsReducer,
   assetsReducer,
+  faucetReducer,
 };
 
 export default rootReducer;

@@ -8,4 +8,5 @@ export { default as Txs } from './Txs';
 export { default as Validator } from './Validator';
 export { default as Validators } from './Validators';
 export { default as Accounts } from './Accounts';
+export { default as Faucet } from './Faucet';
 export { default as NoMatch404 } from './NoMatch404';

@@ -8,7 +8,7 @@ export const axios = _axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
+  withCredentials: false,
 });
 
 export const REQUEST = 'REQUEST';

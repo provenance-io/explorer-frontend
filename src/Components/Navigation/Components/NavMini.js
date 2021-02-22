@@ -46,7 +46,6 @@ const Link = styled(BaseLink)`
 const LogoLink = styled(BaseLink)`
   display: flex;
   align-items: center;
-  margin-right: 20px;
 `;
 const DropdownContainer = styled.div`
   padding: 30px 5px 5px 5px;

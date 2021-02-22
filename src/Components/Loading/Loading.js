@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import { Sprite } from 'Components';
 
@@ -18,10 +19,20 @@ const SearchLoading = styled.div`
   }
 `;
 
-const Loading = () => (
-  <SearchLoading>
-    <Sprite icon="IN_PROGRESS" size="5rem" />
+const Loading = ({ className, size }) => (
+  <SearchLoading className={className}>
+    <Sprite icon="IN_PROGRESS" size={size} />
   </SearchLoading>
 );
+
+Loading.propTypes = {
+  className: PropTypes.string,
+  size: PropTypes.string,
+};
+
+Loading.defaultProps = {
+  className: '',
+  size: '5rem',
+};
 
 export default Loading;

@@ -8,6 +8,7 @@ import { breakpoints } from 'consts';
 
 const ContentWrapper = styled.div`
   max-width: 100%;
+  position: relative;
   flex-basis: ${({ size }) => size};
   ${({ alignSelf }) => alignSelf && `align-self: ${alignSelf};`};
   max-width: ${({ size }) => size};
