@@ -16,7 +16,6 @@ const rotate = keyframes`
     transform: rotate3d(0);
   }
 `;
-
 const FaucetContainer = styled.div`
   display: flex;
   width: 500px;
@@ -27,17 +26,24 @@ const FaucetContainer = styled.div`
     width: auto;
   }
 `;
+const TitleContainer = styled.div`
+  position: relative;
+  justify-content: center;
+  margin: 10px auto 30px auto;
+  text-align: center;
+`;
 const Title = styled.div`
   font-size: 2.4rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
-  margin: 10px 0 30px 0;
-  text-align: center;
   flex-basis: 100%;
+`;
+const PopupNoteLine = styled.div`
+  margin: 8px 0 8px 0;
 `;
 const InfoIconContainer = styled.div`
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: -22px;
+  top: -2px;
   text-align: left;
   display: block;
   z-index: 100;
@@ -55,27 +61,23 @@ const FaucetIconHolder = styled.div`
 const FaucetIcon = styled(Sprite)`
   animation: ${rotate} 2s linear infinite forwards;
   position: absolute;
+  right: 0;
   &:nth-child(1) {
-    right: 2px;
     animation-duration: 20000ms;
   }
   &:nth-child(2) {
-    right: 4px;
     opacity: 0.2;
     animation-duration: 20200ms;
   }
   &:nth-child(3) {
-    right: 6px;
     opacity: 0.15;
     animation-duration: 20400ms;
   }
   &:nth-child(4) {
-    right: 8px;
     opacity: 0.1;
     animation-duration: 20600ms;
   }
   &:nth-child(5) {
-    right: 10px;
     opacity: 0.05;
     animation-duration: 20800ms;
   }
@@ -278,18 +280,6 @@ const Faucet = () => {
     <Wrapper>
       <Section>
         <Content justify="center">
-          <InfoIconContainer>
-            <Sprite
-              icon="HELP"
-              size="2.2rem"
-              onClick={() => setShowPopup(!showPopup)}
-              onMouseEnter={() => setShowPopup(true)}
-              onMouseLeave={() => setShowPopup(false)}
-            />
-            <PopupNote show={showPopup} position="left" minWidth="220px">
-              Each request disburses 10nhash, any account can only get max of 10,000nhash.
-            </PopupNote>
-          </InfoIconContainer>
           <FaucetContainer>
             <FaucetIconContainer>
               <FaucetIconHolder>
@@ -300,7 +290,22 @@ const Faucet = () => {
                 <FaucetIcon icon="HASH" size="20rem" />
               </FaucetIconHolder>
             </FaucetIconContainer>
-            <Title>Provenance Explorer Faucet</Title>
+            <TitleContainer>
+              <Title>Provenance Testnet Faucet</Title>
+              <InfoIconContainer>
+                <Sprite
+                  icon="HELP"
+                  size="2.0rem"
+                  onClick={() => setShowPopup(!showPopup)}
+                  onMouseEnter={() => setShowPopup(true)}
+                  onMouseLeave={() => setShowPopup(false)}
+                />
+                <PopupNote show={showPopup} position="left" minWidth="220px">
+                  <PopupNoteLine>Each request disburses 10nhash, any account can only get max of 10,000nhash.</PopupNoteLine>
+                  <PopupNoteLine>Note: This is for Testnet Only.</PopupNoteLine>
+                </PopupNote>
+              </InfoIconContainer>
+            </TitleContainer>
             <TextInputContainer>
               {error && <ErrorText>{error}</ErrorText>}
               <TextInput
