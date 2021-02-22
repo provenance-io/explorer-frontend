@@ -16,6 +16,7 @@ export const Colors = {
   FONT_WHITE: allColors.WHITE,
   FONT_BLACK: allColors.BLACK,
   FONT_ERROR: allColors.RED_DARKER,
+  FONT_SUCCESS: allColors.GREEN_LIGHT,
   FONT_DISABLED: allColors.GRAY_LIGHTER,
   // Background
   BACKGROUND_WHITE: allColors.WHITE, // Pure White

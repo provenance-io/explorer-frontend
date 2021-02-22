@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Section, Content, Wrapper, Sprite, PopupNote } from 'Components';
+import { Section, Content, Wrapper, Sprite, PopupNote, Loading as BaseLoading } from 'Components';
 import { useFaucet } from 'redux/hooks';
 import { bech32 } from 'bech32';
 import { breakpoints } from 'consts';
@@ -171,6 +171,22 @@ const ServerResponse = styled.div`
   margin-top: 8px;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   font-style: italic;
+  color: ${({ theme }) => theme.FONT_ERROR};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
+`;
+const SuccessMsg = styled.span`
+  color: ${({ theme }) => theme.FONT_SUCCESS};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
+`;
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.GRAY_PRIMARY};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
+`;
+const Loading = styled(BaseLoading)`
+  height: auto;
+  margin-left: 10px;
 `;
 
 const Faucet = () => {
@@ -179,16 +195,18 @@ const Faucet = () => {
   const [timeoutDuration, setTimeoutDuration] = useState(10000);
   const [showPopup, setShowPopup] = useState(false);
   const { sendFaucetAddress, faucetRequestStatus } = useFaucet();
-  const timeoutActive = timeoutDuration > 0;
 
   const interperetServerResponse = () => {
     // No response yet/default value
-    if (faucetRequestStatus === 'success') return 'Successfully added nhash to address!';
+    if (faucetRequestStatus === 'success') return <SuccessMsg>Successfully added nhash to address!</SuccessMsg>;
     // Look at faucetRequestResponse and determine what to tell the user
     if (faucetRequestStatus === 'failure') return 'Server error, try again later.';
-    return null;
+    return '';
   };
   const serverResponse = interperetServerResponse();
+  const timeoutActive = timeoutDuration > 0;
+  const isLoading = faucetRequestStatus === 'loading';
+  const formDisabled = timeoutActive || isLoading;
 
   // On load, start timer before submit allowed
   useEffect(() => {
@@ -208,7 +226,7 @@ const Faucet = () => {
 
   const addressValidation = () => {
     // Test - submit timer allows submitting
-    if (timeoutDuration > 0) return 'Please wait for Token Timeout';
+    if (timeoutActive) return 'Please wait for Token Timeout';
     // make sure address is valid
     // Test - value exists
     if (!address) return 'Address missing';
@@ -286,10 +304,10 @@ const Faucet = () => {
             <TextInputContainer>
               {error && <ErrorText>{error}</ErrorText>}
               <TextInput
-                disabled={timeoutActive}
+                disabled={formDisabled}
                 onChange={editAddress}
                 onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === 'Enter' && !formDisabled) {
                     submitAddress();
                   }
                 }}
@@ -297,9 +315,9 @@ const Faucet = () => {
                 value={address}
               />
               <SubmitButton
-                disabled={timeoutActive}
+                disabled={formDisabled}
                 onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !timeoutActive) {
+                  if (e.key === 'Enter' && !formDisabled) {
                     submitAddress();
                   }
                 }}
@@ -312,6 +330,12 @@ const Faucet = () => {
               </SubmitButton>
             </TextInputContainer>
             {serverResponse && <ServerResponse>{serverResponse}</ServerResponse>}
+            {isLoading && (
+              <LoadingContainer>
+                Processing...
+                <Loading size="2rem" />
+              </LoadingContainer>
+            )}
           </FaucetContainer>
         </Content>
       </Section>
