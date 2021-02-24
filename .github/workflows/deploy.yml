@@ -17,10 +17,10 @@ jobs:
           node-version: '14.6.0'
 
       - name: Install npm packages
-          run: |
-            npm i
-          env:
-            CI: true
+        run: |
+          npm i
+        env:
+          CI: true
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
