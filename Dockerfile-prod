@@ -6,7 +6,7 @@ COPY . ./
 RUN ["npm", "run", "build"]
 
 # Stage - Production
-FROM nginx:stable
+FROM nginx:stable as runner
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
