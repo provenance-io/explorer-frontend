@@ -1,8 +1,4 @@
-# CODEOWNERS: https://help.github.com/articles/about-codeowners/
-
-# Secondary repo maintainers, substitutes of the primary
-# maintainers when they become MIA
-*       @crussell-figure @channa-figure
+# CODEOWNERS: https://help.github.com/articles/about-codeowners/   
 
 # Primary repo maintainers
-*       @VigM-Figure @webbushka
+*       @VigM-Figure @webbushka @crussell-figure @channa-figure @mtps
