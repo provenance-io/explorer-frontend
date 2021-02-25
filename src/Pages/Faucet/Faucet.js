@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Section, Content, Wrapper, Sprite, PopupNote, Loading as BaseLoading } from 'Components';
+import { Section, Content, Wrapper, Sprite, PopupNote, Loading as BaseLoading, Button as BaseButton } from 'Components';
 import { useFaucet } from 'redux/hooks';
 import { bech32 } from 'bech32';
 import { breakpoints } from 'consts';
@@ -127,46 +127,12 @@ const TextInput = styled.input`
     margin-right: 0;
   }
 `;
-const SubmitButton = styled.button`
-  text-align: left;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.BUTTON_PRIMARY_FONT};
-  background: ${({ theme }) => theme.BUTTON_PRIMARY};
-  border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.BUTTON_PRIMARY};
-  padding: 6px 12px;
-  border: none;
-  margin-bottom: 10px;
-  cursor: pointer;
-  &:focus {
-    background: ${({ disabled, theme }) => !disabled && theme.BUTTON_PRIMARY_FOCUS};
-  }
-  &:hover {
-    background: ${({ disabled, theme }) => !disabled && theme.BUTTON_PRIMARY_HOVER};
-  }
-  &:active {
-    background: ${({ disabled, theme }) => !disabled && theme.BUTTON_PRIMARY_ACTIVE};
-  }
-  ${({ disabled, theme }) =>
-    disabled &&
-    `
-    background: ${theme.BUTTON_DISABLED};
-    cursor: not-allowed;
-  `}
+const Button = styled(BaseButton)`
   @media ${breakpoints.down('md')} {
     flex-basis: 100%;
     text-align: center;
     justify-content: center;
   }
-`;
-const ButtonText = styled.span`
-  font-size: 1.4rem;
-  min-width: 93px;
-`;
-const ButtonIcon = styled.div`
-  margin-left: 4px;
-  display: flex;
 `;
 const ServerResponse = styled.div`
   font-size: 1.5rem;
@@ -319,20 +285,9 @@ const Faucet = () => {
                 placeholder={timeoutActive ? 'Please wait for timeout' : 'Enter Address'}
                 value={address}
               />
-              <SubmitButton
-                disabled={formDisabled}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !formDisabled) {
-                    submitAddress();
-                  }
-                }}
-                onClick={submitAddress}
-              >
-                <ButtonText>{timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}</ButtonText>
-                <ButtonIcon>
-                  <Sprite icon="CUBES" size="2.2rem" color="ICON_WHITE" />
-                </ButtonIcon>
-              </SubmitButton>
+              <Button isDisabled={formDisabled} onClick={submitAddress} icon="CUBES">
+                {timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}
+              </Button>
             </TextInputContainer>
             {serverResponse && <ServerResponse>{serverResponse}</ServerResponse>}
             {isLoading && (
