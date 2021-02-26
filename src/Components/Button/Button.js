@@ -7,42 +7,43 @@ const StyledButton = styled.button`
   text-align: left;
   display: flex;
   align-items: center;
-  color: ${({ theme, type }) => theme[`BUTTON_${type}_FONT`]};
-  background: ${({ theme, type }) => theme[`BUTTON_${type}`]};
-  border-radius: 5px;
-  border: 1px solid ${({ theme, type }) => theme[`BUTTON_${type}`]};
+  color: ${({ theme, color }) => theme[`BUTTON_${color}_FONT`]};
+  background: ${({ theme, color }) => theme[`BUTTON_${color}`]};
+  border-radius: 4px;
+  border: 1px solid ${({ theme, color }) => theme[`BUTTON_${color}`]};
   padding: 6px 12px;
-  border: none;
-  margin-bottom: 10px;
   cursor: pointer;
   &:focus {
-    background: ${({ disabled, theme, type }) => !disabled && theme[`BUTTON_${type}_FOCUS`]};
+    background: ${({ disabled, theme, color }) => !disabled && theme[`BUTTON_${color}_FOCUS`]};
+    border-color: ${({ theme, color }) => theme[`BUTTON_${color}_FOCUS`]};
   }
   &:hover {
-    background: ${({ disabled, theme, type }) => !disabled && theme[`BUTTON_${type}_HOVER`]};
+    background: ${({ disabled, theme, color }) => !disabled && theme[`BUTTON_${color}_HOVER`]};
+    border-color: ${({ theme, color }) => theme[`BUTTON_${color}_FOCUS`]};
   }
   &:active {
-    background: ${({ disabled, theme, type }) => !disabled && theme[`BUTTON_${type}_ACTIVE`]};
+    background: ${({ disabled, theme, color }) => !disabled && theme[`BUTTON_${color}_ACTIVE`]};
+    border-color: ${({ theme, color }) => theme[`BUTTON_${color}_FOCUS`]};
   }
   &:disabled {
     background: ${({ theme }) => theme.BUTTON_DISABLED};
     cursor: not-allowed;
+    border-color: ${({ theme }) => theme.BUTTON_DISABLED};
   }
 `;
-const ButtonText = styled.span`
+const ButtonContent = styled.div`
   font-size: 1.4rem;
-  min-width: 93px;
 `;
 const ButtonIcon = styled.div`
-  margin-left: 4px;
+  margin-left: 10px;
   display: flex;
 `;
 
-const Button = ({ className, type, icon, iconSize, iconColor, onClick, children, isDisabled }) => (
+const Button = ({ className, color, icon, iconSize, iconColor, onClick, children, isDisabled }) => (
   <StyledButton
     className={className}
     onClick={onClick}
-    type={type.toUpperCase()}
+    color={color.toUpperCase()}
     onKeyPress={(e) => {
       if (e.key === 'Enter') {
         onClick();
@@ -50,7 +51,7 @@ const Button = ({ className, type, icon, iconSize, iconColor, onClick, children,
     }}
     disabled={isDisabled}
   >
-    <ButtonText>{children}</ButtonText>
+    <ButtonContent>{children}</ButtonContent>
     {icon && (
       <ButtonIcon>
         <Sprite icon={icon} size={iconSize} color={iconColor} />
@@ -61,7 +62,7 @@ const Button = ({ className, type, icon, iconSize, iconColor, onClick, children,
 
 Button.propTypes = {
   className: PropTypes.string,
-  type: PropTypes.string,
+  color: PropTypes.string,
   icon: PropTypes.string,
   iconSize: PropTypes.string,
   iconColor: PropTypes.string,
@@ -71,7 +72,7 @@ Button.propTypes = {
 };
 Button.defaultProps = {
   className: '',
-  type: 'primary',
+  color: 'primary',
   icon: '',
   iconSize: '2.2rem',
   iconColor: 'ICON_WHITE',

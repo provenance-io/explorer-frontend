@@ -95,6 +95,7 @@ const TextInputContainer = styled.div`
   flex-wrap: wrap;
   max-width: 100%;
   width: 100%;
+  margin-bottom: 10px;
   @media ${breakpoints.down('md')} {
     justify-content: center;
   }
@@ -109,7 +110,6 @@ const TextInput = styled.input`
   font-size: 1.4rem;
   line-height: 2.2rem;
   margin-right: 20px;
-  margin-bottom: 10px;
   &:disabled {
     cursor: not-allowed;
     background-color: ${({ theme }) => theme.INPUT_DISABLED};
@@ -155,6 +155,9 @@ const LoadingContainer = styled.div`
 const Loading = styled(BaseLoading)`
   height: auto;
   margin-left: 10px;
+`;
+const ButtonContent = styled.div`
+  min-width: ${({ timeoutActive }) => (timeoutActive ? '93px' : 'auto')};
 `;
 
 const Faucet = () => {
@@ -286,7 +289,9 @@ const Faucet = () => {
                 value={address}
               />
               <Button isDisabled={formDisabled} onClick={submitAddress} icon="CUBES">
-                {timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}
+                <ButtonContent timeoutActive={timeoutActive}>
+                  {timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}
+                </ButtonContent>
               </Button>
             </TextInputContainer>
             {serverResponse && <ServerResponse>{serverResponse}</ServerResponse>}

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { SelectFolders, DatePicker } from 'Components';
+import { SelectFolders, DatePicker, Button } from 'Components';
 
 const FilterContainer = styled.div`
   margin-bottom: ${({ flush }) => (flush ? '0' : '20px')};
@@ -17,30 +17,15 @@ const FilterItem = styled.div`
     color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
     cursor: pointer;
   }
+  &:last-of-type {
+    margin-right: 0;
+  }
 `;
 const FilterTitle = styled.div`
   font-size: 1.2rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_TITLE_INFO};
   margin-bottom: 4px;
-`;
-const FilterApplyBtn = styled.button`
-  color: ${({ theme }) => theme.BUTTON_PRIMARY_FONT};
-  background: ${({ theme }) => theme.BUTTON_PRIMARY};
-  border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.BUTTON_PRIMARY};
-  padding: 6px 12px;
-  cursor: pointer;
-  &:focus {
-    background: ${({ theme }) => theme.BUTTON_PRIMARY_FOCUS};
-  }
-  &:hover {
-    background: ${({ theme }) => theme.BUTTON_PRIMARY_HOVER};
-  }
-  &:active {
-    background: ${({ theme }) => theme.BUTTON_PRIMARY_ACTIVE};
-    border: 1px solid ${({ theme }) => theme.BUTTON_PRIMARY_ACTIVE};
-  }
 `;
 
 const Filters = ({ filterData, mustApply, flush }) => {
@@ -71,7 +56,7 @@ const Filters = ({ filterData, mustApply, flush }) => {
       {buildFilterItems()}
       {mustApply && (
         <FilterItem>
-          <FilterApplyBtn onClick={mustApply.action}>{mustApply.title}</FilterApplyBtn>
+          <Button onClick={mustApply.action}>{mustApply.title}</Button>
         </FilterItem>
       )}
     </FilterContainer>

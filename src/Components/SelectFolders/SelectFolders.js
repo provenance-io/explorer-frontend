@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Sprite from '../Sprite';
 
 const SelectInput = styled.div`
-  padding: 6px 16px;
+  padding: 6px 10px;
   border-radius: 5px;
   background: ${({ theme }) => theme.INPUT_BG_LIGHT};
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
