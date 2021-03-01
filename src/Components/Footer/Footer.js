@@ -62,7 +62,12 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterData>Provenance Blockchain Explorer</FooterData>
-      <FooterData>Chain ID: {chaincodeId}</FooterData>
+      <FooterData>
+        Chain ID: {chaincodeId} |{' '}
+        <a href="/explorer/faucet" title={`${chaincodeId} faucet`}>
+          Faucet
+        </a>
+      </FooterData>
       <FooterSocial>
         <a href={SOCIAL_PROVENANCE_URL} target="_blank" rel="noreferrer" title="Visit Provenance">
           <SocialIcon icon="PROVENANCE" size="1.8rem" color="WHITE" />

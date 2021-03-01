@@ -14,4 +14,5 @@ export { default as Pagination } from './Pagination';
 export { default as Table } from './Table';
 export { default as Filters } from './Filters';
 export { default as Summary } from './Summary';
+export { default as Button } from './Button';
 export * from './Layout';
