@@ -157,7 +157,7 @@ const reducer = handleActions(
         txsByAddressLoading: false,
       };
     },
-    [`${GET_TXS_BY_ADDRESS}_${FAILURE}`](state, { payload }) {
+    [`${GET_TXS_BY_ADDRESS}_${FAILURE}`](state) {
       return {
         ...state,
         txsByAddressLoading: false,

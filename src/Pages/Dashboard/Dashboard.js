@@ -1,9 +1,8 @@
-import React from 'react';
 import { Section, Wrapper } from 'Components';
 import { BlockSpotlight, TopValidators, TxHistory, RecentBlocks, RecentTxs } from './Components';
 
 const Dashboard = () => (
-  <Wrapper noHeader>
+  <Wrapper noHeader data-testid="dashboard">
     <Section>
       <BlockSpotlight />
     </Section>

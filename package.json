@@ -19,9 +19,9 @@
     "date-fns-tz": "1.0.12",
     "echarts": "4.9.0",
     "format-number": "3.0.0",
-    "react": "16.13.1",
+    "react": "17.0.1",
     "react-datepicker": "3.3.0",
-    "react-dom": "16.13.1",
+    "react-dom": "17.0.1",
     "react-json-view": "1.21.1",
     "react-number-format": "4.4.1",
     "react-redux": "7.2.1",
@@ -37,6 +37,10 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.11.0",
+    "@testing-library/jest-dom": "5.11.9",
+    "@testing-library/react": "11.2.3",
+    "@testing-library/react-hooks": "5.0.3",
+    "@testing-library/user-event": "12.6.3",
     "@typescript-eslint/eslint-plugin": "4.6.0",
     "@typescript-eslint/parser": "4.6.0",
     "babel-eslint": "10.1.0",
@@ -52,11 +56,12 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "husky": "4.3.0",
     "lint-staged": "10.5.0",
+    "msw": "0.27.0",
     "prettier": "2.1.2",
     "react-scripts": "4.0.3",
+    "source-map-explorer": "2.5.0",
     "typescript": "4.0.5",
-    "webpack-bundle-analyzer": "4.1.0",
-    "source-map-explorer": "2.5.0"
+    "webpack-bundle-analyzer": "4.1.0"
   },
   "scripts": {
     "lint": "eslint .",
@@ -87,6 +92,13 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "coveragePathIgnorePatterns": [
+      "src/serviceWorker.js",
+      "src/index.js",
+      "src/test"
     ]
   }
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Wrapper, Section, Header } from 'Components';
 import { useBlocks } from 'redux/hooks';
 import { BlocksList } from './Components';

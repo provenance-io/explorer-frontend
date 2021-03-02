@@ -1,4 +1,3 @@
-import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
 import { Links, Path, breakpoints } from 'consts';

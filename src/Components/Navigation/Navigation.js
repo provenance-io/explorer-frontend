@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
