@@ -1,5 +1,5 @@
 # Provenance Explorer V2 API Endpoints
-  - _Updated Tuesday Feb 12th ~12:15pm MST_
+  - _Updated Tuesday March 2nd ~12:15pm MST_
 ## Contents
   * [Pages](#pages)
   * [APIs with missing data](#list-of-apis-with-missing-data)
@@ -449,7 +449,6 @@
 | amount | number | **missing** |
 | amountDenomination | string | **missing** |
 | shares | number | **missing** |
-| block | number | **missing** |
 
 ### /validators/{id}/delegations/unbonded
 [Github Issue](https://github.com/provenance-io/explorer-service/issues/15)

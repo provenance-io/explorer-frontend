@@ -24,7 +24,6 @@ const ValidatorDelegations = () => {
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Amount', dataName: 'amount' },
     { displayName: 'Shares', dataName: 'shares' },
-    { displayName: 'Block', dataName: 'block' },
   ];
 
   return (

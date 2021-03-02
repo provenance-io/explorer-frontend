@@ -73,9 +73,11 @@ const reducer = handleActions(
         txsByBlockLoading: true,
       };
     },
-    [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload: txsByBlock }) {
+    [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload: txsByBlockRaw }) {
       // Missing pagination and count
       const txsByBlockPages = 1;
+      // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+      const txsByBlock = txsByBlockRaw.map((txRaw) => ({ ...txRaw, signer: txRaw?.signers?.signers[0] }));
 
       return {
         ...state,
@@ -124,7 +126,10 @@ const reducer = handleActions(
       };
     },
     [`${GET_TXS_RECENT}_${SUCCESS}`](state, { payload }) {
-      const { pages: txsPages, results: txs } = payload;
+      const { pages: txsPages, results: txsRaw } = payload;
+      // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+      const txs = txsRaw.map((txRaw) => ({ ...txRaw, signer: txRaw?.signers?.signers[0] }));
+
       return {
         ...state,
         txs,
@@ -149,7 +154,10 @@ const reducer = handleActions(
         txsInfoLoading: true,
       };
     },
-    [`${GET_TX_INFO}_${SUCCESS}`](state, { payload: txInfo }) {
+    [`${GET_TX_INFO}_${SUCCESS}`](state, { payload: txInfoRaw }) {
+      // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+      const txInfo = { ...txInfoRaw, signer: txInfoRaw?.signers?.signers[0] };
+
       return {
         ...state,
         txInfo,
