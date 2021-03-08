@@ -68,10 +68,11 @@ export const formatTableData = (data) =>
         case 'delegators':
           finalObj[key] = { value };
           break;
-        case 'fee':
-          finalObj['fee'] = finalObj['fee'] || { value: [] };
-          finalObj['fee'].value[0] = numberFormat(value, 6);
+        case 'fee': {
+          const { amount, denom } = value;
+          finalObj['fee'] = { value: [numberFormat(amount, 6), ' ', denom] };
           break;
+        }
         case 'denomination': // fallthrough
         case 'feeDenomination':
           finalObj['fee'] = finalObj['fee'] || { value: [] };
@@ -90,6 +91,11 @@ export const formatTableData = (data) =>
             link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress}`,
           };
           break;
+        case 'msg': {
+          const type = value[0]?.type || '[N/A]';
+          finalObj[key] = { value: capitalize(type) };
+          break;
+        }
         case 'operator':
           finalObj[key] = {
             value: maxLength(value, 11, 3),

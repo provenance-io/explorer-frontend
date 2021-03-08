@@ -78,7 +78,7 @@ const BlockSpotlight = () => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [blockLoading, setBlockLoading] = useState(false);
   const [showBondedInfo, setShowBondedInfo] = useState(false);
-  const { blockLatest, getBlockSpotlight, avgBlockTime } = useBlocks();
+  const { blockLatest, getBlockSpotlight, avgBlockTime, blockSpotlightFailed } = useBlocks();
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -93,7 +93,7 @@ const BlockSpotlight = () => {
   }, [getBlockSpotlight, initialLoad]);
 
   // Poll the API for new data every 5s
-  useInterval(() => getBlockSpotlight(), polling.blockSpotlight);
+  useInterval(() => getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
 
   // Dropping in '[N/A]' to know which values are missing from the tendermintRPC and need to be added by a BE API
   const {
@@ -113,9 +113,9 @@ const BlockSpotlight = () => {
 
   return (
     <Content justify="center">
-      {blockLoading ? (
-        <Loading />
-      ) : (
+      {blockLoading && <Loading />}
+      {blockSpotlightFailed && <div>Block Spotlight failed to load, refresh page to try again</div>}
+      {!blockLoading && !blockSpotlightFailed && (
         <>
           <Group size="30%">
             <BlockPreviewLine>

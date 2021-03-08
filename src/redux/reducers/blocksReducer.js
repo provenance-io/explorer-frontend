@@ -9,19 +9,21 @@ import {
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
-  // Blocks
-  blockInfo: {},
-  blocks: [],
-  blockLatest: {},
-  blockPages: 0,
-  avgBlockTime: 0,
-  recentBlocksCount: 10,
   blocksHeight: '',
-  // Loading states
-  blockSpotlightLoading: false,
-  blocksRecentLoading: false,
   blocksHeightLoading: false,
+  // Block Info
+  blockInfo: {},
   blockInfoLoading: false,
+  // Blocks Recent
+  blocks: [],
+  blockPages: 0,
+  blocksRecentLoading: false,
+  recentBlocksCount: 10,
+  // Spotlight
+  blockSpotlightLoading: false,
+  avgBlockTime: 0,
+  blockLatest: {},
+  blockSpotlightFailed: false,
 };
 
 const reducer = handleActions(
@@ -39,6 +41,7 @@ const reducer = handleActions(
       return {
         ...state,
         blockSpotlightLoading: true,
+        blockSpotlightFailed: false,
       };
     },
     [`${GET_BLOCK_SPOTLIGHT}_${SUCCESS}`](state, { payload }) {
@@ -61,6 +64,7 @@ const reducer = handleActions(
       return {
         ...state,
         blockSpotlightLoading: false,
+        blockSpotlightFailed: true,
       };
     },
     /* -----------------

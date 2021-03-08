@@ -15,11 +15,11 @@ export const SET_RECENT_TXS_COUNT = 'SET_RECENT_TXS_COUNT';
 
 // Actions
 // -- API
-export const getTxsRecent = ({ count = 10, page = 1, type = 'allTxTypes', status = 'all', toDate, fromDate }) => async (dispatch) =>
+export const getTxsRecent = ({ count = 10, page = 1, type = '', status = '', toDate, fromDate }) => async (dispatch) =>
   ajaxGet(
     GET_TXS_RECENT,
     dispatch,
-    `${TXS_RECENT_URL}?count=${count}&page=${page}&type=${type}${status ? `&status=${status}` : ''}${
+    `${TXS_RECENT_URL}?count=${count}&page=${page}${type ? `&msgType=${type}` : ''}${status ? `&status=${status}` : ''}${
       toDate ? `&toDate=${toDate}` : ''
     }${fromDate ? `&fromDate=${fromDate}` : ''}`
   );

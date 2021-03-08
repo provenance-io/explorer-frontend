@@ -32,7 +32,7 @@ const TxList = () => {
   const defaultDayFrom = format(subtractDays(today, 13), defaultDateFormat);
 
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const [filterType, setFilterType] = useState('allTxTypes');
+  const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterFrom, setFilterFrom] = useState(defaultDayFrom);
   const [filterTo, setFilterTo] = useState(defaultDayTo);
@@ -52,7 +52,7 @@ const TxList = () => {
     getTableData({
       page: 1,
       count: tableCount,
-      type: 'allTxTypes',
+      type: '',
       status: 'all',
       toDate: defaultDayTo,
       fromDate: defaultDayFrom,
@@ -70,6 +70,12 @@ const TxList = () => {
       toDate: defaultDayTo,
       fromDate: defaultDayFrom,
     });
+  };
+
+  // Use this to check for a reset to 'all' where we will pass '' as the type
+  const updateFilterType = (newType) => {
+    const finalType = newType === 'allTxTypes' ? '' : newType;
+    setFilterType(finalType);
   };
 
   // Check for a valid filter before making api call
@@ -112,8 +118,8 @@ const TxList = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
-    { displayName: 'Block', dataName: 'blockHeight' },
-    { displayName: 'Tx Type', dataName: 'type' },
+    { displayName: 'Block', dataName: 'block' },
+    { displayName: 'Tx Type', dataName: 'msg' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signer' },
     { displayName: 'Status', dataName: 'status' },
@@ -125,7 +131,7 @@ const TxList = () => {
       title: 'Type:',
       type: 'dropdown',
       options: TRANSACTION_TYPE_OPTIONS,
-      action: setFilterType,
+      action: updateFilterType,
     },
     {
       title: 'Status:',
