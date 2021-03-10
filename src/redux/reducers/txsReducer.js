@@ -73,9 +73,8 @@ const reducer = handleActions(
         txsByBlockLoading: true,
       };
     },
-    [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload: txsByBlockRaw }) {
-      // Missing pagination and count
-      const txsByBlockPages = 1;
+    [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload }) {
+      const { pages: txsByBlockPages, results: txsByBlockRaw } = payload;
       // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
       const txsByBlock = txsByBlockRaw.map((txRaw) => ({ ...txRaw, signer: txRaw?.signers?.signers[0] }));
 

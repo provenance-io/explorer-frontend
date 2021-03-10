@@ -8,7 +8,7 @@ const Blocks = () => {
 
   return (
     <Wrapper>
-      <Header title="Blocks Latest Height" value={blocksHeight || 'N/A'} valueLink={blocksHeight ? `/block/${blocksHeight}` : null} />
+      <Header title="Latest Block Height" value={blocksHeight || '--'} valueLink={blocksHeight ? `/block/${blocksHeight}` : null} />
       <Section header>
         <BlocksList />
       </Section>

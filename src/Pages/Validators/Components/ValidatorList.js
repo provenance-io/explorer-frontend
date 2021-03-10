@@ -27,7 +27,7 @@ const ValidatorList = () => {
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Bonded Tokens', dataName: 'bondedTokens' },
-    { displayName: 'Voting Power', dataName: 'votingPower' },
+    { displayName: 'Voting Power', dataName: 'votingPowerPercent' },
     { displayName: 'Uptime', dataName: 'uptime' },
     { displayName: 'Self Bonded', dataName: 'selfBonded' },
     { displayName: 'Delegators', dataName: 'delegators' },

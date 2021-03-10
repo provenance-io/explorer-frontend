@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
 import { Content, CopyValue, PopupNote, Sprite } from 'Components';
-import { maxLength } from 'utils';
+import { maxLength, numberFormat } from 'utils';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -90,12 +90,12 @@ const ValidatorSpotlight = () => {
     moniker,
     description,
     url,
-    votingPower,
+    votingPowerPercent,
     uptime,
     consensusPubKey,
-    bondHeight = '[N/A]',
-    missedBlocks = '[N/A]',
-    totalBlocks = '[N/A]',
+    bondHeight = '--',
+    missedBlocks = '--',
+    totalBlocks = '--',
   } = validatorSpotlight;
 
   return (
@@ -159,11 +159,11 @@ const ValidatorSpotlight = () => {
         </DataRow>
         <DataRow>
           <DataTitle>Voting Power:</DataTitle>
-          <DataValue>{votingPower}</DataValue>
+          <DataValue>{numberFormat(votingPowerPercent, 2)}%</DataValue>
         </DataRow>
         <DataRow>
           <DataTitle>Uptime:</DataTitle>
-          <DataValue>{uptime}</DataValue>
+          <DataValue>{numberFormat(uptime, 2)}%</DataValue>
         </DataRow>
         <DataRow>
           <DataTitle>Missed Blocks:</DataTitle>

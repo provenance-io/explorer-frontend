@@ -17,21 +17,17 @@ const ValidatorCommission = () => {
   const {
     commissionRate,
     bondedTokens,
-    bondedTokensDenomination,
+    bondedTokensDenom,
     selfBonded,
-    selfBondedPercent,
-    selfBondedDenomination,
+    selfBondedDenom,
     delegatorBonded,
-    delegatorBondedDenomination,
-    delegatorBondedPercent,
-    delegators,
+    delegatorBondedDenom,
+    delegatorCount,
     totalShares,
     commissionRewards,
-    commissionRewardsDenomination,
-    commissionRateRangeMin,
-    commissionRateRangeMax,
-    maxChangeRateEverytimeMin,
-    maxChangeRateEverytimeMax,
+    commissionRewardsDenom,
+    commissionMaxChangeRate,
+    commissionMaxRate,
   } = validatorCommission;
 
   const popupNoteBondedTokens = {
@@ -40,10 +36,16 @@ const ValidatorCommission = () => {
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
-      { title: 'Self-Bonded', value: `${numberFormat(selfBonded, 6)} ${selfBondedDenomination} (${selfBondedPercent} %)` },
       {
-        title: 'Delegator Bonded',
-        value: `${numberFormat(delegatorBonded, 6)} ${delegatorBondedDenomination} (${delegatorBondedPercent} %)`,
+        title: 'Self-Bonded:',
+        value: `${numberFormat(selfBonded, 6)} ${selfBondedDenom} (${numberFormat((selfBonded / bondedTokens) * 100, 2)} %)`,
+      },
+      {
+        title: 'Delegator Bonded:',
+        value: `${numberFormat(delegatorBonded, 6)} ${delegatorBondedDenom} (${numberFormat(
+          (delegatorBonded / bondedTokens) * 100,
+          2
+        )} %)`,
       },
     ],
   };
@@ -52,22 +54,22 @@ const ValidatorCommission = () => {
     icon: { name: 'HELP', size: '1.7rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
-    data: [{ title: 'Gas Price', value: `${maxChangeRateEverytimeMin} ~ ${maxChangeRateEverytimeMax} %` }],
+    data: [{ title: 'Gas Price', value: `0 ~ ${commissionMaxChangeRate} %` }],
   };
 
   const summaryData = [
     { title: 'Commission Rate', value: `${numberFormat(commissionRate, 2)} %` },
     {
       title: 'Bonded Tokens',
-      value: `${numberFormat(bondedTokens, 6)} ${bondedTokensDenomination}`,
+      value: `${numberFormat(bondedTokens, 6)} ${bondedTokensDenom}`,
       popupNote: popupNoteBondedTokens,
     },
-    { title: 'Delegators', value: delegators },
+    { title: 'Delegators', value: delegatorCount },
     { title: 'Total Shares', value: numberFormat(totalShares, 6) },
-    { title: 'Commission Rewards', value: `${numberFormat(commissionRewards, 6)} ${commissionRewardsDenomination}` },
+    { title: 'Commission Rewards', value: `${numberFormat(commissionRewards, 6)} ${commissionRewardsDenom}` },
     {
       title: 'Commission Rate Range',
-      value: `${commissionRateRangeMin} ~ ${commissionRateRangeMax} %`,
+      value: `0 ~ ${commissionMaxRate} %`,
       popupNote: popupNoteCommissionRateRange,
     },
   ];

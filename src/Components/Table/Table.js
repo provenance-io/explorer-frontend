@@ -110,11 +110,11 @@ const Table = ({
         console.warn(`Table Error! Data not found (rowData.${dataName}): `, { rowData, dataName });
       }
 
-      const { link = false, value = '[N/A]', hover = false } = rowData[dataName] || {};
+      const { link = false, value = '--', hover = false } = rowData[dataName] || {};
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
       const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;
-      const valueMissing = value === 'N/A' || value === '' || value === '[N/A]';
+      const valueMissing = value === '--' || value === '' || value === '--';
 
       return (
         <TableData title={hover || value} key={displayName}>

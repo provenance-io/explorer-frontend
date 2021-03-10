@@ -19,13 +19,17 @@ export const getTxsRecent = ({ count = 10, page = 1, type = '', status = '', toD
   ajaxGet(
     GET_TXS_RECENT,
     dispatch,
-    `${TXS_RECENT_URL}?count=${count}&page=${page}${type ? `&msgType=${type}` : ''}${status ? `&status=${status}` : ''}${
-      toDate ? `&toDate=${toDate}` : ''
-    }${fromDate ? `&fromDate=${fromDate}` : ''}`
+    `${TXS_RECENT_URL}?count=${count}&page=${page}${type ? `&msgType=${type}` : ''}${
+      status ? `&txStatus=${status.toUpperCase()}` : ''
+    }${toDate ? `&toDate=${toDate}` : ''}${fromDate ? `&fromDate=${fromDate}` : ''}`
   );
 export const getTxInfo = (txHash) => async (dispatch) => ajaxGet(GET_TX_INFO, dispatch, `${TX_INFO_URL}/${txHash}`);
 export const getTxHistory = ({ toDate, fromDate, granularity = 'day' }) => async (dispatch) =>
-  ajaxGet(GET_TX_HISTORY, dispatch, `${TX_HISTORY_URL}?toDate=${toDate}&fromDate=${fromDate}&granularity=${granularity}`);
+  ajaxGet(
+    GET_TX_HISTORY,
+    dispatch,
+    `${TX_HISTORY_URL}?toDate=${toDate}&fromDate=${fromDate}&granularity=${granularity.toUpperCase()}`
+  );
 export const getTxsByBlock = (blockheight) => async (dispatch) =>
   ajaxGet(GET_TXS_BY_BLOCK, dispatch, `${TXS_BY_BLOCK_URL}/${blockheight}`);
 export const getTxsByAddress = (address) => async (dispatch) =>

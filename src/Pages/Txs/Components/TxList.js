@@ -33,7 +33,7 @@ const TxList = () => {
 
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [filterType, setFilterType] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterStatus, setFilterStatus] = useState('');
   const [filterFrom, setFilterFrom] = useState(defaultDayFrom);
   const [filterTo, setFilterTo] = useState(defaultDayTo);
   const [filterError, setFilterError] = useState('');
@@ -53,7 +53,7 @@ const TxList = () => {
       page: 1,
       count: tableCount,
       type: '',
-      status: 'all',
+      status: '',
       toDate: defaultDayTo,
       fromDate: defaultDayFrom,
     });
@@ -76,6 +76,11 @@ const TxList = () => {
   const updateFilterType = (newType) => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterType(finalType);
+  };
+  // Use this to check for a reset to 'all' where we will pass '' as the status
+  const updateFilterStatus = (newStatus) => {
+    const finalStatus = newStatus === 'all' ? '' : newStatus;
+    setFilterStatus(finalStatus);
   };
 
   // Check for a valid filter before making api call
@@ -119,7 +124,7 @@ const TxList = () => {
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
     { displayName: 'Block', dataName: 'block' },
-    { displayName: 'Tx Type', dataName: 'msg' },
+    { displayName: 'Tx Type', dataName: 'txType' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signer' },
     { displayName: 'Status', dataName: 'status' },
@@ -137,7 +142,7 @@ const TxList = () => {
       title: 'Status:',
       type: 'dropdown',
       options: TRANSACTION_STATUS_OPTIONS,
-      action: setFilterStatus,
+      action: updateFilterStatus,
     },
     {
       title: 'From:',

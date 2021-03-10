@@ -95,7 +95,7 @@ const BlockSpotlight = () => {
   // Poll the API for new data every 5s
   useInterval(() => getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
 
-  // Dropping in '[N/A]' to know which values are missing from the tendermintRPC and need to be added by a BE API
+  // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
   const {
     height,
     time,
@@ -103,13 +103,15 @@ const BlockSpotlight = () => {
     moniker,
     icon,
     votingPower,
+    votingPowerTotal,
     numValidators,
     txNum,
     bondedTokenPercent,
     bondedTokenAmount,
     bondedTokenTotal,
   } = blockLatest;
-  const utcTime = time ? getUTCTime(time) : 'N/A';
+  const utcTime = time ? getUTCTime(time) : '--';
+  const votingPowerPercent = numberFormat((votingPower / votingPowerTotal) * 100, 2);
 
   return (
     <Content justify="center">
@@ -157,7 +159,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="PARTICIPATION" size="1.8rem" /> Voting Power
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  {!isNaN(votingPower) ? numberFormat(votingPower) : '[N/A]'}
+                  {votingPowerPercent}%
                 </BlockItem>
                 <BlockItem>
                   <Link to={`/validators`}>{numValidators} Validators</Link>

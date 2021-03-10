@@ -21,7 +21,7 @@ const ValidatorDelegations = () => {
 
   // Table header values in order
   const tableHeaders = [
-    { displayName: 'Address', dataName: 'addressId' },
+    { displayName: 'Address', dataName: 'address' },
     { displayName: 'Amount', dataName: 'amount' },
     { displayName: 'Shares', dataName: 'shares' },
   ];

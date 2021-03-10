@@ -24,7 +24,7 @@ const BlockValidators = () => {
     { displayName: 'Operator', dataName: 'addressId' },
     { displayName: 'Consensus Address', dataName: 'consensusAddress' },
     { displayName: 'Proposer Priority', dataName: 'proposerPriority' },
-    { displayName: 'Voting Power', dataName: 'votingPower' },
+    { displayName: 'Voting Power', dataName: 'votingPowerPercent' },
   ];
 
   return (
