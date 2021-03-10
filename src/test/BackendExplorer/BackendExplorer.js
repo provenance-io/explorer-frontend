@@ -70,7 +70,7 @@ const BackendExplorer = () => {
 
       // Every random 5-10 seconds build a new block
       const generateBlocks = () => {
-        const rngInterval = rng(5000, 10000);
+        const rngInterval = rng(100, 300);
         const newBlockTimeout = setTimeout(() => {
           const newBlock = buildNewBlock({ blockHeight });
           const blockValidators = buildBlockValidators();
@@ -82,7 +82,7 @@ const BackendExplorer = () => {
 
       // Every random 30-90 seconds build a new tx
       const generateTxs = () => {
-        const rngInterval = rng(30000, 90000);
+        const rngInterval = rng(100, 300);
         const newTxTimeout = setTimeout(() => {
           const newTx = buildNewTx({ txs, blocksRecent });
           addTx(newTx);

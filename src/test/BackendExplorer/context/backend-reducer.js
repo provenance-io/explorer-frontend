@@ -96,4 +96,10 @@ const actionHandlers = {
   },
 };
 
-export const reducer = (state = initialState, action) => actionHandlers?.[action.type](state, action) || state;
+export const reducer = (state = initialState, action) => {
+  const newState = actionHandlers?.[action.type](state, action) || state;
+
+  window.localStorage.setItem('backend-reducer', JSON.stringify(newState));
+
+  return newState;
+};

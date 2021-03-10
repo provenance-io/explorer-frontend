@@ -14,6 +14,7 @@ const xhrRequest = async (action, dispatch, url, body = null, customConfig = nul
 
   const config = {
     method: body ? 'POST' : 'GET',
+    credentials: process.env.REACT_APP_ENV === 'local' ? 'omit' : 'include',
     ...customConfig,
     headers: {
       ...headers,
@@ -36,6 +37,7 @@ const xhrRequest = async (action, dispatch, url, body = null, customConfig = nul
       return Promise.reject(data.message);
     }
   } catch (error) {
+    console.log('error happened', error.message, url);
     if (error.message) {
       dispatch(createAction(`${action}_${FAILURE}`)(error.message));
       return Promise.reject(error.message);

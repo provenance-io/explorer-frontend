@@ -15,7 +15,11 @@ const PageWrapper = styled.div`
   }
 `;
 
-const Wrapper = ({ children, noHeader }) => <PageWrapper noHeader={noHeader}>{children}</PageWrapper>;
+const Wrapper = ({ children, noHeader, ...props }) => (
+  <PageWrapper {...props} noHeader={noHeader}>
+    {children}
+  </PageWrapper>
+);
 
 Wrapper.propTypes = {
   children: PropTypes.node,

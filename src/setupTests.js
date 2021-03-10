@@ -1,7 +1,11 @@
 // add some helpful assertions
 import '@testing-library/jest-dom/extend-expect';
 import 'test/matchMedia.mock';
+import 'whatwg-fetch';
 import { server } from 'test/server';
+
+// set the location to the /dashboard as we auto-redirect users to that route
+window.history.pushState({}, 'Home page', '/dashboard');
 
 // console.log(server.printHandlers());
 // src/setupTests.js

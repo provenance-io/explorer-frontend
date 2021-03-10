@@ -5,26 +5,16 @@ import { txTypes, txStatus, blockUsers } from '../data';
 
 // Make the first tx always the same hash value so it's easier to develop (can refresh page while editing)
 const initialTx = (time) => ({
-  time,
-  status: txStatus[rng(0, txStatus.length - 1)],
-  currency: 'IRIS',
-  gas: {
-    currency: 'NANO',
-    used: rng(0.01, 0.1, 3),
-    price: rng(0.01, 0.1, 3),
-    wanted: rng(0.01, 0.1, 3),
-    limit: rng(0.01, 0.1, 3),
-  },
-  txId: '8675309C411J3NNYT0D4Y',
+  blockHeight: 8675309,
+  codespace: null,
+  denomination: 'vspn',
+  errorCode: null,
   fee: rng(0.01, 0.09, 3),
-  type: txTypes[rng(0, txTypes.length - 1)],
-  index: 1,
-  block: 8675309,
-  memo: rng(10000, 100000),
   signer: blockUsers[rng(0, blockUsers.length - 1)].userId,
-  to: blockUsers[rng(0, blockUsers.length - 1)].userId,
-  from: blockUsers[rng(0, blockUsers.length - 1)].userId,
-  amount: rng(1, 800, 6),
+  status: txStatus[rng(0, txStatus.length - 1)],
+  time,
+  txHash: '8675309C411J3NNYT0D4Y',
+  type: txTypes[rng(0, txTypes.length - 1)],
 });
 
 export const buildNewTx = ({ txs, blocksRecent }) => {
@@ -36,25 +26,15 @@ export const buildNewTx = ({ txs, blocksRecent }) => {
   return currentTxIndex === 1
     ? initialTx(currentUTCTime)
     : {
-        block: blocksRecent[rng(0, blocksRecent.length - 1)],
-        time: currentUTCTime,
-        currency: 'IRIS',
-        txId: rngHexId(),
-        gas: {
-          currency: 'NANO',
-          used: rng(0.01, 0.1, 3),
-          price: rng(0.01, 0.1, 3),
-          wanted: rng(0.01, 0.1, 3),
-          limit: rng(0.01, 0.1, 3),
-        },
-        status: txStatus[rng(0, txStatus.length - 1)],
+        blockHeight: blocksRecent[rng(0, blocksRecent.length - 1)],
+        codespace: null,
+        denomination: 'vspn',
+        errorCode: null,
         fee: rng(0.01, 0.09, 3),
-        type: txTypes[rng(0, txTypes.length - 1)],
-        index: currentTxIndex,
-        memo: rng(10000, 100000),
         signer: blockUsers[rng(0, blockUsers.length - 1)].userId,
-        amount: rng(1, 800, 6),
-        to: blockUsers[rng(0, blockUsers.length - 1)].userId,
-        from: blockUsers[rng(0, blockUsers.length - 1)].userId,
+        status: txStatus[rng(0, txStatus.length - 1)],
+        time: currentUTCTime,
+        txHash: rngHexId(),
+        type: txTypes[rng(0, txTypes.length - 1)],
       };
 };
