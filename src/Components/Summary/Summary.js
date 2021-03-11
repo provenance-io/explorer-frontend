@@ -130,7 +130,7 @@ const buildSummaryRow = (rowData) => {
   return (
     <SummaryRow key={title}>
       <SummaryTitle>{title}:</SummaryTitle>
-      <SummaryValue>{valueMissing ? '[N/A]' : buildSummaryValue(rowData)}</SummaryValue>
+      <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData)}</SummaryValue>
     </SummaryRow>
   );
 };

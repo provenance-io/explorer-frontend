@@ -11,6 +11,7 @@ const FooterContainer = styled.footer`
   color: ${({ theme }) => theme.FONT_SECONDARY};
   display: flex;
   position: absolute;
+  align-items: center;
   justify-content: space-between;
   bottom: 0;
   left: 0;
@@ -34,17 +35,19 @@ const FooterData = styled.div`
 
 const FooterSocial = styled.div`
   display: flex;
-  a {
-    display: block;
-  }
+  align-items: center;
   @media ${breakpoints.down('md')} {
     flex-basis: 100%;
     text-align: center;
     justify-content: center;
   }
 `;
-const SocialIcon = styled(Sprite)`
+const SocialLink = styled.a`
+  display: block;
   margin: 4px;
+  svg {
+    display: block;
+  }
 `;
 const FooterVersion = styled.div`
   margin-left: 25px;
@@ -69,15 +72,15 @@ const Footer = () => {
         </a>
       </FooterData>
       <FooterSocial>
-        <a href={SOCIAL_PROVENANCE_URL} target="_blank" rel="noreferrer" title="Visit Provenance">
-          <SocialIcon icon="PROVENANCE" size="1.8rem" color="WHITE" />
-        </a>
-        <a href={SOCIAL_GITHUB_URL} target="_blank" rel="noreferrer" title="Provenance Explorer GitHub">
-          <SocialIcon icon="GITHUB" size="1.8rem" color="WHITE" />
-        </a>
-        <a href={SOCIAL_DISCORD_URL} target="_blank" rel="noreferrer" title="Provenance Explorer Discord">
-          <SocialIcon icon="DISCORD" size="1.8rem" color="WHITE" />
-        </a>
+        <SocialLink href={SOCIAL_PROVENANCE_URL} target="_blank" rel="noreferrer" title="Visit Provenance">
+          <Sprite icon="PROVENANCE" size="1.8rem" color="WHITE" />
+        </SocialLink>
+        <SocialLink href={SOCIAL_GITHUB_URL} target="_blank" rel="noreferrer" title="Provenance Explorer GitHub">
+          <Sprite icon="GITHUB" size="1.8rem" color="WHITE" />
+        </SocialLink>
+        <SocialLink href={SOCIAL_DISCORD_URL} target="_blank" rel="noreferrer" title="Provenance Explorer Discord">
+          <Sprite icon="DISCORD" size="1.8rem" color="WHITE" />
+        </SocialLink>
         <FooterVersion>v{version ? version : '?.?.?'}</FooterVersion>
       </FooterSocial>
     </FooterContainer>

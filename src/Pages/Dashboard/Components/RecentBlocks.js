@@ -60,7 +60,7 @@ const RecentBlocks = () => {
 
   const buildBlockLines = () =>
     blocks.map(({ txNum, height, time }) => {
-      const utcTime = time ? getUTCTime(time) : 'N/A';
+      const utcTime = time ? getUTCTime(time) : '--';
 
       return (
         <BlockLineContainer key={height}>

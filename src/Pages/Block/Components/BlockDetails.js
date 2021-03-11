@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Content, Loading, Summary } from 'Components';
 import { useParams } from 'react-router-dom';
-import { maxLength, getUTCTime } from 'utils';
+import { maxLength, getUTCTime, numberFormat } from 'utils';
 import { useBlocks } from 'redux/hooks';
 
 const BlockDetails = () => {
@@ -31,16 +31,16 @@ const BlockDetails = () => {
     hash,
     proposerAddress,
     votingPower,
+    votingPowerTotal,
     txNum,
-    numValidators = '[N/A]',
-    totalValidators = '[N/A]',
-    inflation = '[N/A]',
+    numValidators = '--',
+    numValidatorsTotal = '--',
     time,
-    denomination = '[N/A]',
     userName,
   } = blockInfo;
 
   const utcTime = getUTCTime(time);
+  const votingPowerPercent = numberFormat((votingPower / votingPowerTotal) * 100, 2);
 
   const summaryData = [
     { title: 'Block Hash', value: hash, copy: hash },
@@ -50,10 +50,9 @@ const BlockDetails = () => {
       link: `/validator/${proposerAddress}`,
       copy: proposerAddress,
     },
-    { title: 'Validators', value: `${numValidators} / ${totalValidators}` },
-    { title: 'Voting Power', value: votingPower },
+    { title: 'Validators', value: `${numValidators} / ${numValidatorsTotal}` },
+    { title: 'Voting Power', value: `${numberFormat(votingPowerPercent, 2)}%` },
     { title: 'Transactions', value: txNum },
-    { title: 'Inflation', value: `${inflation} ${denomination}` },
     { title: 'Timestamp', value: `${utcTime}+UTC` },
   ];
 

@@ -78,7 +78,7 @@ const BlockSpotlight = () => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [blockLoading, setBlockLoading] = useState(false);
   const [showBondedInfo, setShowBondedInfo] = useState(false);
-  const { blockLatest, getBlockSpotlight, avgBlockTime } = useBlocks();
+  const { blockLatest, getBlockSpotlight, avgBlockTime, blockSpotlightFailed } = useBlocks();
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -93,9 +93,9 @@ const BlockSpotlight = () => {
   }, [getBlockSpotlight, initialLoad]);
 
   // Poll the API for new data every 5s
-  useInterval(() => getBlockSpotlight(), polling.blockSpotlight);
+  useInterval(() => getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
 
-  // Dropping in '[N/A]' to know which values are missing from the tendermintRPC and need to be added by a BE API
+  // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
   const {
     height,
     time,
@@ -103,19 +103,21 @@ const BlockSpotlight = () => {
     moniker,
     icon,
     votingPower,
+    votingPowerTotal,
     numValidators,
     txNum,
     bondedTokenPercent,
     bondedTokenAmount,
     bondedTokenTotal,
   } = blockLatest;
-  const utcTime = time ? getUTCTime(time) : 'N/A';
+  const utcTime = time ? getUTCTime(time) : '--';
+  const votingPowerPercent = numberFormat((votingPower / votingPowerTotal) * 100, 2);
 
   return (
     <Content justify="center">
-      {blockLoading ? (
-        <Loading />
-      ) : (
+      {blockLoading && <Loading />}
+      {blockSpotlightFailed && !blockLatest.length && <div>Block Spotlight failed to load, refresh page to try again</div>}
+      {!blockLoading && !blockSpotlightFailed && (
         <>
           <Group size="30%">
             <BlockPreviewLine>
@@ -157,7 +159,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="PARTICIPATION" size="1.8rem" /> Voting Power
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  {!isNaN(votingPower) ? numberFormat(votingPower) : '[N/A]'}
+                  {votingPowerPercent}%
                 </BlockItem>
                 <BlockItem>
                   <Link to={`/validators`}>{numValidators} Validators</Link>

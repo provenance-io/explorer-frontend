@@ -1,13 +1,4 @@
-import {
-  VALIDATOR_INFO_URL,
-  VALIDATORS_RECENT_URL,
-  BLOCK_VALIDATORS_URL,
-  VALIDATOR_COMMISSION_URL,
-  VALIDATOR_DELEGATIONS_URL,
-  VALIDATOR_UNBONDING_DELEGATIONS_URL,
-  VALIDATOR_DELEGATION_TXS_URL,
-  VALIDATOR_TXS_URL,
-} from 'consts';
+import { VALIDATOR_INFO_URL, VALIDATORS_RECENT_URL, BLOCK_VALIDATORS_URL, TX_INFO_URL } from 'consts';
 import { ajaxGet } from './xhrActions';
 
 // API Calls
@@ -24,24 +15,22 @@ export const GET_VALIDATOR_TXS = 'GET_VALIDATOR_TXS';
 // API Calls
 export const getBlockValidators = ({ blockHeight, page = 1, count = 10, sort = 'desc' }) => async (dispatch) =>
   ajaxGet(GET_BLOCK_VALIDATORS, dispatch, `${BLOCK_VALIDATORS_URL}/${blockHeight}?page=${page}&count=${count}&sort=${sort}`);
-export const getValidatorSpotlight = (id) => async (dispatch) => ajaxGet(GET_VALIDATOR_INFO, dispatch, `${VALIDATOR_INFO_URL}/${id}`);
-// export const getValidatorsRecent = ({ sort = 'desc', page = 1, count = 10, status = 'active' }) => async (dispatch) =>
-//   ajaxGet(GET_VALIDATORS_RECENT, dispatch, `${VALIDATORS_RECENT_URL}?sort=${sort}&page=${page}&count=${count}&status=${status}`);
-export const getValidatorsRecent = ({ sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
-  ajaxGet(GET_VALIDATORS_RECENT, dispatch, `${VALIDATORS_RECENT_URL}?sort=${sort}&page=${page}&count=${count}`);
+export const getValidatorsRecent = ({ page = 1, count = 10, status = 'active' }) => async (dispatch) =>
+  ajaxGet(GET_VALIDATORS_RECENT, dispatch, `${VALIDATORS_RECENT_URL}?page=${page}&count=${count}&status=${status}`);
 export const getTopValidators = ({ sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
   ajaxGet(GET_TOP_VALIDATORS, dispatch, `${VALIDATORS_RECENT_URL}?sort=${sort}&page=${page}&count=${count}`);
-export const getValidatorCommission = (validatorId) => async (dispatch) =>
-  ajaxGet(GET_VALIDATOR_COMMISSION, dispatch, `${VALIDATOR_COMMISSION_URL}?id=${validatorId}`);
-export const getValidatorDelegations = ({ id, sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
-  ajaxGet(GET_VALIDATOR_DELEGATIONS, dispatch, `${VALIDATOR_DELEGATIONS_URL}?id=${id}&sort=${sort}&page=${page}&count=${count}`);
-export const getValidatorUnbondingDelegations = ({ id, sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
+export const getValidatorSpotlight = (id) => async (dispatch) => ajaxGet(GET_VALIDATOR_INFO, dispatch, `${VALIDATOR_INFO_URL}/${id}`);
+export const getValidatorCommission = (id) => async (dispatch) =>
+  ajaxGet(GET_VALIDATOR_COMMISSION, dispatch, `${VALIDATOR_INFO_URL}/${id}/commission`);
+export const getValidatorDelegations = ({ id, page = 1, count = 10 }) => async (dispatch) =>
+  ajaxGet(GET_VALIDATOR_DELEGATIONS, dispatch, `${VALIDATOR_INFO_URL}/${id}/delegations/bonded?count=${count}&page=${page}`);
+export const getValidatorUnbondingDelegations = ({ id, page = 1, count = 10 }) => async (dispatch) =>
   ajaxGet(
     GET_VALIDATOR_UNBONDING_DELEGATIONS,
     dispatch,
-    `${VALIDATOR_UNBONDING_DELEGATIONS_URL}?id=${id}&sort=${sort}&page=${page}&count=${count}`
+    `${VALIDATOR_INFO_URL}/${id}/delegations/unbonding?count=${count}&page=${page}`
   );
-export const getValidatorDelegationTxs = ({ id, sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
-  ajaxGet(GET_VALIDATOR_DELEGATION_TXS, dispatch, `${VALIDATOR_DELEGATION_TXS_URL}?id=${id}&sort=${sort}&page=${page}&count=${count}`);
-export const getValidatorTxs = ({ id, sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
-  ajaxGet(GET_VALIDATOR_TXS, dispatch, `${VALIDATOR_TXS_URL}?id=${id}&sort=${sort}&page=${page}&count=${count}`);
+export const getValidatorDelegationTxs = ({ id, page = 1, count = 10 }) => async (dispatch) =>
+  ajaxGet(GET_VALIDATOR_DELEGATION_TXS, dispatch, `${TX_INFO_URL}/module/DELEGATION?address=${id}&page=${page}&count=${count}`);
+export const getValidatorTxs = ({ id, page = 1, count = 10 }) => async (dispatch) =>
+  ajaxGet(GET_VALIDATOR_TXS, dispatch, `${TX_INFO_URL}/module/VALIDATION?address=${id}&page=${page}&count=${count}`);

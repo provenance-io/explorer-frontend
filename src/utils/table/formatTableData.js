@@ -1,6 +1,7 @@
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
 import { capitalize } from '../string/capitalize';
+import { getUTCTime } from '../date/getUTCTime';
 
 // Thought process here: There is a lot of repeating data that I've been cleaning and massaging.
 // Why not just look for any of these common values and have a standard format for them.
@@ -27,11 +28,13 @@ export const formatTableData = (data) =>
           };
           break;
         case 'amount': // fallthrough
-        case 'balance':
+        case 'balance': {
+          const denom = dataObj.denom || '';
           finalObj[key] = {
-            value: numberFormat(value, 2),
+            value: `${numberFormat(value, 2)} ${denom}`,
           };
           break;
+        }
         case 'block': // fallthrough
         case 'blockHeight': // fallthrough
         case 'height':
@@ -68,10 +71,11 @@ export const formatTableData = (data) =>
         case 'delegators':
           finalObj[key] = { value };
           break;
-        case 'fee':
-          finalObj['fee'] = finalObj['fee'] || { value: [] };
-          finalObj['fee'].value[0] = numberFormat(value, 6);
+        case 'fee': {
+          const { amount, denom } = value;
+          finalObj['fee'] = { value: [numberFormat(amount, 6), ' ', denom] };
           break;
+        }
         case 'denomination': // fallthrough
         case 'feeDenomination':
           finalObj['fee'] = finalObj['fee'] || { value: [] };
@@ -135,19 +139,25 @@ export const formatTableData = (data) =>
           finalObj['selfBonded'] = finalObj['selfBonded'] || { value: [] };
           finalObj['selfBonded'].value[1] = ` ${value}`;
           break;
-        case 'signer':
+        case 'shares':
+          finalObj[key] = { value: numberFormat(value) };
+          break;
+        case 'signers': {
+          // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+          const signer = dataObj?.signers?.signers[0];
           finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            link: `/accounts/${value}`,
-            hover: value,
+            value: maxLength(signer, 11, 3),
+            link: `/accounts/${signer}`,
+            hover: signer,
           };
           break;
+        }
         case 'status':
           finalObj[key] = { value: capitalize(value) };
           break;
         case 'time': // fallthrough
         case 'timestamp':
-          finalObj[key] = { value, raw: value };
+          finalObj[key] = { value: `${getUTCTime(value)}+UTC`, raw: value };
           break;
         case 'totalSupply':
           finalObj[key] = {
@@ -164,20 +174,24 @@ export const formatTableData = (data) =>
         case 'txNum':
           finalObj[key] = { value };
           break;
+        case 'msg': // fallthrough
         case 'txType': // fallthrough
-        case 'type':
-          finalObj[key] = {
-            value: capitalize(value),
-          };
+        case 'type': {
+          // type is nested within msg: [{ type: 'txType' msg: {} }]
+          const type = dataObj?.msg[0]?.type || '--';
+          finalObj['txType'] = { value: capitalize(type) };
           break;
+        }
         case 'uptime':
           finalObj[key] = { value: `${numberFormat(value)} %` };
           break;
+        case 'numValidators': // fallthrough
         case 'validatorsNum':
           finalObj['validators'] = finalObj['validators'] || { value: [] };
           finalObj['validators'].value[0] = value;
           finalObj['validators'].value[1] = ' / ';
           break;
+        case 'numValidatorsTotal': // fallthrough
         case 'validatorsTotal':
           finalObj['validators'] = finalObj['validators'] || { value: [] };
           finalObj['validators'].value[2] = value;
@@ -185,9 +199,11 @@ export const formatTableData = (data) =>
         case 'value':
           finalObj[key] = { value: numberFormat(value, 8) };
           break;
-        case 'votingPower':
-          finalObj[key] = { value: numberFormat(value) };
+        case 'votingPower': {
+          const percent = (value / dataObj?.votingPowerTotal) * 100;
+          finalObj['votingPower'] = { value: `${numberFormat(percent, 2)}%` };
           break;
+        }
         case 'votingPowerPercent':
           finalObj[key] = { value: `${numberFormat(value)} %` };
           break;

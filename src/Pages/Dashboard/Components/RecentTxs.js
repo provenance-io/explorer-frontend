@@ -85,8 +85,10 @@ const RecentTxs = () => {
   }, [getTxsRecent, recentTxsCount]);
 
   const buildTxLines = () =>
-    txs.map(({ txHash, fee, type = 'N/A', denomination = 'N/A', time }) => {
-      const utcTime = time ? getUTCTime(time) : 'N/A';
+    txs.map(({ txHash, fee, msg = [], denomination = '--', time }) => {
+      const { amount: feeAmount, denom: feeDenom } = fee;
+      const { type = '--' } = msg[0];
+      const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
 
       return (
@@ -100,8 +102,8 @@ const RecentTxs = () => {
           <TxLineRow>
             <Type>{capitalize(type)}</Type>
             <FeeLine>
-              <FeeTitle>Fee:</FeeTitle> {fee ? numberFormat(fee) : '[N/A]'}{' '}
-              <Denomination>{denomination ? denomination : '[N/A]'}</Denomination>
+              <FeeTitle>Fee:</FeeTitle> {feeAmount ? numberFormat(feeAmount) : '--'}{' '}
+              <Denomination>{feeDenom ? feeDenom : '--'}</Denomination>
             </FeeLine>
           </TxLineRow>
         </TxLineContainer>

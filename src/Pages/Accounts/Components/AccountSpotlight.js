@@ -30,7 +30,7 @@ const AccountSpotlight = () => {
     getAccountInfo(addressId);
   }, [getAccountInfo, addressId]);
 
-  const { accountType = '[N/A]', publicKey = '[N/A]', accountNumber = '[N/A]', sequence = '[N/A]' } = accountInfo;
+  const { accountType = '--', publicKey = '--', accountNumber = '--', sequence = '--' } = accountInfo;
 
   return (
     <Content justify="flex-start">
@@ -64,7 +64,7 @@ const AccountSpotlight = () => {
                 <CopyValue value={publicKey.key} title="Copy Public Key" />
               </>
             ) : (
-              'N/A'
+              '--'
             )}
           </Value>
         </Row>
@@ -77,7 +77,7 @@ const AccountSpotlight = () => {
                 <CopyValue value={publicKey['@type']} title="Copy Public Key" />
               </>
             ) : (
-              'N/A'
+              '--'
             )}
           </Value>
         </Row>

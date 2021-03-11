@@ -78,7 +78,8 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { fee, feeDenomination, gasLimit, gasPrice, gasUsed, gasWanted, height, memo, signer, status, time } = txInfo;
+    const { fee, gasLimit, gasPrice, gasUsed, gasWanted, height, memo, signers, status, time } = txInfo;
+    const { amount: feeAmount, denom: feeDenom } = fee;
 
     const utcTime = getUTCTime(time);
 
@@ -88,35 +89,67 @@ const TxInformation = () => {
       method: ['click', 'hover'],
       fontColor: 'FONT_WHITE',
       data: [
-        { title: 'Gas Price', value: `${numberFormat(gasPrice)} ${feeDenomination}` },
+        { title: 'Gas Price', value: `${numberFormat(gasPrice)} ${feeDenom}` },
         { title: 'Gas Used', value: numberFormat(gasUsed) },
         { title: 'Gas Wanted', value: numberFormat(gasWanted) },
         { title: 'Gas Limit', value: numberFormat(gasLimit) },
       ],
     };
-
+    // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+    const signer = signers?.signers[0];
     const summaryData = [
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
       { title: 'Timestamp', value: `${utcTime}+UTC` },
-      { title: 'Fee', value: `${numberFormat(fee)} ${feeDenomination}` },
+      { title: 'Fee', value: `${numberFormat(feeAmount)} ${feeDenom}` },
       { title: 'Gas Used', value: numberFormat(gasUsed), popupNote },
       { title: 'Signer', value: maxLength(signer, 24, 10), link: `/accounts/${signer}`, copy: signer },
-      { title: 'Memo', value: maxLength(memo, 100), copy: memo },
+      { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
     ];
 
     return <Summary data={summaryData} />;
   };
 
   const buildTxMessageContent = () => {
-    const { amount = '', denomination = '[N/A]', from = '[N/A]', to = '[N/A]', txType = '[N/A]' } = txInfo;
-
-    const summaryData = [
-      { title: 'Tx Type', value: capitalize(txType) },
-      { title: 'From', value: from, link: `/accounts/${from}`, copy: from },
-      { title: 'Amount', value: `${numberFormat(amount)} ${denomination}` },
-      { title: 'To', value: to, link: `/accounts/${to}`, copy: to },
-    ];
+    // This Transaction Message/Result section is custom for every type of Tx (Sooner/Later this needs to be a util like the table builder...)
+    const { msg: msgArray } = txInfo; // msg is an array, for now we will only handle a single message, in the future we may need to handle 2+
+    const { msg: msgData, type: txType } = msgArray[0];
+    // Initial summaryData should always have the type
+    const summaryData = [{ title: 'Tx Type', value: capitalize(txType) }];
+    // Build each summary based off the type
+    switch (txType) {
+      case 'vote': {
+        const { proposalId, option, voter } = msgData;
+        summaryData.push(
+          { title: 'Voter', value: maxLength(voter, 24, 10), copy: voter, link: `/accounts/${voter}` },
+          { title: 'Proposal Id', value: capitalize(proposalId) },
+          { title: 'Option', value: capitalize(option) }
+        );
+        break;
+      }
+      case 'submit_proposal': {
+        // type, proposer, title, initial deposit, description, name, upgrade time, switch height, upgraded client state
+        const { content, initialDeposit, proposer } = msgData;
+        const { description, title, plan = {} } = content;
+        const { denom, amount } = initialDeposit[0]; // Initial Deposit is an array, but we are only going to use the first entry for now
+        const { name = '', time = '' } = plan;
+        const utcTime = time ? getUTCTime(time) : '--';
+        summaryData.push(
+          { title: 'Proposer', value: maxLength(proposer, 24, 10), copy: proposer, link: `/accounts/${proposer}` },
+          { title: 'Title', value: title },
+          { title: 'Initial Deposit', value: `${numberFormat(amount)} ${denom}` },
+          { title: 'Description', value: description },
+          { title: 'Name', value: name },
+          { title: 'Upgrade Time', value: time ? `${utcTime}+UTC` : '--' },
+          // No idea how these would come in, so I'm hardcoding for now...
+          { title: 'Switch Height', value: '--' },
+          { title: 'Upgraded Client State', value: '--' }
+        );
+        break;
+      }
+      default:
+        break;
+    }
 
     return (
       <>
