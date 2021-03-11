@@ -15,8 +15,8 @@ export const GET_VALIDATOR_TXS = 'GET_VALIDATOR_TXS';
 // API Calls
 export const getBlockValidators = ({ blockHeight, page = 1, count = 10, sort = 'desc' }) => async (dispatch) =>
   ajaxGet(GET_BLOCK_VALIDATORS, dispatch, `${BLOCK_VALIDATORS_URL}/${blockHeight}?page=${page}&count=${count}&sort=${sort}`);
-export const getValidatorsRecent = ({ sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
-  ajaxGet(GET_VALIDATORS_RECENT, dispatch, `${VALIDATORS_RECENT_URL}?sort=${sort}&page=${page}&count=${count}`);
+export const getValidatorsRecent = ({ page = 1, count = 10, status = 'active' }) => async (dispatch) =>
+  ajaxGet(GET_VALIDATORS_RECENT, dispatch, `${VALIDATORS_RECENT_URL}?page=${page}&count=${count}&status=${status}`);
 export const getTopValidators = ({ sort = 'desc', page = 1, count = 10 }) => async (dispatch) =>
   ajaxGet(GET_TOP_VALIDATORS, dispatch, `${VALIDATORS_RECENT_URL}?sort=${sort}&page=${page}&count=${count}`);
 export const getValidatorSpotlight = (id) => async (dispatch) => ajaxGet(GET_VALIDATOR_INFO, dispatch, `${VALIDATOR_INFO_URL}/${id}`);

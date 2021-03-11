@@ -126,7 +126,7 @@ const TxList = () => {
     { displayName: 'Block', dataName: 'block' },
     { displayName: 'Tx Type', dataName: 'txType' },
     { displayName: 'Fee', dataName: 'fee' },
-    { displayName: 'Signer', dataName: 'signer' },
+    { displayName: 'Signer', dataName: 'signers' },
     { displayName: 'Status', dataName: 'status' },
     { displayName: 'Timestamp', dataName: 'time' },
   ];

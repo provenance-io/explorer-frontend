@@ -28,7 +28,7 @@ const ValidationTxs = () => {
     { displayName: 'Self Bonded', dataName: 'selfBonded' },
     { displayName: 'TxType', dataName: 'txType' },
     { displayName: 'Fee', dataName: 'fee' },
-    { displayName: 'Signer', dataName: 'signer' },
+    { displayName: 'Signer', dataName: 'signers' },
     { displayName: 'Status', dataName: 'status' },
     { displayName: 'Timestamp', dataName: 'timestamp' },
   ];

@@ -13,9 +13,12 @@ import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 export const initialState = {
   // Txs
   txInfo: {},
+  txsInfoLoading: false,
+  // Recent Txs
   txs: [],
   txsPages: 0,
   recentTxsCount: 10,
+  txsRecentLoading: false,
   // Full explorer tx history
   txHistory: [],
   txHistoryDayRange: 14,
@@ -24,13 +27,11 @@ export const initialState = {
   txFullJSON: '',
   // Txs for a specific block
   txsByBlock: [],
+  txsByBlockLoading: false,
   // Txs for a specific wallet address
   txsByAddress: [],
-  // Loading states
-  txsByBlockLoading: false,
   txsByAddressLoading: false,
-  txsRecentLoading: false,
-  txsInfoLoading: false,
+  txsByAddressPages: 0,
 };
 
 const reducer = handleActions(
@@ -74,9 +75,7 @@ const reducer = handleActions(
       };
     },
     [`${GET_TXS_BY_BLOCK}_${SUCCESS}`](state, { payload }) {
-      const { pages: txsByBlockPages, results: txsByBlockRaw } = payload;
-      // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
-      const txsByBlock = txsByBlockRaw.map((txRaw) => ({ ...txRaw, signer: txRaw?.signers?.signers[0] }));
+      const { pages: txsByBlockPages, results: txsByBlock } = payload;
 
       return {
         ...state,
@@ -101,11 +100,11 @@ const reducer = handleActions(
       };
     },
     [`${GET_TXS_BY_ADDRESS}_${SUCCESS}`](state, { payload }) {
-      const { items: txsByAddress = [], count: txsByAddressPages = 1 } = payload;
+      const { results: txsByAddress = [], pages: txsByAddressPages } = payload;
       return {
         ...state,
         txsByAddress,
-        txsByBlockPages: txsByAddressPages === 0 ? 1 : txsByAddressPages,
+        txsByAddressPages,
         txsByAddressLoading: false,
       };
     },
@@ -125,15 +124,11 @@ const reducer = handleActions(
       };
     },
     [`${GET_TXS_RECENT}_${SUCCESS}`](state, { payload }) {
-      const { pages: txsPages, results: txsRaw } = payload;
-      // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
-      const txs = txsRaw.map((txRaw) => ({ ...txRaw, signer: txRaw?.signers?.signers[0] }));
+      const { pages: txsPages, results: txs } = payload;
 
       return {
         ...state,
         txs,
-        // Need this api to be updated to return the total count of txs for pagination.
-        // For now, use the txsRecent length as the count (inaccurate, this is just the count for a single page...)
         txsPages,
         txsRecentLoading: false,
       };
@@ -153,10 +148,7 @@ const reducer = handleActions(
         txsInfoLoading: true,
       };
     },
-    [`${GET_TX_INFO}_${SUCCESS}`](state, { payload: txInfoRaw }) {
-      // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
-      const txInfo = { ...txInfoRaw, signer: txInfoRaw?.signers?.signers[0] };
-
+    [`${GET_TX_INFO}_${SUCCESS}`](state, { payload: txInfo }) {
       return {
         ...state,
         txInfo,

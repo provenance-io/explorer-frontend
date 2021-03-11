@@ -21,9 +21,12 @@ const BlockTxs = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
+    { displayName: 'Block', dataName: 'block' },
     { displayName: 'Tx Type', dataName: 'txType' },
     { displayName: 'Fee', dataName: 'fee' },
-    { displayName: 'Signer', dataName: 'signer' },
+    { displayName: 'Signer', dataName: 'signers' },
+    { displayName: 'Status', dataName: 'status' },
+    { displayName: 'Timestamp', dataName: 'time' },
   ];
 
   return (

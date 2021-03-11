@@ -142,13 +142,16 @@ export const formatTableData = (data) =>
         case 'shares':
           finalObj[key] = { value: numberFormat(value) };
           break;
-        case 'signer':
+        case 'signers': {
+          // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+          const signer = dataObj?.signers?.signers[0];
           finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            link: `/accounts/${value}`,
-            hover: value,
+            value: maxLength(signer, 11, 3),
+            link: `/accounts/${signer}`,
+            hover: signer,
           };
           break;
+        }
         case 'status':
           finalObj[key] = { value: capitalize(value) };
           break;

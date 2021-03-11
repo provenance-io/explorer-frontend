@@ -116,7 +116,7 @@ const BlockSpotlight = () => {
   return (
     <Content justify="center">
       {blockLoading && <Loading />}
-      {blockSpotlightFailed && <div>Block Spotlight failed to load, refresh page to try again</div>}
+      {blockSpotlightFailed && !blockLatest.length && <div>Block Spotlight failed to load, refresh page to try again</div>}
       {!blockLoading && !blockSpotlightFailed && (
         <>
           <Group size="30%">
