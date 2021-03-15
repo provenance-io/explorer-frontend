@@ -90,13 +90,16 @@ const ValidatorSpotlight = () => {
     moniker,
     description,
     url,
-    votingPowerPercent,
+    votingPower = {},
     uptime,
     consensusPubKey,
+    blockCount = {},
     bondHeight = '--',
-    missedBlocks = '--',
-    totalBlocks = '--',
   } = validatorSpotlight;
+
+  const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
+  const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
+  const { count: missedBlocksCount, total: missedBlocksTotal } = blockCount;
 
   return (
     <Content>
@@ -159,7 +162,7 @@ const ValidatorSpotlight = () => {
         </DataRow>
         <DataRow>
           <DataTitle>Voting Power:</DataTitle>
-          <DataValue>{numberFormat(votingPowerPercent, 2)}%</DataValue>
+          <DataValue>{votingPowerPercent}%</DataValue>
         </DataRow>
         <DataRow>
           <DataTitle>Uptime:</DataTitle>
@@ -168,7 +171,7 @@ const ValidatorSpotlight = () => {
         <DataRow>
           <DataTitle>Missed Blocks:</DataTitle>
           <DataValue>
-            {missedBlocks} in {totalBlocks}
+            {missedBlocksCount} in {missedBlocksTotal}
           </DataValue>
         </DataRow>
         <DataRow>

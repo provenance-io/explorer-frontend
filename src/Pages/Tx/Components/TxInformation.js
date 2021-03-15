@@ -78,9 +78,9 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { fee, gasLimit, gasPrice, gasUsed, gasWanted, height, memo, signers, status, time } = txInfo;
+    const { fee, gas, height, memo, signers, status, time } = txInfo;
     const { amount: feeAmount, denom: feeDenom } = fee;
-
+    const { gasLimit, gasPrice, gasUsed, gasWanted } = gas;
     const utcTime = getUTCTime(time);
 
     const popupNote = {

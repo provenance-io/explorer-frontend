@@ -15,20 +15,19 @@ const ValidatorCommission = () => {
   }, [validatorId, getValidatorCommission]);
 
   const {
-    commissionRate,
-    bondedTokens,
-    bondedTokensDenom,
-    selfBonded,
-    selfBondedDenom,
-    delegatorBonded,
-    delegatorBondedDenom,
+    commissionRate = {},
+    bondedTokens = {},
+    selfBonded = {},
+    delegatorBonded = {},
     delegatorCount,
     totalShares,
-    commissionRewards,
-    commissionRewardsDenom,
-    commissionMaxChangeRate,
-    commissionMaxRate,
+    commissionRewards = {},
   } = validatorCommission;
+  const { count: bondedTokensCount, denom: bondedTokensDenom } = bondedTokens;
+  const { maxChangeRate: commissionMaxChangeRate, maxRate: commissionMaxRate, rate: commissionRateAmount } = commissionRate;
+  const { amount: commissionRewardsAmount, denom: commissionRewardsDenom } = commissionRewards;
+  const { count: delegatorBondedCount, denom: delegatorBondedDenom } = delegatorBonded;
+  const { count: selfBondedCount, denom: selfBondedDenom } = selfBonded;
 
   const popupNoteBondedTokens = {
     visibility: { visible: showBondedPopup, setVisible: setShowBondedPopup },
@@ -38,12 +37,15 @@ const ValidatorCommission = () => {
     data: [
       {
         title: 'Self-Bonded:',
-        value: `${numberFormat(selfBonded, 6)} ${selfBondedDenom} (${numberFormat((selfBonded / bondedTokens) * 100, 2)} %)`,
+        value: `${numberFormat(selfBondedCount, 6)} ${selfBondedDenom} (${numberFormat(
+          (selfBondedCount / bondedTokensCount) * 100,
+          2
+        )} %)`,
       },
       {
         title: 'Delegator Bonded:',
-        value: `${numberFormat(delegatorBonded, 6)} ${delegatorBondedDenom} (${numberFormat(
-          (delegatorBonded / bondedTokens) * 100,
+        value: `${numberFormat(delegatorBondedCount, 6)} ${delegatorBondedDenom} (${numberFormat(
+          (delegatorBondedCount / bondedTokensCount) * 100,
           2
         )} %)`,
       },
@@ -58,15 +60,15 @@ const ValidatorCommission = () => {
   };
 
   const summaryData = [
-    { title: 'Commission Rate', value: `${numberFormat(commissionRate, 2)} %` },
+    { title: 'Commission Rate', value: `${numberFormat(commissionRateAmount, 2)} %` },
     {
       title: 'Bonded Tokens',
-      value: `${numberFormat(bondedTokens, 6)} ${bondedTokensDenom}`,
+      value: `${numberFormat(bondedTokensCount, 6)} ${bondedTokensDenom}`,
       popupNote: popupNoteBondedTokens,
     },
     { title: 'Delegators', value: delegatorCount },
     { title: 'Total Shares', value: numberFormat(totalShares, 6) },
-    { title: 'Commission Rewards', value: `${numberFormat(commissionRewards, 6)} ${commissionRewardsDenom}` },
+    { title: 'Commission Rewards', value: `${numberFormat(commissionRewardsAmount, 6)} ${commissionRewardsDenom}` },
     {
       title: 'Commission Rate Range',
       value: `0 ~ ${commissionMaxRate} %`,

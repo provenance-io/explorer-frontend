@@ -25,7 +25,7 @@ const BlocksList = () => {
     { displayName: 'Block', dataName: 'height' },
     { displayName: 'Proposer', dataName: 'proposerAddress' },
     { displayName: 'Transactions', dataName: 'txNum' },
-    { displayName: 'Validators', dataName: 'validators' },
+    { displayName: 'Validators', dataName: 'validatorCount' },
     { displayName: 'Voting Power', dataName: 'votingPower' },
     { displayName: 'Timestamp', dataName: 'time' },
   ];

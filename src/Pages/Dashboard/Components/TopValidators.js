@@ -44,7 +44,7 @@ const TopValidators = () => {
         );
         // legendData.push('Others');
         const seriesData = topValidators.map(({ votingPower, moniker, addressId, uptime }) => ({
-          value: votingPower,
+          value: votingPower?.count,
           name: moniker ? maxLength(moniker, 12) : maxLength(addressId, 12),
           uptime,
         }));

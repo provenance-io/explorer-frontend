@@ -9,11 +9,7 @@ const AccountAssets = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Asset', dataName: 'denom' },
-    { displayName: 'Total Balance', dataName: 'amount' },
-    { displayName: 'Estimated Value (USD)', dataName: 'value' },
-    { displayName: 'Available', dataName: 'available' },
-    { displayName: 'Freeze', dataName: 'freeze' },
-    { displayName: 'In Order', dataName: 'inOrder' },
+    { displayName: 'Total Balance', dataName: 'balances' },
   ];
 
   return <Table tableHeaders={tableHeaders} tableData={tableData} isLoading={tableLoading} title="Account Assets" />;
