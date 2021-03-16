@@ -141,7 +141,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="ADMIN" size="1.8rem" /> Transactions
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  <Link to="/txs">{txNum}</Link>
+                  <Link to={`/block/${height}`}>{txNum}</Link>
                 </BlockItem>
                 <BlockItem>{utcTime}+UTC</BlockItem>
               </BlockDataContent>
@@ -155,7 +155,7 @@ const BlockSpotlight = () => {
                   {votingPowerPercent}%
                 </BlockItem>
                 <BlockItem>
-                  <Link to={`/validators`}>
+                  <Link to={`/block/${height}`}>
                     {validatorCountAmount}/{validatorCountTotal} Validators
                   </Link>
                 </BlockItem>

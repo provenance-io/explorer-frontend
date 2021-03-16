@@ -19,16 +19,18 @@ const AssetTxsList = () => {
     getTableData({
       page: tableCurrentPage,
       count: tableCount,
-      asset: assetId,
+      denom: assetId,
     });
   }, [getTableData, assetId, tableCount, tableCurrentPage]);
 
   const tableHeaders = [
     { displayName: 'TxHash', dataName: 'txHash' },
+    { displayName: 'Block', dataName: 'block' },
     { displayName: 'TxType', dataName: 'txType' },
-    { displayName: 'Address', dataName: 'address' },
-    { displayName: 'Value', dataName: 'value' },
-    { displayName: 'Currency', dataName: 'currency' },
+    { displayName: 'Fee', dataName: 'fee' },
+    { displayName: 'Signer', dataName: 'signers' },
+    { displayName: 'Status', dataName: 'status' },
+    { displayName: 'Timestamp', dataName: 'timestamp' },
   ];
 
   return (

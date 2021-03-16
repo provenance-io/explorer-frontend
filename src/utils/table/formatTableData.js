@@ -151,6 +151,25 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: `${count} / ${total}` };
           break;
         }
+        // Get the asset supply information (total)
+        case 'supplyTotal': {
+          const { total } = dataObj?.supply;
+          finalObj[dataName] = { value: numberFormat(total) };
+          break;
+        }
+        // Get the asset supply information (circulation)
+        case 'supplyCirculation': {
+          const { circulation } = dataObj?.supply;
+          finalObj[dataName] = { value: numberFormat(circulation) };
+          break;
+        }
+        // Display the percent but make adjustments for low values (<)
+        // Server value in a numberFormat as a percentage
+        case 'percentage': {
+          const percent = serverValue < 0.0001 ? '>0.0001' : numberFormat(serverValue, 4);
+          finalObj[dataName] = { value: `${percent} %` };
+          break;
+        }
         // Server value already correct
         case 'bondHeight': // fallthrough
         case 'currency': // fallthrough
@@ -161,15 +180,15 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Server value in a numberFormat
         case 'shares': // fallthrough
-        case 'totalSupply': // fallthrough
         case 'txNum': // fallthrough
         case 'circulation':
           finalObj[dataName] = { value: numberFormat(serverValue) };
           break;
         // Server value in a numberFormat as a percentage
-        case 'uptime':
+        case 'uptime': {
           finalObj[dataName] = { value: `${numberFormat(serverValue)} %` };
           break;
+        }
         // Server value capitalized
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue) };
