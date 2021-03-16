@@ -20,9 +20,8 @@ const AssetsList = () => {
 
   const tableHeaders = [
     { displayName: 'Name', dataName: 'marker' },
-    { displayName: 'Market Cap (USD)', dataName: 'circulation' },
-    { displayName: 'Price (USD)', dataName: 'price' },
-    { displayName: 'Supply', dataName: 'totalSupply' },
+    { displayName: 'Circulation', dataName: 'supplyCirculation' },
+    { displayName: 'Supply', dataName: 'supplyTotal' },
     { displayName: 'Owner', dataName: 'ownerAddress' },
   ];
 

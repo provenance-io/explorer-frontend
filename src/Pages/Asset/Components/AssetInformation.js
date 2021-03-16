@@ -12,17 +12,15 @@ const AssetInformation = () => {
     getAssetInfo(assetId);
   }, [assetId, getAssetInfo]);
 
-  const { marker, ownerAddress, totalSupply, mintable, price, priceChange, holderCount, txnCount, website } = assetInfo;
-
+  const { marker, ownerAddress, supply = {}, mintable, holderCount, txnCount } = assetInfo;
+  const { circulation: supplyCirculation, total: supplyTotal } = supply;
   const summaryData = [
     { title: 'Asset Name', value: marker },
     { title: 'Owner', value: ownerAddress, link: `/accounts/${ownerAddress}`, copy: ownerAddress },
-    { title: 'Supply', value: numberFormat(totalSupply) },
+    { title: 'Supply', value: `${numberFormat(supplyCirculation)} / ${numberFormat(supplyTotal)}` },
     { title: 'Mintable', value: `${mintable}` },
-    { title: 'Price', value: numberFormat(price, 6, 'currency'), change: priceChange },
     { title: 'Holders', value: holderCount },
     { title: 'Transactions', value: numberFormat(txnCount) },
-    { title: 'Website', value: website, externalLink: website },
   ];
 
   return <Content title="Asset Information">{assetInformationLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;

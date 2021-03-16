@@ -4,7 +4,7 @@ import { AssetsList } from './Components';
 
 const Assets = () => (
   <Wrapper>
-    <Header title="Assets" />
+    <Header title="All Assets" />
     <Section header>
       <AssetsList />
     </Section>
