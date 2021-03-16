@@ -69,7 +69,7 @@ const RecentBlocks = () => {
             <TimeTicker timestamp={utcTime} />
           </BlockLineRow>
           <BlockLineRow>
-            <div>Txn: {txNum}</div>
+            <div>Transactions: {txNum}</div>
             <div>{utcTime}+UTC</div>
           </BlockLineRow>
         </BlockLineContainer>

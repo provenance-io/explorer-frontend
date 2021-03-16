@@ -78,7 +78,7 @@ const BlockSpotlight = () => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [blockLoading, setBlockLoading] = useState(false);
   const [showBondedInfo, setShowBondedInfo] = useState(false);
-  const { blockLatest, getBlockSpotlight, avgBlockTime, blockSpotlightFailed } = useBlocks();
+  const { blockLatest, getBlockSpotlight, blockSpotlightFailed } = useBlocks();
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -96,22 +96,15 @@ const BlockSpotlight = () => {
   useInterval(() => getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
 
   // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
-  const {
-    height,
-    time,
-    proposerAddress,
-    moniker,
-    icon,
-    votingPower,
-    votingPowerTotal,
-    numValidators,
-    txNum,
-    bondedTokenPercent,
-    bondedTokenAmount,
-    bondedTokenTotal,
-  } = blockLatest;
+  const { avgBlockTime, bondedTokens = {}, latestBlock = {} } = blockLatest;
+  const { count: bondedTokensCount, total: bondedTokensTotal, denom: bondedTokensDenom } = bondedTokens;
+  const { height, icon, moniker, proposerAddress, time, txNum, validatorCount = {}, votingPower = {} } = latestBlock;
+  const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
+  const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
+
   const utcTime = time ? getUTCTime(time) : '--';
-  const votingPowerPercent = numberFormat((votingPower / votingPowerTotal) * 100, 2);
+  const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
+  const bondedTokensPercent = numberFormat((bondedTokensCount / bondedTokensTotal) * 100, 4);
 
   return (
     <Content justify="center">
@@ -148,7 +141,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="ADMIN" size="1.8rem" /> Transactions
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  <Link to="/txs">{txNum} K</Link>
+                  <Link to="/txs">{txNum}</Link>
                 </BlockItem>
                 <BlockItem>{utcTime}+UTC</BlockItem>
               </BlockDataContent>
@@ -162,7 +155,9 @@ const BlockSpotlight = () => {
                   {votingPowerPercent}%
                 </BlockItem>
                 <BlockItem>
-                  <Link to={`/validators`}>{numValidators} Validators</Link>
+                  <Link to={`/validators`}>
+                    {validatorCountAmount}/{validatorCountTotal} Validators
+                  </Link>
                 </BlockItem>
               </BlockDataContent>
             </BlockDataCard>
@@ -183,13 +178,13 @@ const BlockSpotlight = () => {
                   <Sprite icon="SHARED_POOLS" size="1.8rem" /> Bonded Tokens
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  {bondedTokenPercent} %
+                  {bondedTokensPercent} % {bondedTokensDenom}
                 </BlockItem>
                 <BlockItem>
                   <PopupContainer onMouseEnter={() => setShowBondedInfo(true)} onMouseLeave={() => setShowBondedInfo(false)}>
                     <PopupNote show={showBondedInfo} position="above">
-                      <div>Amount: {numberFormat(bondedTokenAmount)}</div>
-                      <div>Total: {numberFormat(bondedTokenTotal)}</div>
+                      <div>Amount: {numberFormat(bondedTokensCount)}</div>
+                      <div>Total: {numberFormat(bondedTokensTotal)}</div>
                     </PopupNote>
                     <Sprite icon="HELP" size="1.7rem" onClick={() => setShowBondedInfo(!showBondedInfo)} />
                   </PopupContainer>

@@ -30,7 +30,8 @@ const AccountSpotlight = () => {
     getAccountInfo(addressId);
   }, [getAccountInfo, addressId]);
 
-  const { accountType = '--', publicKey = '--', accountNumber = '--', sequence = '--' } = accountInfo;
+  const { accountType = '--', publicKeys = {}, accountNumber = '--', sequence = '--' } = accountInfo;
+  const publicKey = publicKeys.signers ? publicKeys.signers[0] : '';
 
   return (
     <Content justify="flex-start">
@@ -58,23 +59,10 @@ const AccountSpotlight = () => {
         <Row>
           <Title>Public Key:</Title>
           <Value>
-            {publicKey?.key ? (
+            {publicKey ? (
               <>
-                {publicKey.key}
-                <CopyValue value={publicKey.key} title="Copy Public Key" />
-              </>
-            ) : (
-              '--'
-            )}
-          </Value>
-        </Row>
-        <Row>
-          <Title>Public Key Type:</Title>
-          <Value>
-            {publicKey?.['@type'] ? (
-              <>
-                {publicKey['@type']}
-                <CopyValue value={publicKey['@type']} title="Copy Public Key" />
+                {publicKey}
+                <CopyValue value={publicKey} title="Copy Public Key" />
               </>
             ) : (
               '--'

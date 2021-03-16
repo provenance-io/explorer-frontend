@@ -44,19 +44,11 @@ const reducer = handleActions(
         blockSpotlightFailed: false,
       };
     },
-    [`${GET_BLOCK_SPOTLIGHT}_${SUCCESS}`](state, { payload }) {
-      const { latestBlock: blockLatest, avgBlockTime, bondedTokenPercent, bondedTokenAmount, bondedTokenTotal } = payload;
-
+    [`${GET_BLOCK_SPOTLIGHT}_${SUCCESS}`](state, { payload: blockLatest }) {
       return {
         ...state,
-        blockLatest: {
-          ...blockLatest,
-          bondedTokenPercent,
-          bondedTokenAmount,
-          bondedTokenTotal,
-        },
-        blockHeight: blockLatest.height,
-        avgBlockTime,
+        blockLatest,
+        blockHeight: blockLatest?.latestBlock?.height,
         blockSpotlightLoading: false,
       };
     },

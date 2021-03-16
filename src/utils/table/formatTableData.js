@@ -3,214 +3,182 @@ import { numberFormat } from '../number/numberFormat';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
-// Thought process here: There is a lot of repeating data that I've been cleaning and massaging.
+// Thought process here: There is a lot of repeating data that we've been cleaning and massaging.
 // Why not just look for any of these common values and have a standard format for them.
 // If a specific table needs to format the data further or differently they can do so after running this fx.
-export const formatTableData = (data) =>
-  data.map((dataObj) => {
+
+// How this function works:
+// Take in the raw server response [data] and what the user wants to use [tableHeaders]
+// Look at each tableHeader [{ displayName: 'Column Name to show in table', dataName: 'What the final name of this data is' }]
+// Then make sure to build the dataName in the final returned object
+// Sometimes we can just convert server key/value to finalData key/value.
+// Other times (most other times) we need to take server key/value, massage, then add that to finalData key/value
+
+// Note: This function assumes all endpoints have the same relative structure to same named/keyed data.
+// Example: We assume votingPower will always be an object with count and total.
+// If this assumption cannot be made then this function loses its use and will fail
+
+export const formatTableData = (data = [], tableHeaders) => {
+  // If the data doesn't have anything in it, just return it to end this fx
+  if (!data.length) return data;
+  // Array of required data from the headers
+  const reqData = tableHeaders.map(({ dataName }) => dataName);
+  // Return the data formatted as needed
+  // Each data item is a row in the table, so we will loop through each
+  return data.map((dataObj) => {
+    // Final formatted row data to add into array
     const finalObj = {};
-    Object.keys(dataObj).forEach((key) => {
-      const value = dataObj[key];
-      switch (key) {
-        // Not used yet, found within uncreated APIs
+    // Loop through each required type of data and gather it into the final Obj
+    reqData.forEach((dataName) => {
+      // serverValue is the default value of the key from the server response
+      // Example: dataName = 'hash', dataObj has 'hash' with the value we need, so we'll use it (no modification needed)
+      const serverValue = dataObj[dataName];
+      switch (dataName) {
+        // Address or hash leading to the account's page
+        case 'ownerAddress': // fallthrough
         case 'address':
-          finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            link: `/accounts/${value}`,
-            hover: value,
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            link: `/accounts/${serverValue}`,
+            hover: serverValue,
           };
           break;
-        case 'addressId':
-          finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            hover: value,
-            link: `/validator/${value}`,
-          };
-          break;
-        case 'amount': // fallthrough
-        case 'balance': {
-          const denom = dataObj.denom || '';
-          finalObj[key] = {
-            value: `${numberFormat(value, 2)} ${denom}`,
-          };
-          break;
-        }
-        case 'block': // fallthrough
-        case 'blockHeight': // fallthrough
-        case 'height':
-          finalObj[key] = {
-            value,
-            link: `/block/${value}`,
-          };
-          break;
-        case 'bondHeight':
-          finalObj[key] = { value };
-          break;
-        case 'bondedTokens':
-          finalObj['bondedTokens'] = finalObj['bondedTokens'] || { value: [] };
-          finalObj['bondedTokens'].value[0] = numberFormat(value);
-          break;
-        case 'bondedTokensDenomination':
-          finalObj['bondedTokens'] = finalObj['bondedTokens'] || { value: [] };
-          finalObj['bondedTokens'].value[1] = ` ${value}`;
-          break;
-        case 'circulation':
-          finalObj[key] = {
-            value: numberFormat(value),
-          };
-          break;
-        case 'commission':
-          finalObj[key] = { value };
-          break;
-        case 'consensusAddress':
-          finalObj[key] = { value: maxLength(value, 11, 3), hover: value };
-          break;
-        case 'currency':
-          finalObj[key] = { value };
-          break;
-        case 'delegators':
-          finalObj[key] = { value };
-          break;
-        case 'fee': {
-          const { amount, denom } = value;
-          finalObj['fee'] = { value: [numberFormat(amount, 6), ' ', denom] };
-          break;
-        }
-        case 'denomination': // fallthrough
-        case 'feeDenomination':
-          finalObj['fee'] = finalObj['fee'] || { value: [] };
-          finalObj['fee'].value[1] = ` ${value}`;
-          break;
-        case 'denom': // fallthrough
-        case 'marker':
-          finalObj[key] = {
-            value,
-            link: `/asset/${value}`,
-          };
-          break;
-        case 'moniker':
-          finalObj[key] = {
-            value,
-            link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress}`,
-          };
-          break;
-        case 'operator':
-          finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            hover: value,
-          };
-          break;
-        case 'ownerAddress':
-          finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            link: `/accounts/${value}`,
-            hover: value,
-            copy: value,
-          };
-          break;
-        case 'percentage': {
-          const finalValue = value < 0.01 ? '<0.01%' : `${numberFormat(value * 100, 2)}%`;
-          finalObj[key] = {
-            value: finalValue,
-          };
-          break;
-        }
-        case 'price': // fallthrough
-        case 'priceChange':
-          finalObj[key] = {
-            value: numberFormat(value),
-          };
-          break;
-        case 'proposerAddress':
-          finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            hover: value,
-            link: `/validator/${value}`,
-          };
-          break;
-        case 'proposerPriority':
-          finalObj[key] = { value };
-          break;
-        case 'selfBonded':
-          finalObj['selfBonded'] = finalObj['selfBonded'] || { value: [] };
-          finalObj['selfBonded'].value[0] = numberFormat(value, 2);
-          break;
-        case 'selfBondedDenomination':
-          finalObj['selfBonded'] = finalObj['selfBonded'] || { value: [] };
-          finalObj['selfBonded'].value[1] = ` ${value}`;
-          break;
-        case 'shares':
-          finalObj[key] = { value: numberFormat(value) };
-          break;
+        // Address or hash leading to the account's page (multiple)
         case 'signers': {
           // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
-          const signer = dataObj?.signers?.signers[0];
-          finalObj[key] = {
+          const signer = serverValue?.signers[0];
+          finalObj[dataName] = {
             value: maxLength(signer, 11, 3),
             link: `/accounts/${signer}`,
             hover: signer,
           };
           break;
         }
-        case 'status':
-          finalObj[key] = { value: capitalize(value) };
+        // Address or hash leading to the validator's page
+        case 'proposerAddress': // fallthrough
+        case 'addressId':
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            hover: serverValue,
+            link: `/validator/${serverValue}`,
+          };
           break;
+        // Address or hash leading to the transaction's page
+        case 'txHash':
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            link: `/tx/${serverValue}`,
+            hover: serverValue,
+          };
+          break;
+        // Address or hash without a link anywhere
+        case 'consensusAddress':
+          finalObj[dataName] = { value: maxLength(serverValue, 11, 3), hover: serverValue };
+          break;
+        // Amount of currency/item and its denomination
+        case 'balance': {
+          const denom = dataObj.denom || '';
+          finalObj[dataName] = { value: `${numberFormat(serverValue, 6)} ${denom}` };
+          break;
+        }
+        // Amount of currency/item and its denomination given in objects (multiple)
+        case 'balances': {
+          const { amount, denom } = dataObj;
+          finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          break;
+        }
+        // Amount of currency/item and its denomination given in an object (amount)
+        case 'amount': // fallthrough
+        case 'fee': {
+          const { amount, denom } = serverValue;
+          finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          break;
+        }
+        // Amount of currency/item and its denomination given in an object (count)
+        case 'bondedTokens': // fallthrough
+        case 'selfBonded': {
+          const { count, denom } = serverValue;
+          finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` };
+          break;
+        }
+        // Height of a block
+        case 'block': // fallthrough
+        case 'height':
+          finalObj[dataName] = {
+            value: serverValue,
+            link: `/block/${serverValue}`,
+          };
+          break;
+        // Denomination or marker value linking to the asset
+        case 'denom': // fallthrough
+        case 'marker':
+          finalObj[dataName] = {
+            value: serverValue,
+            link: `/asset/${serverValue}`,
+          };
+          break;
+        // Name/moniker of a validator linking to its address
+        case 'moniker':
+          finalObj[dataName] = {
+            value: serverValue,
+            // Build the link from the addressId or the ownerAddress
+            link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress}`,
+            hover: serverValue,
+          };
+          break;
+        // Convert given time to standard readable UTC string
         case 'time': // fallthrough
         case 'timestamp':
-          finalObj[key] = { value: `${getUTCTime(value)}+UTC`, raw: value };
+          finalObj[dataName] = { value: `${getUTCTime(serverValue)}+UTC`, raw: serverValue };
           break;
-        case 'totalSupply':
-          finalObj[key] = {
-            value: numberFormat(value),
-          };
-          break;
-        case 'txHash':
-          finalObj[key] = {
-            value: maxLength(value, 11, 3),
-            link: `/tx/${value}`,
-            hover: value,
-          };
-          break;
-        case 'txNum':
-          finalObj[key] = { value };
-          break;
-        case 'msg': // fallthrough
+        // Find the transaction type within the message object, then capitalize it
         case 'txType': // fallthrough
         case 'type': {
           // type is nested within msg: [{ type: 'txType' msg: {} }]
           const type = dataObj?.msg[0]?.type || '--';
-          finalObj['txType'] = { value: capitalize(type) };
+          finalObj[dataName] = { value: capitalize(type) };
           break;
         }
-        case 'uptime':
-          finalObj[key] = { value: `${numberFormat(value)} %` };
-          break;
-        case 'numValidators': // fallthrough
-        case 'validatorsNum':
-          finalObj['validators'] = finalObj['validators'] || { value: [] };
-          finalObj['validators'].value[0] = value;
-          finalObj['validators'].value[1] = ' / ';
-          break;
-        case 'numValidatorsTotal': // fallthrough
-        case 'validatorsTotal':
-          finalObj['validators'] = finalObj['validators'] || { value: [] };
-          finalObj['validators'].value[2] = value;
-          break;
-        case 'value':
-          finalObj[key] = { value: numberFormat(value, 8) };
-          break;
+        // Get the voting power as a percent from the serverValue (object)
         case 'votingPower': {
-          const percent = (value / dataObj?.votingPowerTotal) * 100;
-          finalObj['votingPower'] = { value: `${numberFormat(percent, 2)}%` };
+          const { count, total } = serverValue;
+          finalObj[dataName] = { value: `${numberFormat(count / total) * 100} %` };
           break;
         }
-        case 'votingPowerPercent':
-          finalObj[key] = { value: `${numberFormat(value)} %` };
+        // Get the amount of validators (object)
+        case 'validatorCount': {
+          const { count, total } = serverValue;
+          finalObj[dataName] = { value: `${count} / ${total}` };
+          break;
+        }
+        // Server value already correct
+        case 'bondHeight': // fallthrough
+        case 'currency': // fallthrough
+        case 'delegators': // fallthrough
+        case 'proposerPriority': // fallthrough
+        case 'commission':
+          finalObj[dataName] = { value: serverValue };
+          break;
+        // Server value in a numberFormat
+        case 'shares': // fallthrough
+        case 'totalSupply': // fallthrough
+        case 'txNum': // fallthrough
+        case 'circulation':
+          finalObj[dataName] = { value: numberFormat(serverValue) };
+          break;
+        // Server value in a numberFormat as a percentage
+        case 'uptime':
+          finalObj[dataName] = { value: `${numberFormat(serverValue)} %` };
+          break;
+        // Server value capitalized
+        case 'status':
+          finalObj[dataName] = { value: capitalize(serverValue) };
           break;
         default:
           break;
       }
     });
-
+    // Return the modified finalObj (data row)
     return finalObj;
   });
+};

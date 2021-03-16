@@ -27,20 +27,11 @@ const BlockDetails = () => {
     }
   }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight]);
 
-  const {
-    hash,
-    proposerAddress,
-    votingPower,
-    votingPowerTotal,
-    txNum,
-    numValidators = '--',
-    numValidatorsTotal = '--',
-    time,
-    userName,
-  } = blockInfo;
-
+  const { hash, proposerAddress, votingPower = {}, txNum, validatorCount = {}, time, userName } = blockInfo;
+  const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
+  const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
   const utcTime = getUTCTime(time);
-  const votingPowerPercent = numberFormat((votingPower / votingPowerTotal) * 100, 2);
+  const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
 
   const summaryData = [
     { title: 'Block Hash', value: hash, copy: hash },
@@ -50,7 +41,7 @@ const BlockDetails = () => {
       link: `/validator/${proposerAddress}`,
       copy: proposerAddress,
     },
-    { title: 'Validators', value: `${numValidators} / ${numValidatorsTotal}` },
+    { title: 'Validators', value: `${validatorCountAmount} / ${validatorCountTotal}` },
     { title: 'Voting Power', value: `${numberFormat(votingPowerPercent, 2)}%` },
     { title: 'Transactions', value: txNum },
     { title: 'Timestamp', value: `${utcTime}+UTC` },

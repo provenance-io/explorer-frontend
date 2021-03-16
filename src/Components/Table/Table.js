@@ -64,7 +64,7 @@ const Table = ({
   noResults,
 }) => {
   // Format the raw table data into the form we need it to be displayed
-  const tableData = formatTableData(rawTableData);
+  const tableData = formatTableData(rawTableData, tableHeaders);
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
   const showPagination = dataExists && !isLoading && hasPagination && totalPages;
@@ -107,7 +107,7 @@ const Table = ({
       }
 
       if (!rowData[dataName]) {
-        console.warn(`Table Error! Data not found (rowData.${dataName}): `, { rowData, dataName });
+        console.warn(`Table Error! Data not found (rowData.${dataName}): `, { rowData, rawTableData: rawTableData[index], dataName });
       }
 
       const { link = false, value = '--', hover = false } = rowData[dataName] || {};
