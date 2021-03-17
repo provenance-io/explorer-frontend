@@ -128,9 +128,11 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Convert given time to standard readable UTC string
         case 'time': // fallthrough
-        case 'timestamp':
-          finalObj[dataName] = { value: `${getUTCTime(serverValue)}+UTC`, raw: serverValue };
+        case 'timestamp': {
+          const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
+          finalObj[dataName] = { value, raw: serverValue };
           break;
+        }
         // Find the transaction type within the message object, then capitalize it
         case 'txType': // fallthrough
         case 'type': {
