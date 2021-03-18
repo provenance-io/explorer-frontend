@@ -56,10 +56,10 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "start": "react-scripts start",
+    "start": "REACT_APP_ENV=test react-scripts start",
     "local": "REACT_APP_ENV=local react-scripts start",
     "prebuild": "npm run lint && npm test -- --watchAll=false",
-    "build": "react-scripts build",
+    "build": "REACT_APP_ENV=production react-scripts build",
     "build:stats": "react-scripts build -- --stats",
     "unmap": "rm build/static/js/*.map",
     "test": "react-scripts test",

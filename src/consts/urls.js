@@ -1,20 +1,18 @@
-// Should be a better (safer) way to do this...
-const isDev = process.env.NODE_ENV === 'development';
+// Determine current environment
 const isLocal = process.env.REACT_APP_ENV === 'local';
-const isTest = window.location.href.includes('test.');
-// Base path setup
-// Default
-export let ENVIRONMENT = `www.${process.env.REACT_APP_PROD_HOSTNAME}`;
-// Local (have BE spun up locally on another port)
+const isTest = process.env.REACT_APP_ENV === 'test';
+const isProd = process.env.REACT_APP_ENV === 'production';
+// Base URL for all calls to use
+let BASE_URL = '';
 if (isLocal) {
-  ENVIRONMENT = `${process.env.REACT_APP_LOCAL_HOSTNAME}`;
+  BASE_URL = `http://${process.env.REACT_APP_LOCAL_HOSTNAME}/api/v2`;
 }
-// Test
-if (!isLocal && (isDev || isTest)) {
-  ENVIRONMENT = `${process.env.REACT_APP_TEST_HOSTNAME}`;
+if (isTest) {
+  BASE_URL = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/secured/api/v2`;
 }
-
-export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : 'http://service-explorer.test.provenance.io/secured/api/v2';
+if (isProd) {
+  BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/secured/api/v2`;
+}
 
 // Actual API URLs
 // -- Accounts
