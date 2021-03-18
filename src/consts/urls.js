@@ -1,16 +1,14 @@
 // Determine current environment
 const isLocal = process.env.REACT_APP_ENV === 'local';
-const isTest = process.env.REACT_APP_ENV === 'test';
+const isTest = process.env.REACT_APP_ENV === 'test' || window.location.href.includes('test.');
 const isProd = process.env.REACT_APP_ENV === 'production';
 // Base URL for all calls to use
 let BASE_URL = '';
 if (isLocal) {
   BASE_URL = `http://${process.env.REACT_APP_LOCAL_HOSTNAME}/api/v2`;
-}
-if (isTest) {
-  BASE_URL = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/secured/api/v2`;
-}
-if (isProd) {
+} else if (isTest) {
+  BASE_URL = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v2`;
+} else if (isProd) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/secured/api/v2`;
 }
 
