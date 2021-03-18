@@ -14,7 +14,7 @@ if (!isLocal && (isDev || isTest)) {
   ENVIRONMENT = `${process.env.REACT_APP_TEST_HOSTNAME}`;
 }
 
-export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : `https://${ENVIRONMENT}/explorer/secured/api/v2`;
+export const BASE_URL = isLocal ? `http://${ENVIRONMENT}/api/v2` : 'http://service-explorer.test.provenance.io/secured/api/v2';
 
 // Actual API URLs
 // -- Accounts
