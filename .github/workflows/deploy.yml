@@ -46,4 +46,4 @@ jobs:
           file: Dockerfile
           context: .
           push: true
-          tags: provenanceio/explorer-frontend:compose-latest
+          tags: provenanceio/explorer-frontend-generic:latest
