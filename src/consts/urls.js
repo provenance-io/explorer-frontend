@@ -13,7 +13,6 @@ if (isLocal) {
   FAUCET_URL = process.env.REACT_APP_TEST_FAUCET_HOSTNAME;
 } else if (isProd) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/secured/api/v2`;
-  FAUCET_URL = process.env.REACT_APP_PROD_FAUCET_HOSTNAME;
 }
 
 // Actual API URLs
