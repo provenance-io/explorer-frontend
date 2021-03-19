@@ -1,5 +1,5 @@
 // Check for a docker env override
-const isDockerOverride = process.env.EXPLORER_FE_APP_ENV;
+const isDockerOverride = process.env.REACT_APP_DOCKER_ENV;
 // Use the override if it exists, if it doesn't get the value from the build
 const reactAppEnv = isDockerOverride ? isDockerOverride : process.env.REACT_APP_ENV;
 // Determine current environment
