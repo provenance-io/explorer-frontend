@@ -41,7 +41,7 @@ jobs:
           tags: provenanceio/explorer-frontend:latest
   build-local:
     env:
-      REACT_APP_DOCKER_ENV: local
+      REACT_APP_DOCKER_ENV: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
