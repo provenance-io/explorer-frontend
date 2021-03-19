@@ -68,7 +68,7 @@ const Footer = () => {
       <FooterData>Provenance Blockchain Explorer</FooterData>
       <FooterData>
         Chain ID: {chaincodeId} |{' '}
-        <Link to={'/faucet'} title={`${chaincodeId} faucet`}>
+        <Link to="/faucet" title={`${chaincodeId} faucet`}>
           Faucet
         </Link>
       </FooterData>
