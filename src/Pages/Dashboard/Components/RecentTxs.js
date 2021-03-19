@@ -85,14 +85,14 @@ const RecentTxs = () => {
   }, [getTxsRecent, recentTxsCount]);
 
   const buildTxLines = () =>
-    txs.map(({ txHash, fee, msg = [], denomination = '--', time }) => {
+    txs.map(({ txHash, fee, msg = [], denomination = '--', time }, index) => {
       const { amount: feeAmount, denom: feeDenom } = fee;
       const { type = '--' } = msg[0];
       const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
 
       return (
-        <TxLineContainer key={txHash}>
+        <TxLineContainer key={`${txHash}_${index}`}>
           <TxLineRow title={txHash}>
             <div>
               TX# <Link to={`/tx/${txHash}`}>{maxLength(txHash, txCharLength)}</Link>

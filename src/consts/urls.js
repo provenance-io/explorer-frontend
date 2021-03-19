@@ -1,7 +1,10 @@
+// Use the override if it exists, if it doesn't get the value from the build
+const reactAppEnv = process.env.REACT_APP_ENV;
+// We allow
 // Determine current environment
-const isLocal = process.env.REACT_APP_ENV === 'local';
-const isTest = process.env.REACT_APP_ENV === 'test' || window.location.href.includes('test.');
-const isProd = process.env.REACT_APP_ENV === 'production';
+const isLocal = reactAppEnv === 'local';
+const isTest = reactAppEnv === 'test' || window.location.href.includes('test.');
+const isProd = reactAppEnv === 'production';
 // Base URL for all calls to use
 let BASE_URL = '';
 export let FAUCET_URL = '';
