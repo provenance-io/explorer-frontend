@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useApp } from 'redux/hooks';
+import { Link } from 'react-router-dom';
 import { breakpoints, SOCIAL_GITHUB_URL, SOCIAL_DISCORD_URL, SOCIAL_PROVENANCE_URL } from 'consts';
 import Sprite from '../Sprite';
 import { version } from '../../../package.json';
@@ -67,9 +68,9 @@ const Footer = () => {
       <FooterData>Provenance Blockchain Explorer</FooterData>
       <FooterData>
         Chain ID: {chaincodeId} |{' '}
-        <a href="/explorer/faucet" title={`${chaincodeId} faucet`}>
+        <Link to={'/faucet'} title={`${chaincodeId} faucet`}>
           Faucet
-        </a>
+        </Link>
       </FooterData>
       <FooterSocial>
         <SocialLink href={SOCIAL_PROVENANCE_URL} target="_blank" rel="noreferrer" title="Visit Provenance">

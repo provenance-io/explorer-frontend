@@ -4,12 +4,16 @@ const isTest = process.env.REACT_APP_ENV === 'test' || window.location.href.incl
 const isProd = process.env.REACT_APP_ENV === 'production';
 // Base URL for all calls to use
 let BASE_URL = '';
+export let FAUCET_URL = '';
 if (isLocal) {
   BASE_URL = `http://${process.env.REACT_APP_LOCAL_HOSTNAME}/api/v2`;
+  FAUCET_URL = process.env.REACT_APP_LOCAL_FAUCET_HOSTNAME;
 } else if (isTest) {
   BASE_URL = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v2`;
+  FAUCET_URL = process.env.REACT_APP_TEST_FAUCET_HOSTNAME;
 } else if (isProd) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/secured/api/v2`;
+  FAUCET_URL = process.env.REACT_APP_PROD_FAUCET_HOSTNAME;
 }
 
 // Actual API URLs
@@ -25,8 +29,6 @@ export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 // -- Chaincode id
 export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
-// -- Faucet
-export const FAUCET_URL = `http://localhost:42000`;
 // -- Social Media/Contact Information
 export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
 export const SOCIAL_DISCORD_URL = 'https://discord.com/';
