@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { TX_INFO_URL, TXS_RECENT_URL, TX_HISTORY_URL, TXS_BY_BLOCK_URL, TXS_BY_ADDRESS_URL } from 'consts';
+import { TX_INFO_URL, TXS_RECENT_URL, TX_HISTORY_URL, TXS_BY_BLOCK_URL, TXS_BY_ADDRESS_URL, TX_TYPES_URL } from 'consts';
 import { ajaxGet } from './xhrActions';
 
 // Constants
@@ -10,6 +10,7 @@ export const GET_TX_HISTORY = 'GET_TX_HISTORY';
 export const GET_TXS_BY_BLOCK = 'GET_TXS_BY_BLOCK';
 export const GET_TXS_BY_ADDRESS = 'GET_TXS_BY_ADDRESS';
 export const GET_TX_FULL_JSON = 'GET_TX_FULL_JSON';
+export const GET_TX_TYPES = 'GET_TX_TYPES';
 // -- Store
 export const SET_RECENT_TXS_COUNT = 'SET_RECENT_TXS_COUNT';
 
@@ -41,5 +42,6 @@ export const getTxHistory = ({ toDate, fromDate, granularity = 'day' }) => async
     `${TX_HISTORY_URL}?toDate=${toDate}&fromDate=${fromDate}&granularity=${granularity.toUpperCase()}`
   );
 export const getTxFullJSON = (txHash) => async (dispatch) => ajaxGet(GET_TX_FULL_JSON, dispatch, `${TX_INFO_URL}/${txHash}/json`);
+export const getTxTypes = () => async (dispatch) => ajaxGet(GET_TX_TYPES, dispatch, TX_TYPES_URL);
 // -- Store
 export const setRecentTxsCount = createAction(SET_RECENT_TXS_COUNT);

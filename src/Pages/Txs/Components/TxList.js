@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
-import { TRANSACTION_TYPE_OPTIONS, TRANSACTION_STATUS_OPTIONS, breakpoints } from 'consts';
+import { TRANSACTION_STATUS_OPTIONS, breakpoints } from 'consts';
 import { useTxs, useApp } from 'redux/hooks';
-import { subtractDays } from 'utils';
 
 const TxListContainer = styled.div`
   width: 100%;
@@ -27,37 +26,49 @@ const FilterError = styled.div`
 
 const TxList = () => {
   const defaultDateFormat = 'yyyy-MM-dd';
-  const today = new Date();
-  const defaultDayTo = format(today, defaultDateFormat);
-  const defaultDayFrom = format(subtractDays(today, 13), defaultDateFormat);
 
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
-  const [filterFrom, setFilterFrom] = useState(defaultDayFrom);
-  const [filterTo, setFilterTo] = useState(defaultDayTo);
+  const [filterFrom, setFilterFrom] = useState('');
+  const [filterTo, setFilterTo] = useState('');
   const [filterError, setFilterError] = useState('');
 
-  const { txs: tableData, txsPages: tablePages, txsRecentLoading: tableLoading, getTxsRecent: getTableData } = useTxs();
+  const {
+    txs: tableData,
+    txsPages: tablePages,
+    txsRecentLoading: tableLoading,
+    getTxsRecent: getTableData,
+    txTypes,
+    getTxTypes,
+    txTypesLoading,
+  } = useTxs();
   const { tableCount } = useApp();
   const { blockHeight: pageBlockHeight } = useParams();
 
   const filterToDateClean = filterTo.replace(/-/g, '/');
   const filterFromDateClean = filterFrom.replace(/-/g, '/');
-  const startDate = new Date(filterToDateClean);
-  const endDate = new Date(filterFromDateClean);
+  const startDate = filterTo ? new Date(filterToDateClean) : '';
+  const endDate = filterFrom ? new Date(filterFromDateClean) : '';
+  const txTypesExist = Object.keys(txTypes).length > 0;
 
-  // Initial Fetch
+  // Initial Fetch of tx types (filter)
+  useEffect(() => {
+    // Only need to fetch them if we haven't pulled them already
+    if (!txTypesExist) {
+      getTxTypes();
+    }
+  }, [getTxTypes, txTypesExist]);
+
+  // Initial Fetch of txs
   useEffect(() => {
     getTableData({
       page: 1,
       count: tableCount,
       type: '',
       status: '',
-      toDate: defaultDayTo,
-      fromDate: defaultDayFrom,
     });
-  }, [getTableData, pageBlockHeight, tableCount, defaultDayFrom, defaultDayTo]);
+  }, [getTableData, pageBlockHeight, tableCount]);
 
   // Fetch on page change
   const changePage = (newPage) => {
@@ -67,8 +78,8 @@ const TxList = () => {
       count: tableCount,
       type: filterType,
       status: filterStatus,
-      toDate: defaultDayTo,
-      fromDate: defaultDayFrom,
+      toDate: filterTo,
+      fromDate: filterFrom,
     });
   };
 
@@ -135,7 +146,7 @@ const TxList = () => {
     {
       title: 'Type:',
       type: 'dropdown',
-      options: TRANSACTION_TYPE_OPTIONS,
+      options: txTypes,
       action: updateFilterType,
     },
     {
@@ -148,11 +159,10 @@ const TxList = () => {
       title: 'From:',
       type: 'datepicker',
       options: {
-        placeholderText: 'Select From Date',
-        onChange: (date) => setFilterFrom(format(date, defaultDateFormat)),
+        placeholderText: 'Pick From Date',
+        onChange: (date) => setFilterFrom(date ? format(date, defaultDateFormat) : ''),
         selected: endDate,
         dateFormat: defaultDateFormat,
-        maxDate: subtractDays(startDate, 1), // 15 Days from the start day is the max length of time
       },
       action: setFilterFrom,
     },
@@ -160,11 +170,10 @@ const TxList = () => {
       title: 'To:',
       type: 'datepicker',
       options: {
-        placeholderText: 'Select To Date',
-        onChange: (date) => setFilterTo(format(date, defaultDateFormat)),
+        placeholderText: 'Pick To Date',
+        onChange: (date) => setFilterTo(date ? format(date, defaultDateFormat) : ''),
         selected: startDate,
         dateFormat: defaultDateFormat,
-        maxDate: today,
       },
       action: setFilterTo,
     },
@@ -172,10 +181,12 @@ const TxList = () => {
 
   return (
     <TxListContainer>
-      <FiltersWrapper>
-        {filterError && <FilterError>{filterError}</FilterError>}
-        <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} flush />
-      </FiltersWrapper>
+      {!txTypesLoading && txTypesExist && (
+        <FiltersWrapper>
+          {filterError && <FilterError>{filterError}</FilterError>}
+          <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} flush />
+        </FiltersWrapper>
+      )}
       <Table
         tableHeaders={tableHeaders}
         tableData={tableData}

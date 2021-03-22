@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import { capitalize } from 'utils';
 import {
   GET_TXS_RECENT,
   GET_TX_HISTORY,
@@ -7,6 +8,7 @@ import {
   GET_TXS_BY_ADDRESS,
   GET_TX_FULL_JSON,
   SET_RECENT_TXS_COUNT,
+  GET_TX_TYPES,
 } from '../actions/txsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -32,6 +34,9 @@ export const initialState = {
   txsByAddress: [],
   txsByAddressLoading: false,
   txsByAddressPages: 0,
+  // Tx Types (for filters)
+  txTypesLoading: false,
+  txTypes: {},
 };
 
 const reducer = handleActions(
@@ -40,6 +45,50 @@ const reducer = handleActions(
       return {
         ...state,
         recentTxsCount,
+      };
+    },
+    /* -----------------
+    GET_TX_TYPES
+    -------------------*/
+    [`${GET_TX_TYPES}_${REQUEST}`](state) {
+      return {
+        ...state,
+        txTypesLoading: true,
+      };
+    },
+    [`${GET_TX_TYPES}_${SUCCESS}`](state, { payload }) {
+      // Initial value of "all"
+      const txTypes = {
+        allTxTypes: { isDefault: true, title: 'All Tx Types' },
+      };
+      // Sample of multi-nested options
+      // gov: {
+      //   title: 'Gov',
+      //   options: {
+      //     submitPropsal: { title: 'Submit Proposal' },
+      //     deposit: { title: 'Deposit' },
+      //     vote: { title: 'Vote' },
+      //   },
+      // },
+      // Loop through each module from API and add to types
+      payload.forEach(({ module, type }) => {
+        txTypes[module] = { title: capitalize(module), options: {} };
+      });
+      // Loop through each type from API and add to types
+      payload.forEach(({ module, type }) => {
+        txTypes[module].options[type] = { title: capitalize(type) };
+      });
+
+      return {
+        ...state,
+        txTypes,
+        txTypesLoading: false,
+      };
+    },
+    [`${GET_TX_TYPES}_${FAILURE}`](state) {
+      return {
+        ...state,
+        txTypesLoading: false,
       };
     },
     /* -----------------

@@ -41,6 +41,7 @@ export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
 export const TX_HISTORY_URL = `${BASE_URL}/txs/history`;
 export const TXS_BY_BLOCK_URL = `${BASE_URL}/txs/height`;
 export const TXS_BY_ADDRESS_URL = `${BASE_URL}/txs/address`;
+export const TX_TYPES_URL = `${BASE_URL}/txs/types`;
 // -- Validators
 export const VALIDATOR_INFO_URL = `${BASE_URL}/validators`;
 export const VALIDATORS_RECENT_URL = `${BASE_URL}/validators/recent`;

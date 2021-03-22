@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useAccounts } from 'redux/hooks';
-import { Content, CopyValue, Sprite } from 'Components';
+import { Content, CopyValue, Sprite, Loading } from 'Components';
 
 const Column = styled.div`
   ${({ flexBasis }) => flexBasis && `flex-basis: ${flexBasis};`}
@@ -23,7 +23,7 @@ const Value = styled.div`
 const TokenIcon = styled.div``;
 
 const AccountSpotlight = () => {
-  const { getAccountInfo, accountInfo } = useAccounts();
+  const { getAccountInfo, accountInfo, accountInfoLoading } = useAccounts();
   const { addressId } = useParams();
 
   useEffect(() => {
@@ -35,45 +35,51 @@ const AccountSpotlight = () => {
 
   return (
     <Content justify="flex-start">
-      <Column flexBasis="10%">
-        <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
-      </Column>
-      <Column flexBasis="45%">
-        <Row>
-          <Title>Address:</Title>
-          <Value title={addressId}>
-            {addressId}
-            <CopyValue value={addressId} title="Copy Address" />
-          </Value>
-        </Row>
-        <Row>
-          <Title>Account Type:</Title>
-          <Value>{accountType}</Value>
-        </Row>
-        <Row>
-          <Title>Account Number:</Title>
-          <Value>{accountNumber}</Value>
-        </Row>
-      </Column>
-      <Column flexBasis="45%">
-        <Row>
-          <Title>Public Key:</Title>
-          <Value>
-            {publicKey ? (
-              <>
-                {publicKey}
-                <CopyValue value={publicKey} title="Copy Public Key" />
-              </>
-            ) : (
-              '--'
-            )}
-          </Value>
-        </Row>
-        <Row>
-          <Title>Sequence:</Title>
-          <Value>{sequence}</Value>
-        </Row>
-      </Column>
+      {accountInfoLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Column flexBasis="10%">
+            <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
+          </Column>
+          <Column flexBasis="45%">
+            <Row>
+              <Title>Address:</Title>
+              <Value title={addressId}>
+                {addressId}
+                <CopyValue value={addressId} title="Copy Address" />
+              </Value>
+            </Row>
+            <Row>
+              <Title>Account Type:</Title>
+              <Value>{accountType}</Value>
+            </Row>
+            <Row>
+              <Title>Account Number:</Title>
+              <Value>{accountNumber}</Value>
+            </Row>
+          </Column>
+          <Column flexBasis="45%">
+            <Row>
+              <Title>Public Key:</Title>
+              <Value>
+                {publicKey ? (
+                  <>
+                    {publicKey}
+                    <CopyValue value={publicKey} title="Copy Public Key" />
+                  </>
+                ) : (
+                  '--'
+                )}
+              </Value>
+            </Row>
+            <Row>
+              <Title>Sequence:</Title>
+              <Value>{sequence}</Value>
+            </Row>
+          </Column>
+        </>
+      )}
     </Content>
   );
 };

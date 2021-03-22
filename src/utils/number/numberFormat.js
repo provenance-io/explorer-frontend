@@ -13,7 +13,6 @@ export const numberFormat = (rawValue, digits = -1, type = 'number', extraOption
   }
   // Amount of significant digits to return in string
   if (digits >= 0) {
-    options.minimumFractionDigits = digits;
     options.maximumFractionDigits = digits;
   }
 

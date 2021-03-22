@@ -167,8 +167,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Display the percent but make adjustments for low values (<)
         // Server value in a numberFormat as a percentage
+        case 'commission': // fallthrough
         case 'percentage': {
-          const percent = serverValue < 0.0001 ? '>0.0001' : numberFormat(serverValue, 4);
+          const percentValue = serverValue * 100;
+          const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
           finalObj[dataName] = { value: `${percent} %` };
           break;
         }
@@ -176,8 +178,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'bondHeight': // fallthrough
         case 'currency': // fallthrough
         case 'delegators': // fallthrough
-        case 'proposerPriority': // fallthrough
-        case 'commission':
+        case 'proposerPriority':
           finalObj[dataName] = { value: serverValue };
           break;
         // Server value in a numberFormat

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { Content, CopyValue, PopupNote, Sprite } from 'Components';
+import { Content, CopyValue, PopupNote, Sprite, Loading } from 'Components';
 import { maxLength, numberFormat } from 'utils';
 
 const ImageContainer = styled.div`
@@ -78,7 +78,7 @@ const Status = styled.div`
 
 const ValidatorSpotlight = () => {
   const [showNote, setShowNote] = useState(false);
-  const { getValidatorSpotlight, validatorSpotlight } = useValidators();
+  const { getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } = useValidators();
   const { validatorId } = useParams();
 
   useEffect(() => {
@@ -95,6 +95,9 @@ const ValidatorSpotlight = () => {
     consensusPubKey,
     blockCount = {},
     bondHeight = '--',
+    withdrawalAddress,
+    ownerAddress,
+    operatorAddress,
   } = validatorSpotlight;
 
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
@@ -103,89 +106,95 @@ const ValidatorSpotlight = () => {
 
   return (
     <Content>
-      <Half>
-        <SpotlightContainer>
-          <ImageContainer>
-            {image ? <img src={image} alt={moniker} title={moniker} /> : <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>}
-          </ImageContainer>
-          <Row>
-            <Title title={moniker}>{maxLength(moniker, 18)}</Title>
-          </Row>
-          {url && (
-            <Row title={moniker}>
-              <a href={url} title={`${maxLength(moniker, 18)} url link`} target="_blank" rel="noopener noreferrer">
-                {url}
-              </a>
-            </Row>
-          )}
-          {description && (
-            <Row>
-              <Description>{description}</Description>
-            </Row>
-          )}
-        </SpotlightContainer>
-      </Half>
-      <Half>
-        <DataRow>
-          <Status>Active</Status>
-        </DataRow>
-        <DataRow>
-          <DataTitle>
-            <ValueRow>
-              Operator Address:
-              <NoteContainer onMouseEnter={() => setShowNote(true)} onMouseLeave={() => setShowNote(false)}>
-                <PopupNote show={showNote} position="below">
-                  <NoteText>The address you used to create a validator, delegate, withdraw delegator reward, etc</NoteText>
-                </PopupNote>
-                <Sprite icon="HELP" size="1.7rem" onClick={() => setShowNote(!showNote)} />
-              </NoteContainer>
-            </ValueRow>
-          </DataTitle>
-          <DataValue title={validatorId}>
-            {maxLength(validatorId, 11, 3)}
-            <CopyValue title="Copy Operator Address" value={validatorId} />
-          </DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Owner Address:</DataTitle>
-          <DataValue title={validatorId}>
-            <Link to={`/accounts/${validatorId}`}>{maxLength(validatorId, 11, 3)}</Link>
-            <CopyValue title="Copy Owner Address" value={validatorId} />
-          </DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Withdraw Address:</DataTitle>
-          <DataValue title={validatorId}>
-            <Link to={`/accounts/${validatorId}`}>{maxLength(validatorId, 11, 3)}</Link>
-            <CopyValue title="Copy Withdraw Address" value={validatorId} />
-          </DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Voting Power:</DataTitle>
-          <DataValue>{votingPowerPercent}%</DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Uptime:</DataTitle>
-          <DataValue>{numberFormat(uptime, 2)}%</DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Missed Blocks:</DataTitle>
-          <DataValue>
-            {missedBlocksCount} in {missedBlocksTotal}
-          </DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Bond Height:</DataTitle>
-          <DataValue>{bondHeight}</DataValue>
-        </DataRow>
-        <DataRow>
-          <DataTitle>Consensus Pubkey:</DataTitle>
-          <DataValue title={consensusPubKey}>
-            {maxLength(consensusPubKey, 11, 3)}
-            <CopyValue title="Copy Consensus Pubkey" value={consensusPubKey} />
-          </DataValue>
-        </DataRow>
-      </Half>
+      {validatorSpotlightLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Half>
+            <SpotlightContainer>
+              <ImageContainer>
+                {image ? <img src={image} alt={moniker} title={moniker} /> : <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>}
+              </ImageContainer>
+              <Row>
+                <Title title={moniker}>{maxLength(moniker, 18)}</Title>
+              </Row>
+              {url && (
+                <Row title={moniker}>
+                  <a href={url} title={`${maxLength(moniker, 18)} url link`} target="_blank" rel="noopener noreferrer">
+                    {url}
+                  </a>
+                </Row>
+              )}
+              {description && (
+                <Row>
+                  <Description>{description}</Description>
+                </Row>
+              )}
+            </SpotlightContainer>
+          </Half>
+          <Half>
+            <DataRow>
+              <Status>Active</Status>
+            </DataRow>
+            <DataRow>
+              <DataTitle>
+                <ValueRow>
+                  Operator Address:
+                  <NoteContainer onMouseEnter={() => setShowNote(true)} onMouseLeave={() => setShowNote(false)}>
+                    <PopupNote show={showNote} position="below">
+                      <NoteText>The address you used to create a validator, delegate, withdraw delegator reward, etc</NoteText>
+                    </PopupNote>
+                    <Sprite icon="HELP" size="1.7rem" onClick={() => setShowNote(!showNote)} />
+                  </NoteContainer>
+                </ValueRow>
+              </DataTitle>
+              <DataValue title={operatorAddress}>
+                {maxLength(operatorAddress, 11, 3)}
+                <CopyValue title="Copy Operator Address" value={operatorAddress} />
+              </DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Owner Address:</DataTitle>
+              <DataValue title={ownerAddress}>
+                <Link to={`/accounts/${ownerAddress}`}>{maxLength(ownerAddress, 11, 3)}</Link>
+                <CopyValue title="Copy Owner Address" value={ownerAddress} />
+              </DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Withdraw Address:</DataTitle>
+              <DataValue title={withdrawalAddress}>
+                <Link to={`/accounts/${withdrawalAddress}`}>{maxLength(withdrawalAddress, 11, 3)}</Link>
+                <CopyValue title="Copy Withdraw Address" value={withdrawalAddress} />
+              </DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Voting Power:</DataTitle>
+              <DataValue>{votingPowerPercent}%</DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Uptime:</DataTitle>
+              <DataValue>{numberFormat(uptime, 2)}%</DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Missed Blocks:</DataTitle>
+              <DataValue>
+                {numberFormat(missedBlocksCount)} in {numberFormat(missedBlocksTotal)}
+              </DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Bond Height:</DataTitle>
+              <DataValue>{bondHeight}</DataValue>
+            </DataRow>
+            <DataRow>
+              <DataTitle>Consensus Pubkey:</DataTitle>
+              <DataValue title={consensusPubKey}>
+                {maxLength(consensusPubKey, 11, 3)}
+                <CopyValue title="Copy Consensus Pubkey" value={consensusPubKey} />
+              </DataValue>
+            </DataRow>
+          </Half>
+        </>
+      )}
     </Content>
   );
 };

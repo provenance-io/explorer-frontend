@@ -6,7 +6,7 @@ import { useAssets } from 'redux/hooks';
 
 const AssetInformation = () => {
   const { assetId } = useParams();
-  const { getAssetInfo, assetInfo, assetInformationLoading } = useAssets();
+  const { getAssetInfo, assetInfo, assetInfoLoading } = useAssets();
 
   useEffect(() => {
     getAssetInfo(assetId);
@@ -23,7 +23,7 @@ const AssetInformation = () => {
     { title: 'Transactions', value: numberFormat(txnCount) },
   ];
 
-  return <Content title="Asset Information">{assetInformationLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
+  return <Content title="Asset Information">{assetInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
 };
 
 export default AssetInformation;

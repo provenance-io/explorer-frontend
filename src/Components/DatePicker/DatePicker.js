@@ -85,7 +85,7 @@ const DatePicker = ({ label, maxDate, selected, onChange, minDate, placeholderTe
 
 DatePicker.propTypes = {
   label: PropTypes.string,
-  selected: PropTypes.instanceOf(Date).isRequired,
+  selected: PropTypes.oneOfType([PropTypes.instanceOf(Date).isRequired, PropTypes.string]),
   onChange: PropTypes.func.isRequired,
   minDate: PropTypes.instanceOf(Date),
   maxDate: PropTypes.instanceOf(Date),
@@ -96,6 +96,7 @@ DatePicker.propTypes = {
 
 DatePicker.defaultProps = {
   dateFormat: 'yyyy-MM-dd',
+  selected: '',
   className: '',
   placeholderText: '',
   minDate: null,

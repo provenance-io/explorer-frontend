@@ -107,7 +107,28 @@ const TxInformation = () => {
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
     ];
 
-    return <Summary data={summaryData} />;
+    return (
+      <>
+        <Summary data={summaryData} />
+        <FullTxInfoContainer onClick={toggleShowFullJSON}>{showFullJSON ? 'Hide' : 'Show'} full transaction JSON</FullTxInfoContainer>
+        {showFullJSON && (
+          <FullJSONWrapper>
+            {txFullJSONLoading && <Loading />}
+            {!txFullJSONLoading &&
+              (txFullJSON ? (
+                <FullJSON>
+                  <ReactJson src={txFullJSON} theme="ocean" />}
+                </FullJSON>
+              ) : (
+                <FullJSON>
+                  <div>Unable to load JSON data...</div>
+                  <RetryJSON onClick={fetchFullJSON}>Retry</RetryJSON>
+                </FullJSON>
+              ))}
+          </FullJSONWrapper>
+        )}
+      </>
+    );
   };
 
   const buildTxMessageContent = () => {
@@ -151,28 +172,7 @@ const TxInformation = () => {
         break;
     }
 
-    return (
-      <>
-        <Summary data={summaryData} />
-        <FullTxInfoContainer onClick={toggleShowFullJSON}>{showFullJSON ? 'Hide' : 'Show'} full transaction JSON</FullTxInfoContainer>
-        {showFullJSON && (
-          <FullJSONWrapper>
-            {txFullJSONLoading && <Loading />}
-            {!txFullJSONLoading &&
-              (txFullJSON ? (
-                <FullJSON>
-                  <ReactJson src={txFullJSON} theme="ocean" />}
-                </FullJSON>
-              ) : (
-                <FullJSON>
-                  <div>Unable to load JSON data...</div>
-                  <RetryJSON onClick={fetchFullJSON}>Retry</RetryJSON>
-                </FullJSON>
-              ))}
-          </FullJSONWrapper>
-        )}
-      </>
-    );
+    return <Summary data={summaryData} />;
   };
 
   const buildTxInformationSection = () => (infoExists ? buildTxInformationContent() : buildNoResults());

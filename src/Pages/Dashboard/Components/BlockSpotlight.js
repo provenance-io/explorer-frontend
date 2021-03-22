@@ -96,9 +96,9 @@ const BlockSpotlight = () => {
   useInterval(() => getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
 
   // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
-  const { avgBlockTime, bondedTokens = {}, latestBlock = {} } = blockLatest;
+  const { avgBlockTime, bondedTokens = {}, latestBlock = {}, totalTxCount } = blockLatest;
   const { count: bondedTokensCount, total: bondedTokensTotal, denom: bondedTokensDenom } = bondedTokens;
-  const { height, icon, moniker, proposerAddress, time, txNum, validatorCount = {}, votingPower = {} } = latestBlock;
+  const { height, icon, moniker, proposerAddress, time, validatorCount = {}, votingPower = {} } = latestBlock;
   const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
 
@@ -141,7 +141,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="ADMIN" size="1.8rem" /> Transactions
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  <Link to={`/block/${height}`}>{txNum}</Link>
+                  <Link to="/txs/">{totalTxCount}</Link>
                 </BlockItem>
                 <BlockItem>{utcTime}+UTC</BlockItem>
               </BlockDataContent>
