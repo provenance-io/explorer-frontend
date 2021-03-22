@@ -15,13 +15,15 @@ The Provenance Blockchain Explorer allows viewing transactions, validators, bloc
 
 ## Usage
 
-There are two commands to start up the Frontend Explorer.
+There are various commands to start up the Frontend Explorer.
 1) Full local setup with local Explorer-Service running
   * Follow startup instructions found in [Explorer-Service's Readme.md](https://github.com/provenance-io/explorer-service/blob/main/README.md)
-  * Once that is up and running, initiate `npm run local` to start up the frontend
-2) Local frontend with provenance backend services
-  * Doesn't exist yet, will update this section once this changes
-  * Run `npm run start`
+  * Once that is up and running, initiate `npm run start:local` to start up the frontend
+2) Spinup frontend with provenance backend services on test
+  * Run `npm run start` or `npm run start:test` (Same command)
+3) Spinup frontend with provenance backend services on prod
+  * Run `npm run start:prod`
+  * Note: These endpoints do no exist yet.
 
 ## Status
 [![Latest Release][release-badge]][release-latest]
