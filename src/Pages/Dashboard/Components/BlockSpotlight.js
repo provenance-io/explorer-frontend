@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
 import { Content, Loading, Sprite as BaseSprite, PopupNote } from 'Components';
-import { maxLength, getUTCTime, numberFormat } from 'utils';
+import { maxLength, getUTCTime, numberFormat, formatSeconds } from 'utils';
 import { polling, breakpoints } from 'consts';
 
 const Group = styled.div`
@@ -168,7 +168,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="PENDING" size="1.8rem" /> Avg Block Time
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  {avgBlockTime} s
+                  {formatSeconds(avgBlockTime, 2)}
                 </BlockItem>
                 <BlockItem>Last 100 Blocks</BlockItem>
               </BlockDataContent>
