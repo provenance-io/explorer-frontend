@@ -105,6 +105,7 @@ const BlockSpotlight = () => {
   const utcTime = time ? getUTCTime(time) : '--';
   const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
   const bondedTokensPercent = numberFormat((bondedTokensCount / bondedTokensTotal) * 100, 4);
+  const txTotalCountShorthand = numberFormat(totalTxCount, 1, 'number', { shorthand: true });
 
   return (
     <Content justify="center">
@@ -141,7 +142,7 @@ const BlockSpotlight = () => {
                   <Sprite icon="ADMIN" size="1.8rem" /> Transactions
                 </BlockItem>
                 <BlockItem size="1.8rem" weight="500">
-                  <Link to="/txs/">{totalTxCount}</Link>
+                  <Link to="/txs/">{txTotalCountShorthand}</Link>
                 </BlockItem>
                 <BlockItem>{utcTime}+UTC</BlockItem>
               </BlockDataContent>

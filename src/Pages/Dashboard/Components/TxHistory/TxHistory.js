@@ -125,7 +125,7 @@ const TxHistory = () => {
         {filterError && <FilterError>{filterError}</FilterError>}
         <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} flush />
       </FiltersWrapper>
-      {txHistoryLoading ? <Loading /> : <TxChart />}
+      {txHistoryLoading ? <Loading /> : <TxChart txHistoryGran={txHistoryGran} />}
     </Content>
   );
 };
