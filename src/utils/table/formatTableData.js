@@ -144,7 +144,9 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Get the voting power as a percent from the serverValue (object)
         case 'votingPower': {
           const { count, total } = serverValue;
-          finalObj[dataName] = { value: `${numberFormat(count / total) * 100} %` };
+          const value = numberFormat(count / total) * 100;
+          const finalValue = value >= 1 ? `${value}%` : `< 1%`;
+          finalObj[dataName] = { value: finalValue };
           break;
         }
         // Get the amount of validators (object)

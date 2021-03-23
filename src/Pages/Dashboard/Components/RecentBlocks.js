@@ -21,29 +21,10 @@ const BlockLineRow = styled.div`
   align-items: flex-start;
   justify-content: space-between;
 `;
-const RecentCountContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
-  font-size: 1.1rem;
-  color: ${({ theme }) => theme.FONT_SECONDARY};
-`;
-const RecentCountTitle = styled.div`
-  margin-right: 4px;
-`;
-const RecentCountOption = styled.div`
-  ${({ theme, active }) => !active && `color: ${theme.FONT_LINK};`}
-  ${({ theme, active }) => active && `font-weight: ${theme.FONT_WEIGHT_BOLDEST}`};
-  cursor: ${({ active }) => (active ? 'normal' : 'pointer')};
-`;
-const RecentCountComma = styled.div`
-  margin-right: 3px;
-`;
 
 const RecentBlocks = () => {
   const [blocksLoading, setBlocksLoading] = useState(false);
-  const { getBlocksRecent, blocks, recentBlocksCount, setRecentBlocksCount } = useBlocks();
+  const { getBlocksRecent, blocks, recentBlocksCount } = useBlocks();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('md'));
 
   const totalBlocks = blocks.length;
@@ -87,23 +68,7 @@ const RecentBlocks = () => {
       {blocksLoading ? (
         <Loading />
       ) : totalBlocks > 0 ? (
-        <RecentBlocksWrapper>
-          {buildBlockLines()}
-          <RecentCountContainer>
-            <RecentCountTitle>Recent Count:</RecentCountTitle>
-            <RecentCountOption active={recentBlocksCount === 10} onClick={() => recentBlocksCount !== 10 && setRecentBlocksCount(10)}>
-              10
-            </RecentCountOption>
-            <RecentCountComma>,</RecentCountComma>
-            <RecentCountOption active={recentBlocksCount === 20} onClick={() => recentBlocksCount !== 20 && setRecentBlocksCount(20)}>
-              20
-            </RecentCountOption>
-            <RecentCountComma>,</RecentCountComma>
-            <RecentCountOption active={recentBlocksCount === 30} onClick={() => recentBlocksCount !== 30 && setRecentBlocksCount(30)}>
-              30
-            </RecentCountOption>
-          </RecentCountContainer>
-        </RecentBlocksWrapper>
+        <RecentBlocksWrapper>{buildBlockLines()}</RecentBlocksWrapper>
       ) : (
         <div>No recent blocks available</div>
       )}

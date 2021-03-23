@@ -45,29 +45,10 @@ const FeeTitle = styled.div`
     font-size: 1rem;
   }
 `;
-const RecentCountContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
-  font-size: 1.1rem;
-  color: ${({ theme }) => theme.FONT_SECONDARY};
-`;
-const RecentCountTitle = styled.div`
-  margin-right: 4px;
-`;
-const RecentCountOption = styled.div`
-  ${({ theme, active }) => !active && `color: ${theme.FONT_LINK};`}
-  ${({ theme, active }) => active && `font-weight: ${theme.FONT_WEIGHT_BOLDEST}`};
-  cursor: ${({ active }) => (active ? 'normal' : 'pointer')};
-`;
-const RecentCountComma = styled.div`
-  margin-right: 3px;
-`;
 
 const RecentTxs = () => {
   const [txsRecentLoading, setTxsRecentLoading] = useState(false);
-  const { txs, getTxsRecent, recentTxsCount, setRecentTxsCount } = useTxs();
+  const { txs, getTxsRecent, recentTxsCount } = useTxs();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('md'));
 
   const totalTxs = txs.length;
@@ -122,23 +103,7 @@ const RecentTxs = () => {
       {txsRecentLoading ? (
         <Loading />
       ) : totalTxs > 0 ? (
-        <RecentTxsWrapper>
-          {buildTxLines()}
-          <RecentCountContainer>
-            <RecentCountTitle>Recent Count:</RecentCountTitle>
-            <RecentCountOption active={recentTxsCount === 10} onClick={() => recentTxsCount !== 10 && setRecentTxsCount(10)}>
-              10
-            </RecentCountOption>
-            <RecentCountComma>,</RecentCountComma>
-            <RecentCountOption active={recentTxsCount === 20} onClick={() => recentTxsCount !== 20 && setRecentTxsCount(20)}>
-              20
-            </RecentCountOption>
-            <RecentCountComma>,</RecentCountComma>
-            <RecentCountOption active={recentTxsCount === 30} onClick={() => recentTxsCount !== 30 && setRecentTxsCount(30)}>
-              30
-            </RecentCountOption>
-          </RecentCountContainer>
-        </RecentTxsWrapper>
+        <RecentTxsWrapper>{buildTxLines()}</RecentTxsWrapper>
       ) : (
         <div>No recent transactions available</div>
       )}
