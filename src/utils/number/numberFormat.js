@@ -1,11 +1,11 @@
-export const numberFormat = (rawValue, digits = -1, type = 'number', extraOptions = {}) => {
+export const numberFormat = (rawValue, digits = -1, extraOptions = {}) => {
   // If we don't have a value to start with just return it
   if (rawValue === null || rawValue === undefined || rawValue === '') return rawValue;
 
   // If we just want to shorthand a number, don't bother with other calculations
-  // Eg: numberFormat(1245, 3, 'number', { shorthand: true }) => 1.24K
-  // Eg: numberFormat(1245000, 3, 'number', { shorthand: true }) => 1.24M
-  // Eg: numberFormat(1245000000, 3, 'number', { shorthand: true }) => 1.24B
+  // Eg: numberFormat(1245, 3, { shorthand: true }) => 1.24K
+  // Eg: numberFormat(1245000, 3, { shorthand: true }) => 1.24M
+  // Eg: numberFormat(1245000000, 3, { shorthand: true }) => 1.24B
   if (extraOptions.shorthand) {
     let letter = ''; // Under Thousand
     let roundedValue = rawValue;
@@ -34,11 +34,6 @@ export const numberFormat = (rawValue, digits = -1, type = 'number', extraOption
   const value = typeof rawValue === 'string' ? Number(rawValue) : rawValue;
 
   const options = {};
-  // Possible types are number (default) and currency
-  if (type === 'currency') {
-    options.style = 'currency';
-    options.currency = 'USD';
-  }
   // Amount of significant digits to return in string
   if (digits >= 0) {
     options.maximumFractionDigits = digits;

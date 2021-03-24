@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
-import { Content, Loading, Sprite as BaseSprite, PopupNote } from 'Components';
+import { Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
 import { maxLength, getUTCTime, numberFormat, formatSeconds } from 'utils';
-import { polling, breakpoints } from 'consts';
+import { polling } from 'consts';
 
 const Group = styled.div`
   display: flex;
@@ -34,33 +34,6 @@ const BlockImageLetter = styled.span`
   font-size: 7rem;
   color: ${({ theme }) => theme.FONT_PRIMARY};
 `;
-const BlockDataCard = styled.div`
-  min-width: 50%;
-  @media ${breakpoints.down('sm')} {
-    min-width: 100%;
-  }
-`;
-const BlockDataContent = styled.div`
-  border: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
-  padding: 15px;
-  margin: 10px;
-  border-radius: 5px;
-  @media ${breakpoints.down('md')} {
-    font-size: 1.2rem;
-  }
-`;
-const BlockItem = styled.div`
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  flex-basis: 100%;
-  ${({ size }) => size && `font-size: ${size};`}
-  ${({ weight }) => weight && `font-weight: ${weight};`}
-  ${({ isTitle }) => isTitle && `margin: 0 0 30px 0;`}
-  @media ${breakpoints.down('sm')} {
-    ${({ isTitle }) => isTitle && `margin: 0 0 10px 0;`}
-  }
-`;
 const Sprite = styled(BaseSprite)`
   margin-right: 8px;
 `;
@@ -68,16 +41,10 @@ const Link = styled(BaseLink)`
   font-size: ${({ size }) => (size ? size : 'inherit')};
   ${({ weight }) => weight && `font-weight: ${weight};`}
 `;
-const PopupContainer = styled.div`
-  display: inline-block;
-  position: relative;
-  height: 16px;
-`;
 
 const BlockSpotlight = () => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [blockLoading, setBlockLoading] = useState(false);
-  const [showBondedInfo, setShowBondedInfo] = useState(false);
   const { blockLatest, getBlockSpotlight, blockSpotlightFailed } = useBlocks();
 
   // Initial load, get most recent blocks
@@ -97,15 +64,15 @@ const BlockSpotlight = () => {
 
   // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
   const { avgBlockTime, bondedTokens = {}, latestBlock = {}, totalTxCount } = blockLatest;
-  const { count: bondedTokensCount, total: bondedTokensTotal, denom: bondedTokensDenom } = bondedTokens;
+  const { count: bondedTokensCount, total: bondedTokensTotal } = bondedTokens;
   const { height, icon, moniker, proposerAddress, time, validatorCount = {}, votingPower = {} } = latestBlock;
   const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
 
-  const utcTime = time ? getUTCTime(time) : '--';
-  const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
-  const bondedTokensPercent = numberFormat((bondedTokensCount / bondedTokensTotal) * 100, 4);
-  const txTotalCountShorthand = numberFormat(totalTxCount, 1, 'number', { shorthand: true });
+  const utcTime = time ? `${getUTCTime(time)}+UTC` : '--';
+  const votingPowerPercent = `${numberFormat((votingPowerCount / votingPowerTotal) * 100, 2)}%`;
+  const bondedTokensPercent = `${numberFormat((bondedTokensCount / bondedTokensTotal) * 100, 4, { minimumFractionDigits: 2 })}%`;
+  const txTotalCountShorthand = numberFormat(totalTxCount, 1, { shorthand: true });
 
   return (
     <Content justify="center">
@@ -136,62 +103,24 @@ const BlockSpotlight = () => {
             </BlockPreviewLine>
           </Group>
           <Group>
-            <BlockDataCard>
-              <BlockDataContent>
-                <BlockItem isTitle>
-                  <Sprite icon="ADMIN" size="1.8rem" /> Transactions
-                </BlockItem>
-                <BlockItem size="1.8rem" weight="500">
-                  <Link to="/txs/">{txTotalCountShorthand}</Link>
-                </BlockItem>
-                <BlockItem>{utcTime}+UTC</BlockItem>
-              </BlockDataContent>
-            </BlockDataCard>
-            <BlockDataCard>
-              <BlockDataContent>
-                <BlockItem isTitle>
-                  <Sprite icon="PARTICIPATION" size="1.8rem" /> Voting Power
-                </BlockItem>
-                <BlockItem size="1.8rem" weight="500">
-                  {votingPowerPercent}%
-                </BlockItem>
-                <BlockItem>
-                  <Link to={`/block/${height}`}>
-                    {validatorCountAmount}/{validatorCountTotal} Validators
-                  </Link>
-                </BlockItem>
-              </BlockDataContent>
-            </BlockDataCard>
-            <BlockDataCard>
-              <BlockDataContent>
-                <BlockItem isTitle>
-                  <Sprite icon="PENDING" size="1.8rem" /> Avg Block Time
-                </BlockItem>
-                <BlockItem size="1.8rem" weight="500">
-                  {formatSeconds(avgBlockTime, 2)}
-                </BlockItem>
-                <BlockItem>Last 100 Blocks</BlockItem>
-              </BlockDataContent>
-            </BlockDataCard>
-            <BlockDataCard>
-              <BlockDataContent>
-                <BlockItem isTitle>
-                  <Sprite icon="SHARED_POOLS" size="1.8rem" /> Bonded Tokens
-                </BlockItem>
-                <BlockItem size="1.8rem" weight="500">
-                  {bondedTokensPercent} % {bondedTokensDenom}
-                </BlockItem>
-                <BlockItem>
-                  <PopupContainer onMouseEnter={() => setShowBondedInfo(true)} onMouseLeave={() => setShowBondedInfo(false)}>
-                    <PopupNote show={showBondedInfo} position="above">
-                      <div>Amount: {numberFormat(bondedTokensCount)}</div>
-                      <div>Total: {numberFormat(bondedTokensTotal)}</div>
-                    </PopupNote>
-                    <Sprite icon="HELP" size="1.7rem" onClick={() => setShowBondedInfo(!showBondedInfo)} />
-                  </PopupContainer>
-                </BlockItem>
-              </BlockDataContent>
-            </BlockDataCard>
+            <DataCard icon="ADMIN" title="Transactions">
+              <Link to="/txs/">{txTotalCountShorthand}</Link>
+              {utcTime}
+            </DataCard>
+            <DataCard icon="PARTICIPATION" title="Voting Power">
+              {votingPowerPercent}
+              <Link to={`/block/${height}`}>
+                {validatorCountAmount}/{validatorCountTotal} Validators
+              </Link>
+            </DataCard>
+            <DataCard icon="PENDING" title="Avg Block Time">
+              {formatSeconds(avgBlockTime, 2)}
+              Last 100 Blocks
+            </DataCard>
+            <DataCard icon="SHARED_POOLS" title="Bonded Tokens">
+              {bondedTokensPercent}
+              {numberFormat(bondedTokensCount, 2, { shorthand: true })} / {numberFormat(bondedTokensTotal, 2, { shorthand: true })}
+            </DataCard>
           </Group>
         </>
       )}
