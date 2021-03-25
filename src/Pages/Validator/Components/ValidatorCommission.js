@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Content, Summary, Loading } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { numberFormat } from 'utils';
+import { numberFormat, nHashtoHash } from 'utils';
 
 const ValidatorCommission = () => {
   const [showBondedPopup, setShowBondedPopup] = useState(false);
@@ -24,7 +24,7 @@ const ValidatorCommission = () => {
     commissionRewards = {},
   } = validatorCommission;
   const { count: bondedTokensCount, denom: bondedTokensDenom } = bondedTokens;
-  const { maxChangeRate: commissionMaxChangeRate, maxRate: commissionMaxRate, rate: commissionRateAmount } = commissionRate;
+  const { maxRate: commissionMaxRate, rate: commissionRateAmount } = commissionRate;
   const { amount: commissionRewardsAmount, denom: commissionRewardsDenom } = commissionRewards;
   const { count: delegatorBondedCount, denom: delegatorBondedDenom } = delegatorBonded;
   const { count: selfBondedCount, denom: selfBondedDenom } = selfBonded;
@@ -33,7 +33,6 @@ const ValidatorCommission = () => {
   const selfBondedPercent = `${numberFormat((selfBondedCount / bondedTokensCount) * 100, 2)} %`;
   const commisionRatePercent = `${numberFormat(commissionRateAmount * 100, 2)} %`;
   const commissionRatePercent = `${numberFormat(commissionMaxRate * 100, 2)} %`;
-  const commissionMaxChangeRatePercent = `${numberFormat(commissionMaxChangeRate * 100, 2)} %`;
 
   const popupNoteBondedTokens = {
     visibility: { visible: showBondedPopup, setVisible: setShowBondedPopup },
@@ -43,11 +42,11 @@ const ValidatorCommission = () => {
     data: [
       {
         title: 'Self-Bonded:',
-        value: `${numberFormat(selfBondedCount, 6)} ${selfBondedDenom} (${selfBondedPercent})`,
+        value: `${nHashtoHash(selfBondedCount, { shorthand: false })} ${selfBondedDenom} (${selfBondedPercent})`,
       },
       {
         title: 'Delegator Bonded:',
-        value: `${numberFormat(delegatorBondedCount, 6)} ${delegatorBondedDenom} (${delegatorBondedPercent})`,
+        value: `${nHashtoHash(delegatorBondedCount, { shorthand: false })} ${delegatorBondedDenom} (${delegatorBondedPercent})`,
       },
     ],
   };
@@ -56,19 +55,18 @@ const ValidatorCommission = () => {
     icon: { name: 'HELP', size: '1.7rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
-    data: [{ title: 'Gas Price', value: `0 ~ ${commissionMaxChangeRatePercent}` }],
   };
 
   const summaryData = [
     { title: 'Commission Rate', value: commisionRatePercent },
     {
       title: 'Bonded Tokens',
-      value: `${numberFormat(bondedTokensCount, 6)} ${bondedTokensDenom}`,
+      value: `${nHashtoHash(bondedTokensCount, { shorthand: false })} hash`,
       popupNote: popupNoteBondedTokens,
     },
     { title: 'Delegators', value: delegatorCount },
     { title: 'Total Shares', value: numberFormat(totalShares, 6) },
-    { title: 'Commission Rewards', value: `${numberFormat(commissionRewardsAmount, 6)} ${commissionRewardsDenom}` },
+    { title: 'Commission Rewards', value: `${nHashtoHash(commissionRewardsAmount, { shorthand: false })} hash` },
     {
       title: 'Commission Rate Range',
       value: `0 ~ ${commissionRatePercent}`,

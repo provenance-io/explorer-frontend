@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { maxLength, getUTCTime, capitalize, numberFormat } from 'utils';
+import { maxLength, getUTCTime, capitalize, nHashtoHash, numberFormat } from 'utils';
 import { Link } from 'react-router-dom';
 import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
 import { Content, TimeTicker, Loading } from 'Components';
@@ -26,12 +26,6 @@ const Type = styled.div`
   @media ${breakpoints.down('sm')} {
     font-size: 1.2rem;
     max-width: 50%;
-  }
-`;
-const Denomination = styled.div`
-  display: inline-block;
-  @media ${breakpoints.down('sm')} {
-    font-size: 1rem;
   }
 `;
 const FeeLine = styled.div`
@@ -71,6 +65,8 @@ const RecentTxs = () => {
       const { type = '--' } = msg[0];
       const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
+      const feeAmountFinal =
+        feeDenom === 'nhash' ? `${nHashtoHash(feeAmount, { shorthand: false })} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
       return (
         <TxLineContainer key={`${txHash}_${index}`}>
@@ -83,8 +79,7 @@ const RecentTxs = () => {
           <TxLineRow>
             <Type>{capitalize(type)}</Type>
             <FeeLine>
-              <FeeTitle>Fee:</FeeTitle> {feeAmount ? numberFormat(feeAmount) : '--'}{' '}
-              <Denomination>{feeDenom ? feeDenom : '--'}</Denomination>
+              <FeeTitle>Fee:</FeeTitle> {feeAmountFinal}
             </FeeLine>
           </TxLineRow>
         </TxLineContainer>

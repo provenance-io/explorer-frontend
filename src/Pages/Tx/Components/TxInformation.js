@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { maxLength, getUTCTime, capitalize, numberFormat } from 'utils';
+import { maxLength, getUTCTime, capitalize, numberFormat, nHashtoHash } from 'utils';
 import { Section, Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
@@ -48,7 +48,6 @@ const RetryJSON = styled.div`
 `;
 
 const TxInformation = () => {
-  const [showGasInfo, setShowGasInfo] = useState(false);
   const [showFullJSON, setShowFullJSON] = useState(false);
   const { getTxInfo, txInfo, txInfoLoading, txFullJSONLoading, txFullJSON, getTxFullJSON } = useTxs();
   const { txHash } = useParams();
@@ -78,31 +77,20 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { fee, gas, height, memo, signers, status, time } = txInfo;
+    const { fee, height, memo, signers, status, time } = txInfo;
     const { amount: feeAmount, denom: feeDenom } = fee;
-    const { gasLimit, gasPrice, gasUsed, gasWanted } = gas;
     const utcTime = getUTCTime(time);
+    const feeValue =
+      feeDenom === 'nhash' ? `${nHashtoHash(feeAmount, { shorthand: false })} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
-    const popupNote = {
-      visibility: { visible: showGasInfo, setVisible: setShowGasInfo },
-      icon: { name: 'HELP', size: '1.7rem' },
-      method: ['click', 'hover'],
-      fontColor: 'FONT_WHITE',
-      data: [
-        { title: 'Gas Price', value: `${numberFormat(gasPrice)} ${feeDenom}` },
-        { title: 'Gas Used', value: numberFormat(gasUsed) },
-        { title: 'Gas Wanted', value: numberFormat(gasWanted) },
-        { title: 'Gas Limit', value: numberFormat(gasLimit) },
-      ],
-    };
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
     const summaryData = [
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
       { title: 'Timestamp', value: `${utcTime}+UTC` },
-      { title: 'Fee', value: `${numberFormat(feeAmount)} ${feeDenom}` },
-      { title: 'Gas Used', value: numberFormat(gasUsed), popupNote },
+      { title: 'Fee', value: feeValue },
+
       { title: 'Signer', value: maxLength(signer, 24, 10), link: `/accounts/${signer}`, copy: signer },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
     ];

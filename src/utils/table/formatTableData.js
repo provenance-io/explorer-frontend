@@ -1,5 +1,6 @@
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
+import { nHashtoHash } from '../number/nHashtoHash';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
@@ -87,18 +88,33 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
           break;
         }
+        // Amount of currency/item and its denomination given in an object (amount found in msg)
+        case 'msgAmount': {
+          // No server value, manually grab from dataObj msg
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = { amount: {} } } = msgArray[0];
+          const { amount, denom } = msg.amount;
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${nHashtoHash(amount, { shorthand: false })} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          break;
+        }
         // Amount of currency/item and its denomination given in an object (amount)
         case 'amount': // fallthrough
         case 'fee': {
-          const { amount, denom } = serverValue;
-          finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          const { amount, denom } = serverValue || {};
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${nHashtoHash(amount, { shorthand: false })} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)
         case 'bondedTokens': // fallthrough
         case 'selfBonded': {
-          const { count, denom } = serverValue;
-          finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` };
+          const { count, denom } = serverValue || {};
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${nHashtoHash(count, { shorthand: false })} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
           break;
         }
         // Height of a block
@@ -143,7 +159,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Get the voting power as a percent from the serverValue (object)
         case 'votingPower': {
-          const { count, total } = serverValue;
+          const { count, total } = serverValue || {};
           const value = numberFormat(count / total) * 100;
           const finalValue = value >= 1 ? `${value}%` : `< 1%`;
           finalObj[dataName] = { value: finalValue };
@@ -151,7 +167,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Get the amount of validators (object)
         case 'validatorCount': {
-          const { count, total } = serverValue;
+          const { count, total } = serverValue || {};
           finalObj[dataName] = { value: `${count} / ${total}` };
           break;
         }
