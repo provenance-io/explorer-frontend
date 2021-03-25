@@ -106,7 +106,7 @@ const findDefaultFolder = (defaultOption = {}) => {
   return options[optionKeys][0];
 };
 
-const SelectFolders = ({ allOptions, action, maxHeight }) => {
+const SelectFolders = ({ allOptions, action, maxHeight, ...props }) => {
   const defaultOption = findDefaultOption(allOptions);
   const defaultFolder = findDefaultFolder(allOptions[defaultOption]);
   const [activeFilter, setActiveFilter] = useState(defaultOption);
@@ -134,8 +134,12 @@ const SelectFolders = ({ allOptions, action, maxHeight }) => {
         <OptionBlock key={`${optionItemKey}_${title}`}>
           {folderOptions ? (
             <OptionFolder onMouseEnter={() => setHoverFolder(optionItemKey)}>
-              <OptionFolderTitle active={activeFolder === optionItemKey}>{title} ></OptionFolderTitle>
-              <OptionFolderItems open={hoverFolder === optionItemKey}>{buildOptions(folderOptions, true)}</OptionFolderItems>
+              <OptionFolderTitle active={activeFolder === optionItemKey}>
+                {title} >
+              </OptionFolderTitle>
+              <OptionFolderItems open={hoverFolder === optionItemKey}>
+                {buildOptions(folderOptions, true)}
+              </OptionFolderItems>
             </OptionFolder>
           ) : (
             <OptionItem
@@ -169,10 +173,21 @@ const SelectFolders = ({ allOptions, action, maxHeight }) => {
   };
 
   return (
-    <SelectInput onClick={() => setMenuOpen(true)} onBlur={() => setMenuOpen(false)} tabIndex="0">
+    <SelectInput
+      {...props}
+      onClick={() => setMenuOpen(true)}
+      onBlur={() => setMenuOpen(false)}
+      tabIndex="0"
+    >
       <SelectInputValueContainer>
         <SelectInputValue>{activeFilterTitle}</SelectInputValue>
-        <Sprite icon="CHEVRON" size="1.0rem" color="ICON_PRIMARY" spin={menuOpen ? '90' : '-90'} onClick={toggleMenu} />
+        <Sprite
+          icon="CHEVRON"
+          size="1.0rem"
+          color="ICON_PRIMARY"
+          spin={menuOpen ? '90' : '-90'}
+          onClick={toggleMenu}
+        />
       </SelectInputValueContainer>
       {menuOpen && (
         <SelectFoldersContainer>

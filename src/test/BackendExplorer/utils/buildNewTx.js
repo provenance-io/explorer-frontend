@@ -1,5 +1,5 @@
 import { getUTCTime } from 'utils';
-import store from 'redux/store';
+// import store from 'redux/store';
 import { rng, rngHexId } from './number';
 import { txTypes, txStatus, blockUsers } from '../data';
 

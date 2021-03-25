@@ -84,7 +84,7 @@ const BlockSpotlight = () => {
               <Sprite icon="CUBES" size="1.8rem" /> Block Height
             </BlockPreviewLine>
             <BlockPreviewLine>
-              <Link to={`/block/${height}`} size="2rem" weight="900">
+              <Link to={`/block/${height}`} size="2rem" weight="900" data-testid="block-height">
                 {height}
               </Link>
             </BlockPreviewLine>

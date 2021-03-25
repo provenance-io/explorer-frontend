@@ -1,3 +1,5 @@
+/* eslint-disable */
+// disable lint while figuring out the server
 import { BLOCK_SPOTLIGHT_URL } from 'consts';
 import { render, screen, waitFor } from 'test/test-utils';
 import Dashboard from './Dashboard';

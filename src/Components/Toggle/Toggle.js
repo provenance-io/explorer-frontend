@@ -42,7 +42,7 @@ const ToggleNotch = styled.div`
   z-index: 100;
 `;
 
-const Toggle = ({ optionA, optionB, active, special }) => {
+const Toggle = ({ optionA, optionB, active, special, ...props }) => {
   // Will run as optionA = OFF, optionB = ON
   const [isOn, setIsOn] = useState(active);
   const [specialActive, setSpecialActive] = useState(special.active);
@@ -75,7 +75,7 @@ const Toggle = ({ optionA, optionB, active, special }) => {
   };
 
   return (
-    <ToggleContainer onClick={toggle}>
+    <ToggleContainer {...props} onClick={toggle}>
       <ToggleNotch active={isOn} />
       {specialActive ? (
         <OptionSpecialContainer title={titleSpecial}>

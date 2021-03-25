@@ -37,7 +37,6 @@ const xhrRequest = async (action, dispatch, url, body = null, customConfig = nul
       return Promise.reject(data.message);
     }
   } catch (error) {
-    console.log('error happened', error.message, url);
     if (error.message) {
       dispatch(createAction(`${action}_${FAILURE}`)(error.message));
       return Promise.reject(error.message);

@@ -1,3 +1,5 @@
+/* eslint-disable */
+// disable lint while figuring out the server
 import { render } from 'test/test-utils';
 import { initialState } from 'redux/reducers/appReducer';
 import { appActions } from 'redux/actions';

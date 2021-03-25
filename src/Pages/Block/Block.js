@@ -6,7 +6,7 @@ const Block = () => (
     <Header title="Block Details">
       <BlockPagination />
     </Header>
-    <Section header>
+    <Section header data-testid="block-details">
       <BlockDetails />
     </Section>
     <Section>
