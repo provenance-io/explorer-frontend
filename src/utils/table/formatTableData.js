@@ -84,7 +84,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
-          const { amount, denom } = dataObj;
+          const { amount = '--', denom = '--' } = dataObj;
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
           break;
         }
@@ -93,27 +93,27 @@ export const formatTableData = (data = [], tableHeaders) => {
           // No server value, manually grab from dataObj msg
           const { msg: msgArray = [{}] } = dataObj;
           const { msg = { amount: {} } } = msgArray[0];
-          const { amount, denom } = msg.amount;
+          const { amount = '--', denom = '--' } = msg.amount;
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(amount, { shorthand: false })} hash` })
+            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
         case 'amount': // fallthrough
         case 'fee': {
-          const { amount, denom } = serverValue || {};
+          const { amount = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(amount, { shorthand: false })} hash` })
+            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)
         case 'bondedTokens': // fallthrough
         case 'selfBonded': {
-          const { count, denom } = serverValue || {};
+          const { count = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(count, { shorthand: false })} hash` })
+            ? (finalObj[dataName] = { value: `${nHashtoHash(count)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
           break;
         }

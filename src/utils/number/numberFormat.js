@@ -1,6 +1,8 @@
-export const numberFormat = (rawValue, digits = -1, extraOptions = {}) => {
+import Big from 'big.js';
+
+export const numberFormat = (rawValue, digits = 1, extraOptions = {}) => {
   // If we don't have a value to start with just return it
-  if (rawValue === null || rawValue === undefined || rawValue === '') return rawValue;
+  if (rawValue === null || rawValue === undefined || rawValue === '' || rawValue === '--') return rawValue;
 
   // If we just want to shorthand a number, don't bother with other calculations
   // Eg: numberFormat(1245, 3, { shorthand: true }) => 1.24K
@@ -26,18 +28,22 @@ export const numberFormat = (rawValue, digits = -1, extraOptions = {}) => {
       letter = 'K';
       roundedValue = rawValue / thousand;
     }
-    const finalValue = roundedValue.toLocaleString('en-US', { maximumFractionDigits: digits });
+    const finalValue = Number(`${Math.round(`${new Big(roundedValue)}e${digits}`)}e-${digits}`);
+    // const finalValue = roundedValue.toLocaleString('en-US', { maximumFractionDigits: digits });
     return `${finalValue}${letter}`;
   }
 
   // If we get a string, convert it to a number
-  const value = typeof rawValue === 'string' ? Number(rawValue) : rawValue;
+  const value = typeof rawValue === 'string' ? Number(new Big(rawValue)) : new Big(rawValue);
 
   const options = {};
   // Amount of significant digits to return in string
-  if (digits >= 0) {
+  if (typeof digits === 'number' && digits >= 0) {
     options.maximumFractionDigits = digits;
   }
 
-  return value.toLocaleString('en-US', { ...options, ...extraOptions });
+  const final = Number(`${Math.round(`${value}e${digits}`)}e-${digits}`);
+  debugger; // eslint-disable-line no-debugger
+  return final;
+  // return value.toLocaleString('en-US', { ...options, ...extraOptions });
 };

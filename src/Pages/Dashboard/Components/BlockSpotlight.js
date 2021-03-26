@@ -120,7 +120,8 @@ const BlockSpotlight = () => {
             <DataCard icon="SHARED_POOLS" title="Bonded Tokens">
               {bondedTokensPercent}
               <>
-                {nHashtoHash(bondedTokensCount)} / {nHashtoHash(bondedTokensTotal)}
+                {nHashtoHash(bondedTokensCount, { shorthand: true, decimal: 2 })} /{' '}
+                {nHashtoHash(bondedTokensTotal, { shorthand: true, decimal: 2 })}
               </>
             </DataCard>
           </Group>

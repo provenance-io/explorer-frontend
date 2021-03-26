@@ -15,8 +15,12 @@ const BlockTxs = () => {
   const { tableCount } = useApp();
 
   useEffect(() => {
-    getTableData(pageBlockHeight);
-  }, [getTableData, pageBlockHeight, tableCount, tablePages]);
+    getTableData({
+      blockheight: pageBlockHeight,
+      page: tableCurrentPage,
+      count: tableCount,
+    });
+  }, [getTableData, pageBlockHeight, tablePages, tableCurrentPage, tableCount]);
 
   // Table header values in order
   const tableHeaders = [
@@ -34,6 +38,7 @@ const BlockTxs = () => {
       tableHeaders={tableHeaders}
       tableData={tableData}
       currentPage={tableCurrentPage}
+      resultsPerPage={tableCount}
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}

@@ -118,6 +118,7 @@ const AccountTxs = () => {
         changePage={changePage}
         totalPages={tablePages}
         isLoading={tableLoading}
+        resultsPerPage={tableCount}
         showIndex
         title="Account Transactions"
       />

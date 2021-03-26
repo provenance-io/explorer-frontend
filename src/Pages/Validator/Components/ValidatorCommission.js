@@ -23,9 +23,9 @@ const ValidatorCommission = () => {
     totalShares,
     commissionRewards = {},
   } = validatorCommission;
-  const { count: bondedTokensCount, denom: bondedTokensDenom } = bondedTokens;
+  const { count: bondedTokensCount } = bondedTokens;
   const { maxRate: commissionMaxRate, rate: commissionRateAmount } = commissionRate;
-  const { amount: commissionRewardsAmount, denom: commissionRewardsDenom } = commissionRewards;
+  const { amount: commissionRewardsAmount } = commissionRewards;
   const { count: delegatorBondedCount, denom: delegatorBondedDenom } = delegatorBonded;
   const { count: selfBondedCount, denom: selfBondedDenom } = selfBonded;
 
@@ -42,11 +42,11 @@ const ValidatorCommission = () => {
     data: [
       {
         title: 'Self-Bonded:',
-        value: `${nHashtoHash(selfBondedCount, { shorthand: false })} ${selfBondedDenom} (${selfBondedPercent})`,
+        value: `${nHashtoHash(selfBondedCount)} ${selfBondedDenom} (${selfBondedPercent})`,
       },
       {
         title: 'Delegator Bonded:',
-        value: `${nHashtoHash(delegatorBondedCount, { shorthand: false })} ${delegatorBondedDenom} (${delegatorBondedPercent})`,
+        value: `${nHashtoHash(delegatorBondedCount)} ${delegatorBondedDenom} (${delegatorBondedPercent})`,
       },
     ],
   };
@@ -61,12 +61,12 @@ const ValidatorCommission = () => {
     { title: 'Commission Rate', value: commisionRatePercent },
     {
       title: 'Bonded Tokens',
-      value: `${nHashtoHash(bondedTokensCount, { shorthand: false })} hash`,
+      value: `${nHashtoHash(bondedTokensCount)} hash`,
       popupNote: popupNoteBondedTokens,
     },
     { title: 'Delegators', value: delegatorCount },
     { title: 'Total Shares', value: numberFormat(totalShares, 6) },
-    { title: 'Commission Rewards', value: `${nHashtoHash(commissionRewardsAmount, { shorthand: false })} hash` },
+    { title: 'Commission Rewards', value: `${nHashtoHash(commissionRewardsAmount)} hash` },
     {
       title: 'Commission Rate Range',
       value: `0 ~ ${commissionRatePercent}`,

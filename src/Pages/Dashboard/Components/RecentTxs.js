@@ -65,8 +65,7 @@ const RecentTxs = () => {
       const { type = '--' } = msg[0];
       const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
-      const feeAmountFinal =
-        feeDenom === 'nhash' ? `${nHashtoHash(feeAmount, { shorthand: false })} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
+      const feeAmountFinal = feeDenom === 'nhash' ? `${nHashtoHash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
       return (
         <TxLineContainer key={`${txHash}_${index}`}>

@@ -32,8 +32,8 @@ export const getTxsByAddress = ({ count = 10, page = 1, type = '', status = '', 
       status ? `&txStatus=${status.toUpperCase()}` : ''
     }`
   );
-export const getTxsByBlock = (blockheight) => async (dispatch) =>
-  ajaxGet(GET_TXS_BY_BLOCK, dispatch, `${TXS_BY_BLOCK_URL}/${blockheight}`);
+export const getTxsByBlock = ({ blockheight, count = 10, page = 1 }) => async (dispatch) =>
+  ajaxGet(GET_TXS_BY_BLOCK, dispatch, `${TXS_BY_BLOCK_URL}/${blockheight}?count=${count}&page=${page}`);
 export const getTxInfo = (txHash) => async (dispatch) => ajaxGet(GET_TX_INFO, dispatch, `${TX_INFO_URL}/${txHash}`);
 export const getTxHistory = ({ toDate, fromDate, granularity = 'day' }) => async (dispatch) =>
   ajaxGet(

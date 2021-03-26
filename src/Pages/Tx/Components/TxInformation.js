@@ -80,8 +80,7 @@ const TxInformation = () => {
     const { fee, height, memo, signers, status, time } = txInfo;
     const { amount: feeAmount, denom: feeDenom } = fee;
     const utcTime = getUTCTime(time);
-    const feeValue =
-      feeDenom === 'nhash' ? `${nHashtoHash(feeAmount, { shorthand: false })} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
+    const feeValue = feeDenom === 'nhash' ? `${nHashtoHash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
@@ -133,6 +132,16 @@ const TxInformation = () => {
           { title: 'Voter', value: maxLength(voter, 24, 10), copy: voter, link: `/accounts/${voter}` },
           { title: 'Proposal Id', value: capitalize(proposalId) },
           { title: 'Option', value: capitalize(option) }
+        );
+        break;
+      }
+      case 'send': {
+        const { amount = [], fromAddress, toAddress } = msgData;
+        const { denom = '--', amount: totalAmount = '--' } = amount[0];
+        summaryData.push(
+          { title: 'Amount', value: `${numberFormat(totalAmount)} ${denom}` },
+          { title: 'From', value: maxLength(fromAddress, 24, 10), copy: fromAddress, link: `/accounts/${fromAddress}` },
+          { title: 'To', value: maxLength(toAddress, 24, 10), copy: toAddress, link: `/accounts/${toAddress}` }
         );
         break;
       }
