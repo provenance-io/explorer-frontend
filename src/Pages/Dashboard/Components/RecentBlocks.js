@@ -23,13 +23,14 @@ const BlockLineRow = styled.div`
 `;
 
 const RecentBlocks = () => {
+  // Note: we use a separate loading here because we only want a loading icon on first page load, not refreses/re-fetches
   const [blocksLoading, setBlocksLoading] = useState(false);
-  const { getBlocksRecent, blocks, recentBlocksCount } = useBlocks();
+  const { getBlocksRecent, blocks, recentBlocksCount, blocksRecentLoading } = useBlocks();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('md'));
 
   const totalBlocks = blocks.length;
   // Poll the API for new data every 10s
-  useInterval(() => getBlocksRecent({ count: recentBlocksCount }), polling.recentBlocks);
+  useInterval(() => !blocksRecentLoading && getBlocksRecent({ count: recentBlocksCount }), polling.recentBlocks);
   // Initial load, get most recent blocks
   useEffect(() => {
     setBlocksLoading(true);

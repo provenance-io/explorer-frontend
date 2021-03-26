@@ -9,7 +9,6 @@ import { polling } from 'consts';
 const Group = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   flex-basis: ${({ size }) => size || 'auto'};
 `;
 const BlockPreviewLine = styled.div`
@@ -45,7 +44,7 @@ const Link = styled(BaseLink)`
 const BlockSpotlight = () => {
   const [initialLoad, setInitialLoad] = useState(true);
   const [blockLoading, setBlockLoading] = useState(false);
-  const { blockLatest, getBlockSpotlight, blockSpotlightFailed } = useBlocks();
+  const { blockLatest, getBlockSpotlight, blockSpotlightFailed, blockSpotlightLoading } = useBlocks();
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -60,7 +59,7 @@ const BlockSpotlight = () => {
   }, [getBlockSpotlight, initialLoad]);
 
   // Poll the API for new data every 5s
-  useInterval(() => getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
+  useInterval(() => !blockSpotlightLoading && getBlockSpotlight(), polling.blockSpotlight, blockSpotlightFailed);
 
   // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
   const { avgBlockTime, bondedTokens = {}, latestBlock = {}, totalTxCount } = blockLatest;
@@ -75,7 +74,7 @@ const BlockSpotlight = () => {
   const txTotalCountShorthand = numberFormat(totalTxCount, 1, { shorthand: true });
 
   return (
-    <Content justify="center">
+    <Content justify="center" alignItems="flex-start">
       {blockLoading && <Loading />}
       {blockSpotlightFailed && !blockLatest.length && <div>Block Spotlight failed to load, refresh page to try again</div>}
       {!blockLoading && !blockSpotlightFailed && (
@@ -102,7 +101,7 @@ const BlockSpotlight = () => {
               <Link to={`/validator/${proposerAddress}`}>{moniker ? maxLength(moniker, 16) : maxLength(proposerAddress, 16, 5)}</Link>
             </BlockPreviewLine>
           </Group>
-          <Group>
+          <Group size="70%">
             <DataCard icon="ADMIN" title="Transactions">
               <Link to="/txs/">{txTotalCountShorthand}</Link>
               {utcTime}

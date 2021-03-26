@@ -5,7 +5,7 @@ import { Sprite as BaseSprite } from 'Components';
 import { breakpoints } from 'consts';
 
 const DataCardContainer = styled.div`
-  min-width: 50%;
+  width: 50%;
   @media ${breakpoints.down('sm')} {
     min-width: 100%;
   }

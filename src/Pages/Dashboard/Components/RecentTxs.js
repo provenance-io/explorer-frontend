@@ -41,14 +41,15 @@ const FeeTitle = styled.div`
 `;
 
 const RecentTxs = () => {
+  // Note: we use a separate loading here because we only want a loading icon on first page load, not refreses/re-fetches
   const [txsRecentLoading, setTxsRecentLoading] = useState(false);
-  const { txs, getTxsRecent, recentTxsCount } = useTxs();
+  const { txs, getTxsRecent, recentTxsCount, txsRecentLoading: txsRecentLoadingStore } = useTxs();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('md'));
 
   const totalTxs = txs.length;
 
   // Poll the API for new data every 30s
-  useInterval(() => getTxsRecent({ count: recentTxsCount }), polling.recentTxs);
+  useInterval(() => !txsRecentLoadingStore && getTxsRecent({ count: recentTxsCount }), polling.recentTxs);
 
   // Initial load, get most recent blocks
   useEffect(() => {
