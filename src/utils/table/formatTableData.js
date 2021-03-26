@@ -83,21 +83,21 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
-          const { amount, denom } = dataObj;
+          const { amount, denom } = dataObj || {};
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
         case 'amount': // fallthrough
         case 'fee': {
-          const { amount, denom } = serverValue;
+          const { amount, denom } = serverValue || {};
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)
         case 'bondedTokens': // fallthrough
         case 'selfBonded': {
-          const { count, denom } = serverValue;
+          const { count, denom } = serverValue || {};
           finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` };
           break;
         }
@@ -143,13 +143,13 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Get the voting power as a percent from the serverValue (object)
         case 'votingPower': {
-          const { count, total } = serverValue;
+          const { count, total } = serverValue || {};
           finalObj[dataName] = { value: `${numberFormat(count / total) * 100} %` };
           break;
         }
         // Get the amount of validators (object)
         case 'validatorCount': {
-          const { count, total } = serverValue;
+          const { count, total } = serverValue || {};
           finalObj[dataName] = { value: `${count} / ${total}` };
           break;
         }
