@@ -53,6 +53,7 @@ const LoadingContainer = styled.td``;
 const Table = ({
   tableHeaders,
   tableData: rawTableData,
+  resultsPerPage,
   currentPage,
   changePage,
   totalPages,
@@ -92,7 +93,7 @@ const Table = ({
     finalTableHeaders.map(({ dataName, displayName }) => {
       // If it's just the index, we don't need to get any real value
       if (showIndex && dataName === 'index') {
-        return <TableData key={displayName}>{(index + 1) * currentPage}</TableData>;
+        return <TableData key={displayName}>{index + 1 + (currentPage - 1) * resultsPerPage}</TableData>;
       }
       // If we want the age take the string key and render the timestamp
       if (showAge && displayName === 'Age') {
@@ -170,9 +171,11 @@ Table.propTypes = {
   showAge: PropTypes.string,
   size: PropTypes.string,
   noResults: PropTypes.string,
+  resultsPerPage: PropTypes.number,
 };
 Table.defaultProps = {
   tableData: [],
+  resultsPerPage: 0,
   currentPage: 0,
   changePage: null,
   totalPages: 0,

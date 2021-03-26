@@ -1,5 +1,6 @@
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
+import { nHashtoHash } from '../number/nHashtoHash';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
@@ -83,22 +84,37 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
-          const { amount, denom } = dataObj || {};
+          const { amount = '--', denom = '--' } = dataObj || {};
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          break;
+        }
+        // Amount of currency/item and its denomination given in an object (amount found in msg)
+        case 'msgAmount': {
+          // No server value, manually grab from dataObj msg
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = { amount: {} } } = msgArray[0];
+          const { amount = '--', denom = '--' } = msg.amount;
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
         case 'amount': // fallthrough
         case 'fee': {
-          const { amount, denom } = serverValue || {};
-          finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          const { amount = '--', denom = '--' } = serverValue || {};
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)
         case 'bondedTokens': // fallthrough
         case 'selfBonded': {
-          const { count, denom } = serverValue || {};
-          finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` };
+          const { count = '--', denom = '--' } = serverValue || {};
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${nHashtoHash(count)} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
           break;
         }
         // Height of a block
@@ -144,7 +160,9 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Get the voting power as a percent from the serverValue (object)
         case 'votingPower': {
           const { count, total } = serverValue || {};
-          finalObj[dataName] = { value: `${numberFormat(count / total) * 100} %` };
+          const value = numberFormat(count / total) * 100;
+          const finalValue = value >= 1 ? `${value}%` : `< 1%`;
+          finalObj[dataName] = { value: finalValue };
           break;
         }
         // Get the amount of validators (object)
@@ -167,8 +185,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Display the percent but make adjustments for low values (<)
         // Server value in a numberFormat as a percentage
+        case 'commission': // fallthrough
         case 'percentage': {
-          const percent = serverValue < 0.0001 ? '>0.0001' : numberFormat(serverValue, 4);
+          const percentValue = serverValue * 100;
+          const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
           finalObj[dataName] = { value: `${percent} %` };
           break;
         }
@@ -176,8 +196,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'bondHeight': // fallthrough
         case 'currency': // fallthrough
         case 'delegators': // fallthrough
-        case 'proposerPriority': // fallthrough
-        case 'commission':
+        case 'proposerPriority':
           finalObj[dataName] = { value: serverValue };
           break;
         // Server value in a numberFormat

@@ -6,7 +6,7 @@ import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 export const initialState = {
   // Misc
   topCount: 10,
-  tableCount: 25,
+  tableCount: 10,
   validatorCount: 100,
   theme: getCookie('theme') || 'default',
   chaincodeId: '',

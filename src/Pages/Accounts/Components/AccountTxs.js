@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useApp, useTxs } from 'redux/hooks';
-import { TRANSACTION_TYPE_OPTIONS, TRANSACTION_STATUS_OPTIONS } from 'consts';
+import { TRANSACTION_STATUS_OPTIONS } from 'consts';
 
 const TxContainer = styled.div`
   width: 100%;
@@ -20,7 +20,12 @@ const AccountTxs = () => {
     txsByAddressLoading: tableLoading,
     txsByAddress: tableData,
     txsByAddressPages: tablePages,
+    txTypes,
+    getTxTypes,
+    txTypesLoading,
   } = useTxs();
+
+  const txTypesExist = Object.keys(txTypes).length > 0;
 
   // Use this to check for a reset to 'all' where we will pass '' as the type
   const updateFilterType = (newType) => {
@@ -47,7 +52,15 @@ const AccountTxs = () => {
     });
   };
 
-  // Initial Fetch
+  // Initial Fetch of tx types (filter)
+  useEffect(() => {
+    // Only need to fetch them if we haven't pulled them already
+    if (!txTypesExist) {
+      getTxTypes();
+    }
+  }, [getTxTypes, txTypesExist]);
+
+  // Initial Fetch of Txs
   useEffect(() => {
     getTableData({
       page: 1,
@@ -84,7 +97,7 @@ const AccountTxs = () => {
     {
       title: 'Type:',
       type: 'dropdown',
-      options: TRANSACTION_TYPE_OPTIONS,
+      options: txTypes,
       action: updateFilterType,
     },
     {
@@ -97,7 +110,7 @@ const AccountTxs = () => {
 
   return (
     <TxContainer>
-      <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />
+      {!txTypesLoading && txTypesExist && <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />}
       <Table
         tableHeaders={tableHeaders}
         tableData={tableData}
@@ -105,6 +118,7 @@ const AccountTxs = () => {
         changePage={changePage}
         totalPages={tablePages}
         isLoading={tableLoading}
+        resultsPerPage={tableCount}
         showIndex
         title="Account Transactions"
       />

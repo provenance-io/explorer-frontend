@@ -11,7 +11,7 @@ export const Links = {
   },
   transfer: {
     url: Path.TRANSFER_URL,
-    title: 'Transfer',
+    title: 'Transactions',
   },
   assets: {
     url: `${Path.ASSETS_URL}`,

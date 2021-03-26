@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { maxLength, getUTCTime, capitalize, numberFormat } from 'utils';
+import { maxLength, getUTCTime, capitalize, nHashtoHash, numberFormat } from 'utils';
 import { Link } from 'react-router-dom';
 import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
 import { Content, TimeTicker, Loading } from 'Components';
@@ -28,12 +28,6 @@ const Type = styled.div`
     max-width: 50%;
   }
 `;
-const Denomination = styled.div`
-  display: inline-block;
-  @media ${breakpoints.down('sm')} {
-    font-size: 1rem;
-  }
-`;
 const FeeLine = styled.div`
   @media ${breakpoints.down('sm')} {
     font-size: 1.2rem;
@@ -45,35 +39,17 @@ const FeeTitle = styled.div`
     font-size: 1rem;
   }
 `;
-const RecentCountContainer = styled.div`
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
-  font-size: 1.1rem;
-  color: ${({ theme }) => theme.FONT_SECONDARY};
-`;
-const RecentCountTitle = styled.div`
-  margin-right: 4px;
-`;
-const RecentCountOption = styled.div`
-  ${({ theme, active }) => !active && `color: ${theme.FONT_LINK};`}
-  ${({ theme, active }) => active && `font-weight: ${theme.FONT_WEIGHT_BOLDEST}`};
-  cursor: ${({ active }) => (active ? 'normal' : 'pointer')};
-`;
-const RecentCountComma = styled.div`
-  margin-right: 3px;
-`;
 
 const RecentTxs = () => {
+  // Note: we use a separate loading here because we only want a loading icon on first page load, not refreses/re-fetches
   const [txsRecentLoading, setTxsRecentLoading] = useState(false);
-  const { txs, getTxsRecent, recentTxsCount, setRecentTxsCount } = useTxs();
+  const { txs, getTxsRecent, recentTxsCount, txsRecentLoading: txsRecentLoadingStore } = useTxs();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('md'));
 
   const totalTxs = txs.length;
 
   // Poll the API for new data every 30s
-  useInterval(() => getTxsRecent({ count: recentTxsCount }), polling.recentTxs);
+  useInterval(() => !txsRecentLoadingStore && getTxsRecent({ count: recentTxsCount }), polling.recentTxs);
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -90,6 +66,7 @@ const RecentTxs = () => {
       const { type = '--' } = msg[0];
       const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
+      const feeAmountFinal = feeDenom === 'nhash' ? `${nHashtoHash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
       return (
         <TxLineContainer key={`${txHash}_${index}`}>
@@ -102,8 +79,7 @@ const RecentTxs = () => {
           <TxLineRow>
             <Type>{capitalize(type)}</Type>
             <FeeLine>
-              <FeeTitle>Fee:</FeeTitle> {feeAmount ? numberFormat(feeAmount) : '--'}{' '}
-              <Denomination>{feeDenom ? feeDenom : '--'}</Denomination>
+              <FeeTitle>Fee:</FeeTitle> {feeAmountFinal}
             </FeeLine>
           </TxLineRow>
         </TxLineContainer>
@@ -122,23 +98,7 @@ const RecentTxs = () => {
       {txsRecentLoading ? (
         <Loading />
       ) : totalTxs > 0 ? (
-        <RecentTxsWrapper>
-          {buildTxLines()}
-          <RecentCountContainer>
-            <RecentCountTitle>Recent Count:</RecentCountTitle>
-            <RecentCountOption active={recentTxsCount === 10} onClick={() => recentTxsCount !== 10 && setRecentTxsCount(10)}>
-              10
-            </RecentCountOption>
-            <RecentCountComma>,</RecentCountComma>
-            <RecentCountOption active={recentTxsCount === 20} onClick={() => recentTxsCount !== 20 && setRecentTxsCount(20)}>
-              20
-            </RecentCountOption>
-            <RecentCountComma>,</RecentCountComma>
-            <RecentCountOption active={recentTxsCount === 30} onClick={() => recentTxsCount !== 30 && setRecentTxsCount(30)}>
-              30
-            </RecentCountOption>
-          </RecentCountContainer>
-        </RecentTxsWrapper>
+        <RecentTxsWrapper>{buildTxLines()}</RecentTxsWrapper>
       ) : (
         <div>No recent transactions available</div>
       )}

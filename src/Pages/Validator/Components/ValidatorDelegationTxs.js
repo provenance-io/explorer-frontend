@@ -24,7 +24,7 @@ const ValidatorDelegationTxs = () => {
     { displayName: 'TxHash', dataName: 'txHash' },
     { displayName: 'Block', dataName: 'block' },
     { displayName: 'From', dataName: 'from' },
-    { displayName: 'Amount', dataName: 'amount' },
+    { displayName: 'Amount', dataName: 'msgAmount' },
     { displayName: 'To', dataName: 'to' },
     { displayName: 'TxType', dataName: 'type' },
     { displayName: 'Fee', dataName: 'fee' },

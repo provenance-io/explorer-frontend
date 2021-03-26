@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { maxLength } from 'utils';
+import { maxLength, numberFormat } from 'utils';
 import styled, { useTheme } from 'styled-components';
 import { Content, Loading } from 'Components';
 import echarts from 'echarts';
@@ -34,33 +34,39 @@ const TopValidators = () => {
       getTopValidators({ page: 1, count: topCount });
       setInitialLoad(false);
     } else if (totalTopValidators > 0) {
+      // Top validators loaded, render the chart
+      // Change the size of the chart and where the center of it is based on screen size
       const chartRadius = (sizeSm && '70%') || (sizeMd && '70%') || (sizeLg && '60%') || '90%';
       const chartCenter = (sizeSm && ['50%', '65%']) || (sizeMd && ['50%', '50%']) || ['40%', '50%'];
       // On load, chartElementRef should get set and we can update the chart to be an echart
       setChart(echarts.init(chartElementRef.current));
+      // Function to return the full set of finalized chart data
       const buildChartData = () => {
-        const legendData = topValidators.map(({ moniker, addressId }) =>
-          moniker ? maxLength(moniker, 12) : maxLength(addressId, 12)
-        );
+        // Legend data shows the validators, their name, and their color on the right
+        const legendData = [];
+        // Series data, this is the information in the actual drawn-out chart
+        const seriesData = [];
+        // Track selected validators (able to toggle them on/off in the legend)
+        const selectedData = {};
+        // Add data into both sets of data (legend/series)
+        topValidators.forEach(({ votingPower, moniker, addressId, uptime }) => {
+          const name = moniker ? maxLength(moniker, 20) : maxLength(addressId, 20);
+          const value = votingPower?.count;
+          // Add to legendData
+          legendData.push(name);
+          // Add to seriesData
+          seriesData.push({ value, name, uptime });
+          // Add to selectedData (default to true/visible)
+          selectedData[name] = true;
+        });
+
+        // Add in 'Others' to hold the rest of the remaning total power (only useful when >10 validators, until then, comment out)
         // legendData.push('Others');
-        const seriesData = topValidators.map(({ votingPower, moniker, addressId, uptime }) => ({
-          value: votingPower?.count,
-          name: moniker ? maxLength(moniker, 12) : maxLength(addressId, 12),
-          uptime,
-        }));
         // seriesData.push({ value: blocksTotalPower, name: 'Others' });
-        const buildSelectedData = () => {
-          const finalObj = {};
-          topValidators.forEach(({ moniker, addressId }) => {
-            const key = moniker ? maxLength(moniker, 12) : maxLength(addressId, 12);
-            finalObj[key] = true;
-          });
-          // validators.Others = true;
-          return finalObj;
-        };
-        const selectedData = buildSelectedData();
+        // selectedData.Others = true;
 
         return {
+          // Colors for each of the top 10 validators in the chart
           color: [
             theme.CHART_PIE_A,
             theme.CHART_PIE_B,
@@ -73,24 +79,26 @@ const TopValidators = () => {
             theme.CHART_PIE_I,
             theme.CHART_PIE_J,
           ],
+          // When you hover over the pie chart, the data that gets displayed
           tooltip: {
             trigger: 'item',
             formatter: ({ data, percent }) => {
               const { name, value, uptime } = data;
-              return `${name}<br />Voting Power: ${value}(${percent}%)<br />Uptime: ${uptime}`;
+              return `${name}<br />Voting Power: ${numberFormat(value)} (${percent}%)<br />Uptime: ${uptime}%`;
             },
           },
+          // The legend/key on the right side showing color/name
           legend: {
             type: 'plain',
             orient: 'vertical',
-            right: 0,
+            right: 5,
             top: 0,
             bottom: 0,
             data: legendData,
             selected: selectedData,
-            selectorLabel: { show: false },
             textStyle: { color: theme.FONT_PRIMARY },
           },
+          // The data actually populating the pie chart
           series: [
             {
               radius: chartRadius,
