@@ -21,7 +21,6 @@ export const getTxsRecent = ({ count = 10, page = 1, type = '', status = '', toD
   // Convert dates into UTC time.  When a user selects a date it is always in their local time.  Convert, then send to the api
   const toDateUTC = toDate && getUTCTime(toDate, 'yyyy-MM-dd');
   const fromDateUTC = fromDate && getUTCTime(fromDate, 'yyyy-MM-dd');
-  debugger; // eslint-disable-line no-debugger
   return ajaxGet(
     GET_TXS_RECENT,
     dispatch,
