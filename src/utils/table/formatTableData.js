@@ -84,7 +84,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
-          const { amount = '--', denom = '--' } = dataObj;
+          const { amount = '--', denom = '--' } = dataObj || {};
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
           break;
         }
