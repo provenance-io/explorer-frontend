@@ -88,6 +88,32 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
           break;
         }
+        // delegator address when delegation (data found in msg)
+        case 'delegatorAddressMsg': {
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = {} } = msgArray[0];
+          const { delegatorAddress } = msg;
+
+          finalObj[dataName] = {
+            value: maxLength(delegatorAddress, 11, 3),
+            hover: delegatorAddress,
+            link: `/accounts/${delegatorAddress}`,
+          };
+          break;
+        }
+        // validation address when delegation (data found in msg)
+        case 'validatorAddressMsg': {
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = {} } = msgArray[0];
+          const { validatorAddress } = msg;
+
+          finalObj[dataName] = {
+            value: maxLength(validatorAddress, 11, 3),
+            hover: validatorAddress,
+            link: `/accounts/${validatorAddress}`,
+          };
+          break;
+        }
         // Amount of currency/item and its denomination given in an object (amount found in msg)
         case 'msgAmount': {
           // No server value, manually grab from dataObj msg
@@ -142,6 +168,15 @@ export const formatTableData = (data = [], tableHeaders) => {
             hover: serverValue,
           };
           break;
+        // Name/moniker of a validator (found in msg)
+        case 'monikerMsg': {
+          // No server value, manually grab from dataObj msg
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = {} } = msgArray[0];
+          const { moniker } = msg.description || {};
+          finalObj[dataName] = { value: moniker };
+          break;
+        }
         // Convert given time to standard readable UTC string
         case 'time': // fallthrough
         case 'timestamp': {
