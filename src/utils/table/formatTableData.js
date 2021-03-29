@@ -78,8 +78,8 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Amount of currency/item and its denomination
         case 'balance': {
-          const denom = dataObj.denom || '';
-          finalObj[dataName] = { value: `${numberFormat(serverValue, 6)} ${denom}` };
+          const { count } = serverValue;
+          finalObj[dataName] = { value: numberFormat(count, 6) };
           break;
         }
         // Amount of currency/item and its denomination given in objects (multiple)
@@ -190,6 +190,18 @@ export const formatTableData = (data = [], tableHeaders) => {
           const percentValue = serverValue * 100;
           const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
           finalObj[dataName] = { value: `${percent} %` };
+          break;
+        }
+        // Holders (asset page) api data is structured differently, handle it here
+        case 'percentageHolders': {
+          const { count, total } = dataObj?.balance;
+          if (count && total) {
+            const percentValue = (count / total) * 100;
+            const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
+            finalObj[dataName] = { value: `${percent} %` };
+          } else {
+            finalObj[dataName] = { value: '--' };
+          }
           break;
         }
         // Server value already correct

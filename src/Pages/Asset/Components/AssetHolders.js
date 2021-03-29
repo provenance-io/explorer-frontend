@@ -22,11 +22,11 @@ const AssetHolders = () => {
   const tableHeaders = [
     { displayName: 'Address', dataName: 'ownerAddress' },
     { displayName: 'Quantity', dataName: 'balance' },
-    { displayName: 'Percentage', dataName: 'percentage' },
+    { displayName: 'Percentage', dataName: 'percentageHolders' },
   ];
 
   // TEMP: Table data from the server is un-sorted, sort it based on the quantity of the asset
-  const sortedTableData = tableData.sort((a, b) => (a.balance < b.balance ? 1 : -1));
+  const sortedTableData = tableData.sort((a, b) => (a?.balance?.count < b?.balance?.count ? 1 : -1));
 
   return (
     <Table
