@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Content, Summary, Loading } from 'Components';
-import { numberFormat } from 'utils';
+import { capitalize, numberFormat } from 'utils';
 import { useAssets } from 'redux/hooks';
 
 const AssetInformation = () => {
@@ -12,7 +12,7 @@ const AssetInformation = () => {
     getAssetInfo(assetId);
   }, [assetId, getAssetInfo]);
 
-  const { marker, ownerAddress, supply = {}, mintable, holderCount, txnCount } = assetInfo;
+  const { marker, ownerAddress, supply = {}, mintable, holderCount, txnCount, markerStatus } = assetInfo;
   const { circulation: supplyCirculation, total: supplyTotal } = supply;
   const summaryData = [
     { title: 'Asset Name', value: marker },
@@ -21,6 +21,7 @@ const AssetInformation = () => {
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Holders', value: holderCount },
     { title: 'Transactions', value: numberFormat(txnCount) },
+    { title: 'Marker Status', value: capitalize(markerStatus) },
   ];
 
   return <Content title="Asset Information">{assetInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;

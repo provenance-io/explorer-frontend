@@ -23,6 +23,7 @@ const AssetsList = () => {
     { displayName: 'Circulation', dataName: 'supplyCirculation' },
     { displayName: 'Supply', dataName: 'supplyTotal' },
     { displayName: 'Owner', dataName: 'ownerAddress' },
+    { displayName: 'Status', dataName: 'status' },
   ];
 
   return (

@@ -183,7 +183,7 @@ const ValidatorSpotlight = () => {
             </DataRow>
             <DataRow>
               <DataTitle>Bond Height:</DataTitle>
-              <DataValue>{bondHeight}</DataValue>
+              <DataValue>{numberFormat(bondHeight)}</DataValue>
             </DataRow>
             <DataRow>
               <DataTitle>Consensus Pubkey:</DataTitle>

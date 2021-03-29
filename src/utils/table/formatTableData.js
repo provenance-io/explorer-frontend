@@ -78,14 +78,40 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Amount of currency/item and its denomination
         case 'balance': {
-          const denom = dataObj.denom || '';
-          finalObj[dataName] = { value: `${numberFormat(serverValue, 6)} ${denom}` };
+          const { count } = serverValue;
+          finalObj[dataName] = { value: numberFormat(count, 6) };
           break;
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
           const { amount = '--', denom = '--' } = dataObj || {};
           finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          break;
+        }
+        // delegator address when delegation (data found in msg)
+        case 'delegatorAddressMsg': {
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = {} } = msgArray[0];
+          const { delegatorAddress } = msg;
+
+          finalObj[dataName] = {
+            value: maxLength(delegatorAddress, 11, 3),
+            hover: delegatorAddress,
+            link: `/accounts/${delegatorAddress}`,
+          };
+          break;
+        }
+        // validation address when delegation (data found in msg)
+        case 'validatorAddressMsg': {
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = {} } = msgArray[0];
+          const { validatorAddress } = msg;
+
+          finalObj[dataName] = {
+            value: maxLength(validatorAddress, 11, 3),
+            hover: validatorAddress,
+            link: `/accounts/${validatorAddress}`,
+          };
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount found in msg)
@@ -142,6 +168,15 @@ export const formatTableData = (data = [], tableHeaders) => {
             hover: serverValue,
           };
           break;
+        // Name/moniker of a validator (found in msg)
+        case 'monikerMsg': {
+          // No server value, manually grab from dataObj msg
+          const { msg: msgArray = [{}] } = dataObj;
+          const { msg = {} } = msgArray[0];
+          const { moniker } = msg.description || {};
+          finalObj[dataName] = { value: moniker };
+          break;
+        }
         // Convert given time to standard readable UTC string
         case 'time': // fallthrough
         case 'timestamp': {
@@ -190,6 +225,18 @@ export const formatTableData = (data = [], tableHeaders) => {
           const percentValue = serverValue * 100;
           const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
           finalObj[dataName] = { value: `${percent} %` };
+          break;
+        }
+        // Holders (asset page) api data is structured differently, handle it here
+        case 'percentageHolders': {
+          const { count, total } = dataObj?.balance;
+          if (count && total) {
+            const percentValue = (count / total) * 100;
+            const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
+            finalObj[dataName] = { value: `${percent} %` };
+          } else {
+            finalObj[dataName] = { value: '--' };
+          }
           break;
         }
         // Server value already correct
