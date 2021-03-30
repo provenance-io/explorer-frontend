@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Content, Loading, Filters } from 'Components';
 import { useTxs, useMediaQuery } from 'redux/hooks';
 import { breakpoints, TRANSACTION_HISTORY_GRANULARITY_OPTIONS } from 'consts';
-import { subtractDays } from 'utils';
+import { getUTCTime, subtractDays } from 'utils';
 import { TxChart } from './Components';
 
 const FiltersWrapper = styled.div`
@@ -75,7 +75,10 @@ const TxHistory = () => {
     // Clear out any previous errors
     setFilterError('');
     if (isFilterValid()) {
-      getTxHistory({ toDate: txHistoryTo, fromDate: txHistoryFrom, granularity: txHistoryGran });
+      // Convert the toDate and fromDate from local time to UTC time
+      const shortToUTC = getUTCTime(`${txHistoryTo}:00:00:00`, 'yyyy-MM-dd');
+      const shortFromUTC = getUTCTime(`${txHistoryFrom}:00:00:00`, 'yyyy-MM-dd');
+      getTxHistory({ toDate: shortToUTC, fromDate: shortFromUTC, granularity: txHistoryGran });
     }
   };
 

@@ -26,3 +26,5 @@ stats.json
 
 .eslintcache
 .vscode/
+# to leave notes while working on a branch without commiting them
+*.ignore.md

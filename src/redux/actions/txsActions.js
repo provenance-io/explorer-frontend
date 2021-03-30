@@ -1,6 +1,5 @@
 import { createAction } from 'redux-actions';
 import { TX_INFO_URL, TXS_RECENT_URL, TX_HISTORY_URL, TXS_BY_BLOCK_URL, TXS_BY_ADDRESS_URL, TX_TYPES_URL } from 'consts';
-import { getUTCTime } from 'utils';
 import { ajaxGet } from './xhrActions';
 
 // Constants
@@ -17,18 +16,14 @@ export const SET_RECENT_TXS_COUNT = 'SET_RECENT_TXS_COUNT';
 
 // Actions
 // -- API
-export const getTxsRecent = ({ count = 10, page = 1, type = '', status = '', toDate, fromDate }) => async (dispatch) => {
-  // Convert dates into UTC time.  When a user selects a date it is always in their local time.  Convert, then send to the api
-  const toDateUTC = toDate && getUTCTime(toDate, 'yyyy-MM-dd');
-  const fromDateUTC = fromDate && getUTCTime(fromDate, 'yyyy-MM-dd');
-  return ajaxGet(
+export const getTxsRecent = ({ count = 10, page = 1, type = '', status = '', toDate, fromDate }) => async (dispatch) =>
+  ajaxGet(
     GET_TXS_RECENT,
     dispatch,
     `${TXS_RECENT_URL}?count=${count}&page=${page}${type ? `&msgType=${type}` : ''}${
       status ? `&txStatus=${status.toUpperCase()}` : ''
-    }${toDateUTC ? `&toDate=${toDateUTC}` : ''}${fromDateUTC ? `&fromDate=${fromDateUTC}` : ''}`
+    }${toDate ? `&toDate=${toDate}` : ''}${fromDate ? `&fromDate=${fromDate}` : ''}`
   );
-};
 export const getTxsByAddress = ({ count = 10, page = 1, type = '', status = '', address }) => async (dispatch) =>
   ajaxGet(
     GET_TXS_BY_ADDRESS,
