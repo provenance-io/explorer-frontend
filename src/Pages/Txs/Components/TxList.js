@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { TRANSACTION_STATUS_OPTIONS, breakpoints } from 'consts';
 import { useTxs, useApp } from 'redux/hooks';
+import { getUTCTime } from 'utils';
 
 const TxListContainer = styled.div`
   width: 100%;
@@ -119,10 +120,13 @@ const TxList = () => {
     if (isFilterValid()) {
       // Reset page to 1 for new filtered results
       setTableCurrentPage(1);
+      // Convert the toDate and fromDate from local time to UTC time
+      const filterToUTC = getUTCTime(`${filterTo}:00:00:00`, 'yyyy-MM-dd');
+      const filterFromUTC = getUTCTime(`${filterFrom}:00:00:00`, 'yyyy-MM-dd');
       // Fetch new results
       getTableData({
-        toDate: filterTo,
-        fromDate: filterFrom,
+        toDate: filterToUTC,
+        fromDate: filterFromUTC,
         page: 1,
         count: tableCount,
         type: filterType,
