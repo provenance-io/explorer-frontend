@@ -69,7 +69,9 @@
     "test:cov": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "stats": "npm run build:stats && webpack-bundle-analyzer --port 4200 build/bundle-stats.json",
-    "analyze": "npm run build && source-map-explorer build/static/js/*.js --only-mapped"
+    "analyze": "npm run build && source-map-explorer build/static/js/*.js --only-mapped",
+    "docker:local": "docker build -t explorer-frontend:dev .",
+    "docker:prod": "docker build -f Dockerfile-prod -t explorer-frontend:prod ."
   },
   "browserslist": {
     "production": [
