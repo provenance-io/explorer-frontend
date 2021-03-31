@@ -3,7 +3,7 @@ import styledNormalize from 'styled-normalize';
 
 export const GlobalStyle = createGlobalStyle`
   ${styledNormalize}
-
+ 
   html {
     font-size: 62.5%; /* =10px and will allow for all rem sizing to be easier, 1.4 rem => 14px*/
   }
