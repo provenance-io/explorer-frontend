@@ -121,8 +121,8 @@ const TxList = () => {
       // Reset page to 1 for new filtered results
       setTableCurrentPage(1);
       // Convert the toDate and fromDate from local time to UTC time
-      const filterToUTC = getUTCTime(`${filterTo}:00:00:00`, 'yyyy-MM-dd');
-      const filterFromUTC = getUTCTime(`${filterFrom}:00:00:00`, 'yyyy-MM-dd');
+      const filterToUTC = filterTo ? getUTCTime(`${filterTo}:00:00:00`, 'yyyy-MM-dd') : '';
+      const filterFromUTC = filterFrom ? getUTCTime(`${filterFrom}:00:00:00`, 'yyyy-MM-dd') : '';
       // Fetch new results
       getTableData({
         toDate: filterToUTC,
