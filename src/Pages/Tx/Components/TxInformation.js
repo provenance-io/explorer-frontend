@@ -121,7 +121,7 @@ const TxInformation = () => {
   const buildTxMessageContent = () => {
     // This Transaction Message/Result section is custom for every type of Tx (Sooner/Later this needs to be a util like the table builder...)
     const { msg: msgArray } = txInfo; // msg is an array, for now we will only handle a single message, in the future we may need to handle 2+
-    const { msg: msgData, type: txType } = msgArray[0];
+    const { msg: msgData, type: txType } = msgArray[0] || [];
     // Initial summaryData should always have the type
     const summaryData = [{ title: 'Tx Type', value: capitalize(txType) }];
     // Build each summary based off the type
