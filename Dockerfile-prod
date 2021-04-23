@@ -1,9 +1,10 @@
 FROM node:14.6.0 as build
+ARG REACT_APP_ENV=test
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . ./
-RUN ["npm", "run", "build"]
+RUN ["REACT_APP_ENV=$REACT_APP_ENV", "npm", "run", "build"]
 
 # Stage - Production
 FROM nginx:stable as runner
