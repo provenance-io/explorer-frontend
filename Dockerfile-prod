@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . ./
-RUN ["npm", "run", "build:prod"]
+RUN ["REACT_APP_ENV=$REACT_APP_ENV", "npm", "run", "build"]
 
 # Stage - Production
 FROM nginx:stable as runner
