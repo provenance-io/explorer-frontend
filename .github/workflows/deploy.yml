@@ -39,7 +39,6 @@ jobs:
           context: .
           push: true
           tags: provenanceio/explorer-frontend:latest
-          build-args: REACT_APP_ENV=test
 
       - name: Build and push mainnet
         uses: docker/build-push-action@v2

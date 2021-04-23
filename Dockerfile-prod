@@ -1,4 +1,5 @@
 FROM node:14.6.0 as build
+ARG REACT_APP_ENV=test
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
