@@ -16,7 +16,7 @@ const AssetInformation = () => {
   const { circulation: supplyCirculation, total: supplyTotal } = supply;
   const summaryData = [
     { title: 'Asset Name', value: marker },
-    { title: 'Owner', value: holdingAccount, link: `/accounts/${holdingAccount}`, copy: holdingAccount },
+    { title: 'Holding Account', value: holdingAccount, link: `/accounts/${holdingAccount}`, copy: holdingAccount },
     { title: 'Supply', value: `${numberFormat(supplyCirculation)} / ${numberFormat(supplyTotal)}` },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Holders', value: holderCount },
