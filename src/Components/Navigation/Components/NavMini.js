@@ -68,9 +68,6 @@ const SearchClose = styled(Sprite)`
   right: 0;
   top: 10px;
 `;
-const MenuIcon = styled(Sprite)`
-  /* margin-right: 20px; */
-`;
 const CloseIcon = styled(Sprite)`
   position: absolute;
   right: 0;
@@ -114,7 +111,7 @@ const NavMini = () => {
   return (
     <NavigationWrapper>
       <InnerWrapper>
-        <MenuIcon icon="MENU" onClick={toggleMenu} size="3.0rem" color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+        <Sprite icon="MENU" onClick={toggleMenu} size="3.0rem" color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
         <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
