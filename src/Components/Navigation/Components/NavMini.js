@@ -15,6 +15,12 @@ const NavigationWrapper = styled.div`
   background: ${({ theme }) => theme.BACKGROUND_DARK};
 `;
 
+const InnerWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 const LinkWrapper = styled.div`
   margin: 10px 0;
   padding-bottom: 5px;
@@ -62,9 +68,6 @@ const SearchClose = styled(Sprite)`
   right: 0;
   top: 10px;
 `;
-const MenuIcon = styled(Sprite)`
-  margin-right: 20px;
-`;
 const CloseIcon = styled(Sprite)`
   position: absolute;
   right: 0;
@@ -107,11 +110,13 @@ const NavMini = () => {
 
   return (
     <NavigationWrapper>
-      <MenuIcon icon="MENU" onClick={toggleMenu} size="3.0rem" color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
-      <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
-        <Sprite icon="LOGO" height="32px" />
-      </LogoLink>
-      <Sprite icon="SEARCH" onClick={toggleSearch} size="2.0rem" color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+      <InnerWrapper>
+        <Sprite icon="MENU" onClick={toggleMenu} size="3.0rem" color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+        <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
+          <Sprite icon="LOGO" height="32px" />
+        </LogoLink>
+        <Sprite icon="SEARCH" onClick={toggleSearch} size="3.0rem" color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+      </InnerWrapper>
       {showMenu && (
         <DropdownContainer>
           <CloseIcon

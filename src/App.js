@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { useApp } from 'redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
 import { GlobalStyle, Themes } from 'theme';
+import { isProd } from 'consts';
 import { Block, Blocks, Dashboard, NoMatch404, Tx, Txs, Validator, Validators, Accounts, Assets, Asset, Faucet } from './Pages';
 
 const App = () => {
@@ -32,7 +33,7 @@ const App = () => {
               <Route path="/accounts/:addressId" component={Accounts} />
               <Route path="/assets" component={Assets} />
               <Route path="/asset/:assetId" component={Asset} />
-              <Route path="/faucet" component={Faucet} />
+              <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
               <Route component={NoMatch404} />
             </Switch>
             <Footer />

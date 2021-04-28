@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { Section, Content, Wrapper, Sprite, PopupNote, Loading as BaseLoading, Button as BaseButton } from 'Components';
 import { useFaucet } from 'redux/hooks';
 import { bech32 } from 'bech32';
-import { breakpoints } from 'consts';
+import { breakpoints, isProd } from 'consts';
 
 const rotate = keyframes`
   0% {
@@ -246,65 +246,67 @@ const Faucet = () => {
   };
 
   return (
-    <Wrapper>
-      <Section>
-        <Content justify="center">
-          <FaucetContainer>
-            <FaucetIconContainer>
-              <FaucetIconHolder>
-                <FaucetIcon icon="HASH" size="20rem" />
-                <FaucetIcon icon="HASH" size="20rem" />
-                <FaucetIcon icon="HASH" size="20rem" />
-                <FaucetIcon icon="HASH" size="20rem" />
-                <FaucetIcon icon="HASH" size="20rem" />
-              </FaucetIconHolder>
-            </FaucetIconContainer>
-            <TitleContainer>
-              <Title>Provenance Testnet Faucet</Title>
-              <InfoIconContainer>
-                <Sprite
-                  icon="HELP"
-                  size="2.0rem"
-                  onClick={() => setShowPopup(!showPopup)}
-                  onMouseEnter={() => setShowPopup(true)}
-                  onMouseLeave={() => setShowPopup(false)}
+    !isProd && (
+      <Wrapper>
+        <Section>
+          <Content justify="center">
+            <FaucetContainer>
+              <FaucetIconContainer>
+                <FaucetIconHolder>
+                  <FaucetIcon icon="HASH" size="20rem" />
+                  <FaucetIcon icon="HASH" size="20rem" />
+                  <FaucetIcon icon="HASH" size="20rem" />
+                  <FaucetIcon icon="HASH" size="20rem" />
+                  <FaucetIcon icon="HASH" size="20rem" />
+                </FaucetIconHolder>
+              </FaucetIconContainer>
+              <TitleContainer>
+                <Title>Provenance Testnet Faucet</Title>
+                <InfoIconContainer>
+                  <Sprite
+                    icon="HELP"
+                    size="2.0rem"
+                    onClick={() => setShowPopup(!showPopup)}
+                    onMouseEnter={() => setShowPopup(true)}
+                    onMouseLeave={() => setShowPopup(false)}
+                  />
+                  <PopupNote show={showPopup} position="left" minWidth="220px">
+                    <PopupNoteLine>Each request disburses 10nhash, any account can only get max of 10,000nhash.</PopupNoteLine>
+                    <PopupNoteLine>Note: This is for Testnet Only.</PopupNoteLine>
+                  </PopupNote>
+                </InfoIconContainer>
+              </TitleContainer>
+              <TextInputContainer>
+                {error && <ErrorText>{error}</ErrorText>}
+                <TextInput
+                  disabled={formDisabled}
+                  onChange={editAddress}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && !formDisabled) {
+                      submitAddress();
+                    }
+                  }}
+                  placeholder={timeoutActive ? 'Please wait for timeout' : 'Enter Address'}
+                  value={address}
                 />
-                <PopupNote show={showPopup} position="left" minWidth="220px">
-                  <PopupNoteLine>Each request disburses 10nhash, any account can only get max of 10,000nhash.</PopupNoteLine>
-                  <PopupNoteLine>Note: This is for Testnet Only.</PopupNoteLine>
-                </PopupNote>
-              </InfoIconContainer>
-            </TitleContainer>
-            <TextInputContainer>
-              {error && <ErrorText>{error}</ErrorText>}
-              <TextInput
-                disabled={formDisabled}
-                onChange={editAddress}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !formDisabled) {
-                    submitAddress();
-                  }
-                }}
-                placeholder={timeoutActive ? 'Please wait for timeout' : 'Enter Address'}
-                value={address}
-              />
-              <Button isDisabled={formDisabled} onClick={submitAddress} icon="CUBES">
-                <ButtonContent timeoutActive={timeoutActive}>
-                  {timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}
-                </ButtonContent>
-              </Button>
-            </TextInputContainer>
-            {serverResponse && <ServerResponse>{serverResponse}</ServerResponse>}
-            {isLoading && (
-              <LoadingContainer>
-                Processing...
-                <Loading size="2rem" />
-              </LoadingContainer>
-            )}
-          </FaucetContainer>
-        </Content>
-      </Section>
-    </Wrapper>
+                <Button isDisabled={formDisabled} onClick={submitAddress} icon="CUBES">
+                  <ButtonContent timeoutActive={timeoutActive}>
+                    {timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}
+                  </ButtonContent>
+                </Button>
+              </TextInputContainer>
+              {serverResponse && <ServerResponse>{serverResponse}</ServerResponse>}
+              {isLoading && (
+                <LoadingContainer>
+                  Processing...
+                  <Loading size="2rem" />
+                </LoadingContainer>
+              )}
+            </FaucetContainer>
+          </Content>
+        </Section>
+      </Wrapper>
+    )
   );
 };
 
