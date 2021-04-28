@@ -183,14 +183,17 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         // Name/moniker of a validator linking to its address
-        case 'moniker':
+        case 'moniker': {
+          // Build the link from the addressId or the proposerId or the ownerAddress or the holdingAccount
+          // build the link here to not break syntax highlighting :shakesfist:
+          const linkAddress = dataObj?.addressId || dataObj?.proposerAddress || dataObj?.ownerAddress || dataObj?.holdingAccount;
           finalObj[dataName] = {
             value: serverValue,
-            // Build the link from the addressId or the ownerAddress or the holdingAccount
-            link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress || dataObj?.holdingAccount}`,
+            link: `/validator/${linkAddress}`,
             hover: serverValue,
           };
           break;
+        }
         // Name/moniker of a validator (found in msg)
         case 'monikerMsg': {
           // No server value, manually grab from dataObj msg

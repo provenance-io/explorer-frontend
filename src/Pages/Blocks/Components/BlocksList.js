@@ -23,7 +23,7 @@ const BlocksList = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Block', dataName: 'height' },
-    { displayName: 'Proposer', dataName: 'proposerAddress' },
+    { displayName: 'Proposer', dataName: 'moniker' },
     { displayName: 'Transactions', dataName: 'txNum' },
     { displayName: 'Validators', dataName: 'validatorCount' },
     { displayName: 'Voting Power', dataName: 'votingPower' },

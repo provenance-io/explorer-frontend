@@ -27,7 +27,7 @@ const BlockDetails = () => {
     }
   }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight]);
 
-  const { hash, proposerAddress, votingPower = {}, txNum, validatorCount = {}, time, userName } = blockInfo;
+  const { hash, proposerAddress, moniker, votingPower = {}, txNum, validatorCount = {}, time, userName } = blockInfo;
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
   const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
   const utcTime = getUTCTime(time);
@@ -37,7 +37,7 @@ const BlockDetails = () => {
     { title: 'Block Hash', value: hash, copy: hash },
     {
       title: 'Proposer',
-      value: userName || maxLength(proposerAddress, 20, 5),
+      value: userName || maxLength(moniker, 20, 5),
       link: `/validator/${proposerAddress}`,
       copy: proposerAddress,
     },
