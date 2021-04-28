@@ -241,6 +241,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Server value already correct
         case 'bondHeight': // fallthrough
+        case 'unbondingHeight': // fallthrough
         case 'currency': // fallthrough
         case 'delegators': // fallthrough
         case 'proposerPriority':
