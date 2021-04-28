@@ -69,7 +69,7 @@ const Description = styled.div`
   margin-top: 10px;
 `;
 const Status = styled.div`
-  background: ${({ theme, status }) => theme[`CHIP_${status.toUpperCase()}`]};
+  background: ${({ theme, status }) => theme[`CHIP_${status?.toUpperCase()}`]};
   color: ${({ theme }) => theme.FONT_WHITE};
   padding: 3px 10px;
   border-radius: 10px;

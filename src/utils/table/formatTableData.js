@@ -36,7 +36,7 @@ export const formatTableData = (data = [], tableHeaders) => {
       const serverValue = dataObj[dataName];
       switch (dataName) {
         // Address or hash leading to the account's page
-        case 'ownerAddress': // fallthrough
+        case 'holdingAccount': // fallthrough
         case 'address':
           finalObj[dataName] = {
             value: maxLength(serverValue, 11, 3),
@@ -164,8 +164,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'moniker':
           finalObj[dataName] = {
             value: serverValue,
-            // Build the link from the addressId or the ownerAddress
-            link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress}`,
+            // Build the link from the addressId or the holdingAccount
+            link: `/validator/${dataObj?.addressId || dataObj?.holdingAccount}`,
             hover: serverValue,
           };
           break;
