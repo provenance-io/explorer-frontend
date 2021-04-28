@@ -153,6 +153,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Denomination or marker value linking to the asset
         case 'denom': // fallthrough
+        case 'queryDenom': // fallthrough
         case 'marker':
           finalObj[dataName] = {
             value: serverValue,
