@@ -4,7 +4,7 @@ const reactAppEnv = process.env.REACT_APP_ENV;
 // Determine current environment
 const isLocal = reactAppEnv === 'local';
 const isTest = reactAppEnv === 'test' || window.location.href.includes('test.');
-const isProd = reactAppEnv === 'production';
+export const isProd = reactAppEnv === 'production';
 // Base URL for all calls to use
 let BASE_URL = '';
 export let FAUCET_URL = '';
