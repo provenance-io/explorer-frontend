@@ -81,8 +81,8 @@ const NavMini = () => {
       const { url, title } = Links[linkName];
       const active = pathname === url ? 'true' : undefined;
       return (
-        <LinkWrapper>
-          <Link key={url} to={url} active={active} onClick={() => setShowMenu(false)}>
+        <LinkWrapper key={url}>
+          <Link to={url} active={active} onClick={() => setShowMenu(false)}>
             {title}
           </Link>
         </LinkWrapper>

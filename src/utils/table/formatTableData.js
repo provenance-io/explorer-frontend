@@ -1,6 +1,6 @@
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
-import { nHashtoHash } from '../number/nHashtoHash';
+import { formatNhash } from '../number/nHashtoHash';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
@@ -37,6 +37,7 @@ export const formatTableData = (data = [], tableHeaders) => {
       switch (dataName) {
         // Address or hash leading to the account's page
         case 'ownerAddress': // fallthrough
+        case 'holdingAccount': // fallthrough
         case 'address':
           finalObj[dataName] = {
             value: maxLength(serverValue, 11, 3),
@@ -114,6 +115,22 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        //
+        case 'manager': {
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            hover: serverValue,
+            link: `/accounts/${serverValue}`,
+          };
+          break;
+        }
+        //
+        case 'permissions': {
+          finalObj[dataName] = {
+            value: serverValue.join(', '),
+          };
+          break;
+        }
         // Amount of currency/item and its denomination given in an object (amount found in msg)
         case 'msgAmount': {
           // No server value, manually grab from dataObj msg
@@ -121,7 +138,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           const { msg = { amount: {} } } = msgArray[0];
           const { amount = '--', denom = '--' } = msg.amount;
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
+            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
@@ -130,7 +147,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'fee': {
           const { amount = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
+            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
@@ -139,7 +156,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'selfBonded': {
           const { count = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(count)} hash` })
+            ? (finalObj[dataName] = { value: `${formatNhash(count)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
           break;
         }
@@ -159,15 +176,24 @@ export const formatTableData = (data = [], tableHeaders) => {
             link: `/asset/${serverValue}`,
           };
           break;
+        case 'queryDenom':
+          finalObj[dataName] = {
+            value: dataObj.denom,
+            link: `/asset/${serverValue}`,
+          };
+          break;
         // Name/moniker of a validator linking to its address
-        case 'moniker':
+        case 'moniker': {
+          // Build the link from the addressId or the proposerId or the ownerAddress or the holdingAccount
+          // build the link here to not break syntax highlighting :shakesfist:
+          const linkAddress = dataObj?.addressId || dataObj?.proposerAddress || dataObj?.ownerAddress || dataObj?.holdingAccount;
           finalObj[dataName] = {
             value: serverValue,
-            // Build the link from the addressId or the ownerAddress
-            link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress}`,
+            link: `/validator/${linkAddress}`,
             hover: serverValue,
           };
           break;
+        }
         // Name/moniker of a validator (found in msg)
         case 'monikerMsg': {
           // No server value, manually grab from dataObj msg
@@ -195,7 +221,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Get the voting power as a percent from the serverValue (object)
         case 'votingPower': {
           const { count, total } = serverValue || {};
-          const value = numberFormat(count / total) * 100;
+          const value = numberFormat((count / total) * 100, 4);
           const finalValue = value >= 1 ? `${value}%` : `< 1%`;
           finalObj[dataName] = { value: finalValue };
           break;
@@ -241,6 +267,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Server value already correct
         case 'bondHeight': // fallthrough
+        case 'unbondingHeight': // fallthrough
         case 'currency': // fallthrough
         case 'delegators': // fallthrough
         case 'proposerPriority':

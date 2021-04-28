@@ -23,18 +23,24 @@ const ValidatorList = () => {
     getTableData({ page: tableCurrentPage, count: tableCount, status: tableFilterStatus });
   }, [getTableData, tableCount, tableCurrentPage, tableFilterStatus]);
 
+  const isJailed = tableFilterStatus === 'jailed';
+
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Bonded Tokens', dataName: 'bondedTokens' },
-    { displayName: 'Voting Power', dataName: 'votingPower' },
-    { displayName: 'Uptime', dataName: 'uptime' },
+    !isJailed && { displayName: 'Voting Power', dataName: 'votingPower' },
+    !isJailed && { displayName: 'Uptime', dataName: 'uptime' },
     { displayName: 'Self Bonded', dataName: 'selfBonded' },
-    { displayName: 'Delegators', dataName: 'delegators' },
-    { displayName: 'Bond Height', dataName: 'bondHeight' },
-  ];
+    !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
+    !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
+    isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
+  ]
+    // Remove the nulls
+    .filter((th) => th);
+
   // Data to populate table filters
   const filterData = [
     {

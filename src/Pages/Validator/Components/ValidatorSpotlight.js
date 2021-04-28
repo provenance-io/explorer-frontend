@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
 import { Content, CopyValue, PopupNote, Sprite, Loading } from 'Components';
-import { maxLength, numberFormat } from 'utils';
+import { capitalize, getFormattedDate, maxLength, numberFormat } from 'utils';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -69,7 +69,7 @@ const Description = styled.div`
   margin-top: 10px;
 `;
 const Status = styled.div`
-  background: ${({ theme }) => theme.BACKGROUND_THEME};
+  background: ${({ theme, status }) => theme[`CHIP_${status?.toUpperCase()}`]};
   color: ${({ theme }) => theme.FONT_WHITE};
   padding: 3px 10px;
   border-radius: 10px;
@@ -86,21 +86,25 @@ const ValidatorSpotlight = () => {
   }, [getValidatorSpotlight, validatorId]);
 
   const {
-    image,
-    moniker,
-    description,
-    url,
-    votingPower = {},
-    uptime,
-    consensusPubKey,
     blockCount = {},
     bondHeight = '--',
-    withdrawalAddress,
+    consensusPubKey,
+    description,
+    image,
+    jailedUntil,
+    moniker,
     ownerAddress,
     operatorAddress,
+    status,
+    unbondingHeight,
+    uptime,
+    url,
+    votingPower, // defaults to null, so the default here doesn't work
+    withdrawalAddress,
   } = validatorSpotlight;
 
-  const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
+  const isJailed = status === 'jailed';
+  const { count: votingPowerCount, total: votingPowerTotal } = votingPower || {};
   const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
   const { count: missedBlocksCount, total: missedBlocksTotal } = blockCount;
 
@@ -134,7 +138,7 @@ const ValidatorSpotlight = () => {
           </Half>
           <Half>
             <DataRow>
-              <Status>Active</Status>
+              <Status status={status}>{capitalize(status)}</Status>
             </DataRow>
             <DataRow>
               <DataTitle>
@@ -167,24 +171,34 @@ const ValidatorSpotlight = () => {
                 <CopyValue title="Copy Withdraw Address" value={withdrawalAddress} />
               </DataValue>
             </DataRow>
-            <DataRow>
-              <DataTitle>Voting Power:</DataTitle>
-              <DataValue>{votingPowerPercent}%</DataValue>
-            </DataRow>
-            <DataRow>
-              <DataTitle>Uptime:</DataTitle>
-              <DataValue>{numberFormat(uptime, 2)}%</DataValue>
-            </DataRow>
-            <DataRow>
-              <DataTitle>Missed Blocks:</DataTitle>
-              <DataValue>
-                {numberFormat(missedBlocksCount)} in {numberFormat(missedBlocksTotal)}
-              </DataValue>
-            </DataRow>
-            <DataRow>
-              <DataTitle>Bond Height:</DataTitle>
-              <DataValue>{numberFormat(bondHeight)}</DataValue>
-            </DataRow>
+            {!isJailed && (
+              <>
+                <DataRow>
+                  <DataTitle>Voting Power:</DataTitle>
+                  <DataValue>{votingPowerPercent}%</DataValue>
+                </DataRow>
+                <DataRow>
+                  <DataTitle>Uptime:</DataTitle>
+                  <DataValue>{numberFormat(uptime, 2)}%</DataValue>
+                </DataRow>
+                <DataRow>
+                  <DataTitle>Missed Blocks:</DataTitle>
+                  <DataValue>
+                    {numberFormat(missedBlocksCount)} in {numberFormat(missedBlocksTotal)}
+                  </DataValue>
+                </DataRow>
+                <DataRow>
+                  <DataTitle>Bond Height:</DataTitle>
+                  <DataValue>{numberFormat(bondHeight)}</DataValue>
+                </DataRow>
+              </>
+            )}
+            {isJailed && (
+              <DataRow>
+                <DataTitle>Unbonding Height:</DataTitle>
+                <DataValue>{unbondingHeight}</DataValue>
+              </DataRow>
+            )}
             <DataRow>
               <DataTitle>Consensus Pubkey:</DataTitle>
               <DataValue title={consensusPubKey}>
@@ -192,6 +206,14 @@ const ValidatorSpotlight = () => {
                 <CopyValue title="Copy Consensus Pubkey" value={consensusPubKey} />
               </DataValue>
             </DataRow>
+            {isJailed && (
+              <>
+                <DataRow>
+                  <DataTitle>Jailed Until:</DataTitle>
+                  <DataValue>{getFormattedDate(new Date(jailedUntil.millis), 'yyyy/MM/dd HH:mm:ss')}</DataValue>
+                </DataRow>
+              </>
+            )}
           </Half>
         </>
       )}

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
 import { Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
-import { maxLength, getUTCTime, numberFormat, formatSeconds, nHashtoHash } from 'utils';
+import { maxLength, getUTCTime, numberFormat, formatSeconds, formatNhash } from 'utils';
 import { polling } from 'consts';
 
 const Group = styled.div`
@@ -119,8 +119,8 @@ const BlockSpotlight = () => {
             <DataCard icon="SHARED_POOLS" title="Bonded Tokens">
               {bondedTokensPercent}
               <>
-                {nHashtoHash(bondedTokensCount, { shorthand: true, decimal: 2 })} /{' '}
-                {nHashtoHash(bondedTokensTotal, { shorthand: true, decimal: 2 })}
+                {formatNhash(bondedTokensCount, { shorthand: true, decimal: 2 })} /{' '}
+                {formatNhash(bondedTokensTotal, { shorthand: true, decimal: 2 })}
               </>
             </DataCard>
           </Group>

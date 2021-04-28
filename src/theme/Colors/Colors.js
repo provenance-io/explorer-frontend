@@ -48,6 +48,10 @@ export const Colors = {
   BORDER_SECONDARY: allColors.GRAY_PRIMARY,
   BORDER_THEME: allColors.BLUE_PRIMARY,
   BORDER_DISABLED: allColors.BLACK,
+  // Chip
+  CHIP_ACTIVE: allColors.BLUE_PRIMARY,
+  CHIP_CANDIDATE: allColors.GREEN_PRIMARY,
+  CHIP_JAILED: allColors.RED_PRIMARY,
   // Icon
   ICON_WHITE: allColors.WHITE,
   ICON_BLACK: allColors.BLACK,

@@ -16,7 +16,7 @@ const AssetHolders = () => {
   const tableCount = 10;
 
   useEffect(() => {
-    getTableData(assetId);
+    getTableData({ assetId, page: tableCurrentPage, count: tableCount });
   }, [getTableData, assetId, tableCount, tableCurrentPage]);
 
   const tableHeaders = [
@@ -34,6 +34,7 @@ const AssetHolders = () => {
       tableData={sortedTableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
+      resultsPerPage={tableCount}
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Asset Holders"
