@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { maxLength, getUTCTime, capitalize, nHashtoHash, numberFormat } from 'utils';
+import { maxLength, getUTCTime, capitalize, formatNhash, numberFormat } from 'utils';
 import { Link } from 'react-router-dom';
 import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
 import { Content, TimeTicker, Loading } from 'Components';
@@ -66,7 +66,7 @@ const RecentTxs = () => {
       const { type = '--' } = msg[0];
       const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
-      const feeAmountFinal = feeDenom === 'nhash' ? `${nHashtoHash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
+      const feeAmountFinal = feeDenom === 'nhash' ? `${formatNhash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
       return (
         <TxLineContainer key={`${txHash}_${index}`}>

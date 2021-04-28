@@ -1,6 +1,6 @@
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
-import { nHashtoHash } from '../number/nHashtoHash';
+import { formatNhash } from '../number/nHashtoHash';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
@@ -36,6 +36,7 @@ export const formatTableData = (data = [], tableHeaders) => {
       const serverValue = dataObj[dataName];
       switch (dataName) {
         // Address or hash leading to the account's page
+        case 'ownerAddress': // fallthrough
         case 'holdingAccount': // fallthrough
         case 'address':
           finalObj[dataName] = {
@@ -121,7 +122,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           const { msg = { amount: {} } } = msgArray[0];
           const { amount = '--', denom = '--' } = msg.amount;
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
+            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
@@ -130,7 +131,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'fee': {
           const { amount = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(amount)} hash` })
+            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
@@ -139,7 +140,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'selfBonded': {
           const { count = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${nHashtoHash(count)} hash` })
+            ? (finalObj[dataName] = { value: `${formatNhash(count)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
           break;
         }
@@ -164,8 +165,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'moniker':
           finalObj[dataName] = {
             value: serverValue,
-            // Build the link from the addressId or the holdingAccount
-            link: `/validator/${dataObj?.addressId || dataObj?.holdingAccount}`,
+            // Build the link from the addressId or the ownerAddress or the holdingAccount
+            link: `/validator/${dataObj?.addressId || dataObj?.ownerAddress || dataObj?.holdingAccount}`,
             hover: serverValue,
           };
           break;

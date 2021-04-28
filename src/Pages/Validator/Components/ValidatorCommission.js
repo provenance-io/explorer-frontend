@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Content, Summary, Loading } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { numberFormat, nHashtoHash } from 'utils';
+import { numberFormat, formatNhash } from 'utils';
 
 const ValidatorCommission = () => {
   const [showBondedPopup, setShowBondedPopup] = useState(false);
@@ -42,11 +42,11 @@ const ValidatorCommission = () => {
     data: [
       {
         title: 'Self-Bonded:',
-        value: `${nHashtoHash(selfBondedCount)} ${selfBondedDenom} (${selfBondedPercent})`,
+        value: `${formatNhash(selfBondedCount)} ${selfBondedDenom} (${selfBondedPercent})`,
       },
       {
         title: 'Delegator Bonded:',
-        value: `${nHashtoHash(delegatorBondedCount)} ${delegatorBondedDenom} (${delegatorBondedPercent})`,
+        value: `${formatNhash(delegatorBondedCount)} ${delegatorBondedDenom} (${delegatorBondedPercent})`,
       },
     ],
   };
@@ -61,12 +61,12 @@ const ValidatorCommission = () => {
     { title: 'Commission Rate', value: commisionRatePercent },
     {
       title: 'Bonded Tokens',
-      value: `${nHashtoHash(bondedTokensCount)} hash`,
+      value: `${formatNhash(bondedTokensCount)} hash`,
       popupNote: popupNoteBondedTokens,
     },
     { title: 'Delegators', value: delegatorCount },
-    { title: 'Total Shares', value: `${nHashtoHash(totalShares)} hash` },
-    { title: 'Commission Rewards', value: `${nHashtoHash(commissionRewardsAmount)} hash` },
+    { title: 'Total Shares', value: `${formatNhash(totalShares)} hash` },
+    { title: 'Commission Rewards', value: `${formatNhash(commissionRewardsAmount)} hash` },
     {
       title: 'Commission Rate Range',
       value: `0 ~ ${commissionRatePercent}`,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { maxLength, getUTCTime, capitalize, numberFormat, nHashtoHash } from 'utils';
+import { maxLength, getUTCTime, capitalize, numberFormat, formatNhash } from 'utils';
 import { Section, Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
@@ -80,7 +80,7 @@ const TxInformation = () => {
     const { fee, height, memo, signers, status, time } = txInfo;
     const { amount: feeAmount, denom: feeDenom } = fee;
     const utcTime = getUTCTime(time);
-    const feeValue = feeDenom === 'nhash' ? `${nHashtoHash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
+    const feeValue = feeDenom === 'nhash' ? `${formatNhash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
