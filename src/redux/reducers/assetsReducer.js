@@ -42,9 +42,7 @@ const reducer = handleActions(
     },
     [`${GET_ASSET_HOLDERS}_${SUCCESS}`](state, { payload }) {
       // const { pages: assetHoldersPages, results: assetHolders } = payload;
-      // TEMP: API missing pagination, just returns results for now
-      const assetHolders = payload;
-      const assetHoldersPages = 1;
+      const { pages: assetHoldersPages, results: assetHolders } = payload;
 
       return {
         ...state,
