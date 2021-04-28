@@ -115,6 +115,22 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        //
+        case 'manager': {
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            hover: serverValue,
+            link: `/accounts/${serverValue}`,
+          };
+          break;
+        }
+        //
+        case 'permissions': {
+          finalObj[dataName] = {
+            value: serverValue.join(', '),
+          };
+          break;
+        }
         // Amount of currency/item and its denomination given in an object (amount found in msg)
         case 'msgAmount': {
           // No server value, manually grab from dataObj msg

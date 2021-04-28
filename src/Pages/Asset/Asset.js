@@ -1,7 +1,7 @@
 import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
-import { AssetInformation, AssetTxsList, AssetHolders } from './Components';
+import { AssetHolders, AssetInformation, AssetTxsList, ManagingAccounts } from './Components';
 
 const Assets = () => {
   const { assetId } = useParams();
@@ -11,6 +11,9 @@ const Assets = () => {
       <Header title="Asset Details" value={assetId} copyValue={assetId} copyTitle={`Copy Asset Name ${assetId}`} />
       <Section header>
         <AssetInformation />
+      </Section>
+      <Section>
+        <ManagingAccounts />
       </Section>
       <Section>
         <AssetHolders />
