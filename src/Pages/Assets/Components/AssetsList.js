@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
 import { useAssets } from 'redux/hooks';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const { assetId } = useParams();
   const { getAssetsList: getTableData, assets: tableData, assetsLoading: tableLoading, assetsPages: tablePages } = useAssets();
   // How many results to display
   const tableCount = 10;
@@ -14,16 +12,16 @@ const AssetsList = () => {
     getTableData({
       page: tableCurrentPage,
       count: tableCount,
-      asset: assetId,
     });
-  }, [getTableData, assetId, tableCount, tableCurrentPage]);
+  }, [getTableData, tableCount, tableCurrentPage]);
 
   const tableHeaders = [
     { displayName: 'Name', dataName: 'marker' },
-    { displayName: 'Circulation', dataName: 'supplyCirculation' },
-    { displayName: 'Supply', dataName: 'supplyTotal' },
+    { displayName: 'Total Supply', dataName: 'supply' },
     { displayName: 'Holding Account', dataName: 'holdingAccount' },
     { displayName: 'Status', dataName: 'status' },
+    { displayName: 'Mintable', dataName: 'mintable' },
+    { displayName: 'Last Tx', dataName: 'lastTxTimestamp' },
   ];
 
   return (

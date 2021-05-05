@@ -204,7 +204,9 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Convert given time to standard readable UTC string
+
         case 'time': // fallthrough
+        case 'lastTxTimestamp':
         case 'timestamp': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
@@ -233,9 +235,8 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Get the asset supply information (total)
-        case 'supplyTotal': {
-          const { total } = dataObj?.supply;
-          finalObj[dataName] = { value: numberFormat(total) };
+        case 'supply': {
+          finalObj[dataName] = { value: numberFormat(serverValue, 3, { shorthand: true }) };
           break;
         }
         // Get the asset supply information (circulation)
@@ -265,6 +266,10 @@ export const formatTableData = (data = [], tableHeaders) => {
           }
           break;
         }
+        // Boolean to string
+        case 'mintable':
+          finalObj[dataName] = { value: capitalize(`${serverValue}`) };
+          break;
         // Server value already correct
         case 'bondHeight': // fallthrough
         case 'unbondingHeight': // fallthrough

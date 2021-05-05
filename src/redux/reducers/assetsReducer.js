@@ -41,7 +41,6 @@ const reducer = handleActions(
       };
     },
     [`${GET_ASSET_HOLDERS}_${SUCCESS}`](state, { payload }) {
-      // const { pages: assetHoldersPages, results: assetHolders } = payload;
       const { pages: assetHoldersPages, results: assetHolders } = payload;
 
       return {
@@ -114,10 +113,18 @@ const reducer = handleActions(
         assetsLoading: true,
       };
     },
-    [`${GET_ASSETS_LIST}_${SUCCESS}`](state, { payload: assets }) {
+    [`${GET_ASSETS_LIST}_${SUCCESS}`](state, { payload }) {
+      const { pages: assetsPages, results: assets } = payload;
+
       return {
         ...state,
-        assets,
+        // assets,
+        // remove the map once server returns null instead of 'null'
+        assets: assets.map((result) => ({
+          ...result,
+          lastTxTimestamp: result.lastTxTimestamp === 'null' ? null : result.lastTxTimestamp,
+        })),
+        assetsPages,
         assetsLoading: false,
       };
     },
