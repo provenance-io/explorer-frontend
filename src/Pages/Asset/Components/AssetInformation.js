@@ -12,12 +12,11 @@ const AssetInformation = () => {
     getAssetInfo(assetId);
   }, [assetId, getAssetInfo]);
 
-  const { marker, holdingAccount, supply = {}, mintable, holderCount, txnCount, markerStatus } = assetInfo;
-  const { circulation: supplyCirculation, total: supplyTotal } = supply;
+  const { marker, holdingAccount, supply, mintable, holderCount, txnCount, markerStatus } = assetInfo;
   const summaryData = [
     { title: 'Asset Name', value: marker },
     { title: 'Holding Account', value: holdingAccount, link: `/accounts/${holdingAccount}`, copy: holdingAccount },
-    { title: 'Supply', value: `${numberFormat(supplyCirculation)} / ${numberFormat(supplyTotal)}` },
+    { title: 'Supply', value: numberFormat(supply, 3, { shorthand: true }) },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Holders', value: holderCount },
     { title: 'Transactions', value: numberFormat(txnCount) },

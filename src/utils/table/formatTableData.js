@@ -234,21 +234,9 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: `${count} / ${total}` };
           break;
         }
-        // Get the asset supply information (total)
-        case 'supplyTotal': {
-          const { total } = dataObj?.supply;
-          finalObj[dataName] = { value: numberFormat(total) };
-          break;
-        }
         // Get the asset supply and set to shorthand
         case 'supply': {
           finalObj[dataName] = { value: numberFormat(serverValue, 3, { shorthand: true }) };
-          break;
-        }
-        // Get the asset supply information (circulation)
-        case 'supplyCirculation': {
-          const { circulation } = dataObj?.supply;
-          finalObj[dataName] = { value: numberFormat(circulation) };
           break;
         }
         // Display the percent but make adjustments for low values (<)
