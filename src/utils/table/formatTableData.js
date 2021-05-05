@@ -206,7 +206,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Convert given time to standard readable UTC string
 
         case 'time': // fallthrough
-        case 'lastTxTimestamp':
+        case 'lastTxTimestamp': // fallthrough
         case 'timestamp': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };

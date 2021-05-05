@@ -26,6 +26,7 @@ const AssetsList = () => {
 
   return (
     <Table
+      showAge="lastTxTimestamp"
       tableHeaders={tableHeaders}
       tableData={tableData}
       currentPage={tableCurrentPage}
