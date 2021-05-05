@@ -235,6 +235,12 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Get the asset supply information (total)
+        case 'supplyTotal': {
+          const { total } = dataObj?.supply;
+          finalObj[dataName] = { value: numberFormat(total) };
+          break;
+        }
+        // Get the asset supply and set to shorthand
         case 'supply': {
           finalObj[dataName] = { value: numberFormat(serverValue, 3, { shorthand: true }) };
           break;
