@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Content, Loading, Pagination as BasePagination, TimeTicker } from 'Components';
 import { getUTCTime, formatTableData } from 'utils';
 
@@ -65,6 +65,7 @@ const Table = ({
   noResults,
 }) => {
   // Format the raw table data into the form we need it to be displayed
+  const { pathname } = useLocation();
   const tableData = formatTableData(rawTableData, tableHeaders);
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
@@ -119,7 +120,7 @@ const Table = ({
 
       return (
         <TableData title={hover || value} key={displayName}>
-          {link && !valueMissing ? <Link to={link}>{finalValue}</Link> : value}
+          {link && !valueMissing && link !== pathname ? <Link to={link}>{finalValue}</Link> : value}
         </TableData>
       );
     });
