@@ -1,4 +1,4 @@
-export const getCookie = (cookieName) => {
+export const getCookie = (cookieName, skipClean = false) => {
   // cookie method exists
   const allowed = window && window.document && window.document.cookie !== undefined;
   if (!allowed) return null;
@@ -8,5 +8,5 @@ export const getCookie = (cookieName) => {
   const foundValue = cookieValues.split(`${cookieName}=`)[1].split(';')[0];
   const cleanFoundValue = foundValue.replace(/[^\w\s]/gi, '');
 
-  return cleanFoundValue;
+  return skipClean ? foundValue : cleanFoundValue;
 };

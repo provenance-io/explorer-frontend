@@ -108,6 +108,11 @@ const Table = ({
         );
       }
 
+      // TODO: Add delegation dropdown
+      if (dataName === 'manageDelegations') {
+        return <TableData key={displayName}>Manage ></TableData>;
+      }
+
       if (!rowData[dataName]) {
         console.warn(`Table Error! Data not found (rowData.${dataName}): `, { rowData, rawTableData: rawTableData[index], dataName });
       }

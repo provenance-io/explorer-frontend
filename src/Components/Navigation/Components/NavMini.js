@@ -5,6 +5,7 @@ import { Links, Path } from 'consts';
 // Direct import to prevent import order issues
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
+import UserAccount from '../../UserAccount';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -128,6 +129,7 @@ const NavMini = () => {
             color="ICON_WHITE"
           />
           {buildLinks()}
+          <UserAccount isMobile />
         </DropdownContainer>
       )}
       {showSearch && (

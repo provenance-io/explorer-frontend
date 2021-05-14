@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { setCookie, getCookie } from 'utils';
-import { SET_THEME, GET_CHAINCODE_ID } from '../actions/appActions';
+import { GET_CHAINCODE_ID, SET_THEME, SET_WALLET_URL } from '../actions/appActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -12,6 +12,7 @@ export const initialState = {
   chaincodeId: '',
   // Loading states
   chaincodeIdLoading: false,
+  walletUrl: getCookie('walletUrl', true) || '',
 };
 
 const reducer = handleActions(
@@ -22,6 +23,14 @@ const reducer = handleActions(
       return {
         ...state,
         theme,
+      };
+    },
+    [SET_WALLET_URL](state, { payload: walletUrl }) {
+      setCookie('walletUrl', walletUrl);
+
+      return {
+        ...state,
+        walletUrl,
       };
     },
     /* -----------------

@@ -17,4 +17,6 @@ export { default as Filters } from './Filters';
 export { default as Summary } from './Summary';
 export { default as Button } from './Button';
 export { default as DataCard } from './DataCard';
+export { default as Toggle } from './Toggle';
+export { default as UserAccount } from './UserAccount';
 export * from './Layout';

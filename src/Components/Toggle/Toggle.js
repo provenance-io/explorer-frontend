@@ -13,7 +13,7 @@ const ToggleContainer = styled.div`
   height: 26px;
   width: 52px;
   overflow: hidden;
-  margin-left: 20px;
+  margin-left: 10px;
   box-sizing: content-box;
 `;
 const OptionAContainer = styled.div`
