@@ -1,6 +1,7 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { WalletContextProvider } from '@provenanceio/wallet-lib';
 import { useApp } from 'redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
 import { GlobalStyle, Themes } from 'theme';
@@ -8,12 +9,12 @@ import { isProd } from 'consts';
 import { Block, Blocks, Dashboard, NoMatch404, Tx, Txs, Validator, Validators, Accounts, Assets, Asset, Faucet } from './Pages';
 
 const App = () => {
-  const { theme } = useApp();
+  const { theme, walletUrl } = useApp();
   const activeTheme = Themes[theme] || Themes.default;
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
-      <>
+      <WalletContextProvider walletUrl={walletUrl}>
         <GlobalStyle theme={activeTheme} />
         <SpriteSheet />
         <ThemeProvider theme={activeTheme}>
@@ -39,7 +40,7 @@ const App = () => {
             <Footer />
           </BaseStyle>
         </ThemeProvider>
-      </>
+      </WalletContextProvider>
     </BrowserRouter>
   );
 };

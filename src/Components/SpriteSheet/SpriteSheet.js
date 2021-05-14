@@ -183,7 +183,7 @@ const SpriteSheet = () => (
       </svg>
     </g>
     <g id={ICON_NAMES.GITHUB}>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 1024 1024">
+      <svg fill="none" viewBox="0 0 1024 1024">
         <path
           fill="currentColor"
           fillRule="evenodd"
@@ -193,7 +193,7 @@ const SpriteSheet = () => (
       </svg>
     </g>
     <g id={ICON_NAMES.PROVENANCE}>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32">
+      <svg fill="none" viewBox="0 0 32 32">
         <path
           fill="currentColor"
           d="M17.2 3.5L11.5 0 5.7 3.5 0 7v21.6L5.8 32v-9.9l5.7 3.5 5.8-3.5 5.7-3.5V7l-5.8-3.5zm-5.7 16.3l-5.8-3.5v-5.8L11.5 7l5.7 3.5v5.8l-5.7 3.5z"
@@ -201,9 +201,29 @@ const SpriteSheet = () => (
       </svg>
     </g>
     <g id={ICON_NAMES.DISCORD}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 240" fill="currentColor">
+      <svg viewBox="0 0 245 240" fill="currentColor">
         <path d="M104 104c-5 0-10 5-10 11s5 11 10 11c6 0 11-5 11-11s-5-11-11-11zm37 0c-6 0-10 5-10 11s4 11 10 11 10-5 10-11-4-11-10-11z" />
         <path d="M190 20H56c-12 0-21 9-21 21v135c0 11 9 20 21 20h113l-5-18 12 12 13 11 21 19V41c0-12-9-21-20-21zm-39 131l-7-9c13-3 18-11 18-11l-11 5c-5 3-10 4-15 5a70 70 0 01-40-5c-3 0-5-2-8-3l-1-1-3-2c0 1 5 9 18 12l-7 9c-22-1-30-16-30-16 0-32 14-58 14-58 14-11 28-10 28-10l1 1c-18 5-26 13-26 13l6-3c10-5 19-6 22-6h2a85 85 0 0151 9s-8-8-25-13l1-1s14-1 28 10c0 0 14 26 14 58 1 0-8 15-30 16z" />
+      </svg>
+    </g>
+    <g id={ICON_NAMES.KEY}>
+      <svg fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
+      </svg>
+    </g>
+    <g id={ICON_NAMES.ACCOUNT}>
+      <svg fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+      </svg>
+    </g>
+    <g id={ICON_NAMES.LOGOUT}>
+      <svg fill="currentColor" viewBox="0 0 24 24">
+        <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
+      </svg>
+    </g>
+    <g id={ICON_NAMES.FIGURE}>
+      <svg fill="currentColor" viewBox="0 0 49 80">
+        <path fillRule="evenodd" clipRule="evenodd" d="M0 0H48.2403V15.9718H0V0ZM0 80V32.0084H48.2403V47.9802H16.0546V80H0Z" />
       </svg>
     </g>
   </Svg>

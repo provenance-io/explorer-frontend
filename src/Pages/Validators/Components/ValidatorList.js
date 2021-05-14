@@ -37,6 +37,7 @@ const ValidatorList = () => {
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
+    // { displayName: '', dataName: 'manageDelegations' },
   ]
     // Remove the nulls
     .filter((th) => th);

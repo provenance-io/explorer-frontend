@@ -18,6 +18,11 @@ if (isLocal) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v2`;
 }
 
+export const FIGURE_WALLET_URL = isProd ? process.env.REACT_APP_PROD_FIGURE_WALLET_URL : process.env.REACT_APP_TEST_FIGURE_WALLET_URL;
+export const PROVENANCE_WALLET_URL = isProd
+  ? process.env.REACT_APP_PROD_PROVENANCE_WALLET_URL
+  : process.env.REACT_APP_TEST_PROVENANCE_WALLET_URL;
+
 // Actual API URLs
 // -- Accounts
 export const ACCOUNT_INFO_URL = `${BASE_URL}/accounts`;

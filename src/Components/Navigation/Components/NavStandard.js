@@ -7,6 +7,7 @@ import { useApp } from 'redux/hooks';
 import Sprite from '../../Sprite';
 import SearchBar from '../../SearchBar';
 import Toggle from '../../Toggle';
+import UserAccount from '../../UserAccount';
 
 const NavigationWrapper = styled.div`
   position: fixed;
@@ -94,6 +95,7 @@ const NavStandard = () => {
       </NavSection>
       <NavSection>{buildLinks()}</NavSection>
       <SearchBar />
+      <UserAccount />
       <Toggle
         active={themeName === 'night'}
         optionA={{
