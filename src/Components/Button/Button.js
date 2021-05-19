@@ -39,7 +39,7 @@ const ButtonIcon = styled.div`
   display: flex;
 `;
 
-const Button = ({ className, color, icon, iconSize, iconColor, onClick, children, isDisabled }) => (
+const Button = ({ className, color, icon, iconSize, iconColor, iconOptions, onClick, children, isDisabled }) => (
   <StyledButton
     className={className}
     onClick={onClick}
@@ -54,7 +54,7 @@ const Button = ({ className, color, icon, iconSize, iconColor, onClick, children
     <ButtonContent>{children}</ButtonContent>
     {icon && (
       <ButtonIcon>
-        <Sprite icon={icon} size={iconSize} color={iconColor} />
+        <Sprite {...iconOptions} icon={icon} size={iconSize} color={iconColor} />
       </ButtonIcon>
     )}
   </StyledButton>
@@ -66,6 +66,7 @@ Button.propTypes = {
   icon: PropTypes.string,
   iconSize: PropTypes.string,
   iconColor: PropTypes.string,
+  iconOptions: PropTypes.object, // see Components/Sprite for available options
   onClick: PropTypes.func,
   children: PropTypes.node.isRequired,
   isDisabled: PropTypes.bool,
@@ -76,6 +77,7 @@ Button.defaultProps = {
   icon: '',
   iconSize: '2.2rem',
   iconColor: 'ICON_WHITE',
+  iconOptions: null,
   onClick: () => {},
   isDisabled: false,
 };

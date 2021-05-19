@@ -1,4 +1,4 @@
-# CHANGELOG | <img src="./public/logo.svg" alt="Provenance Explorer"/>
+# CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
 ## Unreleased
 

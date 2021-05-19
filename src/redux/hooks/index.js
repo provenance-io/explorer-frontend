@@ -8,3 +8,4 @@ export { default as useInterval } from './useInterval';
 export { default as useMediaQuery } from './useMediaQuery';
 export { default as useAssets } from './useAssets';
 export { default as useFaucet } from './useFaucet';
+export { default as useStaking } from './useStaking';

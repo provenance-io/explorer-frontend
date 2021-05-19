@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useWallet } from '@provenanceio/wallet-lib';
 import { Table, Filters } from 'Components';
-import { useValidators, useApp } from 'redux/hooks';
+import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { VALIDATOR_STATUS_OPTIONS } from 'consts';
 
 const ValidatorListContainer = styled.div`
@@ -17,7 +18,22 @@ const ValidatorList = () => {
     validatorsRecentLoading: tableLoading,
     getValidatorsRecent: getTableData,
   } = useValidators();
-  const { tableCount } = useApp();
+  const { ManageStakingModal } = useStaking();
+  const { getAccountDelegations } = useAccounts();
+  const { walletService } = useWallet();
+  const { tableCount, isLoggedIn } = useApp();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if (isLoggedIn) {
+          getAccountDelegations(walletService.state.address);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [isLoggedIn, getAccountDelegations, walletService.state.address]);
 
   useEffect(() => {
     getTableData({ page: tableCurrentPage, count: tableCount, status: tableFilterStatus });
@@ -37,7 +53,7 @@ const ValidatorList = () => {
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
-    // { displayName: '', dataName: 'manageDelegations' },
+    isLoggedIn && { displayName: '', dataName: 'manageStaking' },
   ]
     // Remove the nulls
     .filter((th) => th);
@@ -65,6 +81,7 @@ const ValidatorList = () => {
         title="Validators List"
         showIndex
       />
+      <ManageStakingModal />
     </ValidatorListContainer>
   );
 };

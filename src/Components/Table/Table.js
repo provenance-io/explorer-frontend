@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Content, Loading, Pagination as BasePagination, TimeTicker } from 'Components';
 import { getUTCTime, formatTableData } from 'utils';
+import { useStaking } from 'redux/hooks';
 
 const TableContainer = styled.div`
   flex-basis: 100%;
@@ -66,6 +67,7 @@ const Table = ({
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const { pathname } = useLocation();
+  const { ManageStakingBtn } = useStaking();
   const tableData = formatTableData(rawTableData, tableHeaders);
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
@@ -108,9 +110,12 @@ const Table = ({
         );
       }
 
-      // TODO: Add delegation dropdown
-      if (dataName === 'manageDelegations') {
-        return <TableData key={displayName}>Manage ></TableData>;
+      if (dataName === 'manageStaking') {
+        return (
+          <TableData key={displayName}>
+            <ManageStakingBtn validator={rawTableData[index]} />
+          </TableData>
+        );
       }
 
       if (!rowData[dataName]) {

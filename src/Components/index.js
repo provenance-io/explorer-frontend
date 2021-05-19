@@ -19,4 +19,6 @@ export { default as Button } from './Button';
 export { default as DataCard } from './DataCard';
 export { default as Toggle } from './Toggle';
 export { default as UserAccount } from './UserAccount';
+export { default as DropdownBtn } from './DropdownBtn';
+export { default as Modal } from './Modal';
 export * from './Layout';

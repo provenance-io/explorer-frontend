@@ -11,7 +11,7 @@
   "private": false,
   "sideEffects": false,
   "dependencies": {
-    "@provenanceio/wallet-lib": "0.4.0",
+    "@provenanceio/wallet-lib": "0.5.0",
     "axios": "0.21.1",
     "bech32": "2.0.0",
     "date-fns": "2.16.1",
@@ -19,6 +19,7 @@
     "echarts": "4.9.0",
     "format-number": "3.0.0",
     "react": "16.13.1",
+    "react-animated-css": "1.2.1",
     "react-datepicker": "3.3.0",
     "react-dom": "16.13.1",
     "react-json-view": "1.21.1",
