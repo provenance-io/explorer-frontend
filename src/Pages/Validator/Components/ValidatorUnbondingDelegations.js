@@ -21,10 +21,10 @@ const ValidatorUnbondingDelegations = () => {
 
   // Table header values in order
   const tableHeaders = [
-    { displayName: 'Address', dataName: 'address' },
+    { displayName: 'Address', dataName: 'delegatorAddr' },
     { displayName: 'Amount', dataName: 'amount' },
     { displayName: 'Block', dataName: 'block' },
-    { displayName: 'End Time', dataName: 'endTime' },
+    { displayName: 'End Time', dataName: 'endTime' }, // TODO: figure out rendering for this object
   ];
 
   return (
