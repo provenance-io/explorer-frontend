@@ -108,12 +108,13 @@ const reducer = handleActions(
         validatorUnbondingDelegationsLoading: true,
       };
     },
-    [`${GET_VALIDATOR_UNBONDING_DELEGATIONS}_${SUCCESS}`](state, { payload }) {
-      const { pages: validatorUnbondingDelegationsPages, results: validatorsUnbondingDelegations } = payload;
+    [`${GET_VALIDATOR_UNBONDING_DELEGATIONS}_${SUCCESS}`](state, { payload: validatorUnbondingDelegations }) {
+      // TODO: Change this when pagination is supported
+      // const { pages: validatorUnbondingDelegationsPages, results: validatorUnbondingDelegations } = payload;
       return {
         ...state,
-        validatorsUnbondingDelegations,
-        validatorUnbondingDelegationsPages,
+        validatorUnbondingDelegations,
+        // validatorUnbondingDelegationsPages,
         validatorUnbondingDelegationsLoading: false,
       };
     },

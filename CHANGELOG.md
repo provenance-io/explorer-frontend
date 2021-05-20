@@ -27,6 +27,7 @@
 - Fixed incorrect Prod URLs
 - Fixed incorrect percentages in Validator voting [#55](https://github.com/provenance-io/explorer-frontend/issues/55)
 - Remove the faucet page from prod [#58](https://github.com/provenance-io/explorer-frontend/issues/58)
+- Fix for validator page not rendering [#75](https://github.com/provenance-io/explorer-frontend/issues/75)
 
 ## 1.0.0
 

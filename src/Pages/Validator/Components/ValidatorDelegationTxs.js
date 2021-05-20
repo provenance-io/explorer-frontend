@@ -30,7 +30,7 @@ const ValidatorDelegationTxs = () => {
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signers' },
     { displayName: 'Status', dataName: 'status' },
-    { displayName: 'Timestamp', dataName: 'timestamp' },
+    { displayName: 'Timestamp', dataName: 'time' },
   ];
 
   return (

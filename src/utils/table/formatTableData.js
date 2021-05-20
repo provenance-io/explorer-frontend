@@ -38,6 +38,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Address or hash leading to the account's page
         case 'ownerAddress': // fallthrough
         case 'holdingAccount': // fallthrough
+        case 'delegatorAddr': // fallthrough
         case 'address':
           finalObj[dataName] = {
             value: maxLength(serverValue, 11, 3),
@@ -136,7 +137,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           // No server value, manually grab from dataObj msg
           const { msg: msgArray = [{}] } = dataObj;
           const { msg = { amount: {} } } = msgArray[0];
-          const { amount = '--', denom = '--' } = msg.amount;
+          const { amount = '--', denom = '--' } = msg.amount || {};
           denom === 'nhash'
             ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
@@ -207,6 +208,7 @@ export const formatTableData = (data = [], tableHeaders) => {
 
         case 'time': // fallthrough
         case 'lastTxTimestamp': // fallthrough
+        // case 'endTime': // fallthrough
         case 'timestamp': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
