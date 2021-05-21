@@ -48,7 +48,7 @@ const NoteValue = styled.div`
 const buildPopupNote = (popupData) => {
   const {
     visibility = { visible: false, setVisible: () => {} },
-    icon = { name: 'HELP', size: '1.7rem' },
+    icon = { name: 'HELP_OUTLINE', size: '1.7rem' },
     method = ['click'],
     fontColor = 'FONT_WHITE',
     data = [],

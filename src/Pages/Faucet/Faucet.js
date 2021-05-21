@@ -264,7 +264,7 @@ const Faucet = () => {
                 <Title>Provenance Testnet Faucet</Title>
                 <InfoIconContainer>
                   <Sprite
-                    icon="HELP"
+                    icon="HELP_OUTLINE"
                     size="2.0rem"
                     onClick={() => setShowPopup(!showPopup)}
                     onMouseEnter={() => setShowPopup(true)}

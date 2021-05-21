@@ -16,6 +16,7 @@ export const Colors = {
   FONT_WHITE: allColors.WHITE,
   FONT_BLACK: allColors.BLACK,
   FONT_ERROR: allColors.RED_DARKER,
+  FONT_WARNING: allColors.RED_LIGHT,
   FONT_SUCCESS: allColors.GREEN_LIGHT,
   FONT_DISABLED: allColors.GRAY_LIGHTER,
   // Background
@@ -94,6 +95,8 @@ export const Colors = {
   TOGGLE_BACKGROUND: allColors.GRAY_DARK,
   TOGGLE_BORDER: allColors.GRAY_PRIMARY,
   TOGGLE_NOTCH: allColors.WHITE,
+  // Warnings
+  WARNING_BORDER: allColors.RED_PRIMARY,
   // All other colors
   ...allColors,
 };

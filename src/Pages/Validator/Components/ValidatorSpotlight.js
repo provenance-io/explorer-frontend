@@ -18,7 +18,8 @@ const ImageContainer = styled.div`
 `;
 const ImageLetter = styled.span`
   font-size: 7rem;
-  color: ${({ theme }) => theme.FONT_BLACK};
+  color: ${({ theme }) => theme.FONT_PRIMARY};
+  text-transform: uppercase;
 `;
 const Row = styled.div`
   flex-basis: 100%;
@@ -148,7 +149,7 @@ const ValidatorSpotlight = () => {
                     <PopupNote show={showNote} position="below">
                       <NoteText>The address you used to create a validator, delegate, withdraw delegator reward, etc</NoteText>
                     </PopupNote>
-                    <Sprite icon="HELP" size="1.7rem" onClick={() => setShowNote(!showNote)} />
+                    <Sprite icon="HELP_OUTLINE" size="1.7rem" onClick={() => setShowNote(!showNote)} />
                   </NoteContainer>
                 </ValueRow>
               </DataTitle>

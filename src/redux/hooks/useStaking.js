@@ -1,17 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { useWallet } from '@provenanceio/wallet-lib';
 import { useApp } from 'redux/hooks';
-import DropdownBtn from 'Components/DropdownBtn';
-import Button from 'Components/Button';
-import Modal from 'Components/Modal';
+import OgButton from 'Components/Button';
 import useToggle from 'react-tiny-hooks/use-toggle';
 
+const Button = styled(OgButton)`
+  text-transform: capitalize;
+`;
+
+/**
+ * @typedef {Object} Staking
+ * @property {function} handleStaking - The function to handle staking
+ * @property {function} ManageStakingBtn - React component connected to the modalFns
+ * @property {object} modalFns - The items to handle the modal
+ * @property {boolean} modalFns.modalOpen - If modal should be open
+ * @property {function} modalFns.toggleOpen - Function to toggle the modalOpen boolean
+ * @property {function} modalFns.activateModalOpen - Function to set modalOpen to true
+ * @property {function} modalFns.deactivateModalOpen - Function to set modalOpen to false
+ * @property {object} validator - The selected validator
+ */
+
+/**
+ *
+ * @return {Staking}
+ */
 const useStaking = () => {
   const [validator, setValidator] = useState(null);
   const { walletService, messageService } = useWallet();
-  const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(true);
+  const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   const { isLoggedIn } = useApp();
+
+  const {
+    state: { address: delegatorAddress },
+  } = walletService;
 
   const handleStaking = (type) => {
     if (!isLoggedIn) return;
@@ -22,7 +45,7 @@ const useStaking = () => {
     switch (type) {
       case 'delegation':
         msgType = 'MsgDelegate';
-      // msg = { delegatorAddress, validatorAddress, amount };
+      // msg = { delegatorAddress, validatorAddress: validator., amount };
       default:
         return;
     }
@@ -33,11 +56,6 @@ const useStaking = () => {
     activateModalOpen();
   };
 
-  const StakingOptionsBtn = () =>
-    !isLoggedIn ? null : (
-      <DropdownBtn options={['Delegate', 'Undelegate', 'Redelegate', 'Claim Rewards']} initial="Delegate" onClick={handleStaking} />
-    );
-
   const ManageStakingBtn = ({ validator }) =>
     !isLoggedIn ? null : (
       <Button onClick={() => handleManageStakingClick(validator)} icon="CHEVRON" iconSize="2rem" iconOptions={{ flipX: true }}>
@@ -47,14 +65,17 @@ const useStaking = () => {
 
   ManageStakingBtn.propTypes = { validator: PropTypes.object.isRequired };
 
-  const ManageStakingModal = () =>
-    !isLoggedIn ? null : (
-      <Modal isOpen={modalOpen} onClose={deactivateModalOpen}>
-        This is the content
-      </Modal>
-    );
-
-  return { ManageStakingBtn, ManageStakingModal, StakingOptionsBtn };
+  return {
+    handleStaking,
+    ManageStakingBtn,
+    modalFns: {
+      modalOpen,
+      toggleModalOpen,
+      activateModalOpen,
+      deactivateModalOpen,
+    },
+    validator,
+  };
 };
 
 export default useStaking;

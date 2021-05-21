@@ -5,7 +5,7 @@ import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 import useToggle from 'react-tiny-hooks/use-toggle';
 import Sprite from '../Sprite';
-import Button from '../Button';
+import OgButton from '../Button';
 
 const Container = styled.div`
   position: relative;
@@ -13,6 +13,11 @@ const Container = styled.div`
 
 const ButtonGroup = styled.div`
   position: relative;
+  padding-right: 1.6rem;
+`;
+
+const Button = styled(OgButton)`
+  text-transform: capitalize;
 `;
 
 const SelectArrow = styled.button`
@@ -20,7 +25,7 @@ const SelectArrow = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  right: -20px;
+  right: 0;
   top: 0;
   height: 100%;
   width: 26px;
@@ -51,7 +56,7 @@ const SelectArrow = styled.button`
 const DropdownList = styled.ul`
   display: ${({ show }) => (show ? 'block' : 'none')};
   position: absolute;
-  right: -20px;
+  right: 0;
   margin: 10px 0 0;
   padding: 0;
   border-radius: 4px;
@@ -63,6 +68,7 @@ const DropdownList = styled.ul`
 const ListItem = styled.li`
   margin: 5px 0;
   padding: 10px 20px;
+  text-transform: capitalize;
   cursor: pointer;
   white-space: nowrap;
 
@@ -73,35 +79,34 @@ const ListItem = styled.li`
   }
 `;
 
-const DropdownBtn = ({ color, initial, onClick, options }) => {
+const DropdownBtn = ({ className, color, initial, onClick, options }) => {
   const $color = color.toUpperCase();
   const [showDropdown, toggleDropdown, , deactivateDropdown] = useToggle();
   const containerRef = useOnClickOutside(deactivateDropdown);
-  const [action, setAction] = useState(initial);
   const [list, setList] = useState(options);
   const theme = useTheme();
 
   useOnEscape(deactivateDropdown);
 
   useEffect(() => {
-    setList(options.filter((o) => o !== action));
-  }, [options, action]);
+    setList(options.filter((o) => o !== initial));
+  }, [options, initial]);
 
   const handleAction = () => {
     deactivateDropdown();
-    onClick(action.toLowerCase().replace(' ', ''));
+    onClick(initial.toLowerCase().replace(' ', ''));
   };
 
   const handleSelectAction = (action) => {
     deactivateDropdown();
-    setAction(action);
+    onClick(action.toLowerCase().replace(' ', ''));
   };
 
   return (
-    <Container ref={containerRef}>
+    <Container className={className} ref={containerRef}>
       <ButtonGroup>
         <Button color={color} onClick={handleAction}>
-          {action}
+          {initial}
         </Button>
         <SelectArrow $color={$color} onClick={toggleDropdown}>
           <Sprite icon="CARET" size="0.9rem" color={theme[`BUTTON_${$color}_FONT`]} />
@@ -119,6 +124,7 @@ const DropdownBtn = ({ color, initial, onClick, options }) => {
 };
 
 DropdownBtn.propTypes = {
+  className: PropTypes.string,
   color: PropTypes.string,
   initial: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
@@ -126,6 +132,7 @@ DropdownBtn.propTypes = {
 };
 
 DropdownBtn.defaultProps = {
+  className: null,
   color: 'primary',
 };
 

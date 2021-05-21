@@ -4,6 +4,7 @@ import { useWallet } from '@provenanceio/wallet-lib';
 import { Table, Filters } from 'Components';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { VALIDATOR_STATUS_OPTIONS } from 'consts';
+import ManageStakingModal from './ManageStakingModal';
 
 const ValidatorListContainer = styled.div`
   width: 100%;
@@ -18,7 +19,7 @@ const ValidatorList = () => {
     validatorsRecentLoading: tableLoading,
     getValidatorsRecent: getTableData,
   } = useValidators();
-  const { ManageStakingModal } = useStaking();
+  const { handleStaking, ManageStakingBtn, modalFns, validator } = useStaking();
   const { getAccountDelegations } = useAccounts();
   const { walletService } = useWallet();
   const { tableCount, isLoggedIn } = useApp();
@@ -79,9 +80,16 @@ const ValidatorList = () => {
         totalPages={tablePages}
         isLoading={tableLoading}
         title="Validators List"
+        ManageStakingBtn={ManageStakingBtn}
         showIndex
       />
-      <ManageStakingModal />
+      <ManageStakingModal
+        handleStaking={handleStaking}
+        isLoggedIn={isLoggedIn}
+        onClose={modalFns.deactivateModalOpen}
+        modalOpen={modalFns.modalOpen}
+        validator={validator}
+      />
     </ValidatorListContainer>
   );
 };

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Animated } from 'react-animated-css';
-import { breakpoints } from 'consts';
-import useOnEscape from 'react-tiny-hooks/use-on-escape';
 import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
+import useOnEscape from 'react-tiny-hooks/use-on-escape';
+import { breakpoints } from 'consts';
 
 const Wrapper = styled.div`
-  display: flex;
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   position: fixed;
   top: 0;
   left: 0;
@@ -30,7 +29,10 @@ const Dialog = styled.div`
   align-items: center;
   position: relative;
   margin: 0.5rem;
-  width: auto;
+  width: 100%;
+  /* animate.css @keyframe */
+  animation: flipInX;
+  animation-duration: 0.8s;
 
   @media ${breakpoints.up('sm')} {
     margin: 1.75rem auto;
@@ -38,30 +40,39 @@ const Dialog = styled.div`
   }
 `;
 
-const Content = styled.div`
-  padding: 1.5rem;
-  border-radius: 4px;
-  color: black;
-  background-color: white;
+const Body = styled.div`
+  flex: 1 1 auto;
 `;
 
-const Modal = ({ isOpen, onClose }) => {
-  const modalRef = useOnClickOutside(onClose);
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 2.4rem;
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 15px 35px rgb(50 50 93 / 20%), 0 5px 15px rgb(0 0 0 / 17%);
+  color: ${({ theme }) => theme.FONT_PRIMARY};
+  background-color: ${({ theme }) => theme.BACKGROUND_CONTENT};
+`;
+
+const Modal = React.memo(({ children, isOpen, onClose }) => {
+  // const modalRef = useOnClickOutside(() => console.log('outside click'));
   useOnEscape(onClose);
 
   return (
-    <Wrapper>
-      <Overlay />
+    <Wrapper isOpen={isOpen}>
+      <Overlay onClick={onClose} />
       <Dialog>
-        <Content ref={modalRef}>
-          this is the stuff this is the stuff this is the stuff this is the stuff this is the stuff this is the stuff
+        <Content>
+          <Body>{children}</Body>
         </Content>
       </Dialog>
     </Wrapper>
   );
-};
+});
 
 Modal.propTypes = {
+  children: PropTypes.any.isRequired,
   isOpen: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
 };
