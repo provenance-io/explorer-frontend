@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.1.0
+
 ### Features
 
 - Integrated [@provenanceio/wallet-lib](https://npm.im/@provenanceio/wallet-lib), a user can now authenticate with a Provenance Wallet or a Figure Wallet [#10](https://github.com/provenance-io/explorer-frontend/issues/10)
