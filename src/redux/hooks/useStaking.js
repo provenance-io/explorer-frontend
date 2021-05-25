@@ -50,15 +50,6 @@ const useStaking = () => {
         setShouldPull(true);
         deactivateModalOpen();
       }
-
-      // switch (evt.data.message) {
-      //   case WINDOW_MESSAGES.TRANSACTION_COMPLETE:
-      //     deactivateModalOpen();
-      //     setShouldPull(true);
-      //     break;
-      //   default:
-      //     deactivateModalOpen();
-      // }
     }
   });
 
