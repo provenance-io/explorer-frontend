@@ -8,8 +8,8 @@ export const formatNhash = (nhash, options = {}) => {
   // If it's not a number or string kick it back
   if (!isNumber && !isString) return nhash;
   // If nhash is given as a string, convert it to a number
-  // const nhashFinal = isString ? Number(nhash) : nhash;
+  const nhashFinal = isString ? Number(nhash) : nhash;
   const { shorthand = false, decimal = 7 } = options;
   // Convert to formatted number with decimal places and optional shorthand
-  return numberFormat(nhash, decimal, { shorthand });
+  return numberFormat(nhashFinal, decimal, { shorthand });
 };
