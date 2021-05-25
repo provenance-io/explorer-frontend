@@ -31,7 +31,7 @@ export const initialState = {
   accountRedelegationsPages: 0,
   // Account Rewards
   accountRewardsLoading: false,
-  accountRewards: [],
+  accountRewards: { total: [], rewards: [] },
   accountRewardsPages: 0,
   // Account Unbonding
   accountUnbondingLoading: false,
@@ -149,9 +149,10 @@ const reducer = handleActions(
         accountRewardsLoading: true,
       };
     },
-    [`${GET_ACCOUNT_REWARDS}_${SUCCESS}`](state) {
+    [`${GET_ACCOUNT_REWARDS}_${SUCCESS}`](state, { payload: accountRewards }) {
       return {
         ...state,
+        accountRewards,
         accountRewardsLoading: false,
       };
     },

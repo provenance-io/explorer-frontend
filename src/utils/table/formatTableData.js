@@ -1,4 +1,5 @@
 import { maxLength } from '../string/maxLength';
+import { currencyFormat } from '../number/currencyFormat';
 import { numberFormat } from '../number/numberFormat';
 import { formatNhash } from '../number/nHashtoHash';
 import { capitalize } from '../string/capitalize';
@@ -149,6 +150,13 @@ export const formatTableData = (data = [], tableHeaders) => {
           const { amount = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
             ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
+            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          break;
+        }
+        case 'reward': {
+          const { amount = '--', denom = '--' } = serverValue?.[0] || {};
+          denom === 'nhash'
+            ? (finalObj[dataName] = { value: `${currencyFormat(amount, 'nhash', 'hash')} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
           break;
         }
