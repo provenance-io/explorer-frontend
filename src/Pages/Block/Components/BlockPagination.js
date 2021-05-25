@@ -11,7 +11,7 @@ const PaginationButton = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  ${({ isDisabled }) => isDisabled && 'cursor: not-allowed;'}
+  ${({ disabled }) => disabled && 'cursor: not-allowed;'}
 `;
 const PaginationValue = styled.div`
   user-select: none;
@@ -41,11 +41,11 @@ const BlockPagination = () => {
 
   return (
     <BlockPaginationContainer>
-      <PaginationButton isDisabled={!backAllowed} onClick={() => backAllowed && handleClick('back')}>
+      <PaginationButton disabled={!backAllowed} onClick={() => backAllowed && handleClick('back')}>
         <Sprite icon="CHEVRON" size="1.3rem" color={backAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'} />
       </PaginationButton>
       <PaginationValue>{pageBlockHeightNum}</PaginationValue>
-      <PaginationButton isDisabled={!forwardAllowed} onClick={() => forwardAllowed && handleClick('forward')}>
+      <PaginationButton disabled={!forwardAllowed} onClick={() => forwardAllowed && handleClick('forward')}>
         <Sprite icon="CHEVRON" size="1.3rem" spin="180" color={forwardAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'} />
       </PaginationButton>
     </BlockPaginationContainer>

@@ -92,14 +92,14 @@ const DropdownBtn = ({ className, color, initial, onClick, options }) => {
     setList(options.filter((o) => o !== initial));
   }, [options, initial]);
 
-  const handleAction = () => {
+  const handleAction = (e) => {
     deactivateDropdown();
-    onClick(initial.toLowerCase().replace(' ', ''));
+    onClick(initial.toLowerCase(), e);
   };
 
-  const handleSelectAction = (action) => {
+  const handleSelectAction = (action, e) => {
     deactivateDropdown();
-    onClick(action.toLowerCase().replace(' ', ''));
+    onClick(action.toLowerCase(), e);
   };
 
   return (
@@ -114,7 +114,7 @@ const DropdownBtn = ({ className, color, initial, onClick, options }) => {
       </ButtonGroup>
       <DropdownList show={showDropdown}>
         {list.map((li) => (
-          <ListItem $color={$color} key={li} onClick={() => handleSelectAction(li)}>
+          <ListItem $color={$color} key={li} onClick={(e) => handleSelectAction(li, e)}>
             {li}
           </ListItem>
         ))}

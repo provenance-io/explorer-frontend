@@ -102,15 +102,18 @@ const reducer = handleActions(
       };
     },
     [`${GET_ACCOUNT_DELEGATIONS}_${SUCCESS}`](state, { payload }) {
-      console.log(payload);
+      const { pages: accountDelegationsPages, results: accountDelegations } = payload;
       return {
         ...state,
+        accountDelegations,
         accountDelegationsLoading: false,
+        accountDelegationsPages,
       };
     },
     [`${GET_ACCOUNT_DELEGATIONS}_${FAILURE}`](state) {
       return {
         ...state,
+        accountDelegations: [],
         accountDelegationsLoading: false,
       };
     },
@@ -123,15 +126,17 @@ const reducer = handleActions(
         accountRedelegationsLoading: true,
       };
     },
-    [`${GET_ACCOUNT_REDELEGATIONS}_${SUCCESS}`](state) {
+    [`${GET_ACCOUNT_REDELEGATIONS}_${SUCCESS}`](state, { payload: accountRedelegations }) {
       return {
         ...state,
+        accountRedelegations,
         accountRedelegationsLoading: false,
       };
     },
     [`${GET_ACCOUNT_REDELEGATIONS}_${FAILURE}`](state) {
       return {
         ...state,
+        accountRedelegations: [],
         accountRedelegationsLoading: false,
       };
     },
@@ -153,6 +158,7 @@ const reducer = handleActions(
     [`${GET_ACCOUNT_REWARDS}_${FAILURE}`](state) {
       return {
         ...state,
+        accountRewards: [],
         accountRewardsLoading: false,
       };
     },
@@ -165,15 +171,17 @@ const reducer = handleActions(
         accountUnbondingLoading: true,
       };
     },
-    [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state) {
+    [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state, { payload: accountUnbonding }) {
       return {
         ...state,
+        accountUnbonding,
         accountUnbondingLoading: false,
       };
     },
     [`${GET_ACCOUNT_UNBONDING}_${FAILURE}`](state) {
       return {
         ...state,
+        accountUnbonding: [],
         accountUnbondingLoading: false,
       };
     },

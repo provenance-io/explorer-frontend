@@ -1,46 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useWallet } from '@provenanceio/wallet-lib';
 import { Table, Filters } from 'Components';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
-import { VALIDATOR_STATUS_OPTIONS } from 'consts';
+import { MY_VALIDATOR_STATUS_OPTIONS, STAKING_TYPES, VALIDATOR_STATUS_OPTIONS } from 'consts';
 import ManageStakingModal from './ManageStakingModal';
 
 const ValidatorListContainer = styled.div`
   width: 100%;
 `;
 
+const MyValTable = styled(Table)`
+  margin-bottom: 20px;
+`;
+
 const ValidatorList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
+  const [myValTableCurrentPage, setMyValTableCurrentPage] = useState(1);
   const [tableFilterStatus, setTableFilterStatus] = useState('active');
+  const [myValTableFilterStatus, setMyValTableFilterStatus] = useState(STAKING_TYPES.DELEGATE);
+  const [myValTableData, setMyValTableData] = useState(null);
   const {
     validators: tableData,
     validatorsPages: tablePages,
     validatorsRecentLoading: tableLoading,
     getValidatorsRecent: getTableData,
   } = useValidators();
-  const { handleStaking, ManageStakingBtn, modalFns, validator } = useStaking();
-  const { getAccountDelegations } = useAccounts();
-  const { walletService } = useWallet();
+  const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
+  const {
+    accountDelegations,
+    accountDelegationsLoading,
+    accountDelegationsPages,
+    accountRedelegations,
+    accountRedelegationsLoading,
+    accountUnbonding,
+    accountUnbondingLoading,
+  } = useAccounts();
   const { tableCount, isLoggedIn } = useApp();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (isLoggedIn) {
-          getAccountDelegations(walletService.state.address);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, [isLoggedIn, getAccountDelegations, walletService.state.address]);
+  const currentVals = useMemo(() => {
+    switch (myValTableFilterStatus) {
+      case STAKING_TYPES.DELEGATE:
+        return accountDelegations;
+      case STAKING_TYPES.REDELEGATE:
+        return accountRedelegations;
+      case STAKING_TYPES.UNDELEGATE:
+        return accountUnbonding;
+      default:
+        return null;
+    }
+  }, [myValTableFilterStatus, accountDelegations, accountRedelegations, accountUnbonding]);
 
   useEffect(() => {
     getTableData({ page: tableCurrentPage, count: tableCount, status: tableFilterStatus });
   }, [getTableData, tableCount, tableCurrentPage, tableFilterStatus]);
 
+  useEffect(() => {
+    setMyValTableData(
+      currentVals.map((d) => {
+        const validator = tableData.find((v) => v.addressId === d.validatorSrcAddr);
+        return { ...validator, ...d };
+      })
+    );
+
+    setMyValTableCurrentPage(1);
+  }, [currentVals, setMyValTableData, tableData]);
+
   const isJailed = tableFilterStatus === 'jailed';
+  const showDelegate = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
+
+  const myValTableHeaders = [
+    { displayName: 'Moniker', dataName: 'moniker' },
+    { displayName: 'Voting Power', dataName: 'votingPower' },
+    { displayName: 'Commission', dataName: 'commission' },
+    { displayName: 'Delegation Amount', dataName: 'amount' },
+    showDelegate && { displayName: '', dataName: 'manageStaking' },
+  ] // Remove the nulls
+    .filter((th) => th);
 
   // Table header values in order
   const tableHeaders = [
@@ -54,10 +89,18 @@ const ValidatorList = () => {
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
-    isLoggedIn && { displayName: '', dataName: 'manageStaking' },
-  ]
-    // Remove the nulls
+    isLoggedIn && { displayName: '', dataName: 'delegate' },
+  ] // Remove the nulls
     .filter((th) => th);
+
+  const myValFilterData = [
+    {
+      title: 'My Validator Type:',
+      type: 'dropdown',
+      options: MY_VALIDATOR_STATUS_OPTIONS,
+      action: setMyValTableFilterStatus,
+    },
+  ];
 
   // Data to populate table filters
   const filterData = [
@@ -71,6 +114,22 @@ const ValidatorList = () => {
 
   return (
     <ValidatorListContainer>
+      {[...accountDelegations, ...accountRedelegations, ...accountUnbonding]?.length > 0 && (
+        <Fragment>
+          <Filters filterData={myValFilterData} />
+          <MyValTable
+            changePage={setMyValTableCurrentPage}
+            currentPage={myValTableCurrentPage}
+            isLoading={accountDelegationsLoading || accountRedelegationsLoading || accountUnbondingLoading}
+            ManageStakingBtn={ManageStakingBtn}
+            tableData={myValTableData}
+            tableHeaders={myValTableHeaders}
+            title="My Validators"
+            totalPages={showDelegate ? accountDelegationsPages : 1}
+          />
+        </Fragment>
+      )}
+
       <Filters filterData={filterData} />
       <Table
         tableHeaders={tableHeaders}
@@ -84,11 +143,12 @@ const ValidatorList = () => {
         showIndex
       />
       <ManageStakingModal
-        handleStaking={handleStaking}
+        isDelegate={isDelegate}
         isLoggedIn={isLoggedIn}
-        onClose={modalFns.deactivateModalOpen}
         modalOpen={modalFns.modalOpen}
-        validator={validator}
+        onClose={modalFns.deactivateModalOpen}
+        onStaking={handleStaking}
+        validator={validator || {}}
       />
     </ValidatorListContainer>
   );

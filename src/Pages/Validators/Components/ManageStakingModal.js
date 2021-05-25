@@ -1,7 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
-import { useValidators } from 'redux/hooks';
+import * as yup from 'yup';
+import { useAccounts, useValidators } from 'redux/hooks';
 import DropdownBtn from 'Components/DropdownBtn';
 import OgButton from 'Components/Button';
 import OgInput from 'Components/Input';
@@ -9,6 +10,8 @@ import Modal from 'Components/Modal';
 import SelectFolders from 'Components/SelectFolders';
 import Sprite from 'Components/Sprite';
 import { maxLength, numberFormat } from 'utils';
+import { STAKING_TYPES } from 'consts';
+import { Loading } from 'Components';
 
 const Input = styled(OgInput)`
   border-top-right-radius: 0;
@@ -128,18 +131,32 @@ const DisclaimerText = styled.p`
   list-style-type: '– ';
 `;
 
-const TYPES = {
-  DELEGATE: 'delegate',
-  REDELEGATE: 'redelegate',
-  UNDELEGATE: 'undelegate',
-  CLAIM: 'claim rewards',
-};
-
-const ManageStakingModal = ({ handleStaking, isLoggedIn, onClose, modalOpen, validator }) => {
+const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStaking, validator }) => {
   const theme = useTheme();
-  const [stakingType, setStakingType] = useState(TYPES.REDELEGATE);
+  const inputRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
+  const [stakeBtnDisabled, setStakeBtnDisabled] = useState(true);
+  const [stakingType, setStakingType] = useState();
   const [redelegateAddress, setRedelegateAddress] = useState(null);
+  const { accountInfo } = useAccounts();
   const { validators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } = useValidators();
+
+  const hashBalance = accountInfo?.balances?.find((b) => b.denom === 'hash');
+  const { amount: hashAmount } = hashBalance || {};
+
+  useEffect(() => {
+    if (isDelegate) {
+      setStakingType(STAKING_TYPES.DELEGATE);
+    }
+  }, [isDelegate]);
+
+  useEffect(() => {
+    if (!modalOpen) setStakingType('');
+  }, [modalOpen]);
+
+  useEffect(() => {
+    setIsOpen(isLoggedIn && validator && modalOpen);
+  }, [isLoggedIn, modalOpen, validator, validatorSpotlightLoading, validatorSpotlight]);
 
   useEffect(() => {
     if (validator?.addressId) {
@@ -153,205 +170,235 @@ const ManageStakingModal = ({ handleStaking, isLoggedIn, onClose, modalOpen, val
     setRedelegateAddress('');
   };
 
-  console.log(stakingType, modalOpen);
-
-  if (!isLoggedIn || !validator || validatorSpotlightLoading) return null;
-
   const { description, image, moniker, url } = validatorSpotlight;
-  const { commission: sCommission } = validator;
+  const { commission: sCommission, amount } = validator;
+  const delegation = amount?.amount;
   const commission = sCommission * 100;
-  // TODO: get delegations
-  const delegation = 0;
 
-  console.log(validator);
-
-  const handleClick = (type) => {
+  const handleClick = (type, e) => {
+    // Don't let this event bubble
+    e.stopPropagation();
     setStakingType(type);
     setRedelegateAddress('');
+  };
+
+  const validateAmount = async (amount, available) => {
+    const schema = yup.object().shape({
+      amount: yup.number().min(1).max(available),
+    });
+
+    const valid = await schema.isValid({ amount });
+
+    setStakeBtnDisabled(!valid);
+  };
+
+  const handleStaking = (e) => {
+    // Don't let this event bubble
+    e.stopPropagation();
+    onStaking(stakingType, inputRef.current.value, redelegateAddress);
   };
 
   const handleRedelegateSelection = (addressId) => {
     setRedelegateAddress(addressId);
   };
 
-  return (
-    <Modal isOpen={modalOpen} onClose={handleModalClose}>
-      <SpotlightContainer>
-        <ImageContainer>
-          {image ? <img src={image} alt={moniker} title={moniker} /> : <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>}
-        </ImageContainer>
-        <div>
-          <Title title={moniker}>{maxLength(moniker, 35)}</Title>
-          <Description>Commission - {commission < 0.0001 ? '>0.0001' : numberFormat(commission, 4)}%</Description>
-        </div>
-      </SpotlightContainer>
+  const handleAmountChange = () => {
+    const amount = inputRef.current.value;
+    validateAmount(amount, delegation);
+  };
 
-      {!stakingType && (
+  const handleDelegationAmountChange = async () => {
+    const amount = inputRef.current.value;
+    validateAmount(amount, hashAmount);
+  };
+
+  return (
+    <Modal isOpen={isOpen} onClose={handleModalClose}>
+      {validatorSpotlightLoading || validator.addressId !== validatorSpotlight.operatorAddress ? (
+        <Loading />
+      ) : (
         <Fragment>
-          <Info>
-            {url && (
+          <SpotlightContainer>
+            <ImageContainer>
+              {image ? <img src={image} alt={moniker} title={moniker} /> : <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>}
+            </ImageContainer>
+            <div>
+              <Title title={moniker}>{maxLength(moniker, 35)}</Title>
+              <Description>Commission - {commission < 0.0001 ? '>0.0001' : numberFormat(commission, 4)}%</Description>
+            </div>
+          </SpotlightContainer>
+
+          {!stakingType && (
+            <Fragment>
+              <Info>
+                {url && (
+                  <Pair>
+                    <PairTitle>Website</PairTitle>
+                    <PairValue>
+                      <a href={url}>{url}</a>
+                    </PairValue>
+                  </Pair>
+                )}
+                {description && (
+                  <Pair>
+                    <PairTitle>Description</PairTitle>
+                    <PairValue>{description}</PairValue>
+                  </Pair>
+                )}
+                <PairInline>
+                  <PairTitle>My Delegation</PairTitle>
+                  <PairValue>{delegation} HASH</PairValue>
+                </PairInline>
+              </Info>
+              <ButtonGroup>
+                <DropdownBtn
+                  // TODO: Figure out CLAIM_REWARDS
+                  options={[STAKING_TYPES.UNDELEGATE, STAKING_TYPES.REDELEGATE /*STAKING_TYPES.CLAIM*/]}
+                  initial={STAKING_TYPES.UNDELEGATE}
+                  onClick={handleClick}
+                />
+                <Button onClick={(e) => handleClick('delegate', e)}>Delegate</Button>
+              </ButtonGroup>
+            </Fragment>
+          )}
+
+          {stakingType === STAKING_TYPES.DELEGATE && (
+            <Info>
+              <Disclaimer>
+                <DisclaimerIcon>
+                  <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_WARNING} />
+                </DisclaimerIcon>
+                <div>
+                  <DisclaimerTitle>Staking will lock your funds for 21+ days</DisclaimerTitle>
+                  <DisclaimerText>
+                    You will need to undelegate in order for your staked assets to be liquid again. This process will take 21 days to
+                    complete.
+                  </DisclaimerText>
+                </div>
+              </Disclaimer>
+
               <Pair>
-                <PairTitle>Website</PairTitle>
+                <PairTitle>My Delegation</PairTitle>
+                <PairValue>{delegation} HASH</PairValue>
+              </Pair>
+
+              <Pair>
+                <PairTitle>Available Balance</PairTitle>
+                <PairValue>{hashAmount} HASH</PairValue>
+              </Pair>
+
+              <Pair>
+                <PairTitle>Amount to Delegate</PairTitle>
                 <PairValue>
-                  <a href={url}>{url}</a>
+                  <Input getInputRef={inputRef} decimalScale={0} onChange={handleDelegationAmountChange} />
+                  <DenomName>HASH</DenomName>
                 </PairValue>
               </Pair>
-            )}
-            {description && (
-              <Pair>
-                <PairTitle>Description</PairTitle>
-                <PairValue>{description}</PairValue>
-              </Pair>
-            )}
-            <PairInline>
-              <PairTitle>My Delegation</PairTitle>
-              <PairValue>{delegation} HASH</PairValue>
-            </PairInline>
-          </Info>
-          <ButtonGroup>
-            <DropdownBtn
-              options={[TYPES.UNDELEGATE, TYPES.REDELEGATE, TYPES.CLAIM]}
-              initial={TYPES.UNDELEGATE}
-              onClick={handleClick}
-            />
-            <Button onClick={() => handleClick('delegate')}>Delegate</Button>
-          </ButtonGroup>
-        </Fragment>
-      )}
-
-      {stakingType === TYPES.DELEGATE && (
-        <Info>
-          <Disclaimer>
-            <DisclaimerIcon>
-              <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_WARNING} />
-            </DisclaimerIcon>
-            <div>
-              <DisclaimerTitle>Staking will lock your funds for 21+ days</DisclaimerTitle>
-              <DisclaimerText>
-                You will need to undelegate in order for your staked assets to be liquid again. This process will take 21 days to
-                complete.
-              </DisclaimerText>
-            </div>
-          </Disclaimer>
-
-          <Pair>
-            <PairTitle>My Delegation</PairTitle>
-            <PairValue>{delegation} HASH</PairValue>
-          </Pair>
-
-          <Pair>
-            <PairTitle>Available Balance</PairTitle>
-            <PairValue>{delegation} HASH</PairValue>
-          </Pair>
-
-          <Pair>
-            <PairTitle>Amount to Delegate</PairTitle>
-            <PairValue>
-              <Input decimalScale={0} />
-              <DenomName>HASH</DenomName>
-            </PairValue>
-          </Pair>
-          {stakingType}
-        </Info>
-      )}
-
-      {stakingType === TYPES.UNDELEGATE && (
-        <Info>
-          <Disclaimer>
-            <DisclaimerIcon>
-              <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_WARNING} />
-            </DisclaimerIcon>
-            <div>
-              <DisclaimerTitle>Once the unbonding period begins you will:</DisclaimerTitle>
-              <DisclaimerText as="ul">
-                <li>not receive staking reward</li>
-                <li>not be able to cancel the unbonding</li>
-                <li>need to wait 21 days for the amount to be liquid</li>
-              </DisclaimerText>
-            </div>
-          </Disclaimer>
-
-          <Disclaimer help>
-            <DisclaimerIcon>
-              <Sprite icon="HELP" size="3.2rem" color={theme.FONT_THEME} />
-            </DisclaimerIcon>
-            <div>
-              <DisclaimerTitle>Trying to switch validators?</DisclaimerTitle>
-              <DisclaimerText>Use the ‘Redelegate’ feature to instantly stake your assets to another validator.</DisclaimerText>
-            </div>
-          </Disclaimer>
-
-          <Pair>
-            <PairTitle>Available for undelegation: {delegation} HASH </PairTitle>
-            <PairValue>
-              <Input decimalScale={0} />
-              <DenomName>HASH</DenomName>
-            </PairValue>
-          </Pair>
-        </Info>
-      )}
-
-      {stakingType === TYPES.REDELEGATE && (
-        <Info>
-          <Pair>
-            <PairTitle>Redelegate to:</PairTitle>
-            <PairValue>
-              <SelectFolders
-                maxHeight="21rem"
-                action={handleRedelegateSelection}
-                allOptions={validators.reduce(
-                  (agg, curr) => {
-                    if (validator.addressId === curr.addressId) return agg;
-
-                    return {
-                      ...agg,
-                      [curr.addressId]: {
-                        title: curr.moniker,
-                      },
-                    };
-                  },
-                  {
-                    noop: {
-                      isDefault: true,
-                      title: '',
-                    },
-                  }
-                )}
-              />
-            </PairValue>
-          </Pair>
-
-          {redelegateAddress && (
-            <Pair>
-              <PairTitle>Available for redelegation: {delegation} HASH </PairTitle>
-              <PairValue>
-                <Input decimalScale={0} />
-                <DenomName>HASH</DenomName>
-              </PairValue>
-            </Pair>
+            </Info>
           )}
-        </Info>
-      )}
 
-      {stakingType && (
-        <ButtonGroup>
-          <Button onClick={() => handleClick('')} color="secondary">
-            Back
-          </Button>
-          <Button onClick={handleStaking} disabled>
-            {stakingType}
-          </Button>
-        </ButtonGroup>
+          {stakingType === STAKING_TYPES.UNDELEGATE && (
+            <Info>
+              <Disclaimer>
+                <DisclaimerIcon>
+                  <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_WARNING} />
+                </DisclaimerIcon>
+                <div>
+                  <DisclaimerTitle>Once the unbonding period begins you will:</DisclaimerTitle>
+                  <DisclaimerText as="ul">
+                    <li>not receive staking reward</li>
+                    <li>not be able to cancel the unbonding</li>
+                    <li>need to wait 21 days for the amount to be liquid</li>
+                  </DisclaimerText>
+                </div>
+              </Disclaimer>
+
+              <Disclaimer help>
+                <DisclaimerIcon>
+                  <Sprite icon="HELP" size="3.2rem" color={theme.FONT_THEME} />
+                </DisclaimerIcon>
+                <div>
+                  <DisclaimerTitle>Trying to switch validators?</DisclaimerTitle>
+                  <DisclaimerText>Use the ‘Redelegate’ feature to instantly stake your assets to another validator.</DisclaimerText>
+                </div>
+              </Disclaimer>
+
+              <Pair>
+                <PairTitle>Available for undelegation: {delegation} HASH </PairTitle>
+                <PairValue>
+                  <Input getInputRef={inputRef} decimalScale={0} onChange={(e) => handleAmountChange(e.target.value, delegation)} />
+                  <DenomName>HASH</DenomName>
+                </PairValue>
+              </Pair>
+            </Info>
+          )}
+
+          {stakingType === STAKING_TYPES.REDELEGATE && (
+            <Info>
+              <Pair>
+                <PairTitle>Redelegate to:</PairTitle>
+                <PairValue>
+                  <SelectFolders
+                    maxHeight="21rem"
+                    action={handleRedelegateSelection}
+                    allOptions={validators.reduce(
+                      (agg, curr) => {
+                        if (validator.addressId === curr.addressId) return agg;
+
+                        return {
+                          ...agg,
+                          [curr.addressId]: {
+                            title: curr.moniker,
+                          },
+                        };
+                      },
+                      {
+                        noop: {
+                          isDefault: true,
+                          title: '',
+                        },
+                      }
+                    )}
+                  />
+                </PairValue>
+              </Pair>
+
+              {redelegateAddress && (
+                <Pair>
+                  <PairTitle>Available for redelegation: {delegation} HASH </PairTitle>
+                  <PairValue>
+                    <Input getInputRef={inputRef} decimalScale={0} onChange={(e) => handleAmountChange(e.target.value, delegation)} />
+                    <DenomName>HASH</DenomName>
+                  </PairValue>
+                </Pair>
+              )}
+            </Info>
+          )}
+
+          {stakingType && (
+            <ButtonGroup>
+              {!isDelegate && (
+                <Button onClick={(e) => handleClick('', e)} color="secondary">
+                  Back
+                </Button>
+              )}
+              <Button onClick={handleStaking} disabled={stakeBtnDisabled}>
+                {stakingType}
+              </Button>
+            </ButtonGroup>
+          )}
+        </Fragment>
       )}
     </Modal>
   );
 };
 
 ManageStakingModal.propTypes = {
-  handleStaking: PropTypes.func.isRequired,
+  isDelegate: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
   modalOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onStaking: PropTypes.func.isRequired,
   validator: PropTypes.object.isRequired,
 };
 

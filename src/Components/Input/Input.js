@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import NumberFormat from 'react-number-format';
 
@@ -23,14 +22,6 @@ const Element = styled(NumberFormat)`
   }
 `;
 
-const Input = (inputProps) => <Element isNumericString {...inputProps} />;
-
-Input.propTypes = {
-  inputProps: PropTypes.object,
-};
-
-Input.defaultProps = {
-  inputProps: {},
-};
+const Input = (props) => <Element isNumericString {...props} />;
 
 export default Input;

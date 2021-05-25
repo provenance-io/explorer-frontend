@@ -289,7 +289,7 @@ const Faucet = () => {
                   placeholder={timeoutActive ? 'Please wait for timeout' : 'Enter Address'}
                   value={address}
                 />
-                <Button isDisabled={formDisabled} onClick={submitAddress} icon="CUBES">
+                <Button disabled={formDisabled} onClick={submitAddress} icon="CUBES">
                   <ButtonContent timeoutActive={timeoutActive}>
                     {timeoutActive ? `Timeout (${timeoutDuration / 1000}s)` : 'Get Tokens'}
                   </ButtonContent>

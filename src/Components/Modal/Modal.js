@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
+import styled, { useTheme } from 'styled-components';
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 import { breakpoints } from 'consts';
+import OgSprite from 'Components/Sprite';
 
 const Wrapper = styled.div`
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 1050;
 `;
 
 const Overlay = styled.div`
@@ -40,11 +40,8 @@ const Dialog = styled.div`
   }
 `;
 
-const Body = styled.div`
-  flex: 1 1 auto;
-`;
-
 const Content = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 2.4rem;
@@ -55,15 +52,27 @@ const Content = styled.div`
   background-color: ${({ theme }) => theme.BACKGROUND_CONTENT};
 `;
 
+const Sprite = styled(OgSprite)`
+  position: absolute;
+  top: 1.6rem;
+  right: 1.6rem;
+  cursor: pointer;
+`;
+
+const Body = styled.div`
+  flex: 1 1 auto;
+`;
+
 const Modal = React.memo(({ children, isOpen, onClose }) => {
-  // const modalRef = useOnClickOutside(() => console.log('outside click'));
+  const theme = useTheme();
   useOnEscape(onClose);
 
   return (
     <Wrapper isOpen={isOpen}>
-      <Overlay onClick={onClose} />
+      <Overlay />
       <Dialog>
         <Content>
+          <Sprite icon="CLOSE" color={theme.FONT_PRIMARY} size="2rem" onClick={onClose} />
           <Body>{children}</Body>
         </Content>
       </Dialog>
