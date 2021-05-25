@@ -36,7 +36,14 @@ const useStaking = () => {
   const [isDelegate, setIsDelegate] = useState(false);
   const [validator, setValidator] = useState(null);
   const { walletService, messageService } = useWallet();
-  const { accountInfo, getAccountDelegations, getAccountInfo, getAccountRedelegations, getAccountUnbonding } = useAccounts();
+  const {
+    accountInfo,
+    getAccountDelegations,
+    getAccountInfo,
+    getAccountRedelegations,
+    getAccountRewards,
+    getAccountUnbonding,
+  } = useAccounts();
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   const { isLoggedIn, setIsLoggedIn } = useApp();
 
@@ -70,6 +77,7 @@ const useStaking = () => {
           getAccountDelegations(delegatorAddress);
           getAccountRedelegations(delegatorAddress);
           getAccountUnbonding(delegatorAddress);
+          getAccountRewards(delegatorAddress);
         }
       } catch (e) {
         console.error(e);
@@ -77,7 +85,15 @@ const useStaking = () => {
         setShouldPull(false);
       }
     })();
-  }, [shouldPull, isLoggedIn, delegatorAddress, getAccountDelegations, getAccountRedelegations, getAccountUnbonding]);
+  }, [
+    shouldPull,
+    isLoggedIn,
+    delegatorAddress,
+    getAccountDelegations,
+    getAccountRewards,
+    getAccountRedelegations,
+    getAccountUnbonding,
+  ]);
 
   useEffect(() => {
     setShouldPull(true);

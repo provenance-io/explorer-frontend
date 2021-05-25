@@ -32,6 +32,8 @@ const ValidatorList = () => {
     accountDelegationsPages,
     accountRedelegations,
     accountRedelegationsLoading,
+    accountRewards,
+    accountRewardsLoading,
     accountUnbonding,
     accountUnbondingLoading,
   } = useAccounts();
@@ -50,6 +52,9 @@ const ValidatorList = () => {
     }
   }, [myValTableFilterStatus, accountDelegations, accountRedelegations, accountUnbonding]);
 
+  const isJailed = tableFilterStatus === 'jailed';
+  const isDelegateFilter = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
+
   useEffect(() => {
     getTableData({ page: tableCurrentPage, count: tableCount, status: tableFilterStatus });
   }, [getTableData, tableCount, tableCurrentPage, tableFilterStatus]);
@@ -58,22 +63,21 @@ const ValidatorList = () => {
     setMyValTableData(
       currentVals.map((d) => {
         const validator = tableData.find((v) => v.addressId === d.validatorSrcAddr);
-        return { ...validator, ...d };
+        const rewards = isDelegateFilter ? accountRewards.rewards.find((r) => r.validatorAddress === d.validatorSrcAddr) : {};
+        return { ...rewards, ...validator, ...d };
       })
     );
 
     setMyValTableCurrentPage(1);
-  }, [currentVals, setMyValTableData, tableData]);
-
-  const isJailed = tableFilterStatus === 'jailed';
-  const showDelegate = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
+  }, [accountRewards, currentVals, isDelegateFilter, setMyValTableData, tableData]);
 
   const myValTableHeaders = [
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Voting Power', dataName: 'votingPower' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Delegation Amount', dataName: 'amount' },
-    showDelegate && { displayName: '', dataName: 'manageStaking' },
+    { displayName: 'Reward', dataName: 'reward' },
+    isDelegateFilter && { displayName: '', dataName: 'manageStaking' },
   ] // Remove the nulls
     .filter((th) => th);
 
@@ -120,12 +124,12 @@ const ValidatorList = () => {
           <MyValTable
             changePage={setMyValTableCurrentPage}
             currentPage={myValTableCurrentPage}
-            isLoading={accountDelegationsLoading || accountRedelegationsLoading || accountUnbondingLoading}
+            isLoading={accountDelegationsLoading || accountRedelegationsLoading || accountUnbondingLoading || accountRewardsLoading}
             ManageStakingBtn={ManageStakingBtn}
             tableData={myValTableData}
             tableHeaders={myValTableHeaders}
             title="My Validators"
-            totalPages={showDelegate ? accountDelegationsPages : 1}
+            totalPages={isDelegateFilter ? accountDelegationsPages : 1}
           />
         </Fragment>
       )}
