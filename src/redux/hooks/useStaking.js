@@ -136,9 +136,7 @@ const useStaking = () => {
 
   const ManageStakingBtn = ({ delegate, validator }) =>
     !isLoggedIn ? null : (
-      <Button $delegate={false} onClick={() => handleManageStakingClick(validator, delegate)}>
-        {delegate ? 'Delegate' : 'Manage'}
-      </Button>
+      <Button onClick={() => handleManageStakingClick(validator, delegate)}>{delegate ? 'Delegate' : 'Manage'}</Button>
     );
 
   ManageStakingBtn.propTypes = { delegate: PropTypes.bool.isRequired, validator: PropTypes.object.isRequired };
