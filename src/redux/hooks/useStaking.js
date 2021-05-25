@@ -46,14 +46,19 @@ const useStaking = () => {
 
   useEvent('message', (evt) => {
     if (walletService.walletUrl?.match(evt.origin)) {
-      switch (evt.data.message) {
-        case WINDOW_MESSAGES.TRANSACTION_COMPLETE:
-          deactivateModalOpen();
-          setShouldPull(true);
-          break;
-        default:
-          deactivateModalOpen();
+      if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
+        setShouldPull(true);
+        deactivateModalOpen();
       }
+
+      // switch (evt.data.message) {
+      //   case WINDOW_MESSAGES.TRANSACTION_COMPLETE:
+      //     deactivateModalOpen();
+      //     setShouldPull(true);
+      //     break;
+      //   default:
+      //     deactivateModalOpen();
+      // }
     }
   });
 
@@ -68,17 +73,34 @@ const useStaking = () => {
   }, [delegatorAddress, getAccountInfo, accountInfo.address]);
 
   useEffect(() => {
-    if (shouldPull && isLoggedIn) {
-      getAccountDelegations(delegatorAddress);
-      getAccountRedelegations(delegatorAddress);
-      getAccountUnbonding(delegatorAddress);
-      setShouldPull(false);
-    }
+    (async () => {
+      try {
+        if (shouldPull && isLoggedIn) {
+          getAccountDelegations(delegatorAddress);
+          getAccountRedelegations(delegatorAddress);
+          getAccountUnbonding(delegatorAddress);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setShouldPull(false);
+      }
+    })();
   }, [shouldPull, isLoggedIn, delegatorAddress, getAccountDelegations, getAccountRedelegations, getAccountUnbonding]);
 
   useEffect(() => {
     setShouldPull(true);
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    let timeout;
+    if (shouldPull) {
+      timeout = setTimeout(() => {
+        setShouldPull(false);
+      }, 2000);
+    }
+    return () => timeout && clearTimeout(timeout);
+  }, [shouldPull]);
 
   useEffect(() => {
     if (!modalOpen) {
@@ -123,12 +145,7 @@ const useStaking = () => {
 
   const ManageStakingBtn = ({ delegate, validator }) =>
     !isLoggedIn ? null : (
-      <Button
-        onClick={() => handleManageStakingClick(validator, delegate)}
-        icon="CHEVRON"
-        iconSize="2rem"
-        iconOptions={{ flipX: true }}
-      >
+      <Button $delegate={false} onClick={() => handleManageStakingClick(validator, delegate)}>
         {delegate ? 'Delegate' : 'Manage'}
       </Button>
     );

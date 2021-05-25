@@ -18,7 +18,7 @@ const ValidatorList = () => {
   const [myValTableCurrentPage, setMyValTableCurrentPage] = useState(1);
   const [tableFilterStatus, setTableFilterStatus] = useState('active');
   const [myValTableFilterStatus, setMyValTableFilterStatus] = useState(STAKING_TYPES.DELEGATE);
-  const [myValTableData, setMyValTableData] = useState(null);
+  const [myValTableData, setMyValTableData] = useState([]);
   const {
     validators: tableData,
     validatorsPages: tablePages,
@@ -79,6 +79,7 @@ const ValidatorList = () => {
 
   // Table header values in order
   const tableHeaders = [
+    isLoggedIn && { displayName: 'Delegate', dataName: 'delegate' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
@@ -89,7 +90,6 @@ const ValidatorList = () => {
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
-    isLoggedIn && { displayName: '', dataName: 'delegate' },
   ] // Remove the nulls
     .filter((th) => th);
 
@@ -140,7 +140,6 @@ const ValidatorList = () => {
         isLoading={tableLoading}
         title="Validators List"
         ManageStakingBtn={ManageStakingBtn}
-        showIndex
       />
       <ManageStakingModal
         isDelegate={isDelegate}
