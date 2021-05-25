@@ -36,7 +36,7 @@ const ValidatorCommission = () => {
 
   const popupNoteBondedTokens = {
     visibility: { visible: showBondedPopup, setVisible: setShowBondedPopup },
-    icon: { name: 'HELP', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -52,7 +52,7 @@ const ValidatorCommission = () => {
   };
   const popupNoteCommissionRateRange = {
     visibility: { visible: showCommissionPopup, setVisible: setShowCommissionPopup },
-    icon: { name: 'HELP', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
   };

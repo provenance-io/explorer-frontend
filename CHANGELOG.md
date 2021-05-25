@@ -1,6 +1,10 @@
-# CHANGELOG | <img src="./public/logo.svg" alt="Provenance Explorer"/>
+# CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
 ## Unreleased
+
+### Features
+
+- Added ability to delegate, redelegate and undelegate hash to validators [#74](https://github.com/provenance-io/explorer-frontend/issues/74)
 
 ## 1.1.0
 

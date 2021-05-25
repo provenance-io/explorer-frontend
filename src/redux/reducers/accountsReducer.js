@@ -1,5 +1,12 @@
 import { handleActions } from 'redux-actions';
-import { GET_ACCOUNT_INFO, GET_ACCOUNT_TXS } from '../actions/accountsActions';
+import {
+  GET_ACCOUNT_INFO,
+  GET_ACCOUNT_TXS,
+  GET_ACCOUNT_DELEGATIONS,
+  GET_ACCOUNT_REDELEGATIONS,
+  GET_ACCOUNT_REWARDS,
+  GET_ACCOUNT_UNBONDING,
+} from '../actions/accountsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -14,6 +21,22 @@ export const initialState = {
   accountAssetsLoading: false,
   accountAssets: [],
   accountAssetsPages: 0,
+  // Account Delegations
+  accountDelegationsLoading: false,
+  accountDelegations: [],
+  accountDelegationsPages: 0,
+  // Account Redelegations
+  accountRedelegationsLoading: false,
+  accountRedelegations: [],
+  accountRedelegationsPages: 0,
+  // Account Rewards
+  accountRewardsLoading: false,
+  accountRewards: [],
+  accountRewardsPages: 0,
+  // Account Unbonding
+  accountUnbondingLoading: false,
+  accountUnbonding: [],
+  accountUnbondingPages: 0,
 };
 
 const reducer = handleActions(
@@ -67,6 +90,99 @@ const reducer = handleActions(
       return {
         ...state,
         accountTxsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ACCOUNT_DELEGATIONS
+    -------------------*/
+    [`${GET_ACCOUNT_DELEGATIONS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        accountDelegationsLoading: true,
+      };
+    },
+    [`${GET_ACCOUNT_DELEGATIONS}_${SUCCESS}`](state, { payload }) {
+      const { pages: accountDelegationsPages, results: accountDelegations } = payload;
+      return {
+        ...state,
+        accountDelegations,
+        accountDelegationsLoading: false,
+        accountDelegationsPages,
+      };
+    },
+    [`${GET_ACCOUNT_DELEGATIONS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        accountDelegations: [],
+        accountDelegationsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ACCOUNT_REDELEGATIONS
+    -------------------*/
+    [`${GET_ACCOUNT_REDELEGATIONS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        accountRedelegationsLoading: true,
+      };
+    },
+    [`${GET_ACCOUNT_REDELEGATIONS}_${SUCCESS}`](state, { payload: accountRedelegations }) {
+      return {
+        ...state,
+        accountRedelegations,
+        accountRedelegationsLoading: false,
+      };
+    },
+    [`${GET_ACCOUNT_REDELEGATIONS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        accountRedelegations: [],
+        accountRedelegationsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ACCOUNT_REWARDS
+    -------------------*/
+    [`${GET_ACCOUNT_REWARDS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        accountRewardsLoading: true,
+      };
+    },
+    [`${GET_ACCOUNT_REWARDS}_${SUCCESS}`](state) {
+      return {
+        ...state,
+        accountRewardsLoading: false,
+      };
+    },
+    [`${GET_ACCOUNT_REWARDS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        accountRewards: [],
+        accountRewardsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ACCOUNT_UNBONDING
+    -------------------*/
+    [`${GET_ACCOUNT_UNBONDING}_${REQUEST}`](state) {
+      return {
+        ...state,
+        accountUnbondingLoading: true,
+      };
+    },
+    [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state, { payload: accountUnbonding }) {
+      return {
+        ...state,
+        accountUnbonding,
+        accountUnbondingLoading: false,
+      };
+    },
+    [`${GET_ACCOUNT_UNBONDING}_${FAILURE}`](state) {
+      return {
+        ...state,
+        accountUnbonding: [],
+        accountUnbondingLoading: false,
       };
     },
   },

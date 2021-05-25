@@ -51,18 +51,20 @@ const Pagination = styled(BasePagination)`
 const LoadingContainer = styled.td``;
 
 const Table = ({
-  tableHeaders,
-  tableData: rawTableData,
-  resultsPerPage,
-  currentPage,
   changePage,
-  totalPages,
+  className,
+  currentPage,
   isLoading,
-  showIndex,
-  title,
-  showAge,
-  size,
+  ManageStakingBtn,
   noResults,
+  resultsPerPage,
+  showAge,
+  showIndex,
+  size,
+  tableData: rawTableData,
+  tableHeaders,
+  totalPages,
+  title,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const { pathname } = useLocation();
@@ -108,9 +110,12 @@ const Table = ({
         );
       }
 
-      // TODO: Add delegation dropdown
-      if (dataName === 'manageDelegations') {
-        return <TableData key={displayName}>Manage ></TableData>;
+      if (dataName === 'manageStaking' || dataName === 'delegate') {
+        return (
+          <TableData key={displayName}>
+            <ManageStakingBtn delegate={dataName === 'delegate'} validator={rawTableData[index]} />
+          </TableData>
+        );
       }
 
       if (!rowData[dataName]) {
@@ -133,7 +138,7 @@ const Table = ({
   const buildAllRows = () => tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
-    <Content size={size} title={title}>
+    <Content className={className} size={size} title={title}>
       <TableContainer>
         <TableMain>
           <TableHead>
@@ -166,31 +171,35 @@ const Table = ({
 };
 
 Table.propTypes = {
-  title: PropTypes.string,
-  tableHeaders: PropTypes.array.isRequired,
-  tableData: PropTypes.array,
-  currentPage: PropTypes.number,
   changePage: PropTypes.func,
-  totalPages: PropTypes.number,
+  className: PropTypes.string,
+  currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
+  ManageStakingBtn: PropTypes.func,
+  noResults: PropTypes.string,
+  resultsPerPage: PropTypes.number,
   showIndex: PropTypes.any,
   showAge: PropTypes.string,
   size: PropTypes.string,
-  noResults: PropTypes.string,
-  resultsPerPage: PropTypes.number,
+  tableData: PropTypes.array,
+  tableHeaders: PropTypes.array.isRequired,
+  totalPages: PropTypes.number,
+  title: PropTypes.string,
 };
 Table.defaultProps = {
-  tableData: [],
-  resultsPerPage: 0,
-  currentPage: 0,
   changePage: null,
-  totalPages: 0,
+  className: null,
+  currentPage: 0,
   isLoading: false,
-  showIndex: false,
-  title: '',
-  size: '100%',
-  showAge: '',
+  ManageStakingBtn: null,
   noResults: 'No data available, refresh page to retry',
+  resultsPerPage: 0,
+  showAge: '',
+  showIndex: false,
+  size: '100%',
+  tableData: [],
+  title: '',
+  totalPages: 0,
 };
 
 export default Table;

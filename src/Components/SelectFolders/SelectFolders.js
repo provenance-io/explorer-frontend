@@ -39,6 +39,10 @@ const SelectFoldersContainer = styled.div`
   left: 0;
   z-index: 100;
 `;
+const OptionsContainer = styled.div`
+  max-height: ${({ maxHeight }) => maxHeight};
+  overflow: ${({ maxHeight }) => !!maxHeight && `scroll`};
+`;
 const OptionBlock = styled.div`
   padding: 10px 20px;
   background: ${({ theme }) => theme.INPUT_BG_LIGHT};
@@ -102,7 +106,7 @@ const findDefaultFolder = (defaultOption = {}) => {
   return options[optionKeys][0];
 };
 
-const SelectFolders = ({ allOptions, action }) => {
+const SelectFolders = ({ allOptions, action, maxHeight }) => {
   const defaultOption = findDefaultOption(allOptions);
   const defaultFolder = findDefaultFolder(allOptions[defaultOption]);
   const [activeFilter, setActiveFilter] = useState(defaultOption);
@@ -173,7 +177,7 @@ const SelectFolders = ({ allOptions, action }) => {
       {menuOpen && (
         <SelectFoldersContainer>
           <Caret icon="CARET" size="1.8rem" flipY color="INPUT_BG_LIGHT" />
-          {buildOptions(allOptions)}
+          <OptionsContainer maxHeight={maxHeight}>{buildOptions(allOptions)}</OptionsContainer>
         </SelectFoldersContainer>
       )}
     </SelectInput>
@@ -183,6 +187,11 @@ const SelectFolders = ({ allOptions, action }) => {
 SelectFolders.propTypes = {
   allOptions: PropTypes.object.isRequired,
   action: PropTypes.func.isRequired,
+  maxHeight: PropTypes.string,
+};
+
+SelectFolders.defaultProps = {
+  maxHeight: null,
 };
 
 export default SelectFolders;

@@ -1,3 +1,11 @@
+import { STAKING_TYPES } from './staking';
+
+export const MY_VALIDATOR_STATUS_OPTIONS = {
+  [STAKING_TYPES.DELEGATE]: { isDefault: true, title: 'Delegate' },
+  [STAKING_TYPES.REDELEGATE]: { title: 'Redelegate' },
+  [STAKING_TYPES.UNDELEGATE]: { title: 'Undelegate' },
+};
+
 export const VALIDATOR_STATUS_OPTIONS = {
   active: { isDefault: true, title: 'Active' },
   candidate: { title: 'Candidate' },

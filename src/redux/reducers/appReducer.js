@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { setCookie, getCookie } from 'utils';
-import { GET_CHAINCODE_ID, SET_THEME, SET_WALLET_URL } from '../actions/appActions';
+import { GET_CHAINCODE_ID, SET_THEME, SET_WALLET_URL, SET_IS_LOGGED_IN } from '../actions/appActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -13,6 +13,7 @@ export const initialState = {
   // Loading states
   chaincodeIdLoading: false,
   walletUrl: getCookie('walletUrl', true) || '',
+  isLoggedIn: false,
 };
 
 const reducer = handleActions(
@@ -31,6 +32,12 @@ const reducer = handleActions(
       return {
         ...state,
         walletUrl,
+      };
+    },
+    [SET_IS_LOGGED_IN](state, { payload: isLoggedIn }) {
+      return {
+        ...state,
+        isLoggedIn,
       };
     },
     /* -----------------

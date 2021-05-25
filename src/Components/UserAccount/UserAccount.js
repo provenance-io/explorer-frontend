@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
@@ -80,10 +80,9 @@ const Link = styled(BaseLink)`
 `;
 
 const UserAccount = ({ isMobile }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
-  const { setWalletUrl } = useApp();
+  const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
   const { walletService } = useWallet();
   const theme = useTheme();
   const position = isMobile ? 'below' : 'left';
@@ -92,7 +91,7 @@ const UserAccount = ({ isMobile }) => {
 
   useEffect(() => {
     setIsLoggedIn(!!walletService.state.address);
-  }, [walletService.state.address]);
+  }, [walletService.state.address, setIsLoggedIn]);
 
   const handleLogout = () => {
     setWalletUrl('');
