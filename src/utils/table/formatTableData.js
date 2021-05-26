@@ -156,8 +156,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'reward': {
           const { amount = '--', denom = '--' } = serverValue?.[0] || {};
           denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${currencyFormat(amount, 'nhash', 'hash')} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+            ? (finalObj[dataName] = {
+                value: `${formatNhash(currencyFormat(amount, 'nhash', 'hash'), { decimal: 4 })} hash`,
+              })
+            : (finalObj[dataName] = { value: `${numberFormat(amount, 4)} ${denom}` });
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)

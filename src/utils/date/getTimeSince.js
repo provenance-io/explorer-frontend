@@ -15,8 +15,8 @@ export const getTimeSince = (prevDate, options = {}) => {
 
   const currentUTCDate = getUTCTime('current');
   // DateFNS requires a parsed date to do any work on it (can't just take in a string)
-  const currentUTCDateParsed = parse(currentUTCDate, 'yyyy/MM/dd hh:mm:ss', new Date(currentUTCDate));
-  const prevDateParsed = parse(prevDate, 'yyyy/MM/dd hh:mm:ss', new Date(prevDate));
+  const currentUTCDateParsed = parse(currentUTCDate, 'yyyy/MM/dd HH:mm:ss', new Date(currentUTCDate));
+  const prevDateParsed = parse(prevDate, 'yyyy/MM/dd HH:mm:ss', new Date(prevDate));
   // Built in date-fns time difference function
   const timeSince = formatDistanceStrict(currentUTCDateParsed, prevDateParsed, { roundingMethod: 'floor', unit });
   // Clean up words if longhand isn't requested

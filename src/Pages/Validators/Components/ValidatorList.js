@@ -72,18 +72,18 @@ const ValidatorList = () => {
   }, [accountRewards, currentVals, isDelegateFilter, setMyValTableData, tableData]);
 
   const myValTableHeaders = [
+    isDelegateFilter && { displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Voting Power', dataName: 'votingPower' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Delegation Amount', dataName: 'amount' },
     { displayName: 'Reward', dataName: 'reward' },
-    isDelegateFilter && { displayName: '', dataName: 'manageStaking' },
   ] // Remove the nulls
     .filter((th) => th);
 
   // Table header values in order
   const tableHeaders = [
-    isLoggedIn && { displayName: 'Delegate', dataName: 'delegate' },
+    isLoggedIn && { displayName: 'Staking', dataName: 'delegate' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
