@@ -55,6 +55,11 @@ const WalletBtn = styled(Button)`
 const AccountBtn = styled(Button)`
   border: none;
   background: none;
+  /* animate.css @keyframe */
+  animation: heartBeat;
+  animation-duration: 1s;
+  animation-delay: 2s;
+  animation-iteration-count: ${({ isLoggedIn }) => (isLoggedIn ? 0 : 2)};
 
   @media ${breakpoints.up('md')} {
     margin-left: 10px;
@@ -107,7 +112,7 @@ const UserAccount = ({ isMobile }) => {
 
   return (
     <Container ref={containerRef}>
-      <AccountBtn onClick={toggleShowPopup}>
+      <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>
         <Sprite icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY} color={theme.FONT_NAV} size="20px" />
       </AccountBtn>
 
