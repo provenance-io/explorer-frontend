@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.2.0
+
 ### Features
 
 - Added ability to delegate, redelegate and undelegate hash to validators [#74](https://github.com/provenance-io/explorer-frontend/issues/74)
