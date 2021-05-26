@@ -139,7 +139,7 @@ const useStaking = () => {
 
     if (msgType) {
       const builtMsg = messageService.buildMessage(msgType, msg);
-      const msgAnyB64 = encodeURIComponent(messageService.createAnyMessageBase64(msgType, builtMsg));
+      const msgAnyB64 = messageService.createAnyMessageBase64(msgType, builtMsg);
       walletService.transaction({ msgAnyB64 });
     }
   };
