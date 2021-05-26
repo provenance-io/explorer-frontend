@@ -6,6 +6,9 @@
 
 - Added ability to delegate, redelegate and undelegate hash to validators [#74](https://github.com/provenance-io/explorer-frontend/issues/74)
 - Add ability to see staking rewards [#84](https://github.com/provenance-io/explorer-frontend/issues/84)
+
+### Improvements
+
 - Add helper script for CHANGELOG
 
 ### Bug Fixes
