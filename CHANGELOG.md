@@ -10,6 +10,7 @@
 ### Improvements
 
 - Add helper script for CHANGELOG
+- Time is now displayed in 24hr format
 
 ### Bug Fixes
 
