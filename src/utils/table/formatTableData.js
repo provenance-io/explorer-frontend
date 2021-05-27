@@ -157,7 +157,9 @@ export const formatTableData = (data = [], tableHeaders) => {
           const { amount = '--', denom = '--' } = serverValue?.[0] || {};
           denom === 'nhash'
             ? (finalObj[dataName] = {
-                value: `${formatNhash(currencyFormat(amount, 'nhash', 'hash'), { decimal: 4 })} hash`,
+                value: `${formatNhash(currencyFormat(amount, 'nhash', 'hash'), {
+                  decimal: 4,
+                })} hash`,
               })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 4)} ${denom}` });
           break;
@@ -197,7 +199,11 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'moniker': {
           // Build the link from the addressId or the proposerId or the ownerAddress or the holdingAccount
           // build the link here to not break syntax highlighting :shakesfist:
-          const linkAddress = dataObj?.addressId || dataObj?.proposerAddress || dataObj?.ownerAddress || dataObj?.holdingAccount;
+          const linkAddress =
+            dataObj?.addressId ||
+            dataObj?.proposerAddress ||
+            dataObj?.ownerAddress ||
+            dataObj?.holdingAccount;
           finalObj[dataName] = {
             value: serverValue,
             link: `/validator/${linkAddress}`,
@@ -218,9 +224,13 @@ export const formatTableData = (data = [], tableHeaders) => {
 
         case 'time': // fallthrough
         case 'lastTxTimestamp': // fallthrough
-        // case 'endTime': // fallthrough
         case 'timestamp': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
+          finalObj[dataName] = { value, raw: serverValue };
+          break;
+        }
+        case 'endTime': {
+          const value = serverValue ? `${getUTCTime(new Date(serverValue.millis))}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;
         }

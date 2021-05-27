@@ -24,7 +24,7 @@ const ValidatorUnbondingDelegations = () => {
     { displayName: 'Address', dataName: 'delegatorAddr' },
     { displayName: 'Amount', dataName: 'amount' },
     { displayName: 'Block', dataName: 'block' },
-    { displayName: 'End Time', dataName: 'endTime' }, // TODO: figure out rendering for this object
+    { displayName: 'End Time', dataName: 'endTime' },
   ];
 
   return (

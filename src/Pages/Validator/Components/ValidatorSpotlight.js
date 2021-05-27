@@ -118,14 +118,23 @@ const ValidatorSpotlight = () => {
           <Half>
             <SpotlightContainer>
               <ImageContainer>
-                {image ? <img src={image} alt={moniker} title={moniker} /> : <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>}
+                {image ? (
+                  <img src={image} alt={moniker} title={moniker} />
+                ) : (
+                  <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>
+                )}
               </ImageContainer>
               <Row>
                 <Title title={moniker}>{maxLength(moniker, 18)}</Title>
               </Row>
               {url && (
                 <Row title={moniker}>
-                  <a href={url} title={`${maxLength(moniker, 18)} url link`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={url}
+                    title={`${maxLength(moniker, 18)} url link`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {url}
                   </a>
                 </Row>
@@ -145,11 +154,21 @@ const ValidatorSpotlight = () => {
               <DataTitle>
                 <ValueRow>
                   Operator Address:
-                  <NoteContainer onMouseEnter={() => setShowNote(true)} onMouseLeave={() => setShowNote(false)}>
+                  <NoteContainer
+                    onMouseEnter={() => setShowNote(true)}
+                    onMouseLeave={() => setShowNote(false)}
+                  >
                     <PopupNote show={showNote} position="below">
-                      <NoteText>The address you used to create a validator, delegate, withdraw delegator reward, etc</NoteText>
+                      <NoteText>
+                        The address you used to create a validator, delegate, withdraw delegator
+                        reward, etc
+                      </NoteText>
                     </PopupNote>
-                    <Sprite icon="HELP_OUTLINE" size="1.7rem" onClick={() => setShowNote(!showNote)} />
+                    <Sprite
+                      icon="HELP_OUTLINE"
+                      size="1.7rem"
+                      onClick={() => setShowNote(!showNote)}
+                    />
                   </NoteContainer>
                 </ValueRow>
               </DataTitle>
@@ -168,7 +187,9 @@ const ValidatorSpotlight = () => {
             <DataRow>
               <DataTitle>Withdraw Address:</DataTitle>
               <DataValue title={withdrawalAddress}>
-                <Link to={`/accounts/${withdrawalAddress}`}>{maxLength(withdrawalAddress, 11, 3)}</Link>
+                <Link to={`/accounts/${withdrawalAddress}`}>
+                  {maxLength(withdrawalAddress, 11, 3)}
+                </Link>
                 <CopyValue title="Copy Withdraw Address" value={withdrawalAddress} />
               </DataValue>
             </DataRow>
@@ -211,7 +232,7 @@ const ValidatorSpotlight = () => {
               <>
                 <DataRow>
                   <DataTitle>Jailed Until:</DataTitle>
-                  <DataValue>{getFormattedDate(new Date(jailedUntil.millis), 'yyyy/MM/dd HH:mm:ss')}</DataValue>
+                  <DataValue>{getFormattedDate(new Date(jailedUntil.millis))}</DataValue>
                 </DataRow>
               </>
             )}
