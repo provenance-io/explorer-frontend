@@ -131,7 +131,14 @@ const DisclaimerText = styled.p`
   list-style-type: '– ';
 `;
 
-const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStaking, validator }) => {
+const ManageStakingModal = ({
+  isDelegate,
+  isLoggedIn,
+  modalOpen,
+  onClose,
+  onStaking,
+  validator,
+}) => {
   const theme = useTheme();
   const inputRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -139,10 +146,15 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
   const [stakingType, setStakingType] = useState();
   const [redelegateAddress, setRedelegateAddress] = useState(null);
   const { accountInfo } = useAccounts();
-  const { validators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } = useValidators();
+  const {
+    validators,
+    getValidatorSpotlight,
+    validatorSpotlight,
+    validatorSpotlightLoading,
+  } = useValidators();
 
   const hashBalance = accountInfo?.balances?.find((b) => b.denom === 'hash');
-  const { amount: hashAmount } = hashBalance || {};
+  const { amount: hashAmount = 0 } = hashBalance || {};
 
   useEffect(() => {
     if (isDelegate) {
@@ -220,11 +232,17 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
         <Fragment>
           <SpotlightContainer>
             <ImageContainer>
-              {image ? <img src={image} alt={moniker} title={moniker} /> : <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>}
+              {image ? (
+                <img src={image} alt={moniker} title={moniker} />
+              ) : (
+                <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>
+              )}
             </ImageContainer>
             <div>
               <Title title={moniker}>{maxLength(moniker, 35)}</Title>
-              <Description>Commission - {commission < 0.0001 ? '>0.0001' : numberFormat(commission, 4)}%</Description>
+              <Description>
+                Commission - {commission < 0.0001 ? '>0.0001' : numberFormat(commission, 4)}%
+              </Description>
             </div>
           </SpotlightContainer>
 
@@ -253,7 +271,10 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
               <ButtonGroup>
                 <DropdownBtn
                   // TODO: Figure out CLAIM_REWARDS
-                  options={[STAKING_TYPES.UNDELEGATE, STAKING_TYPES.REDELEGATE /*STAKING_TYPES.CLAIM*/]}
+                  options={[
+                    STAKING_TYPES.UNDELEGATE,
+                    STAKING_TYPES.REDELEGATE /*STAKING_TYPES.CLAIM*/,
+                  ]}
                   initial={STAKING_TYPES.UNDELEGATE}
                   onClick={handleClick}
                 />
@@ -271,8 +292,8 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
                 <div>
                   <DisclaimerTitle>Staking will lock your funds for 21+ days</DisclaimerTitle>
                   <DisclaimerText>
-                    You will need to undelegate in order for your staked assets to be liquid again. This process will take 21 days to
-                    complete.
+                    You will need to undelegate in order for your staked assets to be liquid again.
+                    This process will take 21 days to complete.
                   </DisclaimerText>
                 </div>
               </Disclaimer>
@@ -290,7 +311,11 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
               <Pair>
                 <PairTitle>Amount to Delegate</PairTitle>
                 <PairValue>
-                  <Input getInputRef={inputRef} decimalScale={0} onChange={handleDelegationAmountChange} />
+                  <Input
+                    getInputRef={inputRef}
+                    decimalScale={0}
+                    onChange={handleDelegationAmountChange}
+                  />
                   <DenomName>HASH</DenomName>
                 </PairValue>
               </Pair>
@@ -319,14 +344,21 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
                 </DisclaimerIcon>
                 <div>
                   <DisclaimerTitle>Trying to switch validators?</DisclaimerTitle>
-                  <DisclaimerText>Use the ‘Redelegate’ feature to instantly stake your assets to another validator.</DisclaimerText>
+                  <DisclaimerText>
+                    Use the ‘Redelegate’ feature to instantly stake your assets to another
+                    validator.
+                  </DisclaimerText>
                 </div>
               </Disclaimer>
 
               <Pair>
                 <PairTitle>Available for undelegation: {delegation} HASH </PairTitle>
                 <PairValue>
-                  <Input getInputRef={inputRef} decimalScale={0} onChange={(e) => handleAmountChange(e.target.value, delegation)} />
+                  <Input
+                    getInputRef={inputRef}
+                    decimalScale={0}
+                    onChange={(e) => handleAmountChange(e.target.value, delegation)}
+                  />
                   <DenomName>HASH</DenomName>
                 </PairValue>
               </Pair>
@@ -367,7 +399,11 @@ const ManageStakingModal = ({ isDelegate, isLoggedIn, modalOpen, onClose, onStak
                 <Pair>
                   <PairTitle>Available for redelegation: {delegation} HASH </PairTitle>
                   <PairValue>
-                    <Input getInputRef={inputRef} decimalScale={0} onChange={(e) => handleAmountChange(e.target.value, delegation)} />
+                    <Input
+                      getInputRef={inputRef}
+                      decimalScale={0}
+                      onChange={(e) => handleAmountChange(e.target.value, delegation)}
+                    />
                     <DenomName>HASH</DenomName>
                   </PairValue>
                 </Pair>

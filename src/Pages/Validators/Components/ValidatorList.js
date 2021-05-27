@@ -63,7 +63,9 @@ const ValidatorList = () => {
     setMyValTableData(
       currentVals.map((d) => {
         const validator = tableData.find((v) => v.addressId === d.validatorSrcAddr);
-        const rewards = isDelegateFilter ? accountRewards.rewards.find((r) => r.validatorAddress === d.validatorSrcAddr) : {};
+        const rewards = isDelegateFilter
+          ? accountRewards.rewards.find((r) => r.validatorAddress === d.validatorSrcAddr)
+          : {};
         return { ...rewards, ...validator, ...d };
       })
     );
@@ -83,7 +85,7 @@ const ValidatorList = () => {
 
   // Table header values in order
   const tableHeaders = [
-    isLoggedIn && { displayName: 'Staking', dataName: 'delegate' },
+    isLoggedIn && !isJailed && { displayName: 'Staking', dataName: 'delegate' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
@@ -124,7 +126,12 @@ const ValidatorList = () => {
           <MyValTable
             changePage={setMyValTableCurrentPage}
             currentPage={myValTableCurrentPage}
-            isLoading={accountDelegationsLoading || accountRedelegationsLoading || accountUnbondingLoading || accountRewardsLoading}
+            isLoading={
+              accountDelegationsLoading ||
+              accountRedelegationsLoading ||
+              accountUnbondingLoading ||
+              accountRewardsLoading
+            }
             ManageStakingBtn={ManageStakingBtn}
             tableData={myValTableData}
             tableHeaders={myValTableHeaders}
