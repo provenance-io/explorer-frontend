@@ -6,7 +6,6 @@ import { numberFormat, formatNhash } from 'utils';
 
 const ValidatorCommission = () => {
   const [showBondedPopup, setShowBondedPopup] = useState(false);
-  const [showCommissionPopup, setShowCommissionPopup] = useState(false);
   const {
     getValidatorCommission,
     validatorCommission,
@@ -64,13 +63,6 @@ const ValidatorCommission = () => {
       },
     ],
   };
-  const popupNoteCommissionRateRange = {
-    visibility: { visible: showCommissionPopup, setVisible: setShowCommissionPopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
-    method: ['click', 'hover'],
-    fontColor: 'FONT_WHITE',
-    data: [{ title: 'Max Change Rate', value: `0 ~ ${commissionMaxChangeRatePercent}` }],
-  };
 
   const summaryData = [
     { title: 'Commission Rate', value: commisionRatePercent },
@@ -82,11 +74,8 @@ const ValidatorCommission = () => {
     { title: 'Delegators', value: delegatorCount },
     { title: 'Total Shares', value: `${formatNhash(totalShares)} hash` },
     { title: 'Commission Rewards', value: `${formatNhash(commissionRewardsAmount)} hash` },
-    {
-      title: 'Commission Rate Range',
-      value: `0 ~ ${commissionRatePercent}`,
-      popupNote: popupNoteCommissionRateRange,
-    },
+    { title: 'Commission Rate Range', value: `0 ~ ${commissionRatePercent}` },
+    { title: 'Max Change Rate', value: commissionMaxChangeRatePercent },
   ];
 
   return (
