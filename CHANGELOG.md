@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.2.2
+
 ### Improvements
 
 - Allow staking on Jailed Validator
