@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Improvements
+
+- Allow staking on Jailed Validator
+- Support staking on both Jailed and Candidate
+
 ## 1.2.1
 
 ### Improvements
