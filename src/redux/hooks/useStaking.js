@@ -131,7 +131,12 @@ const useStaking = () => {
         msg = { delegatorAddress, validatorAddress: validator.addressId, amount };
         break;
       case STAKING_TYPES.REDELEGATE:
-        msg = { delegatorAddress, validatorSrcAddress: validator.addressId, validatorDstAddress, amount };
+        msg = {
+          delegatorAddress,
+          validatorSrcAddress: validator.addressId,
+          validatorDstAddress,
+          amount,
+        };
         break;
       default:
         console.warn(`${type} is not supported`);
@@ -152,10 +157,15 @@ const useStaking = () => {
 
   const ManageStakingBtn = ({ delegate, validator }) =>
     !isLoggedIn ? null : (
-      <Button onClick={() => handleManageStakingClick(validator, delegate)}>{delegate ? 'Delegate' : 'Manage'}</Button>
+      <Button onClick={() => handleManageStakingClick(validator, delegate)}>
+        {delegate ? 'Delegate' : 'Manage'}
+      </Button>
     );
 
-  ManageStakingBtn.propTypes = { delegate: PropTypes.bool.isRequired, validator: PropTypes.object.isRequired };
+  ManageStakingBtn.propTypes = {
+    delegate: PropTypes.bool.isRequired,
+    validator: PropTypes.object.isRequired,
+  };
 
   return {
     handleStaking,

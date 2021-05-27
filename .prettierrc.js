@@ -1,6 +1,6 @@
 module.exports = {
   parser: 'babel',
-  printWidth: 135,
+  printWidth: 100,
   singleQuote: true,
   trailingComma: 'es5',
 };

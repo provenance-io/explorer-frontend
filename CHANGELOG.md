@@ -2,6 +2,24 @@
 
 ## Unreleased
 
+## 1.2.2
+
+### Improvements
+
+- Allow staking on Jailed Validator
+- Support staking on both Jailed and Candidate
+
+## 1.2.1
+
+### Improvements
+
+- Change line length to 100, the previous lentgh was too long
+
+### Bug Fixes
+
+- Removed staking from Jailed Validator
+- Default the users hash amount to 0
+
 ## 1.2.0
 
 ### Features
