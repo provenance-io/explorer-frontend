@@ -2,6 +2,7 @@ import { handleActions } from 'redux-actions';
 import {
   GET_TOP_VALIDATORS,
   GET_VALIDATOR_INFO,
+  GET_ALL_VALIDATORS,
   GET_BLOCK_VALIDATORS,
   GET_VALIDATORS_RECENT,
   GET_VALIDATOR_COMMISSION,
@@ -13,6 +14,10 @@ import {
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
+  // All validators
+  allValidators: [],
+  allValidatorsPages: 0,
+  allValidatorsRecentLoading: false,
   // Validators Recent
   validators: [],
   validatorsPages: 0,
@@ -50,6 +55,31 @@ export const initialState = {
 
 const reducer = handleActions(
   {
+    /* -----------------
+    GET_ALL_VALIDATOR
+    -------------------*/
+    [`${GET_ALL_VALIDATORS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        allValidatorsLoading: true,
+      };
+    },
+    [`${GET_ALL_VALIDATORS}_${SUCCESS}`](state, { payload }) {
+      const { pages: allValidatorsPages, results: allValidators } = payload;
+
+      return {
+        ...state,
+        allValidators,
+        allValidatorsPages,
+        allValidatorsLoading: false,
+      };
+    },
+    [`${GET_ALL_VALIDATORS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        allValidatorsLoading: false,
+      };
+    },
     /* -----------------
     GET_VALIDATOR_TXS
     -------------------*/
@@ -108,7 +138,10 @@ const reducer = handleActions(
         validatorUnbondingDelegationsLoading: true,
       };
     },
-    [`${GET_VALIDATOR_UNBONDING_DELEGATIONS}_${SUCCESS}`](state, { payload: validatorUnbondingDelegations }) {
+    [`${GET_VALIDATOR_UNBONDING_DELEGATIONS}_${SUCCESS}`](
+      state,
+      { payload: validatorUnbondingDelegations }
+    ) {
       // TODO: Change this when pagination is supported
       // const { pages: validatorUnbondingDelegationsPages, results: validatorUnbondingDelegations } = payload;
       return {

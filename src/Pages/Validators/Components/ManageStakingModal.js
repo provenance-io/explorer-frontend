@@ -147,7 +147,7 @@ const ManageStakingModal = ({
   const [redelegateAddress, setRedelegateAddress] = useState(null);
   const { accountInfo } = useAccounts();
   const {
-    validators,
+    allValidators,
     getValidatorSpotlight,
     validatorSpotlight,
     validatorSpotlightLoading,
@@ -373,7 +373,7 @@ const ManageStakingModal = ({
                   <SelectFolders
                     maxHeight="21rem"
                     action={handleRedelegateSelection}
-                    allOptions={validators.reduce(
+                    allOptions={allValidators.reduce(
                       (agg, curr) => {
                         if (validator.addressId === curr.addressId) return agg;
 
