@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Improvements
+
+- Add Max Change Rate line item on validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
+
+### Bug Fixes
+
+- Removed the empty popup from the validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
+
 ## 1.2.2
 
 ### Improvements
