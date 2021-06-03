@@ -7,6 +7,9 @@ describe('App e2e', () => {
     cy.visit('/');
   });
 
+  // TODO: make api calls cancellable and cancel them on unmount
+  Cypress.on('uncaught:exception', (err, runnable) => false);
+
   it('should show 404', () => {
     cy.visit('/garbage-url');
     cy.findByText(/404/i).should('exist');
@@ -20,11 +23,19 @@ describe('App e2e', () => {
   });
 
   it('should handle the theme switcher', () => {
-    cy.findByTestId('page-wrapper').should('have.css', 'background-color', Color(themes.default.BACKGROUND_LIGHT).string());
+    cy.findByTestId('page-wrapper').should(
+      'have.css',
+      'background-color',
+      Color(themes.default.BACKGROUND_LIGHT).string()
+    );
 
     cy.findByTestId('theme-switcher').click();
 
-    cy.findByTestId('page-wrapper').should('have.css', 'background-color', Color(themes.night.BACKGROUND_LIGHT).string());
+    cy.findByTestId('page-wrapper').should(
+      'have.css',
+      'background-color',
+      Color(themes.night.BACKGROUND_LIGHT).string()
+    );
 
     cy.visit('/');
 
@@ -32,7 +43,11 @@ describe('App e2e', () => {
       cy.findByTestId('theme-switcher').click();
     }
 
-    cy.findByTestId('page-wrapper').should('have.css', 'background-color', Color(themes.rainbow.BACKGROUND_LIGHT).string());
+    cy.findByTestId('page-wrapper').should(
+      'have.css',
+      'background-color',
+      Color(themes.rainbow.BACKGROUND_LIGHT).string()
+    );
   });
 
   it('smoke test', () => {
@@ -41,13 +56,13 @@ describe('App e2e', () => {
 
     cy.findByTestId('navlink-dashboard').click();
 
-    cy.findByTestId('voting-power').findByRole('link').click();
+    cy.findByText(/\d*\/\d* validators/i).click();
 
     cy.findByText(/block hash/i).should('exist');
 
     cy.findByTestId('block-details').findByRole('link').click();
 
-    cy.findByTestId('navlink-transfer').click();
+    cy.findByTestId('navlink-transactions').click();
 
     cy.findByRole('button', { name: '5' }).click();
 

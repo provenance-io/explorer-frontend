@@ -5,6 +5,7 @@
 ### Improvements
 
 - Add Max Change Rate line item on validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
+- Add testing libs and some basic smokescreens [#19](https://github.com/provenance-io/explorer-frontend/issues/19)
 
 ### Bug Fixes
 
@@ -21,7 +22,7 @@
 
 ### Improvements
 
-- Change line length to 100, the previous lentgh was too long
+- Change line length to 100, the previous length was too long
 
 ### Bug Fixes
 
