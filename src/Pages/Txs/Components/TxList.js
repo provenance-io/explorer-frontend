@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { format } from 'date-fns';
@@ -188,7 +188,11 @@ const TxList = () => {
       {!txTypesLoading && txTypesExist && (
         <FiltersWrapper>
           {filterError && <FilterError>{filterError}</FilterError>}
-          <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} flush />
+          <Filters
+            filterData={filterData}
+            mustApply={{ title: 'Apply', action: applyFilters }}
+            flush
+          />
         </FiltersWrapper>
       )}
       <Table

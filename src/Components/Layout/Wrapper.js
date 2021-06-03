@@ -1,9 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { breakpoints } from 'consts';
 
-const PageWrapper = styled.div`
+const PageWrapper = styled.main`
   padding: 106px 10%;
   position: relative;
   background-color: ${({ theme }) => theme.BACKGROUND_LIGHT};
@@ -16,7 +15,11 @@ const PageWrapper = styled.div`
   }
 `;
 
-const Wrapper = ({ children, noHeader }) => <PageWrapper noHeader={noHeader}>{children}</PageWrapper>;
+const Wrapper = ({ children, noHeader, ...props }) => (
+  <PageWrapper {...props} noHeader={noHeader} data-testid="page-wrapper">
+    {children}
+  </PageWrapper>
+);
 
 Wrapper.propTypes = {
   children: PropTypes.node,

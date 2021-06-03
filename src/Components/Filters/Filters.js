@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { SelectFolders, DatePicker, Button } from 'Components';
@@ -35,9 +34,9 @@ const Filters = ({ filterData, mustApply, flush }) => {
       const buildFilterType = () => {
         switch (type) {
           case 'dropdown':
-            return <SelectFolders allOptions={options} action={action} />;
+            return <SelectFolders allOptions={options} action={action} data-testid={`form-${title.toLowerCase()}`} />;
           case 'datepicker':
-            return <DatePicker {...options} />;
+            return <DatePicker {...options} data-testid={`form-${title.toLowerCase()}`} />;
           default:
             return '';
         }

@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // import { breakpoints } from 'consts';
@@ -13,7 +12,11 @@ const SectionWrapper = styled.div`
   ${({ header }) => header && 'margin-top: 20px;'}
 `;
 
-const Section = ({ children, header }) => <SectionWrapper header={header}>{children}</SectionWrapper>;
+const Section = ({ children, header, ...props }) => (
+  <SectionWrapper {...props} header={header}>
+    {children}
+  </SectionWrapper>
+);
 
 Section.propTypes = {
   children: PropTypes.node,

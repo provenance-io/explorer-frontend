@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
 import { useAssets } from 'redux/hooks';
@@ -26,7 +26,9 @@ const AssetHolders = () => {
   ];
 
   // TEMP: Table data from the server is un-sorted, sort it based on the quantity of the asset
-  const sortedTableData = tableData.sort((a, b) => (a?.balance?.count < b?.balance?.count ? 1 : -1));
+  const sortedTableData = tableData.sort((a, b) =>
+    a?.balance?.count < b?.balance?.count ? 1 : -1
+  );
 
   return (
     <Table

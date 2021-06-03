@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { getUTCTime } from 'utils';
@@ -30,7 +30,10 @@ const RecentBlocks = () => {
 
   const totalBlocks = blocks.length;
   // Poll the API for new data every 10s
-  useInterval(() => !blocksRecentLoading && getBlocksRecent({ count: recentBlocksCount }), polling.recentBlocks);
+  useInterval(
+    () => !blocksRecentLoading && getBlocksRecent({ count: recentBlocksCount }),
+    polling.recentBlocks
+  );
   // Initial load, get most recent blocks
   useEffect(() => {
     setBlocksLoading(true);

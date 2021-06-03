@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
@@ -113,7 +113,11 @@ const UserAccount = ({ isMobile }) => {
   return (
     <Container ref={containerRef}>
       <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>
-        <Sprite icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY} color={theme.FONT_NAV} size="20px" />
+        <Sprite
+          icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY}
+          color={theme.FONT_NAV}
+          size="20px"
+        />
       </AccountBtn>
 
       {isLoggedIn && (
@@ -121,7 +125,9 @@ const UserAccount = ({ isMobile }) => {
           <PopupTxt>You are currently logged in as</PopupTxt>
           <PopupTxt>
             <Link to={`/accounts/${walletService.state.address}`}>
-              {isMobile ? maxLength(walletService.state.address, 11, 3) : walletService.state.address}
+              {isMobile
+                ? maxLength(walletService.state.address, 11, 3)
+                : walletService.state.address}
             </Link>
           </PopupTxt>
           <LogoutButton color="secondary" onClick={handleLogout} icon={ICON_NAMES.LOGOUT}>

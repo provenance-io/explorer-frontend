@@ -1,9 +1,11 @@
-import React from 'react';
 import { Table } from 'Components';
 import { useAssets } from 'redux/hooks';
 
 const ManagingAccounts = () => {
-  const { assetInfo: { managingAccounts: { managers = {} } = {} } = {}, assetInfoLoading: tableLoading } = useAssets();
+  const {
+    assetInfo: { managingAccounts: { managers = {} } = {} } = {},
+    assetInfoLoading: tableLoading,
+  } = useAssets();
 
   const tableHeaders = [
     { displayName: 'Address', dataName: 'manager' },
@@ -21,7 +23,14 @@ const ManagingAccounts = () => {
     []
   );
 
-  return <Table tableHeaders={tableHeaders} tableData={tableData} isLoading={tableLoading} title="Managing Accounts" />;
+  return (
+    <Table
+      tableHeaders={tableHeaders}
+      tableData={tableData}
+      isLoading={tableLoading}
+      title="Managing Accounts"
+    />
+  );
 };
 
 export default ManagingAccounts;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Wrapper, Header } from 'Components';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';

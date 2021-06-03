@@ -1,4 +1,3 @@
-import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
 import { Links, Path, breakpoints } from 'consts';
@@ -9,7 +8,7 @@ import SearchBar from '../../SearchBar';
 import Toggle from '../../Toggle';
 import UserAccount from '../../UserAccount';
 
-const NavigationWrapper = styled.div`
+const NavigationWrapper = styled.nav`
   position: fixed;
   display: flex;
   align-items: center;
@@ -80,7 +79,7 @@ const NavStandard = () => {
       const { url, title } = Links[linkName];
       const active = pathname === url ? 'true' : undefined;
       return (
-        <Link key={url} to={url} active={active}>
+        <Link key={url} to={url} active={active} data-testid={`navlink-${title.toLowerCase()}`}>
           {title}
         </Link>
       );
@@ -97,6 +96,7 @@ const NavStandard = () => {
       <SearchBar />
       <UserAccount />
       <Toggle
+        data-testid="theme-switcher"
         active={themeName === 'night'}
         optionA={{
           title: 'Night Mode',
