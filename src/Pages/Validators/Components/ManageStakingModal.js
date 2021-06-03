@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import * as yup from 'yup';
@@ -146,12 +146,8 @@ const ManageStakingModal = ({
   const [stakingType, setStakingType] = useState();
   const [redelegateAddress, setRedelegateAddress] = useState(null);
   const { accountInfo } = useAccounts();
-  const {
-    allValidators,
-    getValidatorSpotlight,
-    validatorSpotlight,
-    validatorSpotlightLoading,
-  } = useValidators();
+  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } =
+    useValidators();
 
   const hashBalance = accountInfo?.balances?.find((b) => b.denom === 'hash');
   const { amount: hashAmount = 0 } = hashBalance || {};

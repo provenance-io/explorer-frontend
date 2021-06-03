@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Sprite from 'Components/Sprite';
@@ -39,7 +38,17 @@ const ButtonIcon = styled.div`
   display: flex;
 `;
 
-const Button = ({ className, color, icon, iconSize, iconColor, iconOptions, onClick, children, disabled }) => (
+const Button = ({
+  className,
+  color,
+  icon,
+  iconSize,
+  iconColor,
+  iconOptions,
+  onClick,
+  children,
+  disabled,
+}) => (
   <StyledButton
     className={className}
     onClick={onClick}

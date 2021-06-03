@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Table } from 'Components';
 import { useAssets } from 'redux/hooks';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const { getAssetsList: getTableData, assets: tableData, assetsLoading: tableLoading, assetsPages: tablePages } = useAssets();
+  const {
+    getAssetsList: getTableData,
+    assets: tableData,
+    assetsLoading: tableLoading,
+    assetsPages: tablePages,
+  } = useAssets();
   // How many results to display
   const tableCount = 10;
 

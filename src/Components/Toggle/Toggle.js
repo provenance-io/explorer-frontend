@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Sprite from 'Components/Sprite';
@@ -50,7 +50,13 @@ const Toggle = ({ optionA, optionB, active, special, ...props }) => {
 
   const { title: titleA, icon: iconA, iconColor: iconColorA, action: actionA } = optionA;
   const { title: titleB, icon: iconB, iconColor: iconColorB, action: actionB } = optionB;
-  const { title: titleSpecial, icon: iconSpecial, iconColor: iconColorSpecial, action: actionSpecial, count } = special;
+  const {
+    title: titleSpecial,
+    icon: iconSpecial,
+    iconColor: iconColorSpecial,
+    action: actionSpecial,
+    count,
+  } = special;
 
   const toggle = () => {
     // Secret toggle, if clicked enough times
@@ -83,8 +89,12 @@ const Toggle = ({ optionA, optionB, active, special, ...props }) => {
         </OptionSpecialContainer>
       ) : (
         <>
-          <OptionAContainer title={titleA}>{iconA && <Sprite icon={iconA} color={iconColorA} />}</OptionAContainer>
-          <OptionBContainer title={titleB}>{iconB && <Sprite icon={iconB} color={iconColorB} />}</OptionBContainer>
+          <OptionAContainer title={titleA}>
+            {iconA && <Sprite icon={iconA} color={iconColorA} />}
+          </OptionAContainer>
+          <OptionBContainer title={titleB}>
+            {iconB && <Sprite icon={iconB} color={iconColorB} />}
+          </OptionBContainer>
         </>
       )}
     </ToggleContainer>

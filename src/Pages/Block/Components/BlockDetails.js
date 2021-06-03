@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Content, Loading, Summary } from 'Components';
 import { useParams } from 'react-router-dom';
 import { maxLength, getUTCTime, numberFormat } from 'utils';
@@ -27,7 +27,16 @@ const BlockDetails = () => {
     }
   }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight]);
 
-  const { hash, proposerAddress, moniker, votingPower = {}, txNum, validatorCount = {}, time, userName } = blockInfo;
+  const {
+    hash,
+    proposerAddress,
+    moniker,
+    votingPower = {},
+    txNum,
+    validatorCount = {},
+    time,
+    userName,
+  } = blockInfo;
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
   const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
   const utcTime = getUTCTime(time);
@@ -47,7 +56,9 @@ const BlockDetails = () => {
     { title: 'Timestamp', value: `${utcTime}+UTC` },
   ];
 
-  return <Content size="100%">{blockInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
+  return (
+    <Content size="100%">{blockInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>
+  );
 };
 
 export default BlockDetails;

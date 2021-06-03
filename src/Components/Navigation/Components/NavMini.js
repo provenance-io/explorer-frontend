@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
 import { Links, Path } from 'consts';
@@ -112,11 +112,21 @@ const NavMini = () => {
   return (
     <NavigationWrapper>
       <InnerWrapper>
-        <Sprite icon="MENU" onClick={toggleMenu} size="3.0rem" color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+        <Sprite
+          icon="MENU"
+          onClick={toggleMenu}
+          size="3.0rem"
+          color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+        />
         <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
-        <Sprite icon="SEARCH" onClick={toggleSearch} size="3.0rem" color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+        <Sprite
+          icon="SEARCH"
+          onClick={toggleSearch}
+          size="3.0rem"
+          color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+        />
       </InnerWrapper>
       {showMenu && (
         <DropdownContainer>

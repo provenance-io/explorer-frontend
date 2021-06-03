@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Sprite } from 'Components';
 import { useHistory } from 'react-router-dom';
@@ -138,7 +138,12 @@ const SearchBar = () => {
         />
       </TextInputContainer>
       <SelectContainer>
-        <Select id="select" onChange={({ target }) => setSearchType(target.value)} label="" value={searchType}>
+        <Select
+          id="select"
+          onChange={({ target }) => setSearchType(target.value)}
+          label=""
+          value={searchType}
+        >
           <option value="block">Block</option>
           <option value="validator">Validator</option>
           <option value="tx">Tx</option>
