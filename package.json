@@ -85,7 +85,6 @@
     "start:test": "react-scripts start",
     "start:local": "REACT_APP_ENV=local react-scripts start",
     "start:prod": "REACT_APP_ENV=production react-scripts start",
-    "prebuild": "npm run test:all",
     "build": "react-scripts build",
     "build:stats": "react-scripts build -- --stats",
     "linkify": "python ./scripts/linkify.py ./CHANGELOG.md",
