@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
-import echarts from 'echarts';
+import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
 import { useTxs, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
@@ -30,12 +30,19 @@ const TxChart = ({ txHistoryGran }) => {
   useEffect(() => {
     if (txHistoryCount > 0) {
       // On load, chartElementRef should get set and we can update the chart to be an echart
-      setChart(echarts.init(chartElementRef.current));
+      // first try to get the initialized instance
+      let echart = echarts.getInstanceByDom(chartElementRef.current);
+      // if it isn't initialized then init
+      if (!echart) echart = echarts.init(chartElementRef.current);
+      setChart(echart);
       const buildChartData = () => {
         const xAxisData = txHistory.map(({ date }) =>
           format(parseISO(date, "yyyy-MM-dd't'HH:mm:ss"), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm')
         );
-        const seriesData = txHistory.map(({ numberTxs, date }) => ({ value: numberTxs, name: date }));
+        const seriesData = txHistory.map(({ numberTxs, date }) => ({
+          value: numberTxs,
+          name: date,
+        }));
 
         return {
           xAxis: {
@@ -44,7 +51,7 @@ const TxChart = ({ txHistoryGran }) => {
             data: xAxisData,
             axisLabel: {
               rotate: 45,
-              textStyle: { color: theme.FONT_PRIMARY },
+              color: theme.FONT_PRIMARY,
             },
           },
           yAxis: {
@@ -52,7 +59,7 @@ const TxChart = ({ txHistoryGran }) => {
             offset: isSmall ? -14 : 0,
             axisLabel: {
               rotate: isLg ? 45 : 0,
-              textStyle: { color: theme.FONT_PRIMARY },
+              color: theme.FONT_PRIMARY,
             },
           },
           color: theme.CHART_LINE_MAIN,
@@ -89,7 +96,11 @@ const TxChart = ({ txHistoryGran }) => {
     }
   }, [setChart, chart, txHistory, granIsDay, isSmall, isLg, theme, txHistoryCount]);
 
-  return txHistoryCount > 0 ? <StyledChart ref={chartElementRef} /> : <StyledMessage>No transactions available</StyledMessage>;
+  return txHistoryCount > 0 ? (
+    <StyledChart ref={chartElementRef} />
+  ) : (
+    <StyledMessage>No transactions available</StyledMessage>
+  );
 };
 
 TxChart.propTypes = {

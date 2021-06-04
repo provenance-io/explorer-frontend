@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['eslint:recommended', 'react-app', 'prettier', 'prettier/react'],
+  extends: ['eslint:recommended', 'react-app', 'prettier'],
   parser: 'babel-eslint',
   rules: {
     'arrow-body-style': ['warn', 'as-needed'],
