@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
@@ -63,7 +63,7 @@ const Body = styled.div`
   flex: 1 1 auto;
 `;
 
-const Modal = memo(({ children, isOpen, onClose }) => {
+const Modal = React.memo(({ children, isOpen, onClose }) => {
   const theme = useTheme();
   useOnEscape(onClose);
 

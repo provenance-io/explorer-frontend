@@ -1,9 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { NavStandard, NavMini } from './Components';
 
-const NavigationWrapper = styled.header`
+const NavigationWrapper = styled.div`
   position: fixed;
   top: 0;
   left: 0;

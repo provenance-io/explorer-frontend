@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Content, Summary, Loading } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
@@ -6,8 +6,11 @@ import { numberFormat, formatNhash } from 'utils';
 
 const ValidatorCommission = () => {
   const [showBondedPopup, setShowBondedPopup] = useState(false);
-  const { getValidatorCommission, validatorCommission, validatorCommissionLoading } =
-    useValidators();
+  const {
+    getValidatorCommission,
+    validatorCommission,
+    validatorCommissionLoading,
+  } = useValidators();
   const { validatorId } = useParams();
   // Get validatorCommission info on load
   useEffect(() => {

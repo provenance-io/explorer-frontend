@@ -1,3 +1,4 @@
+import React from 'react';
 import { Wrapper, Section, Header } from 'Components';
 import { useValidators, useApp } from 'redux/hooks';
 import { ValidatorList } from './Components';

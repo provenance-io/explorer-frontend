@@ -1,3 +1,4 @@
+import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { BlockDetails, BlockPagination, BlockValidators, BlockTxs } from './Components';
 
@@ -6,7 +7,7 @@ const Block = () => (
     <Header title="Block Details">
       <BlockPagination />
     </Header>
-    <Section header data-testid="block-details">
+    <Section header>
       <BlockDetails />
     </Section>
     <Section>

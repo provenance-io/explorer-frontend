@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -105,12 +105,7 @@ const PopupNote = ({ show, children, position, delay, className, minWidth }) => 
   );
 
   return showPopup ? (
-    <PopupContainer
-      delay={delay}
-      position={position}
-      className={`${className} ${show ? 'show' : 'hide'}`}
-      minWidth={minWidth}
-    >
+    <PopupContainer delay={delay} position={position} className={`${className} ${show ? 'show' : 'hide'}`} minWidth={minWidth}>
       <Caret icon="CARET" size="1.8rem" position={position} />
       {children}
     </PopupContainer>

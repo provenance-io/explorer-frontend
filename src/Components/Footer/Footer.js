@@ -1,14 +1,8 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useApp } from 'redux/hooks';
 import { Link } from 'react-router-dom';
-import {
-  breakpoints,
-  SOCIAL_GITHUB_URL,
-  SOCIAL_DISCORD_URL,
-  SOCIAL_PROVENANCE_URL,
-  isProd,
-} from 'consts';
+import { breakpoints, SOCIAL_GITHUB_URL, SOCIAL_DISCORD_URL, SOCIAL_PROVENANCE_URL, isProd } from 'consts';
 import Sprite from '../Sprite';
 import { version } from '../../../package.json';
 
@@ -85,28 +79,13 @@ const Footer = () => {
         )}
       </FooterData>
       <FooterSocial>
-        <SocialLink
-          href={SOCIAL_PROVENANCE_URL}
-          target="_blank"
-          rel="noreferrer"
-          title="Visit Provenance"
-        >
+        <SocialLink href={SOCIAL_PROVENANCE_URL} target="_blank" rel="noreferrer" title="Visit Provenance">
           <Sprite icon="PROVENANCE" size="1.8rem" color="WHITE" />
         </SocialLink>
-        <SocialLink
-          href={SOCIAL_GITHUB_URL}
-          target="_blank"
-          rel="noreferrer"
-          title="Provenance Explorer GitHub"
-        >
+        <SocialLink href={SOCIAL_GITHUB_URL} target="_blank" rel="noreferrer" title="Provenance Explorer GitHub">
           <Sprite icon="GITHUB" size="1.8rem" color="WHITE" />
         </SocialLink>
-        <SocialLink
-          href={SOCIAL_DISCORD_URL}
-          target="_blank"
-          rel="noreferrer"
-          title="Provenance Explorer Discord"
-        >
+        <SocialLink href={SOCIAL_DISCORD_URL} target="_blank" rel="noreferrer" title="Provenance Explorer Discord">
           <Sprite icon="DISCORD" size="1.8rem" color="WHITE" />
         </SocialLink>
         <FooterVersion>v{version ? version : '?.?.?'}</FooterVersion>

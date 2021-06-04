@@ -1,3 +1,4 @@
+import React from 'react';
 import { Table } from 'Components';
 import { useAccounts } from 'redux/hooks';
 

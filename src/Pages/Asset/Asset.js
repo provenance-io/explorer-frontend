@@ -1,3 +1,4 @@
+import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
 import { AssetHolders, AssetInformation, AssetTxsList, ManagingAccounts } from './Components';

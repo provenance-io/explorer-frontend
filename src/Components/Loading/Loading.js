@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import { Sprite } from 'Components';
@@ -19,7 +20,7 @@ const SearchLoading = styled.div`
 `;
 
 const Loading = ({ className, size }) => (
-  <SearchLoading className={className} data-testid="loading">
+  <SearchLoading className={className}>
     <Sprite icon="IN_PROGRESS" size={size} />
   </SearchLoading>
 );
