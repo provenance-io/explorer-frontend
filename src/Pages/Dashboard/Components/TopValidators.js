@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { maxLength, numberFormat } from 'utils';
 import styled, { useTheme } from 'styled-components';
 import { Content, Loading } from 'Components';
-import echarts from 'echarts';
+import * as echarts from 'echarts';
 import { useApp, useValidators, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 
@@ -37,9 +37,14 @@ const TopValidators = () => {
       // Top validators loaded, render the chart
       // Change the size of the chart and where the center of it is based on screen size
       const chartRadius = (sizeSm && '70%') || (sizeMd && '70%') || (sizeLg && '60%') || '90%';
-      const chartCenter = (sizeSm && ['50%', '65%']) || (sizeMd && ['50%', '50%']) || ['40%', '50%'];
+      const chartCenter = (sizeSm && ['50%', '65%']) ||
+        (sizeMd && ['50%', '50%']) || ['40%', '50%'];
       // On load, chartElementRef should get set and we can update the chart to be an echart
-      setChart(echarts.init(chartElementRef.current));
+      // first try to get the initialized instance
+      let echart = echarts.getInstanceByDom(chartElementRef.current);
+      // if it isn't initialized then init
+      if (!echart) echart = echarts.init(chartElementRef.current);
+      setChart(echart);
       // Function to return the full set of finalized chart data
       const buildChartData = () => {
         // Legend data shows the validators, their name, and their color on the right
@@ -84,7 +89,9 @@ const TopValidators = () => {
             trigger: 'item',
             formatter: ({ data, percent }) => {
               const { name, value, uptime } = data;
-              return `${name}<br />Voting Power: ${numberFormat(value)} (${percent}%)<br />Uptime: ${uptime}%`;
+              return `${name}<br />Voting Power: ${numberFormat(
+                value
+              )} (${percent}%)<br />Uptime: ${uptime}%`;
             },
           },
           // The legend/key on the right side showing color/name
@@ -124,7 +131,19 @@ const TopValidators = () => {
       // Update the chart with the data
       chart && chart.setOption(chartData);
     }
-  }, [setChart, chart, getTopValidators, topValidators, initialLoad, topCount, sizeSm, sizeMd, sizeLg, theme, totalTopValidators]);
+  }, [
+    setChart,
+    chart,
+    getTopValidators,
+    topValidators,
+    initialLoad,
+    topCount,
+    sizeSm,
+    sizeMd,
+    sizeLg,
+    theme,
+    totalTopValidators,
+  ]);
 
   return (
     <Content

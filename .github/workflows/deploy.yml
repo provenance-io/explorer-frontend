@@ -22,6 +22,11 @@ jobs:
         env:
           CI: true
 
+      - name: Run Tests
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run test:all
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:

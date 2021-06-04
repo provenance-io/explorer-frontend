@@ -50,7 +50,13 @@ const Toggle = ({ optionA, optionB, active, special }) => {
 
   const { title: titleA, icon: iconA, iconColor: iconColorA, action: actionA } = optionA;
   const { title: titleB, icon: iconB, iconColor: iconColorB, action: actionB } = optionB;
-  const { title: titleSpecial, icon: iconSpecial, iconColor: iconColorSpecial, action: actionSpecial, count } = special;
+  const {
+    title: titleSpecial,
+    icon: iconSpecial,
+    iconColor: iconColorSpecial,
+    action: actionSpecial,
+    count,
+  } = special;
 
   const toggle = () => {
     // Secret toggle, if clicked enough times
@@ -75,7 +81,7 @@ const Toggle = ({ optionA, optionB, active, special }) => {
   };
 
   return (
-    <ToggleContainer onClick={toggle}>
+    <ToggleContainer data-testid="theme-switcher" onClick={toggle}>
       <ToggleNotch active={isOn} />
       {specialActive ? (
         <OptionSpecialContainer title={titleSpecial}>
@@ -83,8 +89,12 @@ const Toggle = ({ optionA, optionB, active, special }) => {
         </OptionSpecialContainer>
       ) : (
         <>
-          <OptionAContainer title={titleA}>{iconA && <Sprite icon={iconA} color={iconColorA} />}</OptionAContainer>
-          <OptionBContainer title={titleB}>{iconB && <Sprite icon={iconB} color={iconColorB} />}</OptionBContainer>
+          <OptionAContainer title={titleA}>
+            {iconA && <Sprite icon={iconA} color={iconColorA} />}
+          </OptionAContainer>
+          <OptionBContainer title={titleB}>
+            {iconB && <Sprite icon={iconB} color={iconColorB} />}
+          </OptionBContainer>
         </>
       )}
     </ToggleContainer>
