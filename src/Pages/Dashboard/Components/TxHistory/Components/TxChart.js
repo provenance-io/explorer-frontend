@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import echarts from 'echarts';
@@ -35,10 +35,7 @@ const TxChart = ({ txHistoryGran }) => {
         const xAxisData = txHistory.map(({ date }) =>
           format(parseISO(date, "yyyy-MM-dd't'HH:mm:ss"), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm')
         );
-        const seriesData = txHistory.map(({ numberTxs, date }) => ({
-          value: numberTxs,
-          name: date,
-        }));
+        const seriesData = txHistory.map(({ numberTxs, date }) => ({ value: numberTxs, name: date }));
 
         return {
           xAxis: {
@@ -92,11 +89,7 @@ const TxChart = ({ txHistoryGran }) => {
     }
   }, [setChart, chart, txHistory, granIsDay, isSmall, isLg, theme, txHistoryCount]);
 
-  return txHistoryCount > 0 ? (
-    <StyledChart ref={chartElementRef} />
-  ) : (
-    <StyledMessage>No transactions available</StyledMessage>
-  );
+  return txHistoryCount > 0 ? <StyledChart ref={chartElementRef} /> : <StyledMessage>No transactions available</StyledMessage>;
 };
 
 TxChart.propTypes = {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { useParams } from 'react-router-dom';
@@ -110,9 +110,7 @@ const AccountTxs = () => {
 
   return (
     <TxContainer>
-      {!txTypesLoading && txTypesExist && (
-        <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />
-      )}
+      {!txTypesLoading && txTypesExist && <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />}
       <Table
         tableHeaders={tableHeaders}
         tableData={tableData}

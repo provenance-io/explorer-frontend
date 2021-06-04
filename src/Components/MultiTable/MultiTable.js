@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -51,9 +51,7 @@ const MultiTable = ({ className, children, active, setActive }) => {
 
   // Render each of the tables requested
   const renderTables = () =>
-    children.map((childTable, index) =>
-      index === active ? <TableChild key={index}>{childTable}</TableChild> : null
-    );
+    children.map((childTable, index) => (index === active ? <TableChild key={index}>{childTable}</TableChild> : null));
 
   const renderLabels = () =>
     tableLabels.map((label, index) => (

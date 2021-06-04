@@ -1,14 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import {
-  Section,
-  Content,
-  Wrapper,
-  Sprite,
-  PopupNote,
-  Loading as BaseLoading,
-  Button as BaseButton,
-} from 'Components';
+import { Section, Content, Wrapper, Sprite, PopupNote, Loading as BaseLoading, Button as BaseButton } from 'Components';
 import { useFaucet } from 'redux/hooks';
 import { bech32 } from 'bech32';
 import { breakpoints, isProd } from 'consts';
@@ -177,8 +169,7 @@ const Faucet = () => {
 
   const interperetServerResponse = () => {
     // No response yet/default value
-    if (faucetRequestStatus === 'success')
-      return <SuccessMsg>Successfully added nhash to address!</SuccessMsg>;
+    if (faucetRequestStatus === 'success') return <SuccessMsg>Successfully added nhash to address!</SuccessMsg>;
     // Look at faucetRequestResponse and determine what to tell the user
     if (faucetRequestStatus === 'failure') return 'Server error, try again later.';
     return '';
@@ -213,8 +204,7 @@ const Faucet = () => {
     // Test - check for any spaces
     if (address.includes(' ')) return 'Address cannot contain spaces';
     // Test - check for any special characters
-    if (/[~`!#$%^&*+=\-[\]\\';,/{}|\\":<>?]/g.test(address))
-      return 'Address cannot contain special characters';
+    if (/[~`!#$%^&*+=\-[\]\\';,/{}|\\":<>?]/g.test(address)) return 'Address cannot contain special characters';
     // Test the address to make sure it's a valid bech32 address within our test network
     try {
       // Test - Is address Bech32
@@ -281,9 +271,7 @@ const Faucet = () => {
                     onMouseLeave={() => setShowPopup(false)}
                   />
                   <PopupNote show={showPopup} position="left" minWidth="220px">
-                    <PopupNoteLine>
-                      Each request disburses 10nhash, any account can only get max of 10,000nhash.
-                    </PopupNoteLine>
+                    <PopupNoteLine>Each request disburses 10nhash, any account can only get max of 10,000nhash.</PopupNoteLine>
                     <PopupNoteLine>Note: This is for Testnet Only.</PopupNoteLine>
                   </PopupNote>
                 </InfoIconContainer>

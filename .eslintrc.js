@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['eslint:recommended', 'react-app', 'prettier'],
+  extends: ['eslint:recommended', 'react-app', 'prettier', 'prettier/react'],
   parser: 'babel-eslint',
   rules: {
     'arrow-body-style': ['warn', 'as-needed'],
@@ -19,10 +19,9 @@ module.exports = {
     'react/no-unused-prop-types': 'warn',
     'react/prefer-stateless-function': 'warn',
     'react/prop-types': 'warn',
-    'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'warn',
   },
-  plugins: ['react-hooks'],
+  plugins: ['prettier', 'react-hooks'],
   env: {
     browser: true,
     jest: true,

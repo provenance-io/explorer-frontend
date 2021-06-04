@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useAccounts } from 'redux/hooks';
@@ -31,12 +31,7 @@ const AccountSpotlight = () => {
     getAccountInfo(addressId);
   }, [getAccountInfo, addressId]);
 
-  const {
-    accountType = '--',
-    publicKeys = {},
-    accountNumber = '--',
-    sequence = '--',
-  } = accountInfo;
+  const { accountType = '--', publicKeys = {}, accountNumber = '--', sequence = '--' } = accountInfo;
   const publicKey = publicKeys.signers ? publicKeys.signers[0] : '';
 
   return (

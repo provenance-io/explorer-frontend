@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Content, Summary, Loading } from 'Components';
 import { capitalize, numberFormat } from 'utils';
@@ -12,16 +12,10 @@ const AssetInformation = () => {
     getAssetInfo(assetId);
   }, [assetId, getAssetInfo]);
 
-  const { marker, holdingAccount, supply, mintable, holderCount, txnCount, markerStatus } =
-    assetInfo;
+  const { marker, holdingAccount, supply, mintable, holderCount, txnCount, markerStatus } = assetInfo;
   const summaryData = [
     { title: 'Asset Name', value: marker },
-    {
-      title: 'Holding Account',
-      value: holdingAccount,
-      link: `/accounts/${holdingAccount}`,
-      copy: holdingAccount,
-    },
+    { title: 'Holding Account', value: holdingAccount, link: `/accounts/${holdingAccount}`, copy: holdingAccount },
     { title: 'Supply', value: numberFormat(supply, 3, { shorthand: true }) },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Holders', value: holderCount },
@@ -29,11 +23,7 @@ const AssetInformation = () => {
     { title: 'Marker Status', value: capitalize(markerStatus) },
   ];
 
-  return (
-    <Content title="Asset Information">
-      {assetInfoLoading ? <Loading /> : <Summary data={summaryData} />}
-    </Content>
-  );
+  return <Content title="Asset Information">{assetInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
 };
 
 export default AssetInformation;

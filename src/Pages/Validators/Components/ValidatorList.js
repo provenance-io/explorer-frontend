@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
