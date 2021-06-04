@@ -5,6 +5,7 @@ import {
   GET_ASSET_TRANSFER_TRANSACTIONS,
   GET_ASSET_HOLDERS,
   GET_ASSETS_LIST,
+  GET_ASSET_METADATA,
 } from '../actions/assetsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -27,6 +28,9 @@ export const initialState = {
   // Assets List
   assets: [],
   assetsLoading: false,
+  // Asset Metadata
+  assetMetadata: [],
+  assetMetadataLoading: false,
 };
 
 const reducer = handleActions(
@@ -154,6 +158,28 @@ const reducer = handleActions(
       return {
         ...state,
         assetInfoLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ASSET_METADATA
+    -------------------*/
+    [`${GET_ASSET_METADATA}_${REQUEST}`](state) {
+      return {
+        ...state,
+        assetMetadataLoading: true,
+      };
+    },
+    [`${GET_ASSET_METADATA}_${SUCCESS}`](state, { payload: assetMetadata }) {
+      return {
+        ...state,
+        assetMetadata,
+        assetMetadataLoading: false,
+      };
+    },
+    [`${GET_ASSET_METADATA}_${FAILURE}`](state) {
+      return {
+        ...state,
+        assetMetadataLoading: false,
       };
     },
   },

@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { WalletContextProvider } from '@provenanceio/wallet-lib';
-import { useApp } from 'redux/hooks';
+import { useApp, useAssets } from 'redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
 import { GlobalStyle, Themes } from 'theme';
 import { isProd } from 'consts';
-import { Block, Blocks, Dashboard, NoMatch404, Tx, Txs, Validator, Validators, Accounts, Assets, Asset, Faucet } from './Pages';
+import { isEmpty } from 'utils';
+import {
+  Block,
+  Blocks,
+  Dashboard,
+  NoMatch404,
+  Tx,
+  Txs,
+  Validator,
+  Validators,
+  Accounts,
+  Assets,
+  Asset,
+  Faucet,
+} from 'Pages';
 
 const App = () => {
   const { theme, walletUrl } = useApp();
+  const { assetMetadata, assetMetadataLoading, getAssetMetadata } = useAssets();
   const activeTheme = Themes[theme] || Themes.default;
+
+  useEffect(() => {
+    if (isEmpty(assetMetadata) && !assetMetadataLoading) {
+      getAssetMetadata();
+    }
+  }, []);
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
