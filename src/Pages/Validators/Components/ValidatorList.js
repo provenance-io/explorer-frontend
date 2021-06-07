@@ -21,6 +21,7 @@ const ValidatorList = () => {
   const [myValTableData, setMyValTableData] = useState([]);
   const {
     allValidators,
+    allValidatorsLoading,
     validators: tableData,
     validatorsPages: tablePages,
     validatorsRecentLoading: tableLoading,
@@ -137,7 +138,8 @@ const ValidatorList = () => {
               accountDelegationsLoading ||
               accountRedelegationsLoading ||
               accountUnbondingLoading ||
-              accountRewardsLoading
+              accountRewardsLoading ||
+              allValidatorsLoading
             }
             ManageStakingBtn={ManageStakingBtn}
             tableData={myValTableData}

@@ -31,7 +31,7 @@ const App = () => {
     if (isEmpty(assetMetadata) && !assetMetadataLoading) {
       getAssetMetadata();
     }
-  }, []);
+  }, [assetMetadata, assetMetadataLoading, getAssetMetadata]);
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
