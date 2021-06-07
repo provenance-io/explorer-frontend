@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const PaginatorListItem = styled.li.attrs(({ className = 'paginator-list-item' }) => ({
   className,
 }))`
-  width: auto;
+  width: ${({ secondary }) => (secondary ? '19px' : '34px')};
   height: ${({ secondary }) => (secondary ? '19px' : '34px')};
   display: flex;
   align-items: center;
@@ -17,8 +17,7 @@ const PaginatorListItem = styled.li.attrs(({ className = 'paginator-list-item' }
     color: ${({ theme }) => theme.FONT_PRIMARY};
   }
   + li {
-    margin-left: 3.5px;
-    margin-right: 3.5px;
+    margin: 0 3.5px;
   }
 `;
 
