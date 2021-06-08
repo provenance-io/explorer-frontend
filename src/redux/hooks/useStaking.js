@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Big from 'big.js';
 import { useWallet, WINDOW_MESSAGES } from '@provenanceio/wallet-lib';
 import useEvent from 'react-tiny-hooks/use-event';
 import useToggle from 'react-tiny-hooks/use-toggle';
@@ -120,9 +119,7 @@ const useStaking = () => {
 
   const handleStaking = (type, amt, validatorDstAddress) => {
     if (!isLoggedIn) return;
-    // const amount = { denom: 'nhash', amount: currencyFormat(amt, 'hash', 'nhash') };
-    const amount = { denom: 'nhash', amount: new Big(amt).times(new Big(10).pow(9)).toFixed() };
-    return console.log(amount);
+    const amount = { denom: 'nhash', amount: currencyFormat(amt, 'hash') };
     const msgType = {
       [STAKING_TYPES.DELEGATE]: 'MsgDelegate',
       [STAKING_TYPES.UNDELEGATE]: 'MsgUndelegate',

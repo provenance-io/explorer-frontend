@@ -9,7 +9,7 @@ import OgInput from 'Components/Input';
 import Modal from 'Components/Modal';
 import SelectFolders from 'Components/SelectFolders';
 import Sprite from 'Components/Sprite';
-import { currencyFormat, formatNhash, maxLength, numberFormat } from 'utils';
+import { currencyFormat, maxLength, numberFormat } from 'utils';
 import { STAKING_TYPES } from 'consts';
 import { Loading } from 'Components';
 

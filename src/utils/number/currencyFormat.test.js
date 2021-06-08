@@ -1,3 +1,4 @@
+import { setCookie } from 'utils/cookie';
 import { currencyFormat } from './currencyFormat';
 
 // assetMetadata cookie
@@ -30,5 +31,10 @@ describe('util: currencyFormat', () => {
 
   it('should format figure to cfigure', () => {
     expect(currencyFormat(1, 'figure', 'cfigure')).toBe('100');
+  });
+
+  it('should fail gracefully', () => {
+    setCookie('assetMetadata', '');
+    expect(currencyFormat(1, 'nhash', 'hash')).toBe(1);
   });
 });
