@@ -5,6 +5,8 @@
 ### Improvements
 
 - Add Max Change Rate line item on validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
+- Pull account balances from new balances endpoint #92
+- Add support for metadata object, converts base denom to display denom #37
 
 ### Bug Fixes
 

@@ -9,7 +9,7 @@ import OgInput from 'Components/Input';
 import Modal from 'Components/Modal';
 import SelectFolders from 'Components/SelectFolders';
 import Sprite from 'Components/Sprite';
-import { maxLength, numberFormat } from 'utils';
+import { currencyFormat, formatNhash, maxLength, numberFormat } from 'utils';
 import { STAKING_TYPES } from 'consts';
 import { Loading } from 'Components';
 
@@ -145,16 +145,13 @@ const ManageStakingModal = ({
   const [stakeBtnDisabled, setStakeBtnDisabled] = useState(true);
   const [stakingType, setStakingType] = useState();
   const [redelegateAddress, setRedelegateAddress] = useState(null);
-  const { accountInfo } = useAccounts();
-  const {
-    allValidators,
-    getValidatorSpotlight,
-    validatorSpotlight,
-    validatorSpotlightLoading,
-  } = useValidators();
+  const { accountAssets } = useAccounts();
+  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } =
+    useValidators();
 
-  const hashBalance = accountInfo?.balances?.find((b) => b.denom === 'hash');
-  const { amount: hashAmount = 0 } = hashBalance || {};
+  const hashBalance = accountAssets?.find((b) => b.denom === 'nhash');
+  const hashAmount = currencyFormat(hashBalance?.amount, hashBalance?.denom);
+  const decimal = 7;
 
   useEffect(() => {
     if (isDelegate) {
@@ -184,7 +181,7 @@ const ManageStakingModal = ({
 
   const { description, image, moniker, url } = validatorSpotlight;
   const { commission: sCommission, amount } = validator;
-  const delegation = amount?.amount;
+  const delegation = currencyFormat(amount?.amount, amount?.denom);
   const commission = sCommission * 100;
 
   const handleClick = (type, e) => {
@@ -219,7 +216,7 @@ const ManageStakingModal = ({
     validateAmount(amount, delegation);
   };
 
-  const handleDelegationAmountChange = async () => {
+  const handleDelegationAmountChange = () => {
     const amount = inputRef.current.value;
     validateAmount(amount, hashAmount);
   };
@@ -265,7 +262,7 @@ const ManageStakingModal = ({
                 )}
                 <PairInline>
                   <PairTitle>My Delegation</PairTitle>
-                  <PairValue>{delegation} HASH</PairValue>
+                  <PairValue>{numberFormat(delegation, decimal)} HASH</PairValue>
                 </PairInline>
               </Info>
               <ButtonGroup>
@@ -300,12 +297,12 @@ const ManageStakingModal = ({
 
               <Pair>
                 <PairTitle>My Delegation</PairTitle>
-                <PairValue>{delegation} HASH</PairValue>
+                <PairValue>{numberFormat(delegation, decimal)} HASH</PairValue>
               </Pair>
 
               <Pair>
                 <PairTitle>Available Balance</PairTitle>
-                <PairValue>{hashAmount} HASH</PairValue>
+                <PairValue>{numberFormat(hashAmount, decimal)} HASH</PairValue>
               </Pair>
 
               <Pair>
@@ -352,7 +349,9 @@ const ManageStakingModal = ({
               </Disclaimer>
 
               <Pair>
-                <PairTitle>Available for undelegation: {delegation} HASH </PairTitle>
+                <PairTitle>
+                  Available for undelegation: {numberFormat(delegation, decimal)} HASH{' '}
+                </PairTitle>
                 <PairValue>
                   <Input
                     getInputRef={inputRef}
@@ -397,7 +396,9 @@ const ManageStakingModal = ({
 
               {redelegateAddress && (
                 <Pair>
-                  <PairTitle>Available for redelegation: {delegation} HASH </PairTitle>
+                  <PairTitle>
+                    Available for redelegation: {numberFormat(delegation, decimal)} HASH{' '}
+                  </PairTitle>
                   <PairValue>
                     <Input
                       getInputRef={inputRef}

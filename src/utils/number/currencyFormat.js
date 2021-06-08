@@ -1,15 +1,35 @@
 import Big from 'big.js';
+import { getCookie } from 'utils';
 
-export const currencyFormat = (value = 0, initialDenom, finalDenom) => {
-  if (isNaN(value)) return value;
-  // nhash to hash
-  // 1 nhash = 1 x 10^-9 hash ===> 1,000,000 nhash = .1 hash | 12,345,678,987,654,320 nhash = 12,345,678,.987654320 hash
-  if (initialDenom === 'nhash' && finalDenom === 'hash') return new Big(value).times(new Big(10).pow(-9)).toFixed();
+/**
+ * Convert a value from one denom to another based on assetMetadata
+ * @param {number} value the number that you want to convert
+ * @param {string} initialDenom the denom that the value prop is currently in
+ * @returns {number}
+ */
 
-  // hash to nhash
-  // 1 hash = 1 x 10^9 nhash ===> .1 hash = 1,000,000 nhash | 12,345,678 hash = 12,345,678,000,000,000 nhash
-  if (initialDenom === 'hash' && finalDenom === 'nhash') return new Big(value).times(new Big(10).pow(9)).toFixed();
+export const currencyFormat = (value = 0, initialDenom) => {
+  // Get the metadata from the cookie set by assetReducer
+  const assetMetadata = JSON.parse(getCookie('assetMetadata', true) || '');
 
-  // Initial and final denoms don't match to known conversion, just return the value
-  return value;
+  // Find the individual denom metadata from the list, if it exists
+  const denomInfo = assetMetadata?.find(
+    (md) => md.base === initialDenom || md.display === initialDenom
+  );
+
+  // If the value isn't a number,
+  // the initial and final denoms don't match a known conversion or
+  // the initial and final denoms are the same string,
+  // just return the value
+  if (isNaN(value) || !denomInfo) return value;
+
+  // pull the needed denom info
+  const { base, display, denomUnits } = denomInfo;
+  // find the exponent from the denom units
+  let { exponent } = denomUnits.find(({ denom }) => denom === display);
+  // If converting to the base denom invert the exponent
+  exponent = initialDenom === base ? exponent * -1 : exponent;
+
+  // return value * 10^exponent
+  return new Big(value).times(new Big(10).pow(exponent)).toFixed();
 };

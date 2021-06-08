@@ -1,10 +1,12 @@
 import { handleActions } from 'redux-actions';
+import { setCookie, getCookie } from 'utils';
 import {
   GET_ASSET_INFO,
   GET_ASSET_ADMIN_TRANSACTIONS,
   GET_ASSET_TRANSFER_TRANSACTIONS,
   GET_ASSET_HOLDERS,
   GET_ASSETS_LIST,
+  GET_ASSET_METADATA,
 } from '../actions/assetsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -27,6 +29,9 @@ export const initialState = {
   // Assets List
   assets: [],
   assetsLoading: false,
+  // Asset Metadata
+  assetMetadata: JSON.parse(getCookie('assetMetadata', true)) || [],
+  assetMetadataLoading: false,
 };
 
 const reducer = handleActions(
@@ -154,6 +159,30 @@ const reducer = handleActions(
       return {
         ...state,
         assetInfoLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ASSET_METADATA
+    -------------------*/
+    [`${GET_ASSET_METADATA}_${REQUEST}`](state) {
+      return {
+        ...state,
+        assetMetadataLoading: true,
+      };
+    },
+    [`${GET_ASSET_METADATA}_${SUCCESS}`](state, { payload: assetMetadata }) {
+      setCookie('assetMetadata', JSON.stringify(assetMetadata), 5);
+
+      return {
+        ...state,
+        assetMetadata,
+        assetMetadataLoading: false,
+      };
+    },
+    [`${GET_ASSET_METADATA}_${FAILURE}`](state) {
+      return {
+        ...state,
+        assetMetadataLoading: false,
       };
     },
   },

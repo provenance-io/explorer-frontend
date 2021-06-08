@@ -7,6 +7,7 @@ import useEvent from 'react-tiny-hooks/use-event';
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useApp } from 'redux/hooks';
 import { STAKING_TYPES } from 'consts';
+import { currencyFormat } from 'utils';
 import OgButton from 'Components/Button';
 import useAccounts from './useAccounts';
 
@@ -40,6 +41,7 @@ const useStaking = () => {
     accountInfo,
     getAccountDelegations,
     getAccountInfo,
+    getAccountAssets,
     getAccountRedelegations,
     getAccountRewards,
     getAccountUnbonding,
@@ -67,8 +69,9 @@ const useStaking = () => {
   useEffect(() => {
     if (delegatorAddress && delegatorAddress !== accountInfo.address) {
       getAccountInfo(delegatorAddress);
+      getAccountAssets(delegatorAddress);
     }
-  }, [delegatorAddress, getAccountInfo, accountInfo.address]);
+  }, [delegatorAddress, getAccountAssets, getAccountInfo, accountInfo.address]);
 
   useEffect(() => {
     (async () => {
@@ -117,7 +120,9 @@ const useStaking = () => {
 
   const handleStaking = (type, amt, validatorDstAddress) => {
     if (!isLoggedIn) return;
+    // const amount = { denom: 'nhash', amount: currencyFormat(amt, 'hash', 'nhash') };
     const amount = { denom: 'nhash', amount: new Big(amt).times(new Big(10).pow(9)).toFixed() };
+    return console.log(amount);
     const msgType = {
       [STAKING_TYPES.DELEGATE]: 'MsgDelegate',
       [STAKING_TYPES.UNDELEGATE]: 'MsgUndelegate',
