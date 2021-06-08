@@ -8,6 +8,9 @@
 - Pull account balances from new balances endpoint #92
 - Add support for metadata object, converts base denom to display denom #37
 - Add name field to the Address Page #61
+- Updated API URLs to match service updates #93
+- Added token counts to the asset info #91
+- Added table column to show if a managing account allows governance #91
 
 ### Bug Fixes
 

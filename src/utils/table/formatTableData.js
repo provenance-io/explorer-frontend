@@ -291,6 +291,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Boolean to string
+        case 'allowGovControl': // fallthrough
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };
           break;
