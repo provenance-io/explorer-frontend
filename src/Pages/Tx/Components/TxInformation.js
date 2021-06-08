@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
@@ -49,6 +49,7 @@ const RetryJSON = styled.div`
 
 const TxInformation = () => {
   const [showFullJSON, setShowFullJSON] = useState(false);
+  const [showErrorLogPopup, setShowErrorLogPopup] = useState(false);
   const { getTxInfo, txInfo, txInfoLoading, txFullJSONLoading, txFullJSON, getTxFullJSON } =
     useTxs();
   const { txHash } = useParams();
@@ -78,7 +79,7 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { fee, height, memo, signers, status, time } = txInfo;
+    const { errorCode, errorLog, fee, height, memo, signers, status, time } = txInfo;
     const { amount: feeAmount, denom: feeDenom } = fee;
     const utcTime = getUTCTime(time);
     // We don't want to round the fees, they are already rounded when we receive them
@@ -87,6 +88,20 @@ const TxInformation = () => {
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
+
+    const errorLogPopupNote = {
+      visibility: { visible: showErrorLogPopup, setVisible: setShowErrorLogPopup },
+      icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+      method: ['click', 'hover'],
+      fontColor: 'FONT_WHITE',
+      data: [
+        {
+          title: 'Error Log:',
+          value: errorLog,
+        },
+      ],
+    };
+
     const summaryData = [
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
@@ -100,10 +115,11 @@ const TxInformation = () => {
         copy: signer,
       },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
-    ];
+      errorCode !== 0 && { title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote },
+    ].filter((s) => s);
 
     return (
-      <>
+      <Fragment>
         <Summary data={summaryData} />
         <FullTxInfoContainer onClick={toggleShowFullJSON}>
           {showFullJSON ? 'Hide' : 'Show'} full transaction JSON
@@ -124,7 +140,7 @@ const TxInformation = () => {
               ))}
           </FullJSONWrapper>
         )}
-      </>
+      </Fragment>
     );
   };
 

@@ -11,6 +11,7 @@
 - Updated API URLs to match service updates #93
 - Added token counts to the asset info #91
 - Added table column to show if a managing account allows governance #91
+- Show error code and log on failed tx #70
 
 ### Bug Fixes
 
