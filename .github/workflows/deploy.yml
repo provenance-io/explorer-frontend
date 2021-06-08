@@ -1,9 +1,6 @@
 name: build
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   build:
@@ -42,7 +39,7 @@ jobs:
           target: runner
           file: Dockerfile-prod
           context: .
-          push: true
+          push: false
           tags: provenanceio/explorer-frontend:latest
 
       - name: Build and push mainnet
@@ -51,7 +48,7 @@ jobs:
           target: runner
           file: Dockerfile-prod
           context: .
-          push: true
+          push: false
           tags: provenanceio/explorer-frontend:production
           build-args: REACT_APP_ENV=production
 
@@ -60,5 +57,5 @@ jobs:
         with:
           file: Dockerfile
           context: .
-          push: true
+          push: false
           tags: provenanceio/explorer-frontend-generic:latest
