@@ -31,7 +31,13 @@ const AccountSpotlight = () => {
     getAccountInfo(addressId);
   }, [getAccountInfo, addressId]);
 
-  const { accountType = '--', publicKeys = {}, accountNumber = '--', sequence = '--' } = accountInfo;
+  const {
+    accountName = '--',
+    accountNumber = '--',
+    accountType = '--',
+    publicKeys = {},
+    sequence = '--',
+  } = accountInfo;
   const publicKey = publicKeys.signers ? publicKeys.signers[0] : '';
 
   return (
@@ -55,6 +61,10 @@ const AccountSpotlight = () => {
               <Row>
                 <Title>Account Type:</Title>
                 <Value>{accountType}</Value>
+              </Row>
+              <Row>
+                <Title>Account Name:</Title>
+                <Value>{accountName || '--'}</Value>
               </Row>
               <Row>
                 <Title>Account Number:</Title>
