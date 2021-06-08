@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { breakpoints } from 'consts';
 import PopupNote from '../PopupNote';
 import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
@@ -12,6 +13,10 @@ const SummaryRow = styled.div`
   margin: 10px 0;
   word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
   align-items: flex-start;
+
+  @media ${breakpoints.up('md')} {
+    flex-basis: 50%;
+  }
 `;
 const SummaryTitle = styled.div`
   min-width: ${({ size }) => (size ? size : '200px')};
@@ -74,7 +79,11 @@ const buildPopupNote = (popupData) => {
       <PopupNote show={visible} position={position}>
         {data.map((rowData) => buildPopupRow(rowData))}
       </PopupNote>
-      <Sprite icon={icon.name} size={icon.size} onClick={showOnClick ? () => setVisible(!visible) : null} />
+      <Sprite
+        icon={icon.name}
+        size={icon.size}
+        onClick={showOnClick ? () => setVisible(!visible) : null}
+      />
     </NoteContainer>
   );
 };

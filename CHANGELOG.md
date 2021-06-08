@@ -12,6 +12,8 @@
 - Added token counts to the asset info #91
 - Added table column to show if a managing account allows governance #91
 - Show error code and log on failed tx #70
+- Add markerType to the asset list and detail #112
+- Make Summary component two columns on screens larger than MD breakpoint #112
 
 ### Bug Fixes
 
