@@ -12,18 +12,39 @@ const AssetInformation = () => {
     getAssetInfo(assetId);
   }, [assetId, getAssetInfo]);
 
-  const { marker, holdingAccount, supply, mintable, holderCount, txnCount, markerStatus } = assetInfo;
+  const {
+    marker,
+    holdingAccount,
+    supply,
+    mintable,
+    holderCount,
+    txnCount,
+    markerStatus,
+    tokens: { fungibleCount, nonFungibleCount },
+  } = assetInfo;
+
   const summaryData = [
     { title: 'Asset Name', value: marker },
-    { title: 'Holding Account', value: holdingAccount, link: `/accounts/${holdingAccount}`, copy: holdingAccount },
+    {
+      title: 'Holding Account',
+      value: holdingAccount,
+      link: `/accounts/${holdingAccount}`,
+      copy: holdingAccount,
+    },
     { title: 'Supply', value: numberFormat(supply, 3, { shorthand: true }) },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Holders', value: holderCount },
     { title: 'Transactions', value: numberFormat(txnCount) },
     { title: 'Marker Status', value: capitalize(markerStatus) },
+    { title: 'Fungible Tokens', value: numberFormat(fungibleCount) },
+    { title: 'Non-Fungible Tokens', value: numberFormat(nonFungibleCount) },
   ];
 
-  return <Content title="Asset Information">{assetInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
+  return (
+    <Content title="Asset Information">
+      {assetInfoLoading ? <Loading /> : <Summary data={summaryData} />}
+    </Content>
+  );
 };
 
 export default AssetInformation;

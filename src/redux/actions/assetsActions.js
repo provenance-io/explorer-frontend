@@ -11,7 +11,7 @@ export const GET_ASSET_METADATA = 'GET_ASSET_METADATA';
 
 // API Calls
 export const getAssetInfo = (id) => async (dispatch) =>
-  ajaxGet(GET_ASSET_INFO, dispatch, `${ASSET_DETAIL_URL}/${id}/detail`);
+  ajaxGet(GET_ASSET_INFO, dispatch, `${ASSET_DETAIL_URL}/detail/${id}`);
 
 export const getAssetsList =
   ({ page = 1, count = 10 }) =>
@@ -24,7 +24,7 @@ export const getAssetHolders =
     ajaxGet(
       GET_ASSET_HOLDERS,
       dispatch,
-      `${ASSET_DETAIL_URL}/${assetId}/holders?${qs.stringify({ page, count })}`
+      `${ASSET_DETAIL_URL}/holders?${qs.stringify({ id: assetId, page, count })}`
     );
 
 export const getAssetAdminTransactions =
