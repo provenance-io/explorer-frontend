@@ -25,6 +25,7 @@ jobs:
       - name: Run Tests
         uses: cypress-io/github-action@v2
         with:
+          install: false
           command: npm run test:all
 
       - name: Login to DockerHub
