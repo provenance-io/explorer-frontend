@@ -20,7 +20,8 @@ const AssetInformation = () => {
     holderCount,
     txnCount,
     markerStatus,
-    tokens: { fungibleCount, nonFungibleCount },
+    markerType,
+    tokens: { fungibleCount, nonFungibleCount } = {},
   } = assetInfo;
 
   const summaryData = [
@@ -36,6 +37,7 @@ const AssetInformation = () => {
     { title: 'Holders', value: holderCount },
     { title: 'Transactions', value: numberFormat(txnCount) },
     { title: 'Marker Status', value: capitalize(markerStatus) },
+    { title: 'Marker Type', value: capitalize(markerType) },
     { title: 'Fungible Tokens', value: numberFormat(fungibleCount) },
     { title: 'Non-Fungible Tokens', value: numberFormat(nonFungibleCount) },
   ];

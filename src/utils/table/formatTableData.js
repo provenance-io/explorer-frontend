@@ -315,6 +315,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Server value capitalized
+        case 'markerType': // fallthrough
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue) };
           break;

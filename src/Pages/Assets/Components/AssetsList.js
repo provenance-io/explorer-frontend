@@ -4,7 +4,12 @@ import { useAssets } from 'redux/hooks';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const { getAssetsList: getTableData, assets: tableData, assetsLoading: tableLoading, assetsPages: tablePages } = useAssets();
+  const {
+    getAssetsList: getTableData,
+    assets: tableData,
+    assetsLoading: tableLoading,
+    assetsPages: tablePages,
+  } = useAssets();
   // How many results to display
   const tableCount = 10;
 
@@ -19,7 +24,7 @@ const AssetsList = () => {
     { displayName: 'Name', dataName: 'marker' },
     { displayName: 'Total Supply', dataName: 'supply' },
     { displayName: 'Holding Account', dataName: 'holdingAccount' },
-    { displayName: 'Status', dataName: 'status' },
+    { displayName: 'Marker Type', dataName: 'markerType' },
     { displayName: 'Mintable', dataName: 'mintable' },
     { displayName: 'Last Tx', dataName: 'lastTxTimestamp' },
   ];
