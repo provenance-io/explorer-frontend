@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { maxLength, getUTCTime, capitalize, numberFormat, formatNhash } from 'utils';
+import { maxLength, getUTCTime, capitalize, numberFormat, currencyFormat } from 'utils';
 import { Section, Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
@@ -49,7 +49,8 @@ const RetryJSON = styled.div`
 
 const TxInformation = () => {
   const [showFullJSON, setShowFullJSON] = useState(false);
-  const { getTxInfo, txInfo, txInfoLoading, txFullJSONLoading, txFullJSON, getTxFullJSON } = useTxs();
+  const { getTxInfo, txInfo, txInfoLoading, txFullJSONLoading, txFullJSON, getTxFullJSON } =
+    useTxs();
   const { txHash } = useParams();
 
   useEffect(() => {
@@ -80,7 +81,9 @@ const TxInformation = () => {
     const { fee, height, memo, signers, status, time } = txInfo;
     const { amount: feeAmount, denom: feeDenom } = fee;
     const utcTime = getUTCTime(time);
-    const feeValue = feeDenom === 'nhash' ? `${formatNhash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
+    // We don't want to round the fees, they are already rounded when we receive them
+    // 20 decimals is the max toLocaleString allows
+    const feeValue = `${numberFormat(currencyFormat(feeAmount, feeDenom), 20)} ${feeDenom}`;
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
@@ -90,14 +93,21 @@ const TxInformation = () => {
       { title: 'Timestamp', value: `${utcTime}+UTC` },
       { title: 'Fee', value: feeValue },
 
-      { title: 'Signer', value: maxLength(signer, 24, 10), link: `/accounts/${signer}`, copy: signer },
+      {
+        title: 'Signer',
+        value: maxLength(signer, 24, 10),
+        link: `/accounts/${signer}`,
+        copy: signer,
+      },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
     ];
 
     return (
       <>
         <Summary data={summaryData} />
-        <FullTxInfoContainer onClick={toggleShowFullJSON}>{showFullJSON ? 'Hide' : 'Show'} full transaction JSON</FullTxInfoContainer>
+        <FullTxInfoContainer onClick={toggleShowFullJSON}>
+          {showFullJSON ? 'Hide' : 'Show'} full transaction JSON
+        </FullTxInfoContainer>
         {showFullJSON && (
           <FullJSONWrapper>
             {txFullJSONLoading && <Loading />}
@@ -129,7 +139,12 @@ const TxInformation = () => {
       case 'vote': {
         const { proposalId, option, voter } = msgData;
         summaryData.push(
-          { title: 'Voter', value: maxLength(voter, 24, 10), copy: voter, link: `/accounts/${voter}` },
+          {
+            title: 'Voter',
+            value: maxLength(voter, 24, 10),
+            copy: voter,
+            link: `/accounts/${voter}`,
+          },
           { title: 'Proposal Id', value: capitalize(proposalId) },
           { title: 'Option', value: capitalize(option) }
         );
@@ -140,8 +155,18 @@ const TxInformation = () => {
         const { denom = '--', amount: totalAmount = '--' } = amount[0];
         summaryData.push(
           { title: 'Amount', value: `${numberFormat(totalAmount)} ${denom}` },
-          { title: 'From', value: maxLength(fromAddress, 24, 10), copy: fromAddress, link: `/accounts/${fromAddress}` },
-          { title: 'To', value: maxLength(toAddress, 24, 10), copy: toAddress, link: `/accounts/${toAddress}` }
+          {
+            title: 'From',
+            value: maxLength(fromAddress, 24, 10),
+            copy: fromAddress,
+            link: `/accounts/${fromAddress}`,
+          },
+          {
+            title: 'To',
+            value: maxLength(toAddress, 24, 10),
+            copy: toAddress,
+            link: `/accounts/${toAddress}`,
+          }
         );
         break;
       }
@@ -153,7 +178,12 @@ const TxInformation = () => {
         const { name = '', time = '' } = plan;
         const utcTime = time ? getUTCTime(time) : '--';
         summaryData.push(
-          { title: 'Proposer', value: maxLength(proposer, 24, 10), copy: proposer, link: `/accounts/${proposer}` },
+          {
+            title: 'Proposer',
+            value: maxLength(proposer, 24, 10),
+            copy: proposer,
+            link: `/accounts/${proposer}`,
+          },
           { title: 'Title', value: title },
           { title: 'Initial Deposit', value: `${numberFormat(amount)} ${denom}` },
           { title: 'Description', value: description },
@@ -172,16 +202,21 @@ const TxInformation = () => {
     return <Summary data={summaryData} />;
   };
 
-  const buildTxInformationSection = () => (infoExists ? buildTxInformationContent() : buildNoResults());
+  const buildTxInformationSection = () =>
+    infoExists ? buildTxInformationContent() : buildNoResults();
   const buildTxMessageSection = () => (infoExists ? buildTxMessageContent() : buildNoResults());
 
   return (
     <>
       <Section header>
-        <Content title="Transaction Information">{txInfoLoading ? <Loading /> : buildTxInformationSection()}</Content>
+        <Content title="Transaction Information">
+          {txInfoLoading ? <Loading /> : buildTxInformationSection()}
+        </Content>
       </Section>
       <Section>
-        <Content title="Transaction Message or Result">{txInfoLoading ? <Loading /> : buildTxMessageSection()}</Content>
+        <Content title="Transaction Message or Result">
+          {txInfoLoading ? <Loading /> : buildTxMessageSection()}
+        </Content>
       </Section>
     </>
   );

@@ -145,12 +145,20 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
-        case 'amount': // fallthrough
-        case 'fee': {
+        case 'amount': {
           const { amount = '--', denom = '--' } = serverValue || {};
           denom === 'nhash'
             ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          break;
+        }
+        case 'fee': {
+          const { amount = '--', denom = '--' } = serverValue || {};
+          finalObj[dataName] = {
+            // We don't want to round the fees, they are already rounded when we receive them
+            // 20 decimals is the max toLocaleString allows
+            value: `${numberFormat(currencyFormat(amount, denom), 20)} ${denom}`,
+          };
           break;
         }
         case 'reward': {

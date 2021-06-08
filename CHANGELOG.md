@@ -11,6 +11,7 @@
 ### Bug Fixes
 
 - Removed the empty popup from the validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
+- Stop rounding transaction fees throughout the app #62
 
 ## 1.2.2
 
