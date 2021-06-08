@@ -114,7 +114,7 @@ const SearchBar = () => {
         break;
       }
       case 'asset': {
-        history.push(`/assets/${searchTerms}`);
+        history.push(`/asset/${searchTerms}`);
         break;
       }
       default:
@@ -138,7 +138,12 @@ const SearchBar = () => {
         />
       </TextInputContainer>
       <SelectContainer>
-        <Select id="select" onChange={({ target }) => setSearchType(target.value)} label="" value={searchType}>
+        <Select
+          id="select"
+          onChange={({ target }) => setSearchType(target.value)}
+          label=""
+          value={searchType}
+        >
           <option value="block">Block</option>
           <option value="validator">Validator</option>
           <option value="tx">Tx</option>
