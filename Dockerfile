@@ -1,8 +1,5 @@
-FROM node:14.6.0
-
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . ./
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+FROM nginx:stable
+COPY ./build /usr/share/nginx/html/
+COPY ./nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
