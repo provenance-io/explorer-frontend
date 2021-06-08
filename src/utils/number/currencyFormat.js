@@ -10,7 +10,7 @@ import { getCookie } from 'utils';
 
 export const currencyFormat = (value = 0, initialDenom) => {
   // Get the metadata from the cookie set by assetReducer
-  const assetMetadata = JSON.parse(getCookie('assetMetadata', true) || '');
+  const assetMetadata = JSON.parse(getCookie('assetMetadata', true) || '[]');
 
   // Find the individual denom metadata from the list, if it exists
   const denomInfo = assetMetadata?.find(
