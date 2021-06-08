@@ -12,6 +12,7 @@
 
 - Removed the empty popup from the validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
 - Stop rounding transaction fees throughout the app #62
+- Fix the search bar url for asset search #78
 
 ## 1.2.2
 
