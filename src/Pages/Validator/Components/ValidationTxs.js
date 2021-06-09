@@ -23,9 +23,6 @@ const ValidationTxs = () => {
   const tableHeaders = [
     { displayName: 'TxHash', dataName: 'txHash' },
     { displayName: 'Block', dataName: 'block' },
-    { displayName: 'Moniker', dataName: 'monikerMsg' },
-    { displayName: 'Operator', dataName: 'validatorAddressMsg' },
-    { displayName: 'Self Bonded', dataName: 'selfBonded' },
     { displayName: 'TxType', dataName: 'txType' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signers' },

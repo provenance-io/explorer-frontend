@@ -23,9 +23,9 @@ const ValidatorDelegationTxs = () => {
   const tableHeaders = [
     { displayName: 'TxHash', dataName: 'txHash' },
     { displayName: 'Block', dataName: 'block' },
-    { displayName: 'From', dataName: 'delegatorAddressMsg' },
+    { displayName: 'From', dataName: 'delegationFrom' },
     { displayName: 'Amount', dataName: 'msgAmount' },
-    { displayName: 'To', dataName: 'validatorAddressMsg' },
+    { displayName: 'To', dataName: 'delegationTo' },
     { displayName: 'TxType', dataName: 'type' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signers' },
