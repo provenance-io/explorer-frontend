@@ -15,6 +15,7 @@
 - Add markerType to the asset list and detail #112
 - Make Summary component two columns on screens larger than MD breakpoint #112
 - Show monikers instead of validator address when they are available #110
+- Theme switcher now uses the OS settings (unless the user has chosen a theme)
 
 ### Bug Fixes
 

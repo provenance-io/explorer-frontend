@@ -1,6 +1,11 @@
 import { handleActions } from 'redux-actions';
 import { setCookie, getCookie } from 'utils';
-import { GET_CHAINCODE_ID, SET_THEME, SET_WALLET_URL, SET_IS_LOGGED_IN } from '../actions/appActions';
+import {
+  GET_CHAINCODE_ID,
+  SET_THEME,
+  SET_WALLET_URL,
+  SET_IS_LOGGED_IN,
+} from '../actions/appActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -8,7 +13,7 @@ export const initialState = {
   topCount: 10,
   tableCount: 10,
   validatorCount: 100,
-  theme: getCookie('theme') || 'default',
+  theme: getCookie('theme') || '',
   chaincodeId: '',
   // Loading states
   chaincodeIdLoading: false,
