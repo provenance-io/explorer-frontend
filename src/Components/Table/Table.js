@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { Content, Loading, Pagination as BasePagination, TimeTicker } from 'Components';
+import { Content, Loading, Pagination as BasePagination, Sprite, TimeTicker } from 'Components';
 import { getUTCTime, formatTableData } from 'utils';
 
 const TableContainer = styled.div`
@@ -67,6 +67,7 @@ const Table = ({
   title,
 }) => {
   // Format the raw table data into the form we need it to be displayed
+  const theme = useTheme();
   const { pathname } = useLocation();
   const tableData = formatTableData(rawTableData, tableHeaders);
   const dataExists = tableData.length;
@@ -90,13 +91,17 @@ const Table = ({
   );
 
   const buildTableHead = () =>
-    finalTableHeaders.map(({ displayName }) => <TableHeadData key={displayName}>{displayName}</TableHeadData>);
+    finalTableHeaders.map(({ displayName }) => (
+      <TableHeadData key={displayName}>{displayName}</TableHeadData>
+    ));
 
   const buildSingleRow = (rowData, index) =>
     finalTableHeaders.map(({ dataName, displayName }) => {
       // If it's just the index, we don't need to get any real value
       if (showIndex && dataName === 'index') {
-        return <TableData key={displayName}>{index + 1 + (currentPage - 1) * resultsPerPage}</TableData>;
+        return (
+          <TableData key={displayName}>{index + 1 + (currentPage - 1) * resultsPerPage}</TableData>
+        );
       }
       // If we want the age take the string key and render the timestamp
       if (showAge && displayName === 'Age') {
@@ -119,10 +124,14 @@ const Table = ({
       }
 
       if (!rowData[dataName]) {
-        console.warn(`Table Error! Data not found (rowData.${dataName}): `, { rowData, rawTableData: rawTableData[index], dataName });
+        console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
+          rowData,
+          rawTableData: rawTableData[index],
+          dataName,
+        });
       }
 
-      const { link = false, value = '--', hover = false } = rowData[dataName] || {};
+      const { link = false, value = '--', hover = false, icon } = rowData[dataName] || {};
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
       const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;
@@ -130,12 +139,20 @@ const Table = ({
 
       return (
         <TableData title={hover || value} key={displayName}>
-          {link && !valueMissing && link !== pathname ? <Link to={link}>{finalValue}</Link> : value}
+          {link && !valueMissing && link !== pathname ? (
+            <Link to={link}>
+              {finalValue}
+              {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
+            </Link>
+          ) : (
+            value
+          )}
         </TableData>
       );
     });
 
-  const buildAllRows = () => tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
+  const buildAllRows = () =>
+    tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
     <Content className={className} size={size} title={title}>

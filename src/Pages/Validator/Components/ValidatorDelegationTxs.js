@@ -22,11 +22,11 @@ const ValidatorDelegationTxs = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'TxHash', dataName: 'txHash' },
-    { displayName: 'Block', dataName: 'block' },
+    { displayName: 'TxType', dataName: 'type' },
     { displayName: 'From', dataName: 'delegationFrom' },
     { displayName: 'Amount', dataName: 'msgAmount' },
     { displayName: 'To', dataName: 'delegationTo' },
-    { displayName: 'TxType', dataName: 'type' },
+    { displayName: 'Block', dataName: 'block' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signers' },
     { displayName: 'Status', dataName: 'status' },

@@ -150,7 +150,9 @@ export const formatTableData = (data = [], tableHeaders) => {
           // if there is more than one msg then link to the tx instead of showing the amount
           if (msgArray.length > 1) {
             finalObj[dataName] = {
-              value: 'View Tx',
+              value: 'More',
+              icon: 'CALL_MADE',
+              hover: txHash,
               link: `/tx/${txHash}`,
             };
             break;
@@ -255,8 +257,13 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'txType': // fallthrough
         case 'type': {
           // type is nested within msg: [{ type: 'txType' msg: {} }]
-          const type = dataObj?.msg[0]?.type || '--';
-          finalObj[dataName] = { value: capitalize(type) };
+          const { msg: msgArray = [{}] } = dataObj;
+          const msgNum = msgArray.length > 1 ? `+${msgArray.length}` : '';
+          const type = msgArray[0]?.type || '--';
+          finalObj[dataName] = {
+            value: `${capitalize(type)} ${msgNum}`,
+            hover: msgArray.map((t) => capitalize(t.type)).join(' '),
+          };
           break;
         }
         // Get the voting power as a percent from the serverValue (object)
