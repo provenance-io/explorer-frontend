@@ -8,18 +8,19 @@ import { GlobalStyle, Themes } from 'theme';
 import { isProd } from 'consts';
 import { isEmpty } from 'utils';
 import {
+  Accounts,
+  Asset,
+  Assets,
   Block,
   Blocks,
   Dashboard,
+  Faucet,
+  Icons,
   NoMatch404,
   Tx,
   Txs,
   Validator,
   Validators,
-  Accounts,
-  Assets,
-  Asset,
-  Faucet,
 } from 'Pages';
 
 const App = () => {
@@ -56,6 +57,7 @@ const App = () => {
               <Route path="/assets" component={Assets} />
               <Route path="/asset/:assetId" component={Asset} />
               <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
+              <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
               <Route component={NoMatch404} />
             </Switch>
             <Footer />

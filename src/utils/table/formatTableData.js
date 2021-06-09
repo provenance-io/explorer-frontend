@@ -92,28 +92,37 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // delegator address when delegation (data found in msg)
-        case 'delegatorAddressMsg': {
-          const { msg: msgArray = [{}] } = dataObj;
-          const { msg = {} } = msgArray[0];
-          const { delegatorAddress } = msg;
+        case 'delegationFrom': // fallthrough
+        case 'delegationTo': {
+          const isFrom = dataName === 'delegationFrom';
+          const { msg: msgArray = [{}], monikers } = dataObj;
+
+          // If there is more than one msg don't display info here
+          if (msgArray.length > 1) {
+            finalObj[dataName] = { value: '--' };
+            break;
+          }
+
+          const { msg = {}, type } = msgArray[0];
+          let address;
+          switch (type) {
+            case 'begin_unbonding':
+              address = isFrom ? msg.validatorAddress : msg.delegatorAddress;
+              break;
+            case 'begin_redelegate':
+              address = isFrom ? msg.validatorSrcAddress : msg.validatorDstAddress;
+              break;
+            case 'delegate': // fallthrough
+            default:
+              address = isFrom ? msg.delegatorAddress : msg.validatorAddress;
+          }
+
+          const value = monikers[address] || maxLength(address, 11, 3);
 
           finalObj[dataName] = {
-            value: maxLength(delegatorAddress, 11, 3),
-            hover: delegatorAddress,
-            link: `/accounts/${delegatorAddress}`,
-          };
-          break;
-        }
-        // validation address when delegation (data found in msg)
-        case 'validatorAddressMsg': {
-          const { msg: msgArray = [{}] } = dataObj;
-          const { msg = {} } = msgArray[0];
-          const { validatorAddress } = msg;
-
-          finalObj[dataName] = {
-            value: maxLength(validatorAddress, 11, 3),
-            hover: validatorAddress,
-            link: `/accounts/${validatorAddress}`,
+            value,
+            hover: address,
+            link: `/accounts/${address}`,
           };
           break;
         }
@@ -136,7 +145,19 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Amount of currency/item and its denomination given in an object (amount found in msg)
         case 'msgAmount': {
           // No server value, manually grab from dataObj msg
-          const { msg: msgArray = [{}] } = dataObj;
+          const { msg: msgArray = [{}], txHash } = dataObj;
+
+          // if there is more than one msg then link to the tx instead of showing the amount
+          if (msgArray.length > 1) {
+            finalObj[dataName] = {
+              value: 'More',
+              icon: 'CALL_MADE',
+              hover: txHash,
+              link: `/tx/${txHash}`,
+            };
+            break;
+          }
+
           const { msg = { amount: {} } } = msgArray[0];
           const { amount = '--', denom = '--' } = msg.amount || {};
           denom === 'nhash'
@@ -219,17 +240,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
-        // Name/moniker of a validator (found in msg)
-        case 'monikerMsg': {
-          // No server value, manually grab from dataObj msg
-          const { msg: msgArray = [{}] } = dataObj;
-          const { msg = {} } = msgArray[0];
-          const { moniker } = msg.description || {};
-          finalObj[dataName] = { value: moniker };
-          break;
-        }
         // Convert given time to standard readable UTC string
-
         case 'time': // fallthrough
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': {
@@ -246,8 +257,13 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'txType': // fallthrough
         case 'type': {
           // type is nested within msg: [{ type: 'txType' msg: {} }]
-          const type = dataObj?.msg[0]?.type || '--';
-          finalObj[dataName] = { value: capitalize(type) };
+          const { msg: msgArray = [{}] } = dataObj;
+          const msgNum = msgArray.length > 1 ? `+${msgArray.length}` : '';
+          const type = msgArray[0]?.type || '--';
+          finalObj[dataName] = {
+            value: `${capitalize(type)} ${msgNum}`,
+            hover: msgArray.map((t) => capitalize(t.type)).join(' '),
+          };
           break;
         }
         // Get the voting power as a percent from the serverValue (object)

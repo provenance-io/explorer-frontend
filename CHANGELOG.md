@@ -14,6 +14,7 @@
 - Show error code and log on failed tx #70
 - Add markerType to the asset list and detail #112
 - Make Summary component two columns on screens larger than MD breakpoint #112
+- Show monikers instead of validator address when they are available #110
 
 ### Bug Fixes
 
