@@ -44,7 +44,7 @@ const TxMsgs = () => {
   const { txInfo, txInfoLoading } = useTxs();
   const { txHash } = useParams();
 
-  const res = txInfo?.msg?.map((msg) => [
+  const txMsgs = txInfo?.msg?.map((msg) => [
     { title: 'Tx Type', value: capitalize(msg.type) },
     ...Object.entries(msg.msg).map(([key, value]) => {
       const title = camelToSentence(key);
@@ -92,9 +92,9 @@ const TxMsgs = () => {
         <Loading />
       ) : infoExists ? (
         <Fragment>
-          {res.map((r) => (
-            <MsgContainer key={r}>
-              <Summary data={r} />
+          {txMsgs.map((tx) => (
+            <MsgContainer key={JSON.stringify(tx)}>
+              <Summary data={tx} />
             </MsgContainer>
           ))}
         </Fragment>
