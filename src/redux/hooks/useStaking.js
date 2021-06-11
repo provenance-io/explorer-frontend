@@ -37,9 +37,7 @@ const useStaking = () => {
   const [validator, setValidator] = useState(null);
   const { walletService, messageService } = useWallet();
   const {
-    accountInfo,
     getAccountDelegations,
-    getAccountInfo,
     getAccountAssets,
     getAccountRedelegations,
     getAccountRewards,
@@ -66,16 +64,10 @@ const useStaking = () => {
   } = walletService;
 
   useEffect(() => {
-    if (delegatorAddress && delegatorAddress !== accountInfo.address) {
-      getAccountInfo(delegatorAddress);
-      getAccountAssets(delegatorAddress);
-    }
-  }, [delegatorAddress, getAccountAssets, getAccountInfo, accountInfo.address]);
-
-  useEffect(() => {
     (async () => {
       try {
         if (shouldPull && isLoggedIn) {
+          getAccountAssets(delegatorAddress);
           getAccountDelegations(delegatorAddress);
           getAccountRedelegations(delegatorAddress);
           getAccountUnbonding(delegatorAddress);
@@ -91,6 +83,7 @@ const useStaking = () => {
     shouldPull,
     isLoggedIn,
     delegatorAddress,
+    getAccountAssets,
     getAccountDelegations,
     getAccountRewards,
     getAccountRedelegations,
@@ -119,7 +112,7 @@ const useStaking = () => {
 
   const handleStaking = (type, amt, validatorDstAddress) => {
     if (!isLoggedIn) return;
-    const amount = { denom: 'nhash', amount: currencyFormat(amt, 'hash') };
+    const amount = currencyFormat(amt, 'hash', true);
     const msgType = {
       [STAKING_TYPES.DELEGATE]: 'MsgDelegate',
       [STAKING_TYPES.UNDELEGATE]: 'MsgUndelegate',

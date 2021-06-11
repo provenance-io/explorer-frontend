@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { maxLength, getUTCTime, capitalize, numberFormat, currencyFormat, isEmpty } from 'utils';
+import { maxLength, getUTCTime, capitalize, isEmpty, formatDenom } from 'utils';
 import { Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
@@ -79,7 +79,7 @@ const TxInformation = () => {
     const utcTime = getUTCTime(time);
     // We don't want to round the fees, they are already rounded when we receive them
     // 20 decimals is the max toLocaleString allows
-    const feeValue = `${numberFormat(currencyFormat(feeAmount, feeDenom), 20)} ${feeDenom}`;
+    const feeValue = formatDenom(feeAmount, feeDenom, { decimals: 20 });
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];

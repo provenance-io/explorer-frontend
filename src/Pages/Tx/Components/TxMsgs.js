@@ -4,13 +4,12 @@ import { useParams } from 'react-router-dom';
 import {
   camelToSentence,
   capitalize,
-  currencyFormat,
+  formatDenom,
   getUTCTime,
   isArray,
   isEmpty,
   isObject,
   maxLength,
-  numberFormat,
 } from 'utils';
 import { Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
@@ -49,13 +48,16 @@ const TxMsgs = () => {
     ...Object.entries(msg.msg).map(([key, value]) => {
       const title = camelToSentence(key);
       switch (key) {
-        case 'amount':
-          // TODO: Make a function that does currency format + number format
-          // and also lists the display denom
+        case 'amount': {
+          let amt = formatDenom(value.amount, value.denom);
+          if (isArray(value)) {
+            amt = value.map((v) => formatDenom(v.amount, v.denom)).join(', ');
+          }
           return {
             title,
-            value: `${numberFormat(currencyFormat(value.amount, value.denom))}`,
+            value: amt,
           };
+        }
         case 'delegatorAddress': //fallthrough
         case 'fromAddress': // fallthrough
         case 'invoker': // fallthrough

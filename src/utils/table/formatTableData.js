@@ -1,7 +1,6 @@
 import { maxLength } from '../string/maxLength';
-import { currencyFormat } from '../number/currencyFormat';
 import { numberFormat } from '../number/numberFormat';
-import { formatNhash } from '../number/nHashtoHash';
+import { formatDenom } from '../number/formatDenom';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
@@ -166,7 +165,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           const { msg: msgArray = [{}], txHash } = dataObj;
 
           // if there is more than one msg then link to the tx instead of showing the amount
-          if (msgArray.length > 1) {
+          if (msgArray.length > 1 || msgArray[0].msg.amount?.length > 1) {
             finalObj[dataName] = {
               value: 'More',
               icon: 'CALL_MADE',
@@ -185,18 +184,13 @@ export const formatTableData = (data = [], tableHeaders) => {
             break;
           }
 
-          // TODO: support other denoms
-          denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(amount, denom) };
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
         case 'amount': {
           const { amount = '--', denom = '--' } = serverValue || {};
-          denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(amount, denom) };
           break;
         }
         case 'fee': {
@@ -204,28 +198,20 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = {
             // We don't want to round the fees, they are already rounded when we receive them
             // 20 decimals is the max toLocaleString allows
-            value: `${numberFormat(currencyFormat(amount, denom), 20)} ${denom}`,
+            value: formatDenom(amount, denom, { decimal: 20 }),
           };
           break;
         }
         case 'reward': {
           const { amount = '--', denom = '--' } = serverValue?.[0] || {};
-          denom === 'nhash'
-            ? (finalObj[dataName] = {
-                value: `${formatNhash(currencyFormat(amount, 'nhash', 'hash'), {
-                  decimal: 4,
-                })} hash`,
-              })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 4)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(amount, denom, { decimal: 4 }) };
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)
         case 'bondedTokens': // fallthrough
         case 'selfBonded': {
           const { count = '--', denom = '--' } = serverValue || {};
-          denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${formatNhash(count)} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(count, denom) };
           break;
         }
         // Height of a block

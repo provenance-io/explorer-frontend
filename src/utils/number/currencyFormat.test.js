@@ -10,31 +10,31 @@ Object.defineProperty(window.document, 'cookie', {
 
 describe('util: currencyFormat', () => {
   it('should return the value if not given a number', () => {
-    expect(currencyFormat('abc')).toBe('abc');
+    expect(currencyFormat('abc')).toEqual({ amount: 'abc', denom: undefined });
   });
 
   it("should return the value if the denom isn't in the metadata", () => {
-    expect(currencyFormat(100, 'kitties', 'dogeCoin')).toBe(100);
+    expect(currencyFormat(100, 'kitties')).toEqual({ amount: 100, denom: 'kitties' });
   });
 
   it('should format nhash to hash', () => {
-    expect(currencyFormat(1, 'nhash', 'hash')).toBe('0.000000001');
+    expect(currencyFormat(1, 'nhash')).toEqual({ amount: '0.000000001', denom: 'hash' });
   });
 
   it('should format hash to nhash', () => {
-    expect(currencyFormat(1, 'hash', 'nhash')).toBe('1000000000');
+    expect(currencyFormat(1, 'hash', true)).toEqual({ amount: '1000000000', denom: 'nhash' });
   });
 
   it('should format cfigure to figure', () => {
-    expect(currencyFormat(1, 'cfigure', 'figure')).toBe('0.01');
+    expect(currencyFormat(1, 'cfigure')).toEqual({ amount: '0.01', denom: 'figure' });
   });
 
   it('should format figure to cfigure', () => {
-    expect(currencyFormat(1, 'figure', 'cfigure')).toBe('100');
+    expect(currencyFormat(1, 'figure', true)).toEqual({ amount: '100', denom: 'cfigure' });
   });
 
   it('should fail gracefully', () => {
     setCookie('assetMetadata', '');
-    expect(currencyFormat(1, 'nhash', 'hash')).toBe(1);
+    expect(currencyFormat(1, 'nhash')).toEqual({ amount: 1, denom: 'nhash' });
   });
 });
