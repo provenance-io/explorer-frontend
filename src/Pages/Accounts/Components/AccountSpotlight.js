@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useAccounts } from 'redux/hooks';
+import { useAccounts, useAssets } from 'redux/hooks';
 import { Content, CopyValue, Sprite, Loading } from 'Components';
+import { isEmpty } from 'utils';
 
 const Column = styled.div`
   ${({ flexBasis }) => flexBasis && `flex-basis: ${flexBasis};`}
@@ -24,12 +25,20 @@ const Value = styled.div`
 const TokenIcon = styled.div``;
 
 const AccountSpotlight = () => {
-  const { getAccountInfo, accountInfo, accountInfoLoading } = useAccounts();
+  const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo } = useAccounts();
+  const { assetMetadata, getAssetMetadata } = useAssets();
   const { addressId } = useParams();
 
   useEffect(() => {
+    getAccountAssets(addressId);
     getAccountInfo(addressId);
-  }, [getAccountInfo, addressId]);
+  }, [getAccountAssets, getAccountInfo, addressId]);
+
+  useEffect(() => {
+    if (isEmpty(assetMetadata)) {
+      getAssetMetadata();
+    }
+  }, [assetMetadata, getAssetMetadata]);
 
   const {
     accountName = '--',

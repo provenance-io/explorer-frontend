@@ -80,14 +80,14 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Amount of currency/item and its denomination
         case 'balance': {
-          const { count } = serverValue;
-          finalObj[dataName] = { value: numberFormat(count, 6) };
+          const { count = '--', denom = '--' } = serverValue;
+          finalObj[dataName] = { value: formatDenom(count, denom, { decimal: 6 }) };
           break;
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
           const { amount = '--', denom = '--' } = dataObj || {};
-          finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          finalObj[dataName] = { value: formatDenom(amount, denom, { decimal: 6 }) };
           break;
         }
         // delegator address when delegation (data found in msg)
@@ -232,8 +232,8 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         case 'queryDenom':
           finalObj[dataName] = {
-            value: dataObj.denom,
-            link: `/asset/${serverValue}`,
+            value: dataObj.displayDenom,
+            link: `/asset/${dataObj.denom}`,
           };
           break;
         // Name/moniker of a validator linking to its address
