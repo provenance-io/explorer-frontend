@@ -139,8 +139,8 @@ const TxList = () => {
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
     { displayName: 'Tx Type', dataName: 'txType' },
-    { displayName: 'From', dataName: 'delegationFrom' },
     { displayName: 'Amount', dataName: 'msgAmount' },
+    { displayName: 'From', dataName: 'delegationFrom' },
     { displayName: 'To', dataName: 'delegationTo' },
     { displayName: 'Block', dataName: 'block' },
     { displayName: 'Fee', dataName: 'fee' },

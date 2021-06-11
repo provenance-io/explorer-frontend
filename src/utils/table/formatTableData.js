@@ -112,10 +112,17 @@ export const formatTableData = (data = [], tableHeaders) => {
             case 'begin_redelegate':
               address = isFrom ? msg.validatorSrcAddress : msg.validatorDstAddress;
               break;
-            case 'execute':
-              address = isFrom ? msg.sender : null;
+            case 'clear-contract-admin': //fallthrough
+            case 'execute': //fallthrough
+            case 'ibc_transfer': //fallthrough
+            case 'instantiate': //fallthrough
+            case 'migrate': //fallthrough
+            case 'store-code':
+              address = isFrom ? msg.sender : msg.receiver;
               break;
-            case 'send':
+            case 'addmarker': // fallthrough
+            case 'send': //fallthrough
+            case 'transfer':
               address = isFrom ? msg.fromAddress : msg.toAddress;
               break;
             case 'delegate': // fallthrough
@@ -170,7 +177,8 @@ export const formatTableData = (data = [], tableHeaders) => {
           }
 
           const { msg = { amount: {} } } = msgArray[0];
-          const { amount, denom } = msg.amount?.[0] || msg.amount || {};
+          const { amount, denom } =
+            msg.funds?.[0] || msg.amount?.[0] || msg.amount || msg.token || msg.value || {};
 
           if (!amount) {
             finalObj[dataName] = { value: '--' };
