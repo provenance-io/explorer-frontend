@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { WalletContextProvider } from '@provenanceio/wallet-lib';
-import { useApp, useAssets, useMediaQuery } from 'redux/hooks';
+import { useApp, useAssets, useColorScheme } from 'redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
-import { GlobalStyle, Themes } from 'theme';
+import { GlobalStyle } from 'theme';
 import { isProd } from 'consts';
 import { isEmpty } from 'utils';
 import {
@@ -24,10 +24,8 @@ import {
 } from 'Pages';
 
 const App = () => {
-  const { theme, walletUrl } = useApp();
-  // Support OS theme settings if the user hasn't clicked the switch at the top
-  const { matches: dark } = useMediaQuery('(prefers-color-scheme: dark)');
-  const activeTheme = Themes[theme] ? Themes[theme] : dark ? Themes.night : Themes.default;
+  const { walletUrl } = useApp();
+  const { activeTheme } = useColorScheme();
   const { assetMetadata, assetMetadataLoading, getAssetMetadata } = useAssets();
 
   useEffect(() => {

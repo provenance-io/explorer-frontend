@@ -1,9 +1,9 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { maxLength, getUTCTime, capitalize, numberFormat, currencyFormat } from 'utils';
-import { Section, Content, Loading, Summary } from 'Components';
+import { maxLength, getUTCTime, capitalize, numberFormat, currencyFormat, isEmpty } from 'utils';
+import { Content, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
 const DataRow = styled.div`
@@ -50,15 +50,10 @@ const RetryJSON = styled.div`
 const TxInformation = () => {
   const [showFullJSON, setShowFullJSON] = useState(false);
   const [showErrorLogPopup, setShowErrorLogPopup] = useState(false);
-  const { getTxInfo, txInfo, txInfoLoading, txFullJSONLoading, txFullJSON, getTxFullJSON } =
-    useTxs();
+  const { txInfo, txInfoLoading, txFullJSONLoading, txFullJSON, getTxFullJSON } = useTxs();
   const { txHash } = useParams();
 
-  useEffect(() => {
-    getTxInfo(txHash);
-  }, [txHash, getTxInfo]);
-
-  const infoExists = txInfo && Object.keys(txInfo).length;
+  const infoExists = !isEmpty(txInfo);
 
   const fetchFullJSON = () => {
     getTxFullJSON(txHash);
@@ -144,97 +139,15 @@ const TxInformation = () => {
     );
   };
 
-  const buildTxMessageContent = () => {
-    // This Transaction Message/Result section is custom for every type of Tx (Sooner/Later this needs to be a util like the table builder...)
-    const { msg: msgArray } = txInfo; // msg is an array, for now we will only handle a single message, in the future we may need to handle 2+
-    const { msg: msgData, type: txType } = msgArray[0] || [];
-    // Initial summaryData should always have the type
-    const summaryData = [{ title: 'Tx Type', value: capitalize(txType) }];
-    // Build each summary based off the type
-    switch (txType) {
-      case 'vote': {
-        const { proposalId, option, voter } = msgData;
-        summaryData.push(
-          {
-            title: 'Voter',
-            value: maxLength(voter, 24, 10),
-            copy: voter,
-            link: `/accounts/${voter}`,
-          },
-          { title: 'Proposal Id', value: capitalize(proposalId) },
-          { title: 'Option', value: capitalize(option) }
-        );
-        break;
-      }
-      case 'send': {
-        const { amount = [], fromAddress, toAddress } = msgData;
-        const { denom = '--', amount: totalAmount = '--' } = amount[0];
-        summaryData.push(
-          { title: 'Amount', value: `${numberFormat(totalAmount)} ${denom}` },
-          {
-            title: 'From',
-            value: maxLength(fromAddress, 24, 10),
-            copy: fromAddress,
-            link: `/accounts/${fromAddress}`,
-          },
-          {
-            title: 'To',
-            value: maxLength(toAddress, 24, 10),
-            copy: toAddress,
-            link: `/accounts/${toAddress}`,
-          }
-        );
-        break;
-      }
-      case 'submit_proposal': {
-        // type, proposer, title, initial deposit, description, name, upgrade time, switch height, upgraded client state
-        const { content, initialDeposit, proposer } = msgData;
-        const { description, title, plan = {} } = content;
-        const { denom, amount } = initialDeposit[0]; // Initial Deposit is an array, but we are only going to use the first entry for now
-        const { name = '', time = '' } = plan;
-        const utcTime = time ? getUTCTime(time) : '--';
-        summaryData.push(
-          {
-            title: 'Proposer',
-            value: maxLength(proposer, 24, 10),
-            copy: proposer,
-            link: `/accounts/${proposer}`,
-          },
-          { title: 'Title', value: title },
-          { title: 'Initial Deposit', value: `${numberFormat(amount)} ${denom}` },
-          { title: 'Description', value: description },
-          { title: 'Name', value: name },
-          { title: 'Upgrade Time', value: time ? `${utcTime}+UTC` : '--' },
-          // No idea how these would come in, so I'm hardcoding for now...
-          { title: 'Switch Height', value: '--' },
-          { title: 'Upgraded Client State', value: '--' }
-        );
-        break;
-      }
-      default:
-        break;
-    }
-
-    return <Summary data={summaryData} />;
-  };
-
   const buildTxInformationSection = () =>
     infoExists ? buildTxInformationContent() : buildNoResults();
-  const buildTxMessageSection = () => (infoExists ? buildTxMessageContent() : buildNoResults());
 
   return (
-    <>
-      <Section header>
-        <Content title="Transaction Information">
-          {txInfoLoading ? <Loading /> : buildTxInformationSection()}
-        </Content>
-      </Section>
-      <Section>
-        <Content title="Transaction Message or Result">
-          {txInfoLoading ? <Loading /> : buildTxMessageSection()}
-        </Content>
-      </Section>
-    </>
+    <Fragment>
+      <Content title="Transaction Information">
+        {txInfoLoading ? <Loading /> : buildTxInformationSection()}
+      </Content>
+    </Fragment>
   );
 };
 

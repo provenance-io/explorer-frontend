@@ -112,12 +112,23 @@ export const formatTableData = (data = [], tableHeaders) => {
             case 'begin_redelegate':
               address = isFrom ? msg.validatorSrcAddress : msg.validatorDstAddress;
               break;
+            case 'execute':
+              address = isFrom ? msg.sender : null;
+              break;
+            case 'send':
+              address = isFrom ? msg.fromAddress : msg.toAddress;
+              break;
             case 'delegate': // fallthrough
             default:
               address = isFrom ? msg.delegatorAddress : msg.validatorAddress;
           }
 
           const value = monikers[address] || maxLength(address, 11, 3);
+
+          if (!address) {
+            finalObj[dataName] = { value: '--' };
+            break;
+          }
 
           finalObj[dataName] = {
             value,
@@ -159,7 +170,14 @@ export const formatTableData = (data = [], tableHeaders) => {
           }
 
           const { msg = { amount: {} } } = msgArray[0];
-          const { amount = '--', denom = '--' } = msg.amount || {};
+          const { amount, denom } = msg.amount?.[0] || msg.amount || {};
+
+          if (!amount) {
+            finalObj[dataName] = { value: '--' };
+            break;
+          }
+
+          // TODO: support other denoms
           denom === 'nhash'
             ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
             : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });

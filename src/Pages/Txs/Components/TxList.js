@@ -138,8 +138,11 @@ const TxList = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
-    { displayName: 'Block', dataName: 'block' },
     { displayName: 'Tx Type', dataName: 'txType' },
+    { displayName: 'From', dataName: 'delegationFrom' },
+    { displayName: 'Amount', dataName: 'msgAmount' },
+    { displayName: 'To', dataName: 'delegationTo' },
+    { displayName: 'Block', dataName: 'block' },
     { displayName: 'Fee', dataName: 'fee' },
     { displayName: 'Signer', dataName: 'signers' },
     { displayName: 'Status', dataName: 'status' },
@@ -188,7 +191,11 @@ const TxList = () => {
       {!txTypesLoading && txTypesExist && (
         <FiltersWrapper>
           {filterError && <FilterError>{filterError}</FilterError>}
-          <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} flush />
+          <Filters
+            filterData={filterData}
+            mustApply={{ title: 'Apply', action: applyFilters }}
+            flush
+          />
         </FiltersWrapper>
       )}
       <Table

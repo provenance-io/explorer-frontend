@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import ReactJson from 'react-json-view';
 import { breakpoints } from 'consts';
+import { useColorScheme } from 'redux/hooks';
 import PopupNote from '../PopupNote';
 import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
@@ -89,14 +91,14 @@ const buildPopupNote = (popupData) => {
 };
 
 const getChangeValue = (change, children) => (
-  <>
+  <Fragment>
     {children} (<SummaryChange negative={change[0] === '-'}>{change}</SummaryChange>)
-  </>
+  </Fragment>
 );
 const getPopupValue = (popupNote, children) => (
-  <>
+  <Fragment>
     {children} {buildPopupNote(popupNote)}
-  </>
+  </Fragment>
 );
 const getExternalLinkValue = (externalLink, children) => (
   <a href={externalLink} target="_blank" rel="noreferrer">
@@ -105,13 +107,13 @@ const getExternalLinkValue = (externalLink, children) => (
 );
 const getInternalLinkValue = (internalLink, children) => <Link to={internalLink}>{children}</Link>;
 const getCopyValue = (copyValue, title, children) => (
-  <>
+  <Fragment>
     {children} <CopyValue value={copyValue} title={`Copy ${title}`} />
-  </>
+  </Fragment>
 );
 
-const buildSummaryValue = (rowData) => {
-  const { value, link, change, externalLink, popupNote, copy, title } = rowData;
+const buildSummaryValue = (rowData, theme) => {
+  const { value, link, change, externalLink, popupNote, copy, title, isJson } = rowData;
   let finalValue = value;
   if (change) {
     finalValue = getChangeValue(change, finalValue);
@@ -128,23 +130,35 @@ const buildSummaryValue = (rowData) => {
   if (copy) {
     finalValue = getCopyValue(copy, title, finalValue);
   }
+  if (isJson) {
+    finalValue = (
+      <ReactJson
+        src={JSON.parse(finalValue)}
+        theme={theme === 'night' ? 'summerfruit' : 'summerfruit:inverted'}
+        collapsed
+      />
+    );
+  }
 
   return finalValue;
 };
 
-const buildSummaryRow = (rowData) => {
+const buildSummaryRow = (rowData, theme) => {
   const { title, value } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
     <SummaryRow key={title}>
       <SummaryTitle>{title}:</SummaryTitle>
-      <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData)}</SummaryValue>
+      <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData, theme)}</SummaryValue>
     </SummaryRow>
   );
 };
 
-const Summary = ({ data }) => data.map((rowData) => buildSummaryRow(rowData));
+const Summary = ({ data }) => {
+  const { themeName } = useColorScheme();
+  return data.map((rowData) => buildSummaryRow(rowData, themeName));
+};
 
 Summary.propTypes = {
   data: PropTypes.arrayOf(
