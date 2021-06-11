@@ -294,7 +294,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Get the asset supply and set to shorthand
         case 'supply': {
-          finalObj[dataName] = { value: numberFormat(serverValue, 3, { shorthand: true }) };
+          const { amount = '--', denom = '--' } = serverValue;
+          finalObj[dataName] = {
+            value: formatDenom(amount, denom, { decimals: 3, shorthand: true }),
+          };
           break;
         }
         // Display the percent but make adjustments for low values (<)

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Content, Summary, Loading } from 'Components';
-import { capitalize, numberFormat } from 'utils';
+import { capitalize, formatDenom, numberFormat } from 'utils';
 import { useAssets } from 'redux/hooks';
 
 const AssetInformation = () => {
@@ -15,7 +15,7 @@ const AssetInformation = () => {
   const {
     marker,
     holdingAccount,
-    supply,
+    supply: { amount: supplyAmount, denom: supplyDenom } = {},
     mintable,
     holderCount,
     txnCount,
@@ -32,7 +32,10 @@ const AssetInformation = () => {
       link: `/accounts/${holdingAccount}`,
       copy: holdingAccount,
     },
-    { title: 'Supply', value: numberFormat(supply, 3, { shorthand: true }) },
+    {
+      title: 'Supply',
+      value: formatDenom(supplyAmount, supplyDenom, { decimals: 3, shorthand: true }),
+    },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Holders', value: holderCount },
     { title: 'Transactions', value: numberFormat(txnCount) },
