@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Sprite from 'Components/Sprite';
@@ -38,7 +38,8 @@ const ToggleNotch = styled.div`
   border: 3px solid ${({ theme }) => theme.TOGGLE_BACKGROUND};
   position: absolute;
   top: 0px;
-  ${({ active }) => (active ? 'right: 0;' : 'left: 0;')}
+  transform: ${({ active }) => `translate(${active ? 19 : 0}px)`};
+  transition: transform 0.5s ease-in-out;
   z-index: 100;
 `;
 
@@ -47,6 +48,10 @@ const Toggle = ({ optionA, optionB, active, special }) => {
   const [isOn, setIsOn] = useState(active);
   const [specialActive, setSpecialActive] = useState(special.active);
   const [specialCount, setSpecialCount] = useState(0);
+
+  useEffect(() => {
+    setIsOn(active);
+  }, [active]);
 
   const { title: titleA, icon: iconA, iconColor: iconColorA, action: actionA } = optionA;
   const { title: titleB, icon: iconB, iconColor: iconColorB, action: actionB } = optionB;
