@@ -1,14 +1,19 @@
-import React from 'react';
-import { Wrapper, Header } from 'Components';
-import { useMediaQuery } from 'redux/hooks';
+import React, { useEffect } from 'react';
+import { Wrapper, Header, Section } from 'Components';
+import { useMediaQuery, useTxs } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { maxLength } from 'utils';
 import { useParams } from 'react-router-dom';
-import { TxInformation } from './Components';
+import { TxInformation, TxMsgs } from './Components';
 
 const Tx = () => {
   const { matches: isMed } = useMediaQuery(breakpoints.down('lg'));
+  const { getTxInfo } = useTxs();
   const { txHash } = useParams();
+
+  useEffect(() => {
+    getTxInfo(txHash);
+  }, [txHash, getTxInfo]);
 
   return (
     <Wrapper>
@@ -18,7 +23,12 @@ const Tx = () => {
         copyTitle={`Copy Transaction Hash ${txHash}`}
         copyValue={txHash}
       />
-      <TxInformation />
+      <Section header>
+        <TxInformation />
+      </Section>
+      <Section>
+        <TxMsgs />
+      </Section>
     </Wrapper>
   );
 };

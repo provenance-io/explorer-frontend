@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
 import { Links, Path, breakpoints } from 'consts';
-import { useApp } from 'redux/hooks';
+import { useApp, useColorScheme } from 'redux/hooks';
 // Direct import to prevent import order issues
 import Sprite from '../../Sprite';
 import SearchBar from '../../SearchBar';
@@ -71,7 +71,8 @@ const LogoLink = styled(BaseLink)`
 `;
 
 const NavStandard = () => {
-  const { setTheme, theme: themeName } = useApp();
+  const { setTheme } = useApp();
+  const { themeName } = useColorScheme();
   const { pathname } = useLocation();
   const theme = useTheme();
 
