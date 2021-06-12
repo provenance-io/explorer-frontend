@@ -14,7 +14,7 @@ const AccountAssets = () => {
 
   // Table header values in order
   const tableHeaders = [
-    { displayName: 'Asset', dataName: 'queryDenom' },
+    { displayName: 'Asset', dataName: 'denom' },
     { displayName: 'Total Balance', dataName: 'balances' },
   ];
 

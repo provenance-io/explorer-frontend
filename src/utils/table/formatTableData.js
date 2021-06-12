@@ -226,14 +226,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'denom': // fallthrough
         case 'marker':
           finalObj[dataName] = {
-            value: serverValue,
+            value: dataObj.displayDenom || serverValue,
             link: `/asset/${serverValue}`,
-          };
-          break;
-        case 'queryDenom':
-          finalObj[dataName] = {
-            value: dataObj.displayDenom,
-            link: `/asset/${dataObj.denom}`,
           };
           break;
         // Name/moniker of a validator linking to its address
