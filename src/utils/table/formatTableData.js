@@ -87,7 +87,9 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
           const { amount = '--', denom = '--' } = dataObj || {};
-          finalObj[dataName] = { value: formatDenom(amount, denom, { decimal: 6 }) };
+          finalObj[dataName] = {
+            value: formatDenom(amount, denom, { decimal: 6, showDenom: false }),
+          };
           break;
         }
         // delegator address when delegation (data found in msg)
@@ -264,7 +266,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'type': {
           // type is nested within msg: [{ type: 'txType' msg: {} }]
           const { msg: msgArray = [{}] } = dataObj;
-          const msgNum = msgArray.length > 1 ? `+${msgArray.length}` : '';
+          const msgNum = msgArray.length > 1 ? `+${msgArray.length - 1}` : '';
           const type = msgArray[0]?.type || '--';
           finalObj[dataName] = {
             value: `${capitalize(type)} ${msgNum}`,
@@ -290,7 +292,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'supply': {
           const { amount = '--', denom = '--' } = serverValue;
           finalObj[dataName] = {
-            value: formatDenom(amount, denom, { decimals: 3, shorthand: true }),
+            value: formatDenom(amount, denom, { decimals: 3, shorthand: true, showDenom: false }),
+            hover: `${numberFormat(amount, 20)} ${denom}`,
           };
           break;
         }
@@ -316,7 +319,6 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Boolean to string
-        case 'allowGovControl': // fallthrough
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };
           break;

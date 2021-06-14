@@ -18,7 +18,7 @@ export const formatDenom = (amount, denom, options = {}) => {
   // If nhash is given as a string, convert it to a number
   // const nhashFinal = isString ? Number(nhash) : nhash;
   const { amount: finalAmount, denom: finalDenom } = currencyFormat(amount, denom);
-  const { shorthand = false, decimal = 7 } = options;
+  const { shorthand = false, decimal = 7, showDenom = true } = options;
   // Convert to formatted number with decimal places and optional shorthand
-  return `${numberFormat(finalAmount, decimal, { shorthand })} ${finalDenom}`;
+  return `${numberFormat(finalAmount, decimal, { shorthand })} ${showDenom ? finalDenom : ''}`;
 };

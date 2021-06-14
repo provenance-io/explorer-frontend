@@ -72,7 +72,11 @@ const AssetInformation = () => {
     },
     {
       title: 'Supply',
-      value: formatDenom(supplyAmount, supplyDenom, { decimals: 3, shorthand: true }),
+      value: formatDenom(supplyAmount, supplyDenom, {
+        decimals: 3,
+        shorthand: true,
+        showDenom: false,
+      }),
     },
     { title: 'Mintable', value: `${mintable}` },
     { title: 'Min Unit', value: marker, popupNote: popupNoteConversion },

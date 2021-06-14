@@ -70,7 +70,7 @@ const ValidatorCommission = () => {
       popupNote: popupNoteBondedTokens,
     },
     { title: 'Delegators', value: delegatorCount },
-    { title: 'Total Shares', value: `${numberFormat(totalShares, 7)} hash` },
+    { title: 'Total Shares', value: `${numberFormat(totalShares, 7)}` },
     {
       title: 'Commission Rewards',
       value: formatDenom(commissionRewardsAmount, commissionRewardsDenom),

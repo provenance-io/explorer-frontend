@@ -17,6 +17,7 @@
 - Show monikers instead of validator address when they are available #110
 - Theme switcher now uses the OS settings (unless the user has chosen a theme)
 - Support full tx msg on tx detail page #90
+- Add hover text for supply in base denom on asset list #72
 
 ### Bug Fixes
 

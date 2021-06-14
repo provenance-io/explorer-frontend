@@ -21,8 +21,6 @@ const AssetsList = () => {
     displayDenom: assetMetadata.find((md) => md.base === a.marker)?.display,
   }));
 
-  console.log(tableData);
-
   useEffect(() => {
     if (isEmpty(assetMetadata)) {
       getAssetMetadata();
