@@ -20,10 +20,9 @@ const ValidatorCommission = () => {
     selfBonded = {},
     delegatorBonded = {},
     delegatorCount,
-    totalShares = {},
+    totalShares,
     commissionRewards = {},
   } = validatorCommission;
-  const { amount: totalSharesAmount, denom: totalSharesDenom } = totalShares;
   const { count: bondedTokensCount, denom: bondedTokensDenom } = bondedTokens;
   const {
     maxChangeRate: commissionMaxChangeRate,
@@ -71,7 +70,7 @@ const ValidatorCommission = () => {
       popupNote: popupNoteBondedTokens,
     },
     { title: 'Delegators', value: delegatorCount },
-    { title: 'Total Shares', value: formatDenom(totalSharesAmount, totalSharesDenom) },
+    { title: 'Total Shares', value: `${numberFormat(totalShares, 7)} hash` },
     {
       title: 'Commission Rewards',
       value: formatDenom(commissionRewardsAmount, commissionRewardsDenom),
