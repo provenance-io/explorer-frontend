@@ -1,7 +1,6 @@
 import { maxLength } from '../string/maxLength';
-import { currencyFormat } from '../number/currencyFormat';
 import { numberFormat } from '../number/numberFormat';
-import { formatNhash } from '../number/nHashtoHash';
+import { formatDenom } from '../number/formatDenom';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
 
@@ -81,14 +80,14 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Amount of currency/item and its denomination
         case 'balance': {
-          const { count } = serverValue;
-          finalObj[dataName] = { value: numberFormat(count, 6) };
+          const { count = '--', denom = '--' } = serverValue;
+          finalObj[dataName] = { value: formatDenom(count, denom, { decimal: 6 }) };
           break;
         }
         // Amount of currency/item and its denomination given in objects (multiple)
         case 'balances': {
           const { amount = '--', denom = '--' } = dataObj || {};
-          finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` };
+          finalObj[dataName] = { value: formatDenom(amount, denom, { decimal: 6 }) };
           break;
         }
         // delegator address when delegation (data found in msg)
@@ -166,7 +165,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           const { msg: msgArray = [{}], txHash } = dataObj;
 
           // if there is more than one msg then link to the tx instead of showing the amount
-          if (msgArray.length > 1) {
+          if (msgArray.length > 1 || msgArray[0].msg.amount?.length > 1) {
             finalObj[dataName] = {
               value: 'More',
               icon: 'CALL_MADE',
@@ -185,18 +184,13 @@ export const formatTableData = (data = [], tableHeaders) => {
             break;
           }
 
-          // TODO: support other denoms
-          denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(amount, denom) };
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
         case 'amount': {
           const { amount = '--', denom = '--' } = serverValue || {};
-          denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${formatNhash(amount)} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 6)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(amount, denom) };
           break;
         }
         case 'fee': {
@@ -204,28 +198,20 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = {
             // We don't want to round the fees, they are already rounded when we receive them
             // 20 decimals is the max toLocaleString allows
-            value: `${numberFormat(currencyFormat(amount, denom), 20)} ${denom}`,
+            value: formatDenom(amount, denom, { decimal: 20 }),
           };
           break;
         }
         case 'reward': {
           const { amount = '--', denom = '--' } = serverValue?.[0] || {};
-          denom === 'nhash'
-            ? (finalObj[dataName] = {
-                value: `${formatNhash(currencyFormat(amount, 'nhash', 'hash'), {
-                  decimal: 4,
-                })} hash`,
-              })
-            : (finalObj[dataName] = { value: `${numberFormat(amount, 4)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(amount, denom, { decimal: 4 }) };
           break;
         }
         // Amount of currency/item and its denomination given in an object (count)
         case 'bondedTokens': // fallthrough
         case 'selfBonded': {
           const { count = '--', denom = '--' } = serverValue || {};
-          denom === 'nhash'
-            ? (finalObj[dataName] = { value: `${formatNhash(count)} hash` })
-            : (finalObj[dataName] = { value: `${numberFormat(count, 6)} ${denom}` });
+          finalObj[dataName] = { value: formatDenom(count, denom) };
           break;
         }
         // Height of a block
@@ -240,13 +226,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'denom': // fallthrough
         case 'marker':
           finalObj[dataName] = {
-            value: serverValue,
-            link: `/asset/${serverValue}`,
-          };
-          break;
-        case 'queryDenom':
-          finalObj[dataName] = {
-            value: dataObj.denom,
+            value: dataObj.displayDenom || serverValue,
             link: `/asset/${serverValue}`,
           };
           break;
@@ -308,7 +288,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Get the asset supply and set to shorthand
         case 'supply': {
-          finalObj[dataName] = { value: numberFormat(serverValue, 3, { shorthand: true }) };
+          const { amount = '--', denom = '--' } = serverValue;
+          finalObj[dataName] = {
+            value: formatDenom(amount, denom, { decimals: 3, shorthand: true }),
+          };
           break;
         }
         // Display the percent but make adjustments for low values (<)

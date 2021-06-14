@@ -150,7 +150,10 @@ const ManageStakingModal = ({
     useValidators();
 
   const hashBalance = accountAssets?.find((b) => b.denom === 'nhash');
-  const hashAmount = currencyFormat(hashBalance?.amount, hashBalance?.denom);
+  const { amount: hashAmount, denom: hashDenom } = currencyFormat(
+    hashBalance?.amount,
+    hashBalance?.denom
+  );
   const decimal = 7;
 
   useEffect(() => {
@@ -181,7 +184,10 @@ const ManageStakingModal = ({
 
   const { description, image, moniker, url } = validatorSpotlight;
   const { commission: sCommission, amount } = validator;
-  const delegation = currencyFormat(amount?.amount, amount?.denom);
+  const { amount: delegation, denom: delegationDenom } = currencyFormat(
+    amount?.amount,
+    amount?.denom
+  );
   const commission = sCommission * 100;
 
   const handleClick = (type, e) => {
@@ -297,12 +303,16 @@ const ManageStakingModal = ({
 
               <Pair>
                 <PairTitle>My Delegation</PairTitle>
-                <PairValue>{numberFormat(delegation, decimal)} HASH</PairValue>
+                <PairValue>
+                  {numberFormat(delegation, decimal)} {delegationDenom}
+                </PairValue>
               </Pair>
 
               <Pair>
                 <PairTitle>Available Balance</PairTitle>
-                <PairValue>{numberFormat(hashAmount, decimal)} HASH</PairValue>
+                <PairValue>
+                  {numberFormat(hashAmount, decimal)} {hashDenom}
+                </PairValue>
               </Pair>
 
               <Pair>
@@ -313,7 +323,7 @@ const ManageStakingModal = ({
                     decimalScale={0}
                     onChange={handleDelegationAmountChange}
                   />
-                  <DenomName>HASH</DenomName>
+                  <DenomName>{hashDenom}</DenomName>
                 </PairValue>
               </Pair>
             </Info>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { maxLength, getUTCTime, capitalize, formatNhash, numberFormat } from 'utils';
+import { maxLength, getUTCTime, capitalize, formatDenom } from 'utils';
 import { Link } from 'react-router-dom';
 import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
 import { Content, TimeTicker, Loading } from 'Components';
@@ -49,7 +49,10 @@ const RecentTxs = () => {
   const totalTxs = txs.length;
 
   // Poll the API for new data every 30s
-  useInterval(() => !txsRecentLoadingStore && getTxsRecent({ count: recentTxsCount }), polling.recentTxs);
+  useInterval(
+    () => !txsRecentLoadingStore && getTxsRecent({ count: recentTxsCount }),
+    polling.recentTxs
+  );
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -66,7 +69,7 @@ const RecentTxs = () => {
       const { type = '--' } = msg[0];
       const utcTime = time ? getUTCTime(time) : '--';
       const txCharLength = isSmall ? 10 : 16;
-      const feeAmountFinal = feeDenom === 'nhash' ? `${formatNhash(feeAmount)} hash` : `${numberFormat(feeAmount)} ${feeDenom}`;
+      const feeAmountFinal = formatDenom(feeAmount, feeDenom);
 
       return (
         <TxLineContainer key={`${txHash}_${index}`}>

@@ -65,9 +65,9 @@ const buildPopupNote = (popupData) => {
   const showOnClick = method.includes('click');
   const { visible, setVisible } = visibility;
 
-  const buildPopupRow = ({ title, value }) => (
+  const buildPopupRow = ({ title, value, hideTitle = false }) => (
     <NoteRow key={title}>
-      <NoteTitle>{title}</NoteTitle>
+      {!hideTitle && <NoteTitle>{title}</NoteTitle>}
       <NoteValue>{value}</NoteValue>
     </NoteRow>
   );
