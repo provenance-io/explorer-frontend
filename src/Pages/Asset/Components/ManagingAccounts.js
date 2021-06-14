@@ -1,6 +1,15 @@
-import React from 'react';
-import { Table } from 'Components';
+import React, { Fragment } from 'react';
+import styled from 'styled-components';
+import { Content, Loading, Summary, Table as OgTable } from 'Components';
 import { useAssets } from 'redux/hooks';
+import { capitalize } from 'utils';
+
+const Table = styled(OgTable)`
+  & > div {
+    padding: 20px 0;
+    border: none;
+  }
+`;
 
 const ManagingAccounts = () => {
   const {
@@ -8,17 +17,22 @@ const ManagingAccounts = () => {
     assetInfoLoading: tableLoading,
   } = useAssets();
 
+  const summaryData = [
+    {
+      title: 'Allow Governance',
+      value: capitalize(`${allowGovControl}`),
+    },
+  ];
+
   const tableHeaders = [
     { displayName: 'Address', dataName: 'manager' },
     { displayName: 'Permissions', dataName: 'permissions' },
-    { displayName: 'Allow Governance', dataName: 'allowGovControl' },
   ];
 
   const tableData = Object.keys(managers || {}).reduce(
     (acc, curr) => [
       ...acc,
       {
-        allowGovControl,
         manager: curr,
         permissions: managers[curr],
       },
@@ -27,12 +41,17 @@ const ManagingAccounts = () => {
   );
 
   return (
-    <Table
-      tableHeaders={tableHeaders}
-      tableData={tableData}
-      isLoading={tableLoading}
-      title="Managing Accounts"
-    />
+    <Content title="Managing Accounts">
+      {tableLoading ? (
+        <Loading />
+      ) : (
+        <Fragment>
+          <Summary data={summaryData} />
+
+          <Table tableHeaders={tableHeaders} tableData={tableData} isLoading={tableLoading} />
+        </Fragment>
+      )}
+    </Content>
   );
 };
 
