@@ -2,29 +2,33 @@
 
 ## Unreleased
 
+## 2.0.0
+
+### Release Name: Leif Eriksson
+
 ### Improvements
 
 - Add Max Change Rate line item on validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
-- Pull account balances from new balances endpoint #92
-- Add support for metadata object, converts base denom to display denom #37
-- Add name field to the Address Page #61
-- Updated API URLs to match service updates #93
-- Added token counts to the asset info #91
-- Added table column to show if a managing account allows governance #91
-- Show error code and log on failed tx #70
-- Add markerType to the asset list and detail #112
-- Make Summary component two columns on screens larger than MD breakpoint #112
-- Show monikers instead of validator address when they are available #110
+- Pull account balances from new balances endpoint [#92](https://github.com/provenance-io/explorer-frontend/issues/92)
+- Add support for metadata object, converts base denom to display denom [#37](https://github.com/provenance-io/explorer-frontend/issues/37)
+- Add name field to the Address Page [#61](https://github.com/provenance-io/explorer-frontend/issues/61)
+- Updated API URLs to match service updates [#93](https://github.com/provenance-io/explorer-frontend/issues/93)
+- Added token counts to the asset info [#91](https://github.com/provenance-io/explorer-frontend/issues/91)
+- Added table column to show if a managing account allows governance [#91](https://github.com/provenance-io/explorer-frontend/issues/91)
+- Show error code and log on failed tx [#70](https://github.com/provenance-io/explorer-frontend/issues/70)
+- Add markerType to the asset list and detail [#112](https://github.com/provenance-io/explorer-frontend/issues/112)
+- Make Summary component two columns on screens larger than MD breakpoint [#112](https://github.com/provenance-io/explorer-frontend/issues/112)
+- Show monikers instead of validator address when they are available [#110](https://github.com/provenance-io/explorer-frontend/issues/110)
 - Theme switcher now uses the OS settings (unless the user has chosen a theme)
-- Support full tx msg on tx detail page #90
-- Add hover text for supply in base denom on asset list #72
+- Support full tx msg on tx detail page [#90](https://github.com/provenance-io/explorer-frontend/issues/90)
+- Add hover text for supply in base denom on asset list [#72](https://github.com/provenance-io/explorer-frontend/issues/72)
 
 ### Bug Fixes
 
 - Removed the empty popup from the validator page [#81](https://github.com/provenance-io/explorer-frontend/issues/81)
-- Stop rounding transaction fees throughout the app #62
-- Fix the search bar url for asset search #78
-- Currency conversion now supports all denoms #119
+- Stop rounding transaction fees throughout the app [#62](https://github.com/provenance-io/explorer-frontend/issues/62)
+- Fix the search bar url for asset search [#78](https://github.com/provenance-io/explorer-frontend/issues/78)
+- Currency conversion now supports all denoms [#119](https://github.com/provenance-io/explorer-frontend/issues/119)
 
 ## 1.2.2
 
