@@ -2,9 +2,13 @@
 
 ## Unreleased
 
+## 2.0.1
+
+### Release Name: Nehsi
+
 ### Bug Fixes
 
-- Update to support new txMsg schema, also consume paginated txMsgs endpoint #124
+- Update to support new txMsg schema, also consume paginated txMsgs endpoint [#124](https://github.com/provenance-io/explorer-frontend/issues/124)
 
 ## 2.0.0
 
