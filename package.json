@@ -88,7 +88,7 @@
     "build": "react-scripts build",
     "build:stats": "react-scripts build -- --stats",
     "linkify": "python ./scripts/linkify.py ./CHANGELOG.md",
-    "preversion": "npm run linkify && npm run test:all",
+    "preversion": "npm run linkify",
     "test": "react-scripts test",
     "test:all": "npm run lint && npm run test:cov && npm run test:e2e:run",
     "test:cov": "npm run test -- --watchAll=false --coverage",
