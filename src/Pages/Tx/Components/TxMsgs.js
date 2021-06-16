@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import {
@@ -11,7 +11,7 @@ import {
   isObject,
   maxLength,
 } from 'utils';
-import { Content, Loading, Summary } from 'Components';
+import { Content, InfiniteScroll, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
 const DataRow = styled.div`
@@ -40,12 +40,23 @@ const MsgContainer = styled.div`
 `;
 
 const TxMsgs = () => {
-  const { txInfo, txInfoLoading } = useTxs();
+  const { txInfo, getTxMsgs, txMsgs, txMsgsLoading, txMsgsPages } = useTxs();
   const { txHash } = useParams();
 
-  const txMsgs = txInfo?.msg?.map((msg) => [
+  const loadMsgs = useCallback(
+    (page) => {
+      getTxMsgs({ txHash, count: 10, page });
+    },
+    [getTxMsgs, txHash]
+  );
+
+  useEffect(() => {
+    loadMsgs(1);
+  }, [loadMsgs]);
+
+  const msgs = txMsgs?.[txHash]?.map((msg) => [
     { title: 'Tx Type', value: capitalize(msg.type) },
-    ...Object.entries(msg.msg).map(([key, value]) => {
+    ...Object.entries(msg?.msg).map(([key, value]) => {
       const title = camelToSentence(key);
       switch (key) {
         case 'amount': {
@@ -67,7 +78,7 @@ const TxMsgs = () => {
         case 'voter': //fallthrough
           return {
             title,
-            value: txInfo.monikers[value] || maxLength(value, 24, 10),
+            value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
             link: `/accounts/${value}`,
           };
         case 'time':
@@ -86,24 +97,30 @@ const TxMsgs = () => {
     }),
   ]);
 
-  const infoExists = !isEmpty(txInfo);
+  const infoExists = !isEmpty(msgs);
 
   return (
     <Content title="Messages">
-      {txInfoLoading ? (
-        <Loading />
-      ) : infoExists ? (
-        <Fragment>
-          {txMsgs.map((tx) => (
-            <MsgContainer key={JSON.stringify(tx)}>
-              <Summary data={tx} />
-            </MsgContainer>
-          ))}
-        </Fragment>
+      {txMsgsLoading && !infoExists && <Loading />}
+      {infoExists ? (
+        <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
+          {({ sentryRef, hasNextPage }) => (
+            <Fragment>
+              {msgs?.map((tx) => (
+                <MsgContainer key={JSON.stringify(tx)}>
+                  <Summary data={tx} />
+                </MsgContainer>
+              ))}
+              {(hasNextPage || txMsgsLoading) && <Loading ref={sentryRef} />}
+            </Fragment>
+          )}
+        </InfiniteScroll>
       ) : (
-        <DataRow>
-          <DataTitle>No information exists for transaction {txHash}</DataTitle>
-        </DataRow>
+        !txMsgsLoading && (
+          <DataRow>
+            <DataTitle>No information exists for transaction {txHash}</DataTitle>
+          </DataRow>
+        )
       )}
     </Content>
   );
