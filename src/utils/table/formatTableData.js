@@ -92,59 +92,6 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
-        // delegator address when delegation (data found in msg)
-        case 'delegationFrom': // fallthrough
-        case 'delegationTo': {
-          const isFrom = dataName === 'delegationFrom';
-          const { msg: msgArray = [{}], monikers } = dataObj;
-
-          // If there is more than one msg don't display info here
-          if (msgArray.length > 1) {
-            finalObj[dataName] = { value: '--' };
-            break;
-          }
-
-          const { msg = {}, type } = msgArray[0];
-          let address;
-          switch (type) {
-            case 'begin_unbonding':
-              address = isFrom ? msg.validatorAddress : msg.delegatorAddress;
-              break;
-            case 'begin_redelegate':
-              address = isFrom ? msg.validatorSrcAddress : msg.validatorDstAddress;
-              break;
-            case 'clear-contract-admin': //fallthrough
-            case 'execute': //fallthrough
-            case 'ibc_transfer': //fallthrough
-            case 'instantiate': //fallthrough
-            case 'migrate': //fallthrough
-            case 'store-code':
-              address = isFrom ? msg.sender : msg.receiver;
-              break;
-            case 'addmarker': // fallthrough
-            case 'send': //fallthrough
-            case 'transfer':
-              address = isFrom ? msg.fromAddress : msg.toAddress;
-              break;
-            case 'delegate': // fallthrough
-            default:
-              address = isFrom ? msg.delegatorAddress : msg.validatorAddress;
-          }
-
-          const value = monikers[address] || maxLength(address, 11, 3);
-
-          if (!address) {
-            finalObj[dataName] = { value: '--' };
-            break;
-          }
-
-          finalObj[dataName] = {
-            value,
-            hover: address,
-            link: `/accounts/${address}`,
-          };
-          break;
-        }
         //
         case 'manager': {
           finalObj[dataName] = {
@@ -159,34 +106,6 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = {
             value: serverValue.join(', '),
           };
-          break;
-        }
-        // Amount of currency/item and its denomination given in an object (amount found in msg)
-        case 'msgAmount': {
-          // No server value, manually grab from dataObj msg
-          const { msg: msgArray = [{}], txHash } = dataObj;
-
-          // if there is more than one msg then link to the tx instead of showing the amount
-          if (msgArray.length > 1 || msgArray[0].msg.amount?.length > 1) {
-            finalObj[dataName] = {
-              value: 'More',
-              icon: 'CALL_MADE',
-              hover: txHash,
-              link: `/tx/${txHash}`,
-            };
-            break;
-          }
-
-          const { msg = { amount: {} } } = msgArray[0];
-          const { amount, denom } =
-            msg.funds?.[0] || msg.amount?.[0] || msg.amount || msg.token || msg.value || {};
-
-          if (!amount) {
-            finalObj[dataName] = { value: '--' };
-            break;
-          }
-
-          finalObj[dataName] = { value: formatDenom(amount, denom) };
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
@@ -264,13 +183,12 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Find the transaction type within the message object, then capitalize it
         case 'txType': // fallthrough
         case 'type': {
-          // type is nested within msg: [{ type: 'txType' msg: {} }]
-          const { msg: msgArray = [{}] } = dataObj;
-          const msgNum = msgArray.length > 1 ? `+${msgArray.length - 1}` : '';
-          const type = msgArray[0]?.type || '--';
+          const {
+            msg: { msgCount, displayMsgType: type = '--' },
+          } = dataObj;
+          const msgNum = msgCount > 1 ? `+${msgCount - 1}` : '';
           finalObj[dataName] = {
             value: `${capitalize(type)} ${msgNum}`,
-            hover: msgArray.map((t) => capitalize(t.type)).join(' '),
           };
           break;
         }

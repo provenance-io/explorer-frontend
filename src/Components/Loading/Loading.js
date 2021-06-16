@@ -19,11 +19,11 @@ const SearchLoading = styled.div`
   }
 `;
 
-const Loading = ({ className, size }) => (
-  <SearchLoading className={className}>
+const Loading = React.forwardRef(({ className, size }, ref) => (
+  <SearchLoading ref={ref} className={className}>
     <Sprite icon="IN_PROGRESS" size={size} />
   </SearchLoading>
-);
+));
 
 Loading.propTypes = {
   className: PropTypes.string,

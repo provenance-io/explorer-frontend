@@ -1,14 +1,15 @@
 import { handleActions } from 'redux-actions';
 import { capitalize } from 'utils';
 import {
-  GET_TXS_RECENT,
-  GET_TX_HISTORY,
-  GET_TX_INFO,
   GET_TXS_BY_BLOCK,
   GET_TXS_BY_ADDRESS,
   GET_TX_FULL_JSON,
-  SET_RECENT_TXS_COUNT,
+  GET_TX_HISTORY,
+  GET_TX_INFO,
+  GET_TX_MSGS,
+  GET_TXS_RECENT,
   GET_TX_TYPES,
+  SET_RECENT_TXS_COUNT,
 } from '../actions/txsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -37,6 +38,10 @@ export const initialState = {
   // Tx Types (for filters)
   txTypesLoading: false,
   txTypes: {},
+  // Tx Msgs
+  txMsgs: {},
+  txMsgsLoading: false,
+  txMsgsPages: 0,
 };
 
 const reducer = handleActions(
@@ -231,6 +236,35 @@ const reducer = handleActions(
       return {
         ...state,
         txHistoryLoading: false,
+      };
+    },
+    /* -----------------
+    GET_TX_MSGS
+    -------------------*/
+    [`${GET_TX_MSGS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        txMsgsLoading: true,
+      };
+    },
+    [`${GET_TX_MSGS}_${SUCCESS}`](state, { payload, meta }) {
+      const { pages: txMsgsPages, results: txMsgs } = payload;
+      const { txHash } = meta;
+      const prevMsgs = state.txMsgs[txHash] || [];
+      return {
+        ...state,
+        txMsgs: {
+          ...state.txMsgs,
+          [txHash]: [...prevMsgs, ...txMsgs],
+        },
+        txMsgsLoading: false,
+        txMsgsPages,
+      };
+    },
+    [`${GET_TX_MSGS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        txMsgsLoading: false,
       };
     },
   },

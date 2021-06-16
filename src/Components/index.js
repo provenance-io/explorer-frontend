@@ -22,4 +22,5 @@ export { default as UserAccount } from './UserAccount';
 export { default as DropdownBtn } from './DropdownBtn';
 export { default as Modal } from './Modal';
 export { default as Input } from './Input';
+export { default as InfiniteScroll } from './InfiniteScroll';
 export * from './Layout';

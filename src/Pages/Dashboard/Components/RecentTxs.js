@@ -64,30 +64,31 @@ const RecentTxs = () => {
   }, [getTxsRecent, recentTxsCount]);
 
   const buildTxLines = () =>
-    txs.map(({ txHash, fee, msg = [], denomination = '--', time }, index) => {
-      const { amount: feeAmount, denom: feeDenom } = fee;
-      const { type = '--' } = msg[0];
-      const utcTime = time ? getUTCTime(time) : '--';
-      const txCharLength = isSmall ? 10 : 16;
-      const feeAmountFinal = formatDenom(feeAmount, feeDenom);
+    txs.map(
+      ({ txHash, fee, msg: { displayMsgType: type = '--' }, denomination = '--', time }, index) => {
+        const { amount: feeAmount, denom: feeDenom } = fee;
+        const utcTime = time ? getUTCTime(time) : '--';
+        const txCharLength = isSmall ? 10 : 16;
+        const feeAmountFinal = formatDenom(feeAmount, feeDenom);
 
-      return (
-        <TxLineContainer key={`${txHash}_${index}`}>
-          <TxLineRow title={txHash}>
-            <div>
-              TX# <Link to={`/tx/${txHash}`}>{maxLength(txHash, txCharLength)}</Link>
-            </div>
-            <TimeTicker timestamp={utcTime} />
-          </TxLineRow>
-          <TxLineRow>
-            <Type>{capitalize(type)}</Type>
-            <FeeLine>
-              <FeeTitle>Fee:</FeeTitle> {feeAmountFinal}
-            </FeeLine>
-          </TxLineRow>
-        </TxLineContainer>
-      );
-    });
+        return (
+          <TxLineContainer key={`${txHash}_${index}`}>
+            <TxLineRow title={txHash}>
+              <div>
+                TX# <Link to={`/tx/${txHash}`}>{maxLength(txHash, txCharLength)}</Link>
+              </div>
+              <TimeTicker timestamp={utcTime} />
+            </TxLineRow>
+            <TxLineRow>
+              <Type>{capitalize(type)}</Type>
+              <FeeLine>
+                <FeeTitle>Fee:</FeeTitle> {feeAmountFinal}
+              </FeeLine>
+            </TxLineRow>
+          </TxLineContainer>
+        );
+      }
+    );
 
   return (
     <Content

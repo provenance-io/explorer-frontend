@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Update to support new txMsg schema, also consume paginated txMsgs endpoint #124
+
 ## 2.0.0
 
 ### Release Name: Leif Eriksson
