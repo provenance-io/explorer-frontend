@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fix duplication of tx msgs #129
+
 ## 2.0.1
 
 ### Release Name: Nehsi
