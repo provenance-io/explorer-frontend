@@ -40,7 +40,7 @@ const MsgContainer = styled.div`
 `;
 
 const TxMsgs = () => {
-  const { txInfo, getTxMsgs, txMsgs, txMsgsLoading, txMsgsPages } = useTxs();
+  const { txInfo, getTxMsgs, resetTxMsgs, txMsgs, txMsgsLoading, txMsgsPages } = useTxs();
   const { txHash } = useParams();
 
   const loadMsgs = useCallback(
@@ -52,7 +52,8 @@ const TxMsgs = () => {
 
   useEffect(() => {
     loadMsgs(1);
-  }, [loadMsgs]);
+    return () => resetTxMsgs(txHash);
+  }, [loadMsgs, resetTxMsgs, txHash]);
 
   const msgs = txMsgs?.[txHash]?.map((msg) => [
     { title: 'Tx Type', value: capitalize(msg.type) },
