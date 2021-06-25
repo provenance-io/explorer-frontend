@@ -9,6 +9,7 @@ import {
   GET_TX_MSGS,
   GET_TXS_RECENT,
   GET_TX_TYPES,
+  RESET_TX_MSGS,
   SET_RECENT_TXS_COUNT,
 } from '../actions/txsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
@@ -46,6 +47,13 @@ export const initialState = {
 
 const reducer = handleActions(
   {
+    [RESET_TX_MSGS](state, { payload: txHash }) {
+      const { [txHash]: removedItem, ...txMsgs } = state.txMsgs;
+      return {
+        ...state,
+        txMsgs,
+      };
+    },
     [SET_RECENT_TXS_COUNT](state, { payload: recentTxsCount }) {
       return {
         ...state,

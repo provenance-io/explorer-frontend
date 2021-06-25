@@ -21,6 +21,7 @@ export const GET_TX_FULL_JSON = 'TX::GET_TX_FULL_JSON';
 export const GET_TX_TYPES = 'TX::GET_TX_TYPES';
 export const GET_TX_MSGS = 'TX::GET_TX_MSGS';
 // -- Store
+export const RESET_TX_MSGS = 'TX::RESET_TX_MSGS';
 export const SET_RECENT_TXS_COUNT = 'TX::SET_RECENT_TXS_COUNT';
 
 // Actions
@@ -85,4 +86,5 @@ export const getTxMsgs =
     );
 
 // -- Store
+export const resetTxMsgs = createAction(RESET_TX_MSGS);
 export const setRecentTxsCount = createAction(SET_RECENT_TXS_COUNT);
