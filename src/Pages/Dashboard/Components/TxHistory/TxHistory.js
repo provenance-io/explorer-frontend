@@ -40,7 +40,8 @@ const TxHistory = () => {
 
   // Determine/Set Date range in days based on last api search/response
   // 'dayFrom' - 'dayTo' = diff in ms, then 1000ms * 60s * 60min * 24hours = days diff
-  const txHistoryDayRange = (new Date(txHistoryTo) - new Date(txHistoryFrom)) / (1000 * 60 * 60 * 24) + 1;
+  const txHistoryDayRange =
+    (new Date(txHistoryTo) - new Date(txHistoryFrom)) / (1000 * 60 * 60 * 24) + 1;
   const cleanHistoryTo = txHistoryTo.replace(/-/g, '/');
   const cleanHistoryFrom = txHistoryFrom.replace(/-/g, '/');
   const startDate = new Date(cleanHistoryTo);
@@ -49,7 +50,11 @@ const TxHistory = () => {
   // On initial load get the txHistory for the default time period
   useEffect(() => {
     // Get initial txHistory
-    getTxHistory({ toDate: defaultDayTo, fromDate: defaultDayFrom, granularity: defaultGranularity });
+    getTxHistory({
+      toDate: defaultDayTo,
+      fromDate: defaultDayFrom,
+      granularity: defaultGranularity,
+    });
   }, [getTxHistory, defaultDayTo, defaultDayFrom, defaultGranularity]);
 
   // Check for a valid filter before making api call
@@ -76,8 +81,8 @@ const TxHistory = () => {
     setFilterError('');
     if (isFilterValid()) {
       // Convert the toDate and fromDate from local time to UTC time
-      const shortToUTC = getUTCTime(`${txHistoryTo}:00:00:00`, 'yyyy-MM-dd');
-      const shortFromUTC = getUTCTime(`${txHistoryFrom}:00:00:00`, 'yyyy-MM-dd');
+      const shortToUTC = getUTCTime(`${txHistoryTo}T00:00:00`, 'yyyy-MM-dd');
+      const shortFromUTC = getUTCTime(`${txHistoryFrom}T00:00:00`, 'yyyy-MM-dd');
       getTxHistory({ toDate: shortToUTC, fromDate: shortFromUTC, granularity: txHistoryGran });
     }
   };
@@ -126,7 +131,11 @@ const TxHistory = () => {
     >
       <FiltersWrapper>
         {filterError && <FilterError>{filterError}</FilterError>}
-        <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} flush />
+        <Filters
+          filterData={filterData}
+          mustApply={{ title: 'Apply', action: applyFilters }}
+          flush
+        />
       </FiltersWrapper>
       {txHistoryLoading ? <Loading /> : <TxChart txHistoryGran={txHistoryGran} />}
     </Content>

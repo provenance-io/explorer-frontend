@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fix Fire Fox invalid date filters #145
+
 ## 2.0.2
 
 ### Bug Fixes
