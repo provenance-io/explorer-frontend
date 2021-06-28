@@ -2,9 +2,13 @@
 
 ## Unreleased
 
-### Bug Fixes
 - Fix Fire Fox invalid date filters #145
-- Fix duplication of tx msgs #129
+
+## 2.0.2
+
+### Bug Fixes
+
+- Fix duplication of tx msgs [#129](https://github.com/provenance-io/explorer-frontend/issues/129)
 
 ## 2.0.1
 
