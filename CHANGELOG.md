@@ -14,6 +14,8 @@
 
 ## 2.0.2
 
+### Release Name: Anders Svedlund
+
 ### Bug Fixes
 
 - Fix duplication of tx msgs [#129](https://github.com/provenance-io/explorer-frontend/issues/129)
