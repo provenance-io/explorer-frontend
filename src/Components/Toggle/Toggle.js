@@ -38,7 +38,7 @@ const ToggleNotch = styled.div`
   border: 3px solid ${({ theme }) => theme.TOGGLE_BACKGROUND};
   position: absolute;
   top: 0px;
-  transform: ${({ active }) => `translate(${active ? 19 : 0}px)`};
+  transform: ${({ active }) => `translate(${active ? 'calc(100% - 1px)' : 0})`};
   transition: transform 0.5s ease-in-out;
   z-index: 100;
 `;

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.0.2
+
 ### Bug Fixes
 
 - Fix duplication of tx msgs #129
