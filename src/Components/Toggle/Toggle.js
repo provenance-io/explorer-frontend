@@ -12,6 +12,12 @@ const ToggleContainer = styled.div`
   position: relative;
   height: 26px;
   width: 52px;
+  /*
+  * the flex container sometimes messes with the width.
+  * explicitly setting the min and max here fixes that.
+  */
+  min-width: 52px;
+  max-width: 52px;
   overflow: hidden;
   margin-left: 10px;
   box-sizing: content-box;

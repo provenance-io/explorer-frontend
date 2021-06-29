@@ -18,7 +18,9 @@ if (isLocal) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v2`;
 }
 
-export const FIGURE_WALLET_URL = isProd ? process.env.REACT_APP_PROD_FIGURE_WALLET_URL : process.env.REACT_APP_TEST_FIGURE_WALLET_URL;
+export const FIGURE_WALLET_URL = isProd
+  ? process.env.REACT_APP_PROD_FIGURE_WALLET_URL
+  : process.env.REACT_APP_TEST_FIGURE_WALLET_URL;
 export const PROVENANCE_WALLET_URL = isProd
   ? process.env.REACT_APP_PROD_PROVENANCE_WALLET_URL
   : process.env.REACT_APP_TEST_PROVENANCE_WALLET_URL;
@@ -36,6 +38,10 @@ export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 // -- Chaincode id
 export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
+// -- Governance
+export const GOVERNANCE_URL = `${BASE_URL}/gov`;
+export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
+export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
 // -- Social Media/Contact Information
 export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
 export const SOCIAL_DISCORD_URL = 'https://discord.com/';

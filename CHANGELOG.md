@@ -5,6 +5,7 @@
 ### Features
 
 - Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
+- Add Governance redux actions, reducer and hook #133
 
 ### Bug Fixes
 
@@ -13,6 +14,8 @@
 - Fix BlockTxs API call happening 2x #128
 
 ## 2.0.2
+
+### Release Name: Anders Svedlund
 
 ### Bug Fixes
 
