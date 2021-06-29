@@ -32,6 +32,7 @@ export const initialState = {
   // Asset Metadata
   assetMetadata: JSON.parse(getCookie('assetMetadata', true)) || [],
   assetMetadataLoading: false,
+  assetMetadataFailed: false,
 };
 
 const reducer = handleActions(
@@ -168,6 +169,7 @@ const reducer = handleActions(
       return {
         ...state,
         assetMetadataLoading: true,
+        assetMetadataFailed: false,
       };
     },
     [`${GET_ASSET_METADATA}_${SUCCESS}`](state, { payload: assetMetadata }) {
@@ -183,6 +185,7 @@ const reducer = handleActions(
       return {
         ...state,
         assetMetadataLoading: false,
+        assetMetadataFailed: true,
       };
     },
   },

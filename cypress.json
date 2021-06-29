@@ -3,5 +3,6 @@
   "chromeWebSecurity": false,
   "defaultCommandTimeout": 180000,
   "integrationFolder": "cypress/e2e",
-  "retries": 2
+  "retries": 2,
+  "video": false
 }

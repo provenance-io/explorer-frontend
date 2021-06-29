@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'Components';
 import { useAssets } from 'redux/hooks';
-import { isEmpty } from 'utils';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -10,7 +9,6 @@ const AssetsList = () => {
     assetsLoading: tableLoading,
     assetsPages: tablePages,
     assetMetadata,
-    getAssetMetadata,
     getAssetsList: getTableData,
   } = useAssets();
   // How many results to display
@@ -20,12 +18,6 @@ const AssetsList = () => {
     ...a,
     displayDenom: assetMetadata.find((md) => md.base === a.marker)?.display,
   }));
-
-  useEffect(() => {
-    if (isEmpty(assetMetadata)) {
-      getAssetMetadata();
-    }
-  }, [assetMetadata, getAssetMetadata]);
 
   useEffect(() => {
     getTableData({
