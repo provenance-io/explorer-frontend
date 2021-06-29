@@ -32,6 +32,7 @@ export const initialState = {
   // Txs for a specific block
   txsByBlock: [],
   txsByBlockLoading: false,
+  txsByBlockPages: 0,
   // Txs for a specific wallet address
   txsByAddress: [],
   txsByAddressLoading: false,
