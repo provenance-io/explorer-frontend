@@ -20,7 +20,7 @@ const BlockTxs = () => {
       page: tableCurrentPage,
       count: tableCount,
     });
-  }, [getTableData, pageBlockHeight, tablePages, tableCurrentPage, tableCount]);
+  }, [getTableData, pageBlockHeight, tableCurrentPage, tableCount]);
 
   // Table header values in order
   const tableHeaders = [

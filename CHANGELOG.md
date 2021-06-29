@@ -6,6 +6,7 @@
 
 - Fix FireFox invalid date filters #145
 - Fix Metadata loading in multiple components and looping when failing #147
+- Fix BlockTxs API call happening 2x #128
 
 ## 2.0.2
 
