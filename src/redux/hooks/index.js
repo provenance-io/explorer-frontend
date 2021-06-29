@@ -4,6 +4,7 @@ export { default as useAssets } from './useAssets';
 export { default as useBlocks } from './useBlocks';
 export { default as useColorScheme } from './useColorScheme';
 export { default as useFaucet } from './useFaucet';
+export { default as useGovernance } from './useGovernance';
 export { default as useInterval } from './useInterval';
 export { default as useMediaQuery } from './useMediaQuery';
 export { default as useRedux } from './useRedux';
