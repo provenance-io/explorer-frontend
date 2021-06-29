@@ -40,7 +40,7 @@ const MsgContainer = styled.div`
 `;
 
 const TxMsgs = () => {
-  const { txInfo, getTxMsgs, resetTxMsgs, txMsgs, txMsgsLoading, txMsgsPages } = useTxs();
+  const { txInfo, getTxMsgs, resetTxMsgs, txMsgs, txMsgsLoading, txMsgsPages, txMsgsTotal, getTxMsgTypes, txMsgTypes } = useTxs();
   const { txHash } = useParams();
 
   const loadMsgs = useCallback(
@@ -49,6 +49,11 @@ const TxMsgs = () => {
     },
     [getTxMsgs, txHash]
   );
+
+  // Get all the Message types for this tx
+  useEffect(() => {
+    getTxMsgTypes(txHash);
+  }, [getTxMsgTypes, txHash]);
 
   useEffect(() => {
     loadMsgs(1);
@@ -101,7 +106,7 @@ const TxMsgs = () => {
   const infoExists = !isEmpty(msgs);
 
   return (
-    <Content title="Messages">
+    <Content title={`Messages (${txMsgsTotal})`}>
       {txMsgsLoading && !infoExists && <Loading />}
       {infoExists ? (
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
