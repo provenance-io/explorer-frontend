@@ -41,7 +41,7 @@ const governanceReducer = handleActions(
       };
     },
 
-    [`${GET_PROPOSAL}_${SUCCESS}`](state, payload: proposal) {
+    [`${GET_PROPOSAL}_${SUCCESS}`](state, { payload: proposal }) {
       return {
         ...state,
         proposal,
@@ -68,7 +68,7 @@ const governanceReducer = handleActions(
 
     [`${GET_PROPOSAL_DEPOSITS}_${SUCCESS}`](
       state,
-      payload: { pages: proposalDepositsPages, results: proposalDeposits }
+      { payload: { pages: proposalDepositsPages, results: proposalDeposits } }
     ) {
       return {
         ...state,
@@ -95,7 +95,7 @@ const governanceReducer = handleActions(
       };
     },
 
-    [`${GET_PROPOSAL_VOTES}_${SUCCESS}`](state, payload: proposalVotes) {
+    [`${GET_PROPOSAL_VOTES}_${SUCCESS}`](state, { payload: proposalVotes }) {
       return {
         ...state,
         proposalVotes,
@@ -120,11 +120,14 @@ const governanceReducer = handleActions(
       };
     },
 
-    [`${GET_PROPOSALS}_${SUCCESS}`](state, payload: { pages: proposalsPages, results: proposals }) {
+    [`${GET_PROPOSALS}_${SUCCESS}`](
+      state,
+      { payload: { pages: proposalsPages, results: proposals } }
+    ) {
       return {
         ...state,
         proposals,
-        proposalsLoading: true,
+        proposalsLoading: false,
         proposalsPages,
       };
     },
@@ -132,7 +135,7 @@ const governanceReducer = handleActions(
     [`${GET_PROPOSALS}_${FAILURE}`](state) {
       return {
         ...state,
-        proposalsLoading: true,
+        proposalsLoading: false,
       };
     },
 
@@ -148,7 +151,7 @@ const governanceReducer = handleActions(
 
     [`${GET_VOTES_BY_ADDRESS}_${SUCCESS}`](
       state,
-      payload: { pages: addressVotesPages, results: addressVotes }
+      { payload: { pages: addressVotesPages, results: addressVotes } }
     ) {
       return {
         ...state,

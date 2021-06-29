@@ -22,33 +22,51 @@ describe('App e2e', () => {
     cy.url().should('contain', '/dashboard');
   });
 
-  // Temp skipping since this test fails due to OS day/night mode prefs
-  it.skip('should handle the theme switcher', () => {
-    cy.findByTestId('page-wrapper').should(
-      'have.css',
-      'background-color',
-      Color(themes.default.BACKGROUND_LIGHT).string()
-    );
+  it('should handle the theme switcher', () => {
+    // This will allow support for users that have set their OS dark mode preference
+    let initialColor = themes.default.BACKGROUND_LIGHT;
+    let oppositeColor = themes.night.BACKGROUND_LIGHT;
 
-    cy.findByTestId('theme-switcher').click();
+    cy.findByTestId('theme-switcher').then(el => {
+      if (el.css('background-color') !== Color(themes.default.INPUT_BG_DARK).string()) {
+        initialColor = themes.night.BACKGROUND_LIGHT;
+        oppositeColor = themes.default.BACKGROUND_LIGHT;
+      }
 
-    cy.findByTestId('page-wrapper').should(
-      'have.css',
-      'background-color',
-      Color(themes.night.BACKGROUND_LIGHT).string()
-    );
+      cy.findByTestId('page-wrapper').should(
+        'have.css',
+        'background-color',
+        Color(initialColor).string()
+      );
 
-    cy.visit('/');
-
-    for (let x = 0; x < 10; x++) {
       cy.findByTestId('theme-switcher').click();
-    }
 
-    cy.findByTestId('page-wrapper').should(
-      'have.css',
-      'background-color',
-      Color(themes.rainbow.BACKGROUND_LIGHT).string()
-    );
+      cy.findByTestId('page-wrapper').should(
+        'have.css',
+        'background-color',
+        Color(oppositeColor).string()
+      );
+
+      cy.visit('/');
+
+      for (let x = 0; x < 10; x++) {
+        cy.findByTestId('theme-switcher').click();
+      }
+
+      cy.findByTestId('page-wrapper').should(
+        'have.css',
+        'background-color',
+        Color(themes.rainbow.BACKGROUND_LIGHT).string()
+      );
+
+      cy.findByTestId('theme-switcher').click();
+
+      cy.findByTestId('page-wrapper').should(
+        'have.css',
+        'background-color',
+        Color(themes.night.BACKGROUND_LIGHT).string()
+      );
+    });
   });
 
   // TODO: Either refactor away from data-testId or add the ids throghout

@@ -5,6 +5,7 @@
 ### Features
 
 - Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
+- Add Governance redux actions, reducer and hook #133
 
 ### Bug Fixes
 
