@@ -2,15 +2,15 @@
 
 ## Unreleased
 
+### Features
+
+- Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
+
 ### Bug Fixes
 
 - Fix FireFox invalid date filters #145
 - Fix Metadata loading in multiple components and looping when failing #147
 - Fix BlockTxs API call happening 2x #128
-
-### Improvements
-
-- Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
 
 ## 2.0.2
 
