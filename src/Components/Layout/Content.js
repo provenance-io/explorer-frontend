@@ -59,7 +59,19 @@ const Link = styled(BaseLink)`
   }
 `;
 
-const Content = ({ children, size, justify, alignItems, title, icon, link, className, alignSelf, alignContent }) => {
+const Content = ({
+  children,
+  size,
+  justify,
+  alignItems,
+  title,
+  icon,
+  link,
+  className,
+  alignSelf,
+  alignContent,
+  headerContent,
+}) => {
   const { to: linkTo, title: linkTitle } = link;
   const showHeader = title || icon || linkTo || linkTitle;
 
@@ -68,6 +80,7 @@ const Content = ({ children, size, justify, alignItems, title, icon, link, class
       {icon && <Sprite icon={icon} size="2rem" />}
       {title && <Title>{title}</Title>}
       {linkTo && linkTitle && <Link to={link.to}>{link.title}</Link>}
+      {headerContent}
     </Header>
   );
 
@@ -92,6 +105,7 @@ Content.propTypes = {
   icon: PropTypes.string,
   link: PropTypes.object,
   className: PropTypes.string,
+  headerContent: PropTypes.node,
 };
 
 Content.defaultProps = {
@@ -105,6 +119,7 @@ Content.defaultProps = {
   title: null,
   icon: null,
   link: {},
+  headerContent: '',
 };
 
 export default Content;

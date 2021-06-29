@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Features
+
+- Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
+
 ### Bug Fixes
 
 - Fix FireFox invalid date filters #145

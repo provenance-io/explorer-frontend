@@ -20,6 +20,7 @@ export const GET_TXS_BY_ADDRESS = 'TX::GET_TXS_BY_ADDRESS';
 export const GET_TX_FULL_JSON = 'TX::GET_TX_FULL_JSON';
 export const GET_TX_TYPES = 'TX::GET_TX_TYPES';
 export const GET_TX_MSGS = 'TX::GET_TX_MSGS';
+export const GET_TX_MSG_TYPES = 'TX::GET_TX_MSG_TYPES';
 // -- Store
 export const RESET_TX_MSGS = 'TX::RESET_TX_MSGS';
 export const SET_RECENT_TXS_COUNT = 'TX::SET_RECENT_TXS_COUNT';
@@ -75,15 +76,24 @@ export const getTxFullJSON = (txHash) => async (dispatch) =>
 export const getTxTypes = () => async (dispatch) => ajaxGet(GET_TX_TYPES, dispatch, TX_TYPES_URL);
 
 export const getTxMsgs =
-  ({ txHash, count = 10, page = 1 }) =>
+  ({ txHash, count = 10, page = 1, msgType = '' }) =>
   async (dispatch) =>
     ajaxGet(
       GET_TX_MSGS,
       dispatch,
-      `${TX_INFO_URL}/${txHash}/msgs?${qs.stringify({ page, count })}`,
+      `${TX_INFO_URL}/${txHash}/msgs?${qs.stringify({ page, count, msgType })}`,
       null,
       { txHash }
     );
+
+export const getTxMsgTypes =
+(txHash) =>
+async (dispatch) =>
+  ajaxGet(
+    GET_TX_MSG_TYPES,
+    dispatch,
+    `${TX_INFO_URL}/types/tx/${txHash}`,
+  );
 
 // -- Store
 export const resetTxMsgs = createAction(RESET_TX_MSGS);

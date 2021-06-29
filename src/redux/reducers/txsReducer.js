@@ -7,6 +7,7 @@ import {
   GET_TX_HISTORY,
   GET_TX_INFO,
   GET_TX_MSGS,
+  GET_TX_MSG_TYPES,
   GET_TXS_RECENT,
   GET_TX_TYPES,
   RESET_TX_MSGS,
@@ -44,6 +45,10 @@ export const initialState = {
   txMsgs: {},
   txMsgsLoading: false,
   txMsgsPages: 0,
+  txMsgsTotal: 0,
+  // Tx Msg Types
+  txMsgTypes: {},
+  txMsgLoading: false,
 };
 
 const reducer = handleActions(
@@ -257,7 +262,7 @@ const reducer = handleActions(
       };
     },
     [`${GET_TX_MSGS}_${SUCCESS}`](state, { payload, meta }) {
-      const { pages: txMsgsPages, results: txMsgs } = payload;
+      const { pages: txMsgsPages, results: txMsgs, total: txMsgsTotal } = payload;
       const { txHash } = meta;
       const prevMsgs = state.txMsgs[txHash] || [];
       return {
@@ -268,12 +273,44 @@ const reducer = handleActions(
         },
         txMsgsLoading: false,
         txMsgsPages,
+        txMsgsTotal,
       };
     },
     [`${GET_TX_MSGS}_${FAILURE}`](state) {
       return {
         ...state,
         txMsgsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_TX_MSGS_TYPES
+    -------------------*/
+    [`${GET_TX_MSG_TYPES}_${REQUEST}`](state) {
+      return {
+        ...state,
+        txMsgTypesLoading: true,
+      };
+    },
+    [`${GET_TX_MSG_TYPES}_${SUCCESS}`](state, { payload }) {
+      // Initial value of "all"
+      const txMsgTypes = {
+        allTxTypes: { isDefault: true, title: 'All Tx Types' },
+      };
+      // Loop through each module from API and add to types
+      payload.forEach(({ type }) => {
+        txMsgTypes[type] = { title: capitalize(type) };
+      });
+
+      return {
+        ...state,
+        txMsgTypesLoading: false,
+        txMsgTypes,
+      };
+    },
+    [`${GET_TX_MSG_TYPES}_${FAILURE}`](state) {
+      return {
+        ...state,
+        txMsgTypesLoading: false,
       };
     },
   },
