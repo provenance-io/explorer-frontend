@@ -47,7 +47,7 @@ export const initialState = {
   txMsgsPages: 0,
   txMsgsTotal: 0,
   // Tx Msg Types
-  txMsgTypes: [],
+  txMsgTypes: {},
   txMsgLoading: false,
 };
 
@@ -292,8 +292,15 @@ const reducer = handleActions(
       };
     },
     [`${GET_TX_MSG_TYPES}_${SUCCESS}`](state, { payload }) {
-      // payload is an array of message objects holding the type
-      const txMsgTypes = payload.map(typeObj => typeObj.type);
+      // Initial value of "all"
+      const txMsgTypes = {
+        allTxTypes: { isDefault: true, title: 'All Tx Types' },
+      };
+      // Loop through each module from API and add to types
+      payload.forEach(({ type }) => {
+        txMsgTypes[type] = { title: capitalize(type) };
+      });
+
       return {
         ...state,
         txMsgTypesLoading: false,

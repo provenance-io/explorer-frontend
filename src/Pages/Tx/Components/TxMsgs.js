@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect } from 'react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import {
@@ -11,7 +11,7 @@ import {
   isObject,
   maxLength,
 } from 'utils';
-import { Content, InfiniteScroll, Loading, Summary } from 'Components';
+import { Content, InfiniteScroll, Loading, Summary, Filters } from 'Components';
 import { useTxs } from 'redux/hooks';
 
 const DataRow = styled.div`
@@ -39,15 +39,33 @@ const MsgContainer = styled.div`
   }
 `;
 
+const FiltersWrapper = styled.div`
+  position: relative;
+  margin-left: 18px;
+  margin-bottom: 4px;
+`;
+
 const TxMsgs = () => {
-  const { txInfo, getTxMsgs, resetTxMsgs, txMsgs, txMsgsLoading, txMsgsPages, txMsgsTotal, getTxMsgTypes, txMsgTypes } = useTxs();
+  const [filterMsgType, setFilterMsgType] = useState('');
+  const {
+    txInfo,
+    getTxMsgs,
+    resetTxMsgs,
+    txMsgs,
+    txMsgsLoading,
+    txMsgsPages,
+    txMsgsTotal,
+    getTxMsgTypes,
+    txMsgTypes,
+    txMsgLoading,
+  } = useTxs();
   const { txHash } = useParams();
 
   const loadMsgs = useCallback(
     (page) => {
-      getTxMsgs({ txHash, count: 10, page });
+      getTxMsgs({ txHash, count: 10, page, msgType: filterMsgType });
     },
-    [getTxMsgs, txHash]
+    [getTxMsgs, txHash, filterMsgType]
   );
 
   // Get all the Message types for this tx
@@ -58,7 +76,13 @@ const TxMsgs = () => {
   useEffect(() => {
     loadMsgs(1);
     return () => resetTxMsgs(txHash);
-  }, [loadMsgs, resetTxMsgs, txHash]);
+  }, [loadMsgs, resetTxMsgs, txHash, filterMsgType]);
+
+  // Use this to check for a reset to 'all' where we will pass '' as the type
+  const updateMsgFilterType = (newType) => {
+    const finalType = newType === 'allTxTypes' ? '' : newType;
+    setFilterMsgType(finalType);
+  };
 
   const msgs = txMsgs?.[txHash]?.map((msg) => [
     { title: 'Tx Type', value: capitalize(msg.type) },
@@ -104,9 +128,29 @@ const TxMsgs = () => {
   ]);
 
   const infoExists = !isEmpty(msgs);
+  const msgTypesExist = Object.keys(txMsgTypes).length > 2;
+  // Messate Type Filter Data
+  const filterData = [
+    {
+      title: '',
+      type: 'dropdown',
+      options: txMsgTypes,
+      action: updateMsgFilterType,
+    },
+  ];
 
   return (
-    <Content title={`Messages (${txMsgsTotal})`}>
+    <Content
+      title={`Messages (${txMsgsTotal})`}
+      headerContent={
+        !txMsgLoading &&
+        msgTypesExist && (
+          <FiltersWrapper>
+            <Filters filterData={filterData} flush />
+          </FiltersWrapper>
+        )
+      }
+    >
       {txMsgsLoading && !infoExists && <Loading />}
       {infoExists ? (
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
