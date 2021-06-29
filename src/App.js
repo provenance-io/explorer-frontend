@@ -26,13 +26,14 @@ import {
 const App = () => {
   const { walletUrl } = useApp();
   const { activeTheme } = useColorScheme();
-  const { assetMetadata, assetMetadataLoading, getAssetMetadata } = useAssets();
+  const { assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed } =
+    useAssets();
 
   useEffect(() => {
-    if (isEmpty(assetMetadata) && !assetMetadataLoading) {
+    if (isEmpty(assetMetadata) && !assetMetadataLoading && !assetMetadataFailed) {
       getAssetMetadata();
     }
-  }, [assetMetadata, assetMetadataLoading, getAssetMetadata]);
+  }, [assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed]);
 
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
