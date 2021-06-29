@@ -4,7 +4,8 @@
 
 ### Bug Fixes
 
-- Fix Fire Fox invalid date filters #145
+- Fix FireFox invalid date filters #145
+- Fix Metadata loading in multiple components and looping when failing #147
 
 ## 2.0.2
 
