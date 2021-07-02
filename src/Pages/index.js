@@ -7,6 +7,7 @@ export { default as Dashboard } from './Dashboard';
 export { default as Faucet } from './Faucet';
 export { default as Icons } from './Icons';
 export { default as NoMatch404 } from './NoMatch404';
+export { default as Proposals } from './Proposals';
 export { default as Tx } from './Tx';
 export { default as Txs } from './Txs';
 export { default as Validator } from './Validator';

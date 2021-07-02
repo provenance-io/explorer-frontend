@@ -13,7 +13,7 @@ export const getProposal = proposalId => dispatch =>
   ajaxGet(GET_PROPOSAL, dispatch, `${GOVERNANCE_PROPOSALS_URL}/${proposalId}`);
 
 export const getProposalDeposits =
-  ({ proposalId, count = 10, page = 1 }) =>
+  ({ proposalId, count = 10, page = 1 } = {}) =>
   dispatch =>
     ajaxGet(
       GET_PROPOSAL_DEPOSITS,
@@ -25,7 +25,7 @@ export const getProposalVotes = proposalId => dispatch =>
   ajaxGet(GET_PROPOSAL_VOTES, dispatch, `${GOVERNANCE_PROPOSALS_URL}/${proposalId}/votes`);
 
 export const getAllProposals =
-  ({ count = 10, page = 1 }) =>
+  ({ count = 10, page = 1 } = {}) =>
   dispatch =>
     ajaxGet(
       GET_PROPOSALS,
@@ -34,7 +34,7 @@ export const getAllProposals =
     );
 
 export const getVotesByAddress =
-  ({ address, count = 10, page = 1 }) =>
+  ({ address, count = 10, page = 1 } = {}) =>
   dispatch =>
     ajaxGet(
       GET_VOTES_BY_ADDRESS,

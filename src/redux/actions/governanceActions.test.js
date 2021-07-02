@@ -64,6 +64,13 @@ describe('actions: governance', () => {
       expect.any(Function),
       `${GOVERNANCE_PROPOSALS_URL}/all?count=${count}&page=${page}`
     );
+
+    await dispatch(actions.getAllProposals());
+    expect(ajaxGet).toHaveBeenCalledWith(
+      actions.GET_PROPOSALS,
+      expect.any(Function),
+      `${GOVERNANCE_PROPOSALS_URL}/all?count=10&page=1`
+    );
   });
 
   it('should handle getVotesByAddress', async () => {

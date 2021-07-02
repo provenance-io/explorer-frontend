@@ -17,6 +17,7 @@ import {
   Faucet,
   Icons,
   NoMatch404,
+  Proposals,
   Tx,
   Txs,
   Validator,
@@ -47,18 +48,19 @@ const App = () => {
               <Route exact path="/">
                 <Redirect to="/dashboard" />
               </Route>
-              <Route exact path="/dashboard" component={Dashboard} />
-              <Route path="/block/:blockHeight" component={Block} />
+              <Route path="/accounts/:addressId" component={Accounts} />
+              <Route path="/asset/:assetId" component={Asset} />
+              <Route path="/assets" component={Assets} />
               <Route path="/blocks" component={Blocks} />
+              <Route path="/block/:blockHeight" component={Block} />
+              <Route exact path="/dashboard" component={Dashboard} />
+              <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
+              <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
+              <Route path="/proposals" component={Proposals} />
               <Route path="/tx/:txHash" component={Tx} />
               <Route path="/txs" component={Txs} />
               <Route path="/validator/:validatorId" component={Validator} />
               <Route path="/validators" component={Validators} />
-              <Route path="/accounts/:addressId" component={Accounts} />
-              <Route path="/assets" component={Assets} />
-              <Route path="/asset/:assetId" component={Asset} />
-              <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
-              <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
               <Route component={NoMatch404} />
             </Switch>
             <Footer />
