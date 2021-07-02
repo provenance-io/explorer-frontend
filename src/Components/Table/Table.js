@@ -123,13 +123,13 @@ const Table = ({
         );
       }
 
-      // if (!rowData[dataName]) {
-      //   console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
-      //     rowData,
-      //     rawTableData: rawTableData[index],
-      //     dataName,
-      //   });
-      // }
+      if (!rowData[dataName]) {
+        console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
+          rowData,
+          rawTableData: rawTableData[index],
+          dataName,
+        });
+      }
 
       const { link = false, value = '--', hover = false, icon } = rowData[dataName] || {};
       // Note: if the value is an array, split all values out
