@@ -5,6 +5,7 @@
 // - ex: maxLength('fantastic', 6, 1) => 'f...astic'
 // - ex: maxLength('fantastic', 6, true) => 'fan...tic'
 export const maxLength = (term, length, location = 'end') => {
+  if (typeof term !== 'string' && typeof term?.toString === 'function') term = term.toString();
   if (typeof term !== 'string') return '';
   const isNumber = !isNaN(location);
   const isEnd = location === 'end';

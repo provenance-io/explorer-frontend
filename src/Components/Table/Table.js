@@ -123,18 +123,18 @@ const Table = ({
         );
       }
 
-      if (!rowData[dataName]) {
-        console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
-          rowData,
-          rawTableData: rawTableData[index],
-          dataName,
-        });
-      }
+      // if (!rowData[dataName]) {
+      //   console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
+      //     rowData,
+      //     rawTableData: rawTableData[index],
+      //     dataName,
+      //   });
+      // }
 
       const { link = false, value = '--', hover = false, icon } = rowData[dataName] || {};
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
-      const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;
+      const finalValue = Array.isArray(value) ? value.map(singleValue => singleValue) : value;
       const valueMissing = value === '--' || value === '' || value === '--';
 
       return (
@@ -180,7 +180,7 @@ const Table = ({
           pageNumber={currentPage}
           secondary
           totalPages={totalPages}
-          onChange={(page) => changePage(page)}
+          onChange={page => changePage(page)}
         />
       ) : null}
     </Content>

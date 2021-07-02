@@ -35,13 +35,15 @@ const ContentSpacer = styled.div`
   height: 100%;
   justify-content: ${({ justify }) => justify};
 `;
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  flex-basis: 100%;
-  margin-bottom: 18px;
-  @media ${breakpoints.between('sm', 'md')} {
-    margin-bottom: 12px;
+const Header = styled.h3`
+  && {
+    display: flex;
+    align-items: center;
+    flex-basis: 100%;
+    margin: 0 0 18px;
+    @media ${breakpoints.between('sm', 'md')} {
+      margin: 0 0 12px;
+    }
   }
 `;
 const Sprite = styled(BaseSprite)`

@@ -26,14 +26,16 @@ export const formatTableData = (data = [], tableHeaders) => {
   const reqData = tableHeaders.map(({ dataName }) => dataName);
   // Return the data formatted as needed
   // Each data item is a row in the table, so we will loop through each
-  return data.map((dataObj) => {
+  return data.map(dataObj => {
     // Final formatted row data to add into array
     const finalObj = {};
     // Loop through each required type of data and gather it into the final Obj
-    reqData.forEach((dataName) => {
+    reqData.forEach(dataName => {
       // serverValue is the default value of the key from the server response
       // Example: dataName = 'hash', dataObj has 'hash' with the value we need, so we'll use it (no modification needed)
-      const serverValue = dataObj[dataName];
+      let serverValue = dataObj;
+      dataName.split('.').forEach(key => (serverValue = serverValue?.[key]));
+
       switch (dataName) {
         // Address or hash leading to the account's page
         case 'ownerAddress': // fallthrough
@@ -74,6 +76,16 @@ export const formatTableData = (data = [], tableHeaders) => {
             hover: serverValue,
           };
           break;
+        // Address or hash leading to the proposal page
+        case 'title': {
+          finalObj[dataName] = {
+            // value: maxLength(proposalId, 11),
+            value: serverValue,
+            hover: serverValue,
+            link: `/proposal/${serverValue}`,
+          };
+          break;
+        }
         // Address or hash without a link anywhere
         case 'consensusAddress':
           finalObj[dataName] = { value: maxLength(serverValue, 11, 3), hover: serverValue };
@@ -168,9 +180,12 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Convert given time to standard readable UTC string
+        case 'depositEndTime': // fallthrough
+        case 'submitTime': // fallthrough
         case 'time': // fallthrough
         case 'lastTxTimestamp': // fallthrough
-        case 'timestamp': {
+        case 'timestamp': // fallthrough
+        case 'votingTime.endTime': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;
@@ -236,6 +251,23 @@ export const formatTableData = (data = [], tableHeaders) => {
           }
           break;
         }
+        // proposal deposit percentage
+        case 'deposit': {
+          const { current, needed } = serverValue;
+          if (current && needed) {
+            const percentValue = (current / needed) * 100;
+            const percent =
+              percentValue < 0.0001
+                ? '<0.0001'
+                : percentValue > 100
+                ? '>100'
+                : numberFormat(percentValue, 4);
+            finalObj[dataName] = { value: `${percent}%` };
+          } else {
+            finalObj[dataName] = { value: '--' };
+          }
+          break;
+        }
         // Boolean to string
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };
@@ -261,6 +293,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Server value capitalized
         case 'markerType': // fallthrough
+        case 'proposalId': // fallthrough
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue) };
           break;

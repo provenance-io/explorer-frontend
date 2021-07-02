@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { breakpoints } from 'consts';
@@ -12,12 +13,12 @@ const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   padding: 14px 220px;
   background: ${({ theme }) => theme.BACKGROUND_HEADER};
   color: ${({ theme }) => theme.FONT_PRIMARY};
   box-shadow: 0 1px 10px 0 ${({ theme }) => theme.BOX_SHADOW};
   z-index: 100;
+
   @media ${breakpoints.down('lg')} {
     padding: 14px 125px;
     top: 56px;
@@ -27,7 +28,14 @@ const HeaderContainer = styled.div`
     top: 82px;
   }
 `;
-const Title = styled.div``;
+const Title = styled.h2`
+  && {
+    margin: 0;
+    padding: 0;
+    font-size: 1.4rem;
+    font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
+  }
+`;
 const Line = styled.div`
   margin: 0 12px;
 `;
@@ -57,7 +65,10 @@ const Header = ({ title, copyValue, copyTitle, value, valueLink, children }) => 
 
   return (
     <HeaderContainer>
-      <Title>{title}</Title>
+      <Helmet>
+        <title>Provenance Explorer - {title}</title>
+      </Helmet>
+      <Title data-testid="page-title">{title}</Title>
       {showLine && <Line>|</Line>}
       {children}
       {value ? renderValueContainer() : null}

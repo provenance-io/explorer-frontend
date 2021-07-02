@@ -1,19 +1,21 @@
+import accountsReducer from './accountsReducer';
 import appReducer from './appReducer';
+import assetsReducer from './assetsReducer';
 import blocksReducer from './blocksReducer';
+import faucetReducer from './faucetReducer';
+import governanceReducer from './governanceReducer';
 import txsReducer from './txsReducer';
 import validatorsReducer from './validatorsReducer';
-import accountsReducer from './accountsReducer';
-import assetsReducer from './assetsReducer';
-import faucetReducer from './faucetReducer';
 
 const rootReducer = {
+  accountsReducer,
   appReducer,
+  assetsReducer,
   blocksReducer,
+  faucetReducer,
+  governanceReducer,
   txsReducer,
   validatorsReducer,
-  accountsReducer,
-  assetsReducer,
-  faucetReducer,
 };
 
 export default rootReducer;
