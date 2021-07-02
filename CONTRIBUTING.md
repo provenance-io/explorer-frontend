@@ -11,7 +11,7 @@ The Provenance Blockchain Explorer repository is built using [React](https://rea
 
 Thank you for considering making contributions to the Provenance Blockchain Explorer!
 
-Contributing to this repo can mean many things such as participatingh in
+Contributing to this repo can mean many things such as participating in
 discussion or proposing code changes. To ensure a smooth workflow for all
 contributors, the general procedure for contributing has been established:
 
