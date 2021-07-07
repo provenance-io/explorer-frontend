@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Wrapper, Header, Section } from 'Components';
 import { useGovernance } from 'redux/hooks';
-import { ProposalInformation } from './Components';
+import { ProposalDeposits, ProposalInformation } from './Components';
 
 const Proposal = () => {
   const { proposalId } = useParams();
@@ -22,6 +22,9 @@ const Proposal = () => {
       />
       <Section header>
         <ProposalInformation />
+      </Section>
+      <Section>
+        <ProposalDeposits />
       </Section>
     </Wrapper>
   );
