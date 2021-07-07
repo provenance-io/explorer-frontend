@@ -14,7 +14,9 @@ export const initialState = {
   addressVotesLoading: false,
   addressVotesPages: 0,
   // proposal
-  proposal: {},
+  proposal: {
+    header: { proposer: {} },
+  },
   proposalLoading: false,
   // prposalDeposits
   proposalDeposits: [],

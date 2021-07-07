@@ -3,20 +3,9 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
 import { maxLength, getUTCTime, capitalize, isEmpty, formatDenom } from 'utils';
-import { Content, Loading, Summary } from 'Components';
+import { Content, DataMissing, Loading, Summary } from 'Components';
 import { useTxs } from 'redux/hooks';
 
-const DataRow = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  margin-bottom: 10px;
-  word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
-  align-items: flex-start;
-`;
-const DataTitle = styled.div`
-  min-width: ${({ size }) => (size ? size : '200px')};
-  color: ${({ color, theme }) => (color ? color : theme.FONT_TITLE_INFO)};
-`;
 const FullTxInfoContainer = styled.div`
   color: ${({ theme }) => theme.FONT_LINK};
   margin-top: 20px;
@@ -68,9 +57,7 @@ const TxInformation = () => {
   };
 
   const buildNoResults = () => (
-    <DataRow>
-      <DataTitle>No information exists for transaction {txHash}</DataTitle>
-    </DataRow>
+    <DataMissing>No information exists for transaction {txHash}</DataMissing>
   );
 
   const buildTxInformationContent = () => {
@@ -111,7 +98,7 @@ const TxInformation = () => {
       },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
       errorCode !== 0 && { title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote },
-    ].filter((s) => s);
+    ].filter(s => s);
 
     return (
       <Fragment>
