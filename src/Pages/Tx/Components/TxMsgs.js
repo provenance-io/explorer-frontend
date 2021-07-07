@@ -11,21 +11,8 @@ import {
   isObject,
   maxLength,
 } from 'utils';
-import { Content, InfiniteScroll, Loading, Summary, Filters } from 'Components';
+import { Content, InfiniteScroll, Loading, Summary, Filters, DataMissing } from 'Components';
 import { useTxs } from 'redux/hooks';
-
-const DataRow = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  margin-bottom: 10px;
-  word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
-  align-items: flex-start;
-`;
-
-const DataTitle = styled.div`
-  min-width: ${({ size }) => (size ? size : '200px')};
-  color: ${({ color, theme }) => (color ? color : theme.FONT_TITLE_INFO)};
-`;
 
 const MsgContainer = styled.div`
   flex-basis: 100%;
@@ -62,7 +49,7 @@ const TxMsgs = () => {
   const { txHash } = useParams();
 
   const loadMsgs = useCallback(
-    (page) => {
+    page => {
       getTxMsgs({ txHash, count: 10, page, msgType: filterMsgType });
     },
     [getTxMsgs, txHash, filterMsgType]
@@ -79,12 +66,12 @@ const TxMsgs = () => {
   }, [loadMsgs, resetTxMsgs, txHash, filterMsgType]);
 
   // Use this to check for a reset to 'all' where we will pass '' as the type
-  const updateMsgFilterType = (newType) => {
+  const updateMsgFilterType = newType => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterMsgType(finalType);
   };
 
-  const msgs = txMsgs?.[txHash]?.map((msg) => [
+  const msgs = txMsgs?.[txHash]?.map(msg => [
     { title: 'Tx Type', value: capitalize(msg.type) },
     ...Object.entries(msg?.msg).map(([key, value]) => {
       const title = camelToSentence(key);
@@ -92,7 +79,7 @@ const TxMsgs = () => {
         case 'amount': {
           let amt = formatDenom(value.amount, value.denom);
           if (isArray(value)) {
-            amt = value.map((v) => formatDenom(v.amount, v.denom)).join(', ');
+            amt = value.map(v => formatDenom(v.amount, v.denom)).join(', ');
           }
           return {
             title,
@@ -156,7 +143,7 @@ const TxMsgs = () => {
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
           {({ sentryRef, hasNextPage }) => (
             <Fragment>
-              {msgs?.map((tx) => (
+              {msgs?.map(tx => (
                 <MsgContainer key={JSON.stringify(tx)}>
                   <Summary data={tx} />
                 </MsgContainer>
@@ -166,11 +153,7 @@ const TxMsgs = () => {
           )}
         </InfiniteScroll>
       ) : (
-        !txMsgsLoading && (
-          <DataRow>
-            <DataTitle>No information exists for transaction {txHash}</DataTitle>
-          </DataRow>
-        )
+        !txMsgsLoading && <DataMissing>No information exists for transaction {txHash}</DataMissing>
       )}
     </Content>
   );

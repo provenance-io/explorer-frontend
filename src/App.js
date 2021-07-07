@@ -17,6 +17,7 @@ import {
   Faucet,
   Icons,
   NoMatch404,
+  Proposal,
   Proposals,
   Tx,
   Txs,
@@ -56,6 +57,7 @@ const App = () => {
               <Route exact path="/dashboard" component={Dashboard} />
               <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
               <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
+              <Route path="/proposal/:proposalId" component={Proposal} />
               <Route path="/proposals" component={Proposals} />
               <Route path="/tx/:txHash" component={Tx} />
               <Route path="/txs" component={Txs} />

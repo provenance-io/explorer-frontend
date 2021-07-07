@@ -78,11 +78,12 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Address or hash leading to the proposal page
         case 'title': {
+          const { proposalId } = dataObj;
           finalObj[dataName] = {
             // value: maxLength(proposalId, 11),
             value: serverValue,
             hover: serverValue,
-            link: `/proposal/${serverValue}`,
+            link: `/proposal/${proposalId}`,
           };
           break;
         }

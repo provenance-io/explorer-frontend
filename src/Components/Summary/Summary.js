@@ -17,7 +17,7 @@ const SummaryRow = styled.div`
   align-items: flex-start;
 
   @media ${breakpoints.up('md')} {
-    flex-basis: 50%;
+    flex-basis: ${({ isJson }) => (isJson ? 100 : 50)}%;
   }
 `;
 const SummaryTitle = styled.div`
@@ -52,7 +52,7 @@ const NoteValue = styled.div`
   min-width: 100px;
 `;
 
-const buildPopupNote = (popupData) => {
+const buildPopupNote = popupData => {
   const {
     visibility = { visible: false, setVisible: () => {} },
     icon = { name: 'HELP_OUTLINE', size: '1.7rem' },
@@ -79,7 +79,7 @@ const buildPopupNote = (popupData) => {
       fontColor={fontColor}
     >
       <PopupNote show={visible} position={position}>
-        {data.map((rowData) => buildPopupRow(rowData))}
+        {data.map(rowData => buildPopupRow(rowData))}
       </PopupNote>
       <Sprite
         icon={icon.name}
@@ -144,11 +144,11 @@ const buildSummaryValue = (rowData, theme) => {
 };
 
 const buildSummaryRow = (rowData, theme) => {
-  const { title, value } = rowData;
+  const { title, value, isJson } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
-    <SummaryRow key={title}>
+    <SummaryRow key={title} isJson={isJson}>
       <SummaryTitle>{title}:</SummaryTitle>
       <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData, theme)}</SummaryValue>
     </SummaryRow>
@@ -157,7 +157,7 @@ const buildSummaryRow = (rowData, theme) => {
 
 const Summary = ({ data }) => {
   const { themeName } = useColorScheme();
-  return data.map((rowData) => buildSummaryRow(rowData, themeName));
+  return data.map(rowData => buildSummaryRow(rowData, themeName));
 };
 
 Summary.propTypes = {
