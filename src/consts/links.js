@@ -14,7 +14,11 @@ export const Links = {
     title: 'Transactions',
   },
   assets: {
-    url: `${Path.ASSETS_URL}`,
+    url: Path.ASSETS_URL,
     title: 'Assets',
+  },
+  gov: {
+    url: Path.GOV_URL,
+    title: 'Gov',
   },
 };

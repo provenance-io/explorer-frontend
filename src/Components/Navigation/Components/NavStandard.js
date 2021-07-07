@@ -77,11 +77,11 @@ const NavStandard = () => {
   const theme = useTheme();
 
   const buildLinks = () =>
-    Object.keys(Links).map((linkName) => {
+    Object.keys(Links).map(linkName => {
       const { url, title } = Links[linkName];
       const active = pathname === url ? 'true' : undefined;
       return (
-        <Link key={url} to={url} active={active}>
+        <Link key={url} to={url} active={active} data-testid={`${title.toLowerCase()}-navlink`}>
           {title}
         </Link>
       );
