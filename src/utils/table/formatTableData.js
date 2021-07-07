@@ -150,6 +150,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Height of a block
         case 'block': // fallthrough
+        case 'blockHeight': // fallthrough
         case 'height':
           finalObj[dataName] = {
             value: serverValue,
@@ -172,9 +173,10 @@ export const formatTableData = (data = [], tableHeaders) => {
             dataObj?.addressId ||
             dataObj?.proposerAddress ||
             dataObj?.ownerAddress ||
-            dataObj?.holdingAccount;
+            dataObj?.holdingAccount ||
+            dataObj?.voter?.address;
           finalObj[dataName] = {
-            value: serverValue,
+            value: maxLength(serverValue, 16, 3),
             link: `/validator/${linkAddress}`,
             hover: serverValue,
           };
@@ -186,6 +188,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'time': // fallthrough
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': // fallthrough
+        case 'txTimestamp': // fallthrough
         case 'votingTime.endTime': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
@@ -293,6 +296,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Server value capitalized
+        case 'depositType': // fallthrough
         case 'markerType': // fallthrough
         case 'proposalId': // fallthrough
         case 'status':

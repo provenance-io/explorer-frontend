@@ -8,7 +8,8 @@
 - Add Governance redux actions, reducer and hook #133
 - Add Proposals List page #134
 - Add Gov link to global nav #135
-- Add Proposal detail page and proposal info #136
+- Add proposal detail page and proposal info #136
+- Add proposol deposit card to detail page #139
 
 ### Bug Fixes
 
