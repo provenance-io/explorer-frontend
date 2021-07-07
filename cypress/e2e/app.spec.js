@@ -69,29 +69,20 @@ describe('App e2e', () => {
     });
   });
 
-  // TODO: Either refactor away from data-testId or add the ids throghout
-  it.skip('smoke test', () => {
-    cy.url().should('contain', '/dashboard');
-    cy.findByTestId('block-height').click();
+  it('should have the correct nav items', () => {
+    cy.findByTestId('dashboard-navlink').click();
+    cy.location('pathname').should('equal', '/dashboard');
 
-    cy.findByTestId('navlink-dashboard').click();
+    cy.findByTestId('staking-navlink').click();
+    cy.location('pathname').should('equal', '/validators');
 
-    cy.findByText(/\d*\/\d* validators/i).click();
+    cy.findByTestId('transactions-navlink').click();
+    cy.location('pathname').should('equal', '/txs');
 
-    cy.findByText(/block hash/i).should('exist');
+    cy.findByTestId('assets-navlink').click();
+    cy.location('pathname').should('equal', '/assets');
 
-    cy.findByTestId('block-details').findByRole('link').click();
-
-    cy.findByTestId('navlink-transactions').click();
-
-    cy.findByRole('button', { name: '5' }).click();
-
-    cy.findByTestId(/form-status/i).click();
-
-    cy.findByTestId(/form-status/i)
-      .findByText(/failure/i)
-      .click();
-
-    cy.findByText(/apply/i).click();
+    cy.findByTestId('gov-navlink').click();
+    cy.location('pathname').should('equal', '/proposals');
   });
 });

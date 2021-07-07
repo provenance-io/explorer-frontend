@@ -7,6 +7,7 @@
 - Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
 - Add Governance redux actions, reducer and hook #133
 - Add Proposals List page #134
+- Add Gov link to global nav #135
 - Add Proposal detail page and proposal info #136
 
 ### Bug Fixes
