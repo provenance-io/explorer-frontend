@@ -11,6 +11,10 @@
 - Add proposal detail page and proposal info #136
 - Add proposol deposit card to detail page #139
 
+### Improvements
+
+- Update dependencies #162
+
 ### Bug Fixes
 
 - Fix FireFox invalid date filters #145
