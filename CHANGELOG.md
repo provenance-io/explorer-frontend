@@ -9,6 +9,7 @@
 - Add Proposals List page #134
 - Add Gov link to global nav #135
 - Add proposal detail page and proposal info #136
+- Add proposal timing detail and progress bar #137
 - Add proposol deposit card to detail page #139
 
 ### Improvements

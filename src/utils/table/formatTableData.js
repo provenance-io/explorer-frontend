@@ -189,7 +189,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': // fallthrough
         case 'txTimestamp': // fallthrough
-        case 'votingTime.endTime': {
+        case 'votingTime.endTime': //fallthrough
+        case 'votingTime.startTime': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;
