@@ -19,6 +19,7 @@ const ProgressValue = styled.span`
   left: 0;
   display: block;
   width: ${({ value }) => (value > 100 ? 100 : value)}%;
+  height: ${({ initial }) => initial && '50%'};
   max-height: 100%;
   text-indent: -9999px;
   background-color: ${({ initial, theme }) => (initial ? theme.CHART_PIE_A : theme.CHART_PIE_F)};
