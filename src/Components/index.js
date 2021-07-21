@@ -24,4 +24,5 @@ export { default as DropdownBtn } from './DropdownBtn';
 export { default as Modal } from './Modal';
 export { default as Input } from './Input';
 export { default as InfiniteScroll } from './InfiniteScroll';
+export { default as Progress } from './Progress';
 export * from './Layout';

@@ -7,6 +7,7 @@ import {
   ProposalInformation,
   ProposalTimingProgressBar,
   ProposalTimingTable,
+  ProposalVotingGraph,
   ProposalVotingTable,
 } from './Components';
 
@@ -37,6 +38,9 @@ const Proposal = () => {
       </Section>
       <Section>
         <ProposalDeposits />
+      </Section>
+      <Section>
+        <ProposalVotingGraph />
       </Section>
       <Section>
         <ProposalVotingTable />
