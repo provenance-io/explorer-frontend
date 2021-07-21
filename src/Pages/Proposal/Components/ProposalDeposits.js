@@ -22,7 +22,7 @@ const ProposalDeposits = () => {
   }, [currentPage, getProposalDeposits, proposalId]);
 
   const tableHeaders = [
-    { displayName: 'Depositor', dataName: 'moniker' },
+    { displayName: 'Depositor', dataName: 'voter' },
     { displayName: 'Deposit Type', dataName: 'depositType' },
     { displayName: 'Amount', dataName: 'amount' },
     { displayName: 'Tx Hash', dataName: 'txHash' },
@@ -33,7 +33,6 @@ const ProposalDeposits = () => {
   const tableData = proposalDeposits.map(d => ({
     ...d,
     depositType: d.type,
-    moniker: d.voter.moniker || d.voter.address,
   }));
 
   return (

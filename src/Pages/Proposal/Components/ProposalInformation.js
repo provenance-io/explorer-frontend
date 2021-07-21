@@ -21,11 +21,11 @@ const ProposalInformation = () => {
 
   const summaryData = [
     { title: 'ID', value: proposalId },
-    { title: 'Title', value: title },
+    { title: 'Title', value: title, nobreak: true },
     { title: 'Status', value: status },
     { title: 'Proposer', value: moniker || address },
     { title: 'Type', value: type },
-    { title: 'Description', value: description },
+    { title: 'Description', value: description, nobreak: true },
     details && { title: 'Details', value: JSON.stringify(details), isJson: true },
   ].filter(sd => sd);
 

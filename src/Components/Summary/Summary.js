@@ -144,11 +144,11 @@ const buildSummaryValue = (rowData, theme) => {
 };
 
 const buildSummaryRow = (rowData, theme) => {
-  const { title, value, isJson } = rowData;
+  const { isJson, nobreak = false, title, value } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
-    <SummaryRow key={title} isJson={isJson}>
+    <SummaryRow key={title} isJson={isJson} nobreak={nobreak}>
       <SummaryTitle>{title}:</SummaryTitle>
       <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData, theme)}</SummaryValue>
     </SummaryRow>

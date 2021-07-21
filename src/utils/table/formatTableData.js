@@ -3,6 +3,7 @@ import { numberFormat } from '../number/numberFormat';
 import { formatDenom } from '../number/formatDenom';
 import { capitalize } from '../string/capitalize';
 import { getUTCTime } from '../date/getUTCTime';
+import { isEmpty } from '../lang/isEmpty';
 
 // Thought process here: There is a lot of repeating data that we've been cleaning and massaging.
 // Why not just look for any of these common values and have a standard format for them.
@@ -173,12 +174,25 @@ export const formatTableData = (data = [], tableHeaders) => {
             dataObj?.addressId ||
             dataObj?.proposerAddress ||
             dataObj?.ownerAddress ||
-            dataObj?.holdingAccount ||
-            dataObj?.voter?.address;
+            dataObj?.holdingAccount;
           finalObj[dataName] = {
             value: maxLength(serverValue, 16, 3),
             link: `/validator/${linkAddress}`,
             hover: serverValue,
+          };
+          break;
+        }
+        // Address / Moniker of a voter
+        case 'voter': {
+          const isValidator = !isEmpty(serverValue.validatorAddr);
+          const page = isValidator ? 'validator' : 'accounts';
+          const address = isValidator ? serverValue.validatorAddr : serverValue.address;
+          const value = serverValue?.moniker || address;
+
+          finalObj[dataName] = {
+            value: maxLength(value, 16, 3),
+            link: `/${page}/${address}`,
+            hover: value,
           };
           break;
         }
@@ -296,6 +310,10 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: `${numberFormat(serverValue)} %` };
           break;
         }
+        // Server value capitalized, remove VOTE_OPTION_
+        case 'answer':
+          finalObj[dataName] = { value: capitalize(serverValue.replace(/vote_option_/gi, '')) };
+          break;
         // Server value capitalized
         case 'depositType': // fallthrough
         case 'markerType': // fallthrough
