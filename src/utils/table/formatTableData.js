@@ -78,6 +78,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         // Address or hash leading to the proposal page
+        case 'proposalTitle': // fallthrough
         case 'title': {
           const { proposalId } = dataObj;
           finalObj[dataName] = {
@@ -318,6 +319,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'depositType': // fallthrough
         case 'markerType': // fallthrough
         case 'proposalId': // fallthrough
+        case 'proposalStatus': // fallthrough
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue) };
           break;

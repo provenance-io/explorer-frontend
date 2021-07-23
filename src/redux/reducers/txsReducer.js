@@ -6,6 +6,7 @@ import {
   GET_TX_FULL_JSON,
   GET_TX_HISTORY,
   GET_TX_INFO,
+  GET_TX_BY_MODULE,
   GET_TX_MSGS,
   GET_TX_MSG_TYPES,
   GET_TXS_RECENT,
@@ -49,6 +50,10 @@ export const initialState = {
   // Tx Msg Types
   txMsgTypes: {},
   txMsgLoading: false,
+  // TX Modules
+  txByModule: [],
+  txByModuleLoading: false,
+  txByModulePages: 0,
 };
 
 const reducer = handleActions(
@@ -311,6 +316,30 @@ const reducer = handleActions(
       return {
         ...state,
         txMsgTypesLoading: false,
+      };
+    },
+    /* -----------------
+    GET_TX_BY_MODULE
+    -------------------*/
+    [`${GET_TX_BY_MODULE}_${REQUEST}`](state) {
+      return {
+        ...state,
+        txByModuleLoading: true,
+      };
+    },
+    [`${GET_TX_BY_MODULE}_${SUCCESS}`](state, { payload }) {
+      const { pages: txByModulePages, results: txByModule } = payload;
+      return {
+        ...state,
+        txByModule,
+        txByModulePages,
+        txByModuleLoading: false,
+      };
+    },
+    [`${GET_TX_BY_MODULE}_${FAILURE}`](state) {
+      return {
+        ...state,
+        txByModuleLoading: false,
       };
     },
   },

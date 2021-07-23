@@ -2,11 +2,12 @@ import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
 import {
-  ValidatorSpotlight,
   ValidatorCommission,
   ValidatorDelegations,
-  ValidatorUnbondingDelegations,
   ValidatorDelegationTxs,
+  ValidatorGovernance,
+  ValidatorSpotlight,
+  ValidatorUnbondingDelegations,
   ValidationTxs,
 } from './Components';
 
@@ -15,7 +16,12 @@ const Validator = () => {
 
   return (
     <Wrapper>
-      <Header title="Validator Details" value={validatorId} copyValue={validatorId} copyTitle="Copy Validator ID" />
+      <Header
+        title="Validator Details"
+        value={validatorId}
+        copyValue={validatorId}
+        copyTitle="Copy Validator ID"
+      />
       <Section header>
         <ValidatorSpotlight />
       </Section>
@@ -31,6 +37,9 @@ const Validator = () => {
       </Section>
       <Section>
         <ValidationTxs />
+      </Section>
+      <Section>
+        <ValidatorGovernance />
       </Section>
     </Wrapper>
   );
