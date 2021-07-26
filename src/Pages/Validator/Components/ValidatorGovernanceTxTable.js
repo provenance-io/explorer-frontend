@@ -16,16 +16,20 @@ const ValidatorGovernanceTxTable = () => {
 
   useEffect(() => {
     if (address) {
-      getTxByModule({ module: 'GOVERNANCE', address, count: 10, page: tableCurrentPage });
+      getTxByModule({ module: 'gov', address, count: 10, page: tableCurrentPage });
     }
   }, [address, getTxByModule, tableCurrentPage]);
 
   const tableHeaders = [
     { displayName: 'Tx Hash', dataName: 'txHash' },
     { displayName: 'Block', dataName: 'block' },
-    { displayName: 'Status', dataName: 'status' },
-    { displayName: 'Fee', dataName: 'fee' },
-    { displayName: 'Signer', dataName: 'signers ' },
+    { displayName: 'Proposal Type', dataName: 'proposalType' },
+    { displayName: 'Proposal Id', dataName: 'proposalId' },
+    { displayName: 'Proposal Title', dataName: 'proposalTitle' },
+    { displayName: 'Amount', dataName: 'depositAmount' },
+    { displayName: 'Tx Type', dataName: 'txMsgType' },
+    { displayName: 'Fee', dataName: 'txFee' },
+    { displayName: 'Signer', dataName: 'signers' },
     { displayName: 'Timestamp', dataName: 'time' },
   ];
 
