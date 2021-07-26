@@ -12,6 +12,8 @@
 - Add proposal timing detail and progress bar #137
 - Add proposal voting detail and progress bar #138
 - Add proposol deposit card to detail page #139
+- Add gov txs to validator detail #140
+- Add proposal votes to validator detail #141
 
 ### Improvements
 

@@ -78,6 +78,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         // Address or hash leading to the proposal page
+        case 'proposalTitle': // fallthrough
         case 'title': {
           const { proposalId } = dataObj;
           finalObj[dataName] = {
@@ -123,12 +124,14 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Amount of currency/item and its denomination given in an object (amount)
-        case 'amount': {
+        case 'amount': // fallthrough
+        case 'depositAmount': {
           const { amount = '--', denom = '--' } = serverValue || {};
           finalObj[dataName] = { value: formatDenom(amount, denom) };
           break;
         }
-        case 'fee': {
+        case 'fee': // fallthrough
+        case 'txFee': {
           const { amount = '--', denom = '--' } = serverValue || {};
           finalObj[dataName] = {
             // We don't want to round the fees, they are already rounded when we receive them
@@ -318,7 +321,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'depositType': // fallthrough
         case 'markerType': // fallthrough
         case 'proposalId': // fallthrough
+        case 'proposalStatus': // fallthrough
+        case 'proposalType': // fallthrough
         case 'status':
+        case 'txMsgType':
           finalObj[dataName] = { value: capitalize(serverValue) };
           break;
         default:
