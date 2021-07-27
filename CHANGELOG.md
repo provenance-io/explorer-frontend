@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fix some bugs in displaying proposal info #171
+
 ## 2.1.0 - 2021-07-26
 
 ### Release Name: Xu Fu
