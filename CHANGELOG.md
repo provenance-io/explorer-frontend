@@ -2,28 +2,32 @@
 
 ## Unreleased
 
+## 2.1.0 - 2021-07-26
+
+### Release Name: Xu Fu
+
 ### Features
 
-- Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) #127
-- Add Governance redux actions, reducer and hook #133
-- Add Proposals List page #134
-- Add Gov link to global nav #135
-- Add proposal detail page and proposal info #136
-- Add proposal timing detail and progress bar #137
-- Add proposal voting detail and progress bar #138
-- Add proposol deposit card to detail page #139
-- Add gov txs to validator detail #140
-- Add proposal votes to validator detail #141
+- Create a filter dropdown in tx messages to filter by tx type (must have 2+ to show) [#127](https://github.com/provenance-io/explorer-frontend/issues/127)
+- Add Governance redux actions, reducer and hook [#133](https://github.com/provenance-io/explorer-frontend/issues/133)
+- Add Proposals List page [#134](https://github.com/provenance-io/explorer-frontend/issues/134)
+- Add Gov link to global nav [#135](https://github.com/provenance-io/explorer-frontend/issues/135)
+- Add proposal detail page and proposal info [#136](https://github.com/provenance-io/explorer-frontend/issues/136)
+- Add proposal timing detail and progress bar [#137](https://github.com/provenance-io/explorer-frontend/issues/137)
+- Add proposal voting detail and progress bar [#138](https://github.com/provenance-io/explorer-frontend/issues/138)
+- Add proposol deposit card to detail page [#139](https://github.com/provenance-io/explorer-frontend/issues/139)
+- Add gov txs to validator detail [#140](https://github.com/provenance-io/explorer-frontend/issues/140)
+- Add proposal votes to validator detail [#141](https://github.com/provenance-io/explorer-frontend/issues/141)
 
 ### Improvements
 
-- Update dependencies #162
+- Update dependencies [#162](https://github.com/provenance-io/explorer-frontend/issues/162)
 
 ### Bug Fixes
 
-- Fix FireFox invalid date filters #145
-- Fix Metadata loading in multiple components and looping when failing #147
-- Fix BlockTxs API call happening 2x #128
+- Fix FireFox invalid date filters [#145](https://github.com/provenance-io/explorer-frontend/issues/145)
+- Fix Metadata loading in multiple components and looping when failing [#147](https://github.com/provenance-io/explorer-frontend/issues/147)
+- Fix BlockTxs API call happening 2x [#128](https://github.com/provenance-io/explorer-frontend/issues/128)
 
 ## 2.0.2
 
