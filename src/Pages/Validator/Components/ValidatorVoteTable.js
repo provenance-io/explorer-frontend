@@ -23,9 +23,9 @@ const ValidatorVoteTable = () => {
   const tableHeaders = [
     { displayName: 'Proposal ID', dataName: 'proposalId' },
     { displayName: 'Proposal Title', dataName: 'proposalTitle' },
-    { displayName: 'Proposal status', dataName: 'proposalStatus' },
-    { displayName: 'Vote answer', dataName: 'answer' },
-    { displayName: 'Tx Hash', dataName: 'txHash' },
+    { displayName: 'Proposal Status', dataName: 'proposalStatus' },
+    { displayName: 'Vote Answer', dataName: 'answer' },
+    { displayName: 'TxHash', dataName: 'txHash' },
   ];
 
   return (

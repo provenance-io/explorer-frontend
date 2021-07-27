@@ -206,6 +206,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': // fallthrough
         case 'txTimestamp': // fallthrough
+        case 'txTime': // fallthrough
         case 'votingTime.endTime': //fallthrough
         case 'votingTime.startTime': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
@@ -317,13 +318,15 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'answer':
           finalObj[dataName] = { value: capitalize(serverValue.replace(/vote_option_/gi, '')) };
           break;
+        case 'proposalStatus': // fallthrough
+        case 'status':
+          finalObj[dataName] = { value: capitalize(serverValue.replace(/proposal_status/gi, '')) };
+          break;
         // Server value capitalized
         case 'depositType': // fallthrough
         case 'markerType': // fallthrough
         case 'proposalId': // fallthrough
-        case 'proposalStatus': // fallthrough
         case 'proposalType': // fallthrough
-        case 'status':
         case 'txMsgType':
           finalObj[dataName] = { value: capitalize(serverValue) };
           break;
