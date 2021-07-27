@@ -21,16 +21,16 @@ const ValidatorGovernanceTxTable = () => {
   }, [address, getTxByModule, tableCurrentPage]);
 
   const tableHeaders = [
-    { displayName: 'Tx Hash', dataName: 'txHash' },
+    { displayName: 'TxHash', dataName: 'txHash' },
     { displayName: 'Block', dataName: 'block' },
     { displayName: 'Proposal Type', dataName: 'proposalType' },
     { displayName: 'Proposal Id', dataName: 'proposalId' },
     { displayName: 'Proposal Title', dataName: 'proposalTitle' },
     { displayName: 'Amount', dataName: 'depositAmount' },
-    { displayName: 'Tx Type', dataName: 'txMsgType' },
+    { displayName: 'TxType', dataName: 'txMsgType' },
     { displayName: 'Fee', dataName: 'txFee' },
     { displayName: 'Signer', dataName: 'signers' },
-    { displayName: 'Timestamp', dataName: 'time' },
+    { displayName: 'Timestamp', dataName: 'txTime' },
   ];
 
   return (
