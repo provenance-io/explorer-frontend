@@ -2,9 +2,13 @@
 
 ## Unreleased
 
+## 2.1.1 - 2021-07-30
+
+### Release Name: Juan de Fuca
+
 ### Bug Fixes
 
-- Fix some bugs in displaying proposal info #171
+- Fix some bugs in displaying proposal info [#171](https://github.com/provenance-io/explorer-frontend/issues/171)
 
 ## 2.1.0 - 2021-07-26
 
