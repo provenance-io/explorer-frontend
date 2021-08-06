@@ -1,14 +1,25 @@
 import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'redux/hooks';
+import { breakpoints } from 'consts';
+import { maxLength } from 'utils';
 import { AccountSpotlight, AccountTxs, AccountAssets } from './Components';
 
 const Accounts = () => {
   const { addressId } = useParams();
+  const { matches } = useMediaQuery(breakpoints.down('sm'));
+
+  const headerValue = matches ? maxLength(addressId, 20, 3) : addressId;
 
   return (
     <Wrapper>
-      <Header title="Account Details" value={addressId} copyValue={addressId} copyTitle="Copy Address" />
+      <Header
+        title="Account Details"
+        value={headerValue}
+        copyValue={addressId}
+        copyTitle="Copy Address"
+      />
       <Section header>
         <AccountSpotlight />
       </Section>

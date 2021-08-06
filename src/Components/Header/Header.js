@@ -25,7 +25,7 @@ const HeaderContainer = styled.div`
   }
   @media ${breakpoints.down('md')} {
     padding: 10px;
-    top: 82px;
+    top: 52px;
   }
 `;
 const Title = styled.h2`

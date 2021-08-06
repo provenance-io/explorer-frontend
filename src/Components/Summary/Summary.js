@@ -8,25 +8,14 @@ import { useColorScheme } from 'redux/hooks';
 import PopupNote from '../PopupNote';
 import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
+import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '../DataRow';
 
-const SummaryRow = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  margin: 10px 0;
+const SummaryRow = styled(DataRow)`
   word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
-  align-items: flex-start;
 
   @media ${breakpoints.up('md')} {
     flex-basis: ${({ isJson }) => (isJson ? 100 : 50)}%;
   }
-`;
-const SummaryTitle = styled.div`
-  min-width: ${({ size }) => (size ? size : '200px')};
-  color: ${({ color, theme }) => (color ? color : theme.FONT_TITLE_INFO)};
-`;
-const SummaryValue = styled.div`
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
-  display: flex;
 `;
 const SummaryChange = styled.div`
   color: ${({ negative, theme }) => (negative ? theme.RED_DARK : theme.GREEN_PRIMARY)};
@@ -157,6 +146,7 @@ const buildSummaryRow = (rowData, theme) => {
 
 const Summary = ({ data }) => {
   const { themeName } = useColorScheme();
+  console.log(data);
   return data.map(rowData => buildSummaryRow(rowData, themeName));
 };
 

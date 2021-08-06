@@ -12,17 +12,6 @@ const ContentWrapper = styled.div`
   flex-basis: ${({ size }) => size};
   ${({ alignSelf }) => alignSelf && `align-self: ${alignSelf};`};
   max-width: ${({ size }) => size};
-  /* If we are size 100%, don't add any right/left margins */
-  ${({ size }) =>
-    size !== '100%' &&
-    `
-    :first-child {
-      padding: 0 10px 0 0;
-    }
-    :last-child {
-      padding: 0 0 0 10px;
-    }
-  `}
 `;
 const ContentSpacer = styled.div`
   padding: 20px;

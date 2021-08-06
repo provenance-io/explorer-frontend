@@ -1,27 +1,16 @@
-import React, { Fragment, useState } from 'react';
-import { VALIDATOR_GOV_OPTIONS } from 'consts';
-import { Filters } from 'Components';
+import React, { useState } from 'react';
+import { MultiTable } from 'Components';
 import ValidatorGovernanceTxTable from './ValidatorGovernanceTxTable';
 import ValidatorVoteTable from './ValidatorVoteTable';
 
 const ValidatorGovernanceTxs = () => {
-  const [filterStatus, setFilterStatus] = useState('txs');
-
-  const filterData = [
-    {
-      title: '',
-      type: 'dropdown',
-      options: VALIDATOR_GOV_OPTIONS,
-      action: setFilterStatus,
-    },
-  ];
+  const [activeTableTab, setActiveTableTab] = useState(0);
 
   return (
-    <Fragment>
-      <Filters filterData={filterData} />
-      {filterStatus === 'txs' && <ValidatorGovernanceTxTable />}
-      {filterStatus === 'votes' && <ValidatorVoteTable />}
-    </Fragment>
+    <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
+      <ValidatorGovernanceTxTable key="Gov Txs" />
+      <ValidatorVoteTable key="Voted Proposals" />
+    </MultiTable>
   );
 };
 

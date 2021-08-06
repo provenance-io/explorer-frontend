@@ -1,8 +1,18 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useAccounts } from 'redux/hooks';
-import { Content, CopyValue, Sprite, Loading } from 'Components';
+import { useAccounts, useMediaQuery } from 'redux/hooks';
+import {
+  Content,
+  CopyValue,
+  DataRow as Row,
+  DataTitle as Title,
+  DataValue as Value,
+  Sprite,
+  Loading,
+} from 'Components';
+import { breakpoints } from 'consts';
+import { maxLength } from 'utils';
 
 const Column = styled.div`
   ${({ flexBasis }) => flexBasis && `flex-basis: ${flexBasis};`}
@@ -10,22 +20,13 @@ const Column = styled.div`
   flex-wrap: wrap;
   align-items: flex-start;
 `;
-const Row = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  margin-bottom: 10px;
-`;
-const Title = styled.div`
-  width: 160px;
-`;
-const Value = styled.div`
-  display: flex;
-`;
+
 const TokenIcon = styled.div``;
 
 const AccountSpotlight = () => {
   const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo } = useAccounts();
   const { addressId } = useParams();
+  const { matches } = useMediaQuery(breakpoints.down('sm'));
 
   useEffect(() => {
     getAccountAssets(addressId);
@@ -41,6 +42,8 @@ const AccountSpotlight = () => {
   } = accountInfo;
   const publicKey = publicKeys.signers ? publicKeys.signers[0] : '';
 
+  // TODO: Refactor to use Summary component
+
   return (
     <Content justify="flex-start">
       {accountInfoLoading ? (
@@ -51,11 +54,11 @@ const AccountSpotlight = () => {
             <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
           </Column>
           <Column flexBasis="90%">
-            <Column flexBasis="45%">
+            <Column flexBasis="40%">
               <Row>
                 <Title>Address:</Title>
                 <Value title={addressId}>
-                  {addressId}
+                  {matches ? maxLength(addressId, 20, 3) : addressId}
                   <CopyValue value={addressId} title="Copy Address" />
                 </Value>
               </Row>
@@ -72,13 +75,13 @@ const AccountSpotlight = () => {
                 <Value>{accountNumber}</Value>
               </Row>
             </Column>
-            <Column flexBasis="45%">
+            <Column flexBasis="40%">
               <Row>
                 <Title>Public Key:</Title>
                 <Value>
                   {publicKey ? (
                     <>
-                      {publicKey}
+                      {matches ? maxLength(publicKey, 20, 3) : publicKey}
                       <CopyValue value={publicKey} title="Copy Public Key" />
                     </>
                   ) : (

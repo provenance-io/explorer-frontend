@@ -18,6 +18,7 @@ export { default as Summary } from './Summary';
 export { default as Button } from './Button';
 export { default as DataCard } from './DataCard';
 export { default as DataMissing } from './DataMissing';
+export { default as DataRow, DataTitle, DataValue } from './DataRow';
 export { default as Toggle } from './Toggle';
 export { default as UserAccount } from './UserAccount';
 export { default as DropdownBtn } from './DropdownBtn';

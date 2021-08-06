@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const MultiTableContainer = styled.div`
-  display: flex;
   width: 100%;
-  flex-wrap: wrap;
 `;
 const TableLabelsContainer = styled.div`
   display: flex;
@@ -40,7 +38,7 @@ const MultiTable = ({ className, children, active, setActive }) => {
 
   // On component load, get all names of tables to render labels
   useEffect(() => {
-    const allLabels = children.map((table) => table.key);
+    const allLabels = children.map(table => table.key);
     setTableLabels(allLabels);
   }, [children]);
   useEffect(() => {
@@ -51,7 +49,9 @@ const MultiTable = ({ className, children, active, setActive }) => {
 
   // Render each of the tables requested
   const renderTables = () =>
-    children.map((childTable, index) => (index === active ? <TableChild key={index}>{childTable}</TableChild> : null));
+    children.map((childTable, index) =>
+      index === active ? <TableChild key={index}>{childTable}</TableChild> : null
+    );
 
   const renderLabels = () =>
     tableLabels.map((label, index) => (

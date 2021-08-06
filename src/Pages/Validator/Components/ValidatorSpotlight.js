@@ -2,8 +2,18 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { Content, CopyValue, PopupNote, Sprite, Loading } from 'Components';
+import {
+  Content,
+  CopyValue,
+  DataRow,
+  DataTitle,
+  DataValue,
+  PopupNote,
+  Sprite,
+  Loading,
+} from 'Components';
 import { capitalize, getFormattedDate, maxLength, numberFormat } from 'utils';
+import { breakpoints } from 'consts';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -26,26 +36,20 @@ const Row = styled.div`
   margin-bottom: 10px;
 `;
 const Half = styled.div`
-  text-align: center;
-  flex-basis: 50%;
+  flex-basis: 100%;
+
+  @media ${breakpoints.up('sm')} {
+    text-align: center;
+    flex-basis: 50%;
+  }
 `;
 const SpotlightContainer = styled.div`
-  margin-right: 60px;
-  border-right: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
-`;
-const DataRow = styled.div`
-  display: flex;
-  flex-basis: 100%;
-  margin-bottom: 10px;
-  text-align: left;
-`;
-const DataTitle = styled.div`
-  min-width: ${({ size }) => (size ? size : '200px')};
-  color: ${({ theme }) => theme.FONT_PRIMARY};
-`;
-const DataValue = styled.div`
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
-  display: flex;
+  text-align: center;
+
+  @media ${breakpoints.up('sm')} {
+    margin-right: 60px;
+    border-right: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
+  }
 `;
 const ValueRow = styled.div`
   display: flex;
@@ -108,6 +112,8 @@ const ValidatorSpotlight = () => {
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower || {};
   const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
   const { count: missedBlocksCount, total: missedBlocksTotal } = blockCount;
+
+  // TODO: Refactor to use Summary component
 
   return (
     <Content>
