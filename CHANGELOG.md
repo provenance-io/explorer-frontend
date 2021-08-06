@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fix for mobile overflow #68
+
 ## 2.1.1 - 2021-07-30
 
 ### Release Name: Juan de Fuca
