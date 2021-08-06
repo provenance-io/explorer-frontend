@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useValidators } from 'redux/hooks';
+import { useMediaQuery, useValidators } from 'redux/hooks';
+import { breakpoints } from 'consts';
 
 const ValidatorDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
+  const { matches } = useMediaQuery(breakpoints.up('sm'));
   const {
     getValidatorDelegations: getTableData,
     validatorDelegations: tableData,
@@ -35,7 +37,7 @@ const ValidatorDelegations = () => {
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Delegations"
-      size="50%"
+      size={matches && '50%'}
     />
   );
 };

@@ -31,8 +31,3 @@ export const TRANSACTION_HISTORY_GRANULARITY_OPTIONS = {
   day: { title: 'Day', isDefault: true },
   hour: { title: 'Hour' },
 };
-
-export const VALIDATOR_GOV_OPTIONS = {
-  txs: { isDefault: true, title: 'Gov Txs' },
-  votes: { title: 'Voted Proposals' },
-};

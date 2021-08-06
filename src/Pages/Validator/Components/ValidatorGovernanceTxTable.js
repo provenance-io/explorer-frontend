@@ -41,7 +41,6 @@ const ValidatorGovernanceTxTable = () => {
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
-      title="Gov Txs"
     />
   );
 };

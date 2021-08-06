@@ -10,7 +10,7 @@ import {
 
 export const initialState = {
   // addressVotes
-  addressVotes: {},
+  addressVotes: [],
   addressVotesLoading: false,
   addressVotesPages: 0,
   // proposal

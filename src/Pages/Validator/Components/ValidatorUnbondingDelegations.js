@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useValidators } from 'redux/hooks';
+import { useMediaQuery, useValidators } from 'redux/hooks';
+import { breakpoints } from 'consts';
 
 const ValidatorUnbondingDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
+  const { matches } = useMediaQuery(breakpoints.up('sm'));
+  console.log(matches);
   const {
     getValidatorUnbondingDelegations: getTableData,
     validatorUnbondingDelegations: tableData,
@@ -36,7 +39,7 @@ const ValidatorUnbondingDelegations = () => {
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Unbonding Delegations"
-      size="50%"
+      size={matches && '50%'}
     />
   );
 };

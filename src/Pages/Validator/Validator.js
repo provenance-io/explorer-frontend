@@ -1,6 +1,9 @@
 import React from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
+import { useMediaQuery } from 'redux/hooks';
+import { breakpoints } from 'consts';
+import { maxLength } from 'utils';
 import {
   ValidatorCommission,
   ValidatorDelegations,
@@ -13,12 +16,15 @@ import {
 
 const Validator = () => {
   const { validatorId } = useParams();
+  const { matches } = useMediaQuery(breakpoints.down('sm'));
+
+  const headerValue = matches ? maxLength(validatorId, 20, 3) : validatorId;
 
   return (
     <Wrapper>
       <Header
         title="Validator Details"
-        value={validatorId}
+        value={headerValue}
         copyValue={validatorId}
         copyTitle="Copy Validator ID"
       />

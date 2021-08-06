@@ -36,7 +36,6 @@ const ValidatorVoteTable = () => {
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
-      title="Voted Proposals"
     />
   );
 };
