@@ -7,6 +7,7 @@ import * as governanceActions from './governanceActions';
 import * as txsActions from './txsActions';
 import * as validatorsActions from './validatorsActions';
 import * as xhrActions from './xhrActions';
+import * as orderbookActions from './orderbookActions';
 
 export {
   accountsActions,
@@ -18,4 +19,5 @@ export {
   txsActions,
   validatorsActions,
   xhrActions,
+  orderbookActions,
 };
