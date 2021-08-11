@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Features
+
+- Add 24 Hour Volume, Latest Price and Market Cap to the dashboard #77
+
 ### Bug Fixes
 
 - Fix for mobile overflow #68

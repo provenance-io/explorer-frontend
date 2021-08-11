@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
+import Big from 'big.js';
 import { Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
 import { maxLength, getUTCTime, numberFormat, formatSeconds, formatDenom } from 'utils';
 import { polling } from 'consts';
+import useOrderbook from 'redux/hooks/useOrderbook';
+import isYesterday from 'date-fns/isYesterday';
 
 const Group = styled.div`
   display: flex;
@@ -46,18 +49,43 @@ const BlockSpotlight = () => {
   const [blockLoading, setBlockLoading] = useState(false);
   const { blockLatest, getBlockSpotlight, blockSpotlightFailed, blockSpotlightLoading } =
     useBlocks();
+  const { dailyPrice, priceHistory, getDailyPrice, getPriceHistory } = useOrderbook();
+
+  // Find all the prev day's prices and get the average price for the previous day
+  const prevDayPrices = priceHistory.filter(i => isYesterday(new Date(i.dateTime)));
+  const prevDayAverage = prevDayPrices
+    .reduce((acc, curr) => acc.add(curr.displayPricePerDisplayUnit), new Big(0))
+    .div(prevDayPrices.length || 1);
+
+  const latestDisplayPrice = dailyPrice.latestDisplayPricePerDisplayUnit || 1;
+  // Check if the price increased from yesterday
+  const priceIncrease = prevDayAverage.lte(latestDisplayPrice);
+  // figure out the price change from yesterday
+  const priceChange = priceIncrease
+    ? prevDayAverage.div(latestDisplayPrice)
+    : new Big(latestDisplayPrice).div(prevDayAverage);
+  // create percentage based on the change
+  const priceChangePercent = `${priceIncrease ? `+` : `-`}${new Big(1)
+    .minus(priceChange)
+    .times(100)
+    .toFixed(0)}%`;
 
   // Initial load, get most recent blocks
   useEffect(() => {
-    if (initialLoad) {
-      setBlockLoading(true);
-      setInitialLoad(false);
-      // Get initial blocks
-      getBlockSpotlight()
-        .then(() => setBlockLoading(false))
-        .catch(() => setBlockLoading(false));
-    }
-  }, [getBlockSpotlight, initialLoad]);
+    (async () => {
+      if (initialLoad) {
+        setBlockLoading(true);
+        setInitialLoad(false);
+        // Get initial blocks
+        try {
+          await Promise.all([getBlockSpotlight(), getDailyPrice(), getPriceHistory('WEEK')]);
+          setBlockLoading(false);
+        } catch (e) {
+          setBlockLoading(false);
+        }
+      }
+    })();
+  }, [getBlockSpotlight, getDailyPrice, getPriceHistory, initialLoad]);
 
   // Poll the API for new data every 5s
   useInterval(
@@ -87,6 +115,10 @@ const BlockSpotlight = () => {
     minimumFractionDigits: 2,
   })}%`;
   const txTotalCountShorthand = numberFormat(totalTxCount, 1, { shorthand: true });
+
+  const latestPrice = new Big(dailyPrice.latestDisplayPricePerDisplayUnit || 0);
+  const twentyFourHourVolume = latestPrice.times(dailyPrice.displayVolumeTraded || 0);
+  const marketCap = latestPrice.times(100000000000);
 
   return (
     <Content justify="center" alignItems="flex-start">
@@ -143,10 +175,27 @@ const BlockSpotlight = () => {
             </DataCard>
             <DataCard icon="SHARED_POOLS" title="Bonded Tokens">
               {bondedTokensPercent}
-              <>
+              <Fragment>
                 {formatDenom(bondedTokensCount, denom, { shorthand: true, decimal: 2 })} /{' '}
                 {formatDenom(bondedTokensTotal, denom, { shorthand: true, decimal: 2 })}
-              </>
+              </Fragment>
+            </DataCard>
+            <DataCard icon="CALENDAR" title="24hr Volume">
+              {`$${formatDenom(twentyFourHourVolume, 'USD', {
+                shorthand: true,
+                decimal: 2,
+              })}`}
+            </DataCard>
+            <DataCard icon="PRICE" title="Latest Price">
+              {`$${formatDenom(dailyPrice.latestDisplayPricePerDisplayUnit, 'USD', {
+                decimal: 2,
+              })} (${priceChangePercent})`}
+            </DataCard>
+            <DataCard icon="LINE_CHART" title="Market Cap">
+              {`$${formatDenom(marketCap, 'USD', {
+                shorthand: true,
+                decimal: 2,
+              })}`}
             </DataCard>
           </Group>
         </>

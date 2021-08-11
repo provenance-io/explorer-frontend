@@ -11,3 +11,4 @@ export { default as useRedux } from './useRedux';
 export { default as useStaking } from './useStaking';
 export { default as useTxs } from './useTxs';
 export { default as useValidators } from './useValidators';
+export { default as useOrderbook } from './useOrderbook';

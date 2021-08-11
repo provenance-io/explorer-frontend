@@ -6,6 +6,7 @@ import faucetReducer from './faucetReducer';
 import governanceReducer from './governanceReducer';
 import txsReducer from './txsReducer';
 import validatorsReducer from './validatorsReducer';
+import orderbookReducer from './orderbookReducer';
 
 const rootReducer = {
   accountsReducer,
@@ -16,6 +17,7 @@ const rootReducer = {
   governanceReducer,
   txsReducer,
   validatorsReducer,
+  orderbookReducer,
 };
 
 export default rootReducer;

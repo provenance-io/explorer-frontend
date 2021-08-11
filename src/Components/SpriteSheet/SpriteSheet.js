@@ -42,6 +42,11 @@ const SpriteSheet = () => (
         <path d="M28 5L13 20L28 35" stroke="currentColor" strokeWidth="10%" />
       </svg>
     </g>
+    <g id={ICON_NAMES.CALENDAR}>
+      <svg fill="currentColor" viewBox="0 0 24 24">
+        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+      </svg>
+    </g>
     <g id={ICON_NAMES.CALL_MADE}>
       <svg fill="currentColor" viewBox="0 0 24 24">
         <path d="M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z" />
@@ -151,6 +156,14 @@ const SpriteSheet = () => (
         <path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
       </svg>
     </g>
+    <g id={ICON_NAMES.LINE_CHART}>
+      <svg viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"
+        />
+      </svg>
+    </g>
     <g id={ICON_NAMES.LOGO}>
       <svg viewBox="0 0 187 32" fill="none">
         <path
@@ -193,6 +206,14 @@ const SpriteSheet = () => (
       <svg viewBox="0 0 20 20" fill="none">
         <circle cx="10" cy="10" r="8.5" stroke="currentColor" />
         <path d="M10 5.5V10L13.5 12.5" stroke="currentColor" />
+      </svg>
+    </g>
+    <g id={ICON_NAMES.PRICE}>
+      <svg viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"
+        />
       </svg>
     </g>
     <g id={ICON_NAMES.PROVENANCE}>

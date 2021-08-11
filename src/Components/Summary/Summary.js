@@ -146,7 +146,6 @@ const buildSummaryRow = (rowData, theme) => {
 
 const Summary = ({ data }) => {
   const { themeName } = useColorScheme();
-  console.log(data);
   return data.map(rowData => buildSummaryRow(rowData, themeName));
 };
 

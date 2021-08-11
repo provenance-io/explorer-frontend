@@ -7,7 +7,6 @@ import { breakpoints } from 'consts';
 const ValidatorUnbondingDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { matches } = useMediaQuery(breakpoints.up('sm'));
-  console.log(matches);
   const {
     getValidatorUnbondingDelegations: getTableData,
     validatorUnbondingDelegations: tableData,
