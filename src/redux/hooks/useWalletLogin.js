@@ -12,7 +12,6 @@ const useWalletLogin = walletService => {
   // Auto-Connect wallet if query params exist
   // --------------------------------------------
   const initiateExistingWallet = () => {
-    // Only Provenance Wallet will autoconnect for now
     setWalletUrl(walletUrl);
     walletService.setWalletUrl(walletUrl);
     walletService.initialize({
