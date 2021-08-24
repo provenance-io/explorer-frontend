@@ -13,7 +13,7 @@ const ValidationTxs = () => {
   } = useValidators();
   const { validatorId } = useParams();
   // Results to display per page of table
-  const tableCount = 5;
+  const tableCount = 10;
   // Fetch table data
   useEffect(() => {
     getTableData({ id: validatorId, page: tableCurrentPage, count: tableCount });

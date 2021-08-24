@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
-import { useAssets } from 'redux/hooks';
+import { useApp, useAssets } from 'redux/hooks';
 
 const AssetHolders = () => {
+  const { tableCount } = useApp();
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { assetId } = useParams();
   const {
@@ -12,8 +13,6 @@ const AssetHolders = () => {
     assetHoldersLoading: tableLoading,
     assetHoldersPages: tablePages,
   } = useAssets();
-  // How many results to display
-  const tableCount = 10;
 
   useEffect(() => {
     getTableData({ assetId, page: tableCurrentPage, count: tableCount });

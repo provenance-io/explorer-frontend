@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { useGovernance } from 'redux/hooks';
+import { useApp, useGovernance } from 'redux/hooks';
 import { Table } from 'Components';
 
-const RESULTS_PER_PAGE = 10;
-
 const ProposalDeposits = () => {
+  const { tableCount } = useApp();
   const { proposalId } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const {
@@ -17,9 +16,9 @@ const ProposalDeposits = () => {
 
   useEffect(() => {
     if (proposalId) {
-      getProposalDeposits({ proposalId, count: RESULTS_PER_PAGE, page: currentPage });
+      getProposalDeposits({ proposalId, count: tableCount, page: currentPage });
     }
-  }, [currentPage, getProposalDeposits, proposalId]);
+  }, [currentPage, getProposalDeposits, proposalId, tableCount]);
 
   const tableHeaders = [
     { displayName: 'Depositor', dataName: 'voter' },
