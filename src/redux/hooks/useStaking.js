@@ -50,7 +50,7 @@ const useStaking = () => {
     setIsLoggedIn(!!walletService.state.address);
   }, [walletService.state.address, setIsLoggedIn]);
 
-  useEvent('message', (evt) => {
+  useEvent('message', evt => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setShouldPull(true);
@@ -68,7 +68,7 @@ const useStaking = () => {
       try {
         if (shouldPull && isLoggedIn) {
           getAccountAssets(delegatorAddress);
-          getAccountDelegations(delegatorAddress);
+          getAccountDelegations({ address: delegatorAddress, count: 100, page: 1 });
           getAccountRedelegations(delegatorAddress);
           getAccountUnbonding(delegatorAddress);
           getAccountRewards(delegatorAddress);

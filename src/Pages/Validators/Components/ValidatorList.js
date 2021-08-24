@@ -69,10 +69,10 @@ const ValidatorList = () => {
 
   useEffect(() => {
     setMyValTableData(
-      currentVals.map((d) => {
-        const validator = allValidators.find((v) => v.addressId === d.validatorSrcAddr);
+      currentVals.map(d => {
+        const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
         const rewards = isDelegateFilter
-          ? accountRewards.rewards.find((r) => r.validatorAddress === d.validatorSrcAddr)
+          ? accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr)
           : {};
         return { ...rewards, ...validator, ...d };
       })
@@ -89,7 +89,7 @@ const ValidatorList = () => {
     { displayName: 'Delegation Amount', dataName: 'amount' },
     { displayName: 'Reward', dataName: 'reward' },
   ] // Remove the nulls
-    .filter((th) => th);
+    .filter(th => th);
 
   // Table header values in order
   const tableHeaders = [
@@ -105,7 +105,7 @@ const ValidatorList = () => {
     !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
   ] // Remove the nulls
-    .filter((th) => th);
+    .filter(th => th);
 
   const myValFilterData = [
     {

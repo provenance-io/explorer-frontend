@@ -12,7 +12,7 @@ import {
   maxLength,
 } from 'utils';
 import { Content, InfiniteScroll, Loading, Summary, Filters, DataMissing } from 'Components';
-import { useTxs } from 'redux/hooks';
+import { useApp, useTxs } from 'redux/hooks';
 
 const MsgContainer = styled.div`
   flex-basis: 100%;
@@ -34,6 +34,7 @@ const FiltersWrapper = styled.div`
 
 const TxMsgs = () => {
   const [filterMsgType, setFilterMsgType] = useState('');
+  const { tableCount } = useApp();
   const {
     txInfo,
     getTxMsgs,
@@ -50,9 +51,9 @@ const TxMsgs = () => {
 
   const loadMsgs = useCallback(
     page => {
-      getTxMsgs({ txHash, count: 10, page, msgType: filterMsgType });
+      getTxMsgs({ txHash, count: tableCount, page, msgType: filterMsgType });
     },
-    [getTxMsgs, txHash, filterMsgType]
+    [getTxMsgs, txHash, filterMsgType, tableCount]
   );
 
   // Get all the Message types for this tx

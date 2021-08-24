@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'Components';
-import { useGovernance } from 'redux/hooks';
+import { useApp, useGovernance } from 'redux/hooks';
 
 const ProposalsList = () => {
+  const { tableCount } = useApp();
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const {
     getAllProposals,
@@ -14,8 +15,8 @@ const ProposalsList = () => {
   const tableData = proposals.map(d => ({ ...d.header, ...d.timings }));
 
   useEffect(() => {
-    getAllProposals();
-  }, [getAllProposals]);
+    getAllProposals({ count: tableCount, page: tableCurrentPage });
+  }, [getAllProposals, tableCount, tableCurrentPage]);
 
   const tableHeaders = [
     { displayName: 'ID', dataName: 'proposalId' },

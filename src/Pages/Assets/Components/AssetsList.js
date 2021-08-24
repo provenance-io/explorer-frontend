@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'Components';
-import { useAssets } from 'redux/hooks';
+import { useApp, useAssets } from 'redux/hooks';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
+  const { tableCount } = useApp();
   const {
     assets,
     assetsLoading: tableLoading,
@@ -11,12 +12,10 @@ const AssetsList = () => {
     assetMetadata,
     getAssetsList: getTableData,
   } = useAssets();
-  // How many results to display
-  const tableCount = 10;
 
-  const tableData = assets.map((a) => ({
+  const tableData = assets.map(a => ({
     ...a,
-    displayDenom: assetMetadata.find((md) => md.base === a.marker)?.display,
+    displayDenom: assetMetadata.find(md => md.base === a.marker)?.display,
   }));
 
   useEffect(() => {

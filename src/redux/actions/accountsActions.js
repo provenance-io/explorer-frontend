@@ -12,26 +12,26 @@ export const GET_ACCOUNT_UNBONDING = 'ACCOUNTS::GET_ACCOUNT_UNBONDING';
 
 // API Calls
 //  * Account
-export const getAccountInfo = (address) => async (dispatch) =>
+export const getAccountInfo = address => async dispatch =>
   ajaxGet(GET_ACCOUNT_INFO, dispatch, `${ACCOUNT_INFO_URL}/${address}`);
 
-export const getAccountAssets = (address) => async (dispatch) =>
+export const getAccountAssets = address => async dispatch =>
   ajaxGet(GET_ACCOUNT_ASSETS, dispatch, `${ACCOUNT_INFO_URL}/${address}/balances`);
 
 export const getAccountDelegations =
-  (address, page = 1, count = 10) =>
-  async (dispatch) =>
+  ({ address, page = 1, count = 10 }) =>
+  async dispatch =>
     ajaxGet(
       GET_ACCOUNT_DELEGATIONS,
       dispatch,
       `${ACCOUNT_INFO_URL}/${address}/delegations?page=${page}&count=${count}`
     );
 
-export const getAccountRedelegations = (address) => async (dispatch) =>
+export const getAccountRedelegations = address => async dispatch =>
   ajaxGet(GET_ACCOUNT_REDELEGATIONS, dispatch, `${ACCOUNT_INFO_URL}/${address}/redelegations`);
 
-export const getAccountRewards = (address) => async (dispatch) =>
+export const getAccountRewards = address => async dispatch =>
   ajaxGet(GET_ACCOUNT_REWARDS, dispatch, `${ACCOUNT_INFO_URL}/${address}/rewards`);
 
-export const getAccountUnbonding = (address) => async (dispatch) =>
+export const getAccountUnbonding = address => async dispatch =>
   ajaxGet(GET_ACCOUNT_UNBONDING, dispatch, `${ACCOUNT_INFO_URL}/${address}/unbonding`);
