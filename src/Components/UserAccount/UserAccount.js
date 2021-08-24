@@ -7,7 +7,7 @@ import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { breakpoints, FIGURE_WALLET_URL, ICON_NAMES, PROVENANCE_WALLET_URL } from 'consts';
-import { useApp } from 'redux/hooks';
+import { useApp, useWalletLogin } from 'redux/hooks';
 import { maxLength } from 'utils';
 import Button from '../Button';
 import PopupNote from '../PopupNote';
@@ -85,14 +85,17 @@ const Link = styled(BaseLink)`
 `;
 
 const UserAccount = ({ isMobile }) => {
+  const { walletService } = useWallet();
+  useWalletLogin(walletService);
+  const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
   const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
-  const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
-  const { walletService } = useWallet();
   const theme = useTheme();
   const position = isMobile ? 'below' : 'left';
 
   useOnEscape(deactivateShowPopup);
+
+  console.log(walletService.state.address);
 
   useEffect(() => {
     setIsLoggedIn(!!walletService.state.address);
@@ -104,7 +107,7 @@ const UserAccount = ({ isMobile }) => {
     walletService.updateState();
   };
 
-  const handleConnect = (url) => {
+  const handleConnect = url => {
     setWalletUrl(url);
     walletService.setWalletUrl(url);
     walletService.connect();
@@ -113,7 +116,11 @@ const UserAccount = ({ isMobile }) => {
   return (
     <Container ref={containerRef}>
       <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>
-        <Sprite icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY} color={theme.FONT_NAV} size="20px" />
+        <Sprite
+          icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY}
+          color={theme.FONT_NAV}
+          size="20px"
+        />
       </AccountBtn>
 
       {isLoggedIn && (
@@ -121,7 +128,9 @@ const UserAccount = ({ isMobile }) => {
           <PopupTxt>You are currently logged in as</PopupTxt>
           <PopupTxt>
             <Link to={`/accounts/${walletService.state.address}`}>
-              {isMobile ? maxLength(walletService.state.address, 11, 3) : walletService.state.address}
+              {isMobile
+                ? maxLength(walletService.state.address, 11, 3)
+                : walletService.state.address}
             </Link>
           </PopupTxt>
           <LogoutButton color="secondary" onClick={handleLogout} icon={ICON_NAMES.LOGOUT}>
