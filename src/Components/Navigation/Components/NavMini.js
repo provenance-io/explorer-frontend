@@ -55,11 +55,13 @@ const LogoLink = styled(BaseLink)`
   align-items: center;
 `;
 const DropdownContainer = styled.div`
+  display: ${({ show }) => (show ? 'block' : 'none')};
   padding: 30px 5px 5px 5px;
   width: 100%;
   position: relative;
 `;
 const SearchContainer = styled.div`
+  display: ${({ show }) => (show ? 'block' : 'none')};
   width: 100%;
   padding: 30px 10px 10px 0;
   position: relative;
@@ -81,7 +83,7 @@ const NavMini = () => {
   const { pathname } = useLocation();
 
   const buildLinks = () =>
-    Object.keys(Links).map((linkName) => {
+    Object.keys(Links).map(linkName => {
       const { url, title } = Links[linkName];
       const active = pathname === url ? 'true' : undefined;
       return (
@@ -99,7 +101,7 @@ const NavMini = () => {
   const toggleSearch = () => {
     showSearch ? setShowSearch(false) : openDropdown('search');
   };
-  const openDropdown = (type) => {
+  const openDropdown = type => {
     if (type === 'menu') {
       setShowSearch(false);
       setShowMenu(true);
@@ -112,39 +114,47 @@ const NavMini = () => {
   return (
     <NavigationWrapper>
       <InnerWrapper>
-        <Sprite icon="MENU" onClick={toggleMenu} size="3.0rem" color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+        <Sprite
+          icon="MENU"
+          onClick={toggleMenu}
+          size="3.0rem"
+          color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+        />
         <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
-        <Sprite icon="SEARCH" onClick={toggleSearch} size="3.0rem" color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'} />
+        <Sprite
+          icon="SEARCH"
+          onClick={toggleSearch}
+          size="3.0rem"
+          color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+        />
       </InnerWrapper>
-      {showMenu && (
-        <DropdownContainer>
-          <CloseIcon
-            icon="CLOSE"
-            onClick={() => {
-              setShowMenu(false);
-            }}
-            size="1.4rem"
-            color="ICON_WHITE"
-          />
-          {buildLinks()}
-          <UserAccount isMobile />
-        </DropdownContainer>
-      )}
-      {showSearch && (
-        <SearchContainer>
-          <SearchClose
-            icon="CLOSE"
-            onClick={() => {
-              setShowSearch(false);
-            }}
-            size="1.4rem"
-            color="ICON_WHITE"
-          />
-          <SearchBar />
-        </SearchContainer>
-      )}
+
+      <DropdownContainer show={showMenu}>
+        <CloseIcon
+          icon="CLOSE"
+          onClick={() => {
+            setShowMenu(false);
+          }}
+          size="1.4rem"
+          color="ICON_WHITE"
+        />
+        {buildLinks()}
+        <UserAccount isMobile />
+      </DropdownContainer>
+
+      <SearchContainer show={showSearch}>
+        <SearchClose
+          icon="CLOSE"
+          onClick={() => {
+            setShowSearch(false);
+          }}
+          size="1.4rem"
+          color="ICON_WHITE"
+        />
+        <SearchBar />
+      </SearchContainer>
     </NavigationWrapper>
   );
 };
