@@ -95,8 +95,6 @@ const UserAccount = ({ isMobile }) => {
 
   useOnEscape(deactivateShowPopup);
 
-  console.log(walletService.state.address);
-
   useEffect(() => {
     setIsLoggedIn(!!walletService.state.address);
   }, [walletService.state.address, setIsLoggedIn]);
