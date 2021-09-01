@@ -149,7 +149,7 @@ const ManageStakingModal = ({
   const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } =
     useValidators();
 
-  const hashBalance = accountAssets?.find((b) => b.denom === 'nhash');
+  const hashBalance = accountAssets?.find(b => b.denom === 'nhash');
   const { amount: hashAmount, denom: hashDenom } = currencyFormat(
     hashBalance?.amount,
     hashBalance?.denom
@@ -190,9 +190,15 @@ const ManageStakingModal = ({
   );
   const commission = sCommission * 100;
 
+  const handleClaim = () => {
+    onStaking(STAKING_TYPES.CLAIM);
+    handleModalClose();
+  };
+
   const handleClick = (type, e) => {
     // Don't let this event bubble
     e.stopPropagation();
+    if (type === STAKING_TYPES.CLAIM) handleClaim();
     setStakingType(type);
     setRedelegateAddress('');
   };
@@ -207,13 +213,13 @@ const ManageStakingModal = ({
     setStakeBtnDisabled(!valid);
   };
 
-  const handleStaking = (e) => {
+  const handleStaking = e => {
     // Don't let this event bubble
     e.stopPropagation();
     onStaking(stakingType, inputRef.current.value, redelegateAddress);
   };
 
-  const handleRedelegateSelection = (addressId) => {
+  const handleRedelegateSelection = addressId => {
     setRedelegateAddress(addressId);
   };
 
@@ -273,15 +279,15 @@ const ManageStakingModal = ({
               </Info>
               <ButtonGroup>
                 <DropdownBtn
-                  // TODO: Figure out CLAIM_REWARDS
                   options={[
                     STAKING_TYPES.UNDELEGATE,
-                    STAKING_TYPES.REDELEGATE /*STAKING_TYPES.CLAIM*/,
+                    STAKING_TYPES.REDELEGATE,
+                    STAKING_TYPES.CLAIM,
                   ]}
                   initial={STAKING_TYPES.UNDELEGATE}
                   onClick={handleClick}
                 />
-                <Button onClick={(e) => handleClick('delegate', e)}>Delegate</Button>
+                <Button onClick={e => handleClick('delegate', e)}>Delegate</Button>
               </ButtonGroup>
             </Fragment>
           )}
@@ -366,7 +372,7 @@ const ManageStakingModal = ({
                   <Input
                     getInputRef={inputRef}
                     decimalScale={0}
-                    onChange={(e) => handleAmountChange(e.target.value, delegation)}
+                    onChange={e => handleAmountChange(e.target.value, delegation)}
                   />
                   <DenomName>HASH</DenomName>
                 </PairValue>
@@ -413,7 +419,7 @@ const ManageStakingModal = ({
                     <Input
                       getInputRef={inputRef}
                       decimalScale={0}
-                      onChange={(e) => handleAmountChange(e.target.value, delegation)}
+                      onChange={e => handleAmountChange(e.target.value, delegation)}
                     />
                     <DenomName>HASH</DenomName>
                   </PairValue>
@@ -425,7 +431,7 @@ const ManageStakingModal = ({
           {stakingType && (
             <ButtonGroup>
               {!isDelegate && (
-                <Button onClick={(e) => handleClick('', e)} color="secondary">
+                <Button onClick={e => handleClick('', e)} color="secondary">
                   Back
                 </Button>
               )}

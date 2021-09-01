@@ -117,6 +117,7 @@ const useStaking = () => {
       [STAKING_TYPES.DELEGATE]: 'MsgDelegate',
       [STAKING_TYPES.UNDELEGATE]: 'MsgUndelegate',
       [STAKING_TYPES.REDELEGATE]: 'MsgBeginRedelegate',
+      [STAKING_TYPES.CLAIM]: 'MsgWithdrawDelegatorReward',
     }[type];
     let msg;
 
@@ -131,6 +132,12 @@ const useStaking = () => {
           validatorSrcAddress: validator.addressId,
           validatorDstAddress,
           amount,
+        };
+        break;
+      case STAKING_TYPES.CLAIM:
+        msg = {
+          delegatorAddress,
+          validatorAddress: validator.addressId,
         };
         break;
       default:
