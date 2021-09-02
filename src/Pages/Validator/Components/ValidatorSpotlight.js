@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
 import {
+  BlockImage,
   Content,
   CopyValue,
   DataRow,
@@ -19,22 +20,13 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 100%;
-  background: ${({ theme }) => theme.BACKGROUND_LIGHT};
-  margin: auto;
-  height: 150px;
-  width: 150px;
-  overflow: hidden;
 `;
-const ImageLetter = styled.span`
-  font-size: 7rem;
-  color: ${({ theme }) => theme.FONT_PRIMARY};
-  text-transform: uppercase;
-`;
+
 const Row = styled.div`
   flex-basis: 100%;
   margin-bottom: 10px;
 `;
+
 const Half = styled.div`
   flex-basis: 100%;
 
@@ -43,6 +35,7 @@ const Half = styled.div`
     flex-basis: 50%;
   }
 `;
+
 const SpotlightContainer = styled.div`
   text-align: center;
 
@@ -51,21 +44,26 @@ const SpotlightContainer = styled.div`
     border-right: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
   }
 `;
+
 const ValueRow = styled.div`
   display: flex;
 `;
+
 const NoteContainer = styled.div`
   position: relative;
   margin-left: 3px;
 `;
+
 const NoteText = styled.div`
   min-width: 200px;
 `;
+
 const Title = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   margin: 10px 0;
   font-size: 1.7rem;
 `;
+
 const Description = styled.div`
   color: ${({ theme }) => theme.FONT_TITLE_INFO};
   font-style: italic;
@@ -73,6 +71,7 @@ const Description = styled.div`
   margin: 0 auto;
   margin-top: 10px;
 `;
+
 const Status = styled.div`
   background: ${({ theme, status }) => theme[`CHIP_${status?.toUpperCase()}`]};
   color: ${({ theme }) => theme.FONT_WHITE};
@@ -95,7 +94,7 @@ const ValidatorSpotlight = () => {
     bondHeight = '--',
     consensusPubKey,
     description,
-    image,
+    imgUrl,
     jailedUntil,
     moniker,
     ownerAddress,
@@ -124,11 +123,7 @@ const ValidatorSpotlight = () => {
           <Half>
             <SpotlightContainer>
               <ImageContainer>
-                {image ? (
-                  <img src={image} alt={moniker} title={moniker} />
-                ) : (
-                  <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>
-                )}
+                <BlockImage icon={imgUrl} moniker={moniker} address={operatorAddress} />
               </ImageContainer>
               <Row>
                 <Title title={moniker}>{maxLength(moniker, 18)}</Title>
