@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
 import Big from 'big.js';
-import { Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
+import { BlockImage, Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
 import { maxLength, getUTCTime, numberFormat, formatSeconds, formatDenom } from 'utils';
 import { polling } from 'consts';
 import useOrderbook from 'redux/hooks/useOrderbook';
@@ -21,20 +21,6 @@ const BlockPreviewLine = styled.div`
   align-items: center;
   justify-content: center;
   flex-basis: 100%;
-`;
-const BlockImageContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  background: ${({ theme }) => theme.BACKGROUND_LIGHT};
-  height: 150px;
-  width: 150px;
-  overflow: hidden;
-`;
-const BlockImageLetter = styled.span`
-  font-size: 7rem;
-  color: ${({ theme }) => theme.FONT_PRIMARY};
 `;
 const Sprite = styled(BaseSprite)`
   margin-right: 8px;
@@ -138,19 +124,7 @@ const BlockSpotlight = () => {
               </Link>
             </BlockPreviewLine>
             <BlockPreviewLine>
-              <BlockImageContainer title={moniker ? moniker : proposerAddress}>
-                {icon ? (
-                  <img
-                    src={icon}
-                    alt={moniker ? maxLength(moniker, 16) : '?'}
-                    title={moniker ? maxLength(moniker, 16) : '?'}
-                  />
-                ) : (
-                  <BlockImageLetter>
-                    {moniker ? moniker[0] : `${proposerAddress}`[0]}
-                  </BlockImageLetter>
-                )}
-              </BlockImageContainer>
+              <BlockImage icon={icon} moniker={moniker} address={proposerAddress} />
             </BlockPreviewLine>
             <BlockPreviewLine title={moniker ? moniker : proposerAddress}>
               <Link to={`/validator/${proposerAddress}`}>
