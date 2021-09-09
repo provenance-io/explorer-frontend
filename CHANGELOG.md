@@ -2,20 +2,24 @@
 
 ## Unreleased
 
+## 2.2.0
+
+### Release Name: Hyecho
+
 ### Features
 
-- Add 24 Hour Volume, Latest Price and Market Cap to the dashboard #77
-- Support query params for wallet to auto login #98
-- Add UI to claim rewards in staking #164
+- Add 24 Hour Volume, Latest Price and Market Cap to the dashboard [#77](https://github.com/provenance-io/explorer-frontend/issues/77)
+- Support query params for wallet to auto login [#98](https://github.com/provenance-io/explorer-frontend/issues/98)
+- Add UI to claim rewards in staking [#164](https://github.com/provenance-io/explorer-frontend/issues/164)
 
 ### Improvements
 
-- Table lists pull more than 10 results #176
+- Table lists pull more than 10 results [#176](https://github.com/provenance-io/explorer-frontend/issues/176)
 
 ### Bug Fixes
 
-- Fix for mobile overflow #68
-- Fix for validator images #180
+- Fix for mobile overflow [#68](https://github.com/provenance-io/explorer-frontend/issues/68)
+- Fix for validator images [#180](https://github.com/provenance-io/explorer-frontend/issues/180)
 
 ## 2.1.1 - 2021-07-30
 
