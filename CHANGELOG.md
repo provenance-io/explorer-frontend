@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Improvements
+
+- Replace the Discord link / icon with Slack
+
 ## 2.2.0
 
 ### Release Name: Hyecho
