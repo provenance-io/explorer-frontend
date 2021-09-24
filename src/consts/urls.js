@@ -47,7 +47,8 @@ export const ORDER_BOOK_URL =
   'https://www.dlob.io/aggregator/external/api/v1/order-books/pb18vd8fpwxzck93qlwghaj6arh4p7c5n894vnu5g';
 // -- Social Media/Contact Information
 export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
-export const SOCIAL_DISCORD_URL = 'https://discord.com/';
+export const SOCIAL_SLACK_URL =
+  'https://join.slack.com/t/provenanceio/shared_invite/zt-vysymaqb-VqgW3frXoNNXNlyOiP7mog';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
 // -- Txs
 export const TX_INFO_URL = `${BASE_URL}/txs`;
