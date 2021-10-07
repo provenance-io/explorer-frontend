@@ -321,9 +321,10 @@ const ManageStakingModal = ({
                   <div>
                     <DisclaimerTitle>Warning: Account will lock</DisclaimerTitle>
                     <DisclaimerText>
-                      In order to move funds back into this account the account will need to be able
-                      to pay the required fees. Moving this amount of funds out of this account will
-                      result in it being locked until another account sends it funds.
+                      In order to undelegate funds back into this account, the account will need to
+                      be able to pay the required fees. Delegating the specified amount of funds
+                      from this account will result in it being locked until another account sends
+                      it funds.
                     </DisclaimerText>
                   </div>
                 </Disclaimer>
