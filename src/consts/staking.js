@@ -4,3 +4,5 @@ export const STAKING_TYPES = {
   UNDELEGATE: 'undelegate',
   CLAIM: 'claim rewards',
 };
+
+export const MIN_HASH_AFTER_STAKING = 5;

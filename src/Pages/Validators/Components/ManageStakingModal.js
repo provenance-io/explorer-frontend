@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import Big from 'big.js';
 import styled, { useTheme } from 'styled-components';
 import * as yup from 'yup';
 import { useAccounts, useValidators } from 'redux/hooks';
@@ -10,7 +11,7 @@ import Modal from 'Components/Modal';
 import SelectFolders from 'Components/SelectFolders';
 import Sprite from 'Components/Sprite';
 import { currencyFormat, maxLength, numberFormat } from 'utils';
-import { STAKING_TYPES } from 'consts';
+import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from 'consts';
 import { Loading } from 'Components';
 
 const Input = styled(OgInput)`
@@ -106,9 +107,12 @@ const Disclaimer = styled.div`
   display: flex;
   margin-bottom: 1.6rem;
   padding: 20px;
-  border: ${({ theme, help }) => (help ? theme.BORDER_THEME : theme.WARNING_BORDER)} 1px solid;
+  border: ${({ theme, help, color }) =>
+      color ? color : help ? theme.BORDER_THEME : theme.WARNING_BORDER}
+    1px solid;
   border-radius: 0.6rem;
-  color: ${({ theme, help }) => (help ? theme.FONT_THEME : theme.FONT_WARNING)};
+  color: ${({ theme, help, color }) =>
+    color ? color : help ? theme.FONT_THEME : theme.FONT_WARNING};
 `;
 
 const DisclaimerIcon = styled.div`
@@ -143,6 +147,7 @@ const ManageStakingModal = ({
   const inputRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const [stakeBtnDisabled, setStakeBtnDisabled] = useState(true);
+  const [showWarning, setShowWarning] = useState(false);
   const [stakingType, setStakingType] = useState();
   const [redelegateAddress, setRedelegateAddress] = useState(null);
   const { accountAssets } = useAccounts();
@@ -210,6 +215,8 @@ const ManageStakingModal = ({
 
     const valid = await schema.isValid({ amount });
 
+    const warningAmt = new Big(available).minus(MIN_HASH_AFTER_STAKING).toNumber();
+    setShowWarning(new Big(amount || 0).gt(warningAmt));
     setStakeBtnDisabled(!valid);
   };
 
@@ -306,6 +313,21 @@ const ManageStakingModal = ({
                   </DisclaimerText>
                 </div>
               </Disclaimer>
+              {showWarning && (
+                <Disclaimer color={theme.FONT_ERROR}>
+                  <DisclaimerIcon>
+                    <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_ERROR} />
+                  </DisclaimerIcon>
+                  <div>
+                    <DisclaimerTitle>Warning: Account will lock</DisclaimerTitle>
+                    <DisclaimerText>
+                      In order to move funds back into this account the account will need to be able
+                      to pay the required fees. Moving this amount of funds out of this account will
+                      result in it being locked until another account sends it funds.
+                    </DisclaimerText>
+                  </div>
+                </Disclaimer>
+              )}
 
               <Pair>
                 <PairTitle>My Delegation</PairTitle>

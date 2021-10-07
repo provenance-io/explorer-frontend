@@ -5,6 +5,7 @@
 ### Improvements
 
 - Replace the Discord link / icon with Slack
+- Warn a user before they delegate all their hash #185
 
 ## 2.2.0
 

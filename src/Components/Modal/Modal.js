@@ -45,11 +45,13 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2.4rem;
+  max-height: 100vh;
   width: 100%;
   border-radius: 4px;
   box-shadow: 0 15px 35px rgb(50 50 93 / 20%), 0 5px 15px rgb(0 0 0 / 17%);
   color: ${({ theme }) => theme.FONT_PRIMARY};
   background-color: ${({ theme }) => theme.BACKGROUND_CONTENT};
+  overflow: scroll;
 `;
 
 const Sprite = styled(OgSprite)`
