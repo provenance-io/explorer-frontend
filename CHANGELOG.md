@@ -2,10 +2,12 @@
 
 ## Unreleased
 
+## 2.2.1
+
 ### Improvements
 
 - Replace the Discord link / icon with Slack
-- Warn a user before they delegate all their hash #185
+- Warn a user before they delegate all their hash [#185](https://github.com/provenance-io/explorer-frontend/issues/185)
 
 ## 2.2.0
 
