@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import {
   breakpoints,
   SOCIAL_GITHUB_URL,
-  SOCIAL_SLACK_URL,
+  // SOCIAL_SLACK_URL,
   SOCIAL_PROVENANCE_URL,
   isProd,
 } from 'consts';
@@ -101,14 +101,14 @@ const Footer = () => {
         >
           <Sprite icon="GITHUB" size="1.8rem" color="WHITE" />
         </SocialLink>
-        <SocialLink
+        {/* <SocialLink
           href={SOCIAL_SLACK_URL}
           target="_blank"
           rel="noreferrer"
           title="Join Provenance.io on Slack"
         >
           <Sprite icon="SLACK" size="1.8rem" color="WHITE" />
-        </SocialLink>
+        </SocialLink> */}
         <FooterVersion>v{version ? version : '?.?.?'}</FooterVersion>
       </FooterSocial>
     </FooterContainer>
