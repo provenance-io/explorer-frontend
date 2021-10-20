@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fix for divide by zero error in proposals #193
+
 ## 2.2.1
 
 ### Improvements
