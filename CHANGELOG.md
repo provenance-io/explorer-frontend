@@ -2,9 +2,17 @@
 
 ## Unreleased
 
+## 2.2.3
+
 ### Bug Fixes
 
-- Fix for divide by zero error in proposals #193
+- Fix for divide by zero error in proposals [#193](https://github.com/provenance-io/explorer-frontend/issues/193)
+
+## 2.2.2
+
+### Bug Fixes
+
+- Remove footer slack link [#192](https://github.com/provenance-io/explorer-frontend/pull/192)
 
 ## 2.2.1
 
