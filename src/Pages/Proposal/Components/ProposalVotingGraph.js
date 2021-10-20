@@ -12,7 +12,7 @@ const ProposalVotingGraph = () => {
 
   const getPercent = amt =>
     new Big(amt)
-      .div(tally?.total?.amount?.amount || 1)
+      .div(Number(tally?.total?.amount?.amount) || 1)
       .times(100)
       .toNumber();
 
