@@ -120,7 +120,7 @@ const NavMini = () => {
           size="3.0rem"
           color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
         />
-        <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
+        <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
         <Sprite

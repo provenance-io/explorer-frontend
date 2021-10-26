@@ -90,7 +90,7 @@ const NavStandard = () => {
   return (
     <NavigationWrapper>
       <NavSection>
-        <LogoLink to={Path.HOME_URL} title="Provenance Explorer | Home">
+        <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
       </NavSection>

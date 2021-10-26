@@ -4,7 +4,7 @@ describe('Proposals e2e', () => {
   });
 
   it('should show the correct titles', () => {
-    cy.title().should('equal', 'Provenance Explorer - All Proposals');
+    cy.title().should('equal', 'Provenance Blockchain Explorer - All Proposals');
     cy.get('h2').should('contain', 'All Proposals');
     cy.get('h3').should('contain', 'Proposals List');
   });
