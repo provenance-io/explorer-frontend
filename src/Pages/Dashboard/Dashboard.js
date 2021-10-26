@@ -6,7 +6,7 @@ import { BlockSpotlight, TopValidators, TxHistory, RecentBlocks, RecentTxs } fro
 const Dashboard = () => (
   <Wrapper noHeader>
     <Helmet>
-      <title>Provenance Explorer - Dashboard</title>
+      <title>Provenance Blockchain Explorer - Dashboard</title>
     </Helmet>
     <Section>
       <BlockSpotlight />

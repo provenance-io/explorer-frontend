@@ -89,7 +89,7 @@ const Footer = () => {
           href={SOCIAL_PROVENANCE_URL}
           target="_blank"
           rel="noreferrer"
-          title="Visit Provenance"
+          title="Visit Provenance Blockchain"
         >
           <Sprite icon="PROVENANCE" size="1.8rem" color="WHITE" />
         </SocialLink>
@@ -97,7 +97,7 @@ const Footer = () => {
           href={SOCIAL_GITHUB_URL}
           target="_blank"
           rel="noreferrer"
-          title="Provenance Explorer GitHub"
+          title="Provenance Blockchain Explorer GitHub"
         >
           <Sprite icon="GITHUB" size="1.8rem" color="WHITE" />
         </SocialLink>

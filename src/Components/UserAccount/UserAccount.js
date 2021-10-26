@@ -148,7 +148,7 @@ const UserAccount = ({ isMobile }) => {
               iconColor={theme.FONT_NAV}
               iconSize="20px;"
             >
-              Provenance Wallet
+              Provenance Blockchain Wallet
             </WalletBtn>
 
             <WalletBtn

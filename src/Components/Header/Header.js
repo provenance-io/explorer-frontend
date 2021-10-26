@@ -66,7 +66,7 @@ const Header = ({ title, copyValue, copyTitle, value, valueLink, children }) => 
   return (
     <HeaderContainer>
       <Helmet>
-        <title>Provenance Explorer - {title}</title>
+        <title>Provenance Blockchain Explorer - {title}</title>
       </Helmet>
       <Title data-testid="page-title">{title}</Title>
       {showLine && <Line>|</Line>}
