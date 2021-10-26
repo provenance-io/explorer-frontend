@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.2.4
+
 ### Improvements
 
 - Update naming to Provenance Blockchain throughout the app
