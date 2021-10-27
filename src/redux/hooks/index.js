@@ -13,3 +13,4 @@ export { default as useStaking } from './useStaking';
 export { default as useTxs } from './useTxs';
 export { default as useValidators } from './useValidators';
 export { default as useWalletLogin } from './useWalletLogin';
+export { default as useNft } from './useNft';

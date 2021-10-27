@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { maxLength } from 'utils';
-import { AccountSpotlight, AccountTxs, AccountAssets } from './Components';
+import { AccountSpotlight, AccountTxs, AccountAssets, AccountNft } from './Components';
 
 const Accounts = () => {
   const { addressId } = useParams();
@@ -25,6 +25,9 @@ const Accounts = () => {
       </Section>
       <Section>
         <AccountAssets />
+      </Section>
+      <Section>
+        <AccountNft />
       </Section>
       <Section>
         <AccountTxs />

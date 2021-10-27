@@ -7,6 +7,7 @@ import governanceReducer from './governanceReducer';
 import txsReducer from './txsReducer';
 import validatorsReducer from './validatorsReducer';
 import orderbookReducer from './orderbookReducer';
+import nftReducer from './nftReducer';
 
 const rootReducer = {
   accountsReducer,
@@ -18,6 +19,7 @@ const rootReducer = {
   txsReducer,
   validatorsReducer,
   orderbookReducer,
+  nftReducer,
 };
 
 export default rootReducer;
