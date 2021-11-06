@@ -88,7 +88,7 @@ const SearchBar = () => {
   const [searchType, setSearchType] = useState('block');
   const history = useHistory();
 
-  const enterSearchTerms = (e) => {
+  const enterSearchTerms = e => {
     const term = e?.target?.value;
     setSearchTerms(term);
   };
@@ -117,6 +117,10 @@ const SearchBar = () => {
         history.push(`/asset/${searchTerms}`);
         break;
       }
+      case 'nft': {
+        history.push(`/nft/${searchTerms}`);
+        break;
+      }
       default:
         break;
     }
@@ -128,7 +132,7 @@ const SearchBar = () => {
         <TextInput
           id="SearchBar"
           onChange={enterSearchTerms}
-          onKeyPress={(e) => {
+          onKeyPress={e => {
             if (e.key === 'Enter') {
               runSearch();
             }
@@ -149,6 +153,7 @@ const SearchBar = () => {
           <option value="tx">Tx</option>
           <option value="address">Address</option>
           <option value="asset">Asset</option>
+          <option value="nft">NFT</option>
         </Select>
         <SelectArrow>
           <Sprite icon="CARET" size="0.9rem" color="ICON_WHITE" />

@@ -1,22 +1,17 @@
 import { handleActions } from 'redux-actions';
 import { FAILURE, REQUEST, SUCCESS } from '../actions/xhrActions';
-import {
-  GET_NFT_DETAIL,
-  GET_NFT_RECORDS,
-  GET_NFT_BY_OWNER,
-  GET_NFT_ADDRESS,
-} from '../actions/nftActions';
+import { GET_NFT_DETAIL, GET_NFT_RECORDS, GET_NFT_BY_OWNER } from '../actions/nftActions';
 
 export const initialState = {
   nftDetailLoading: false,
   nftRecordsLoading: false,
   nftByOwnerLoading: false,
-  nftAddressLoading: false,
+
+  nftByOwnerPages: 1,
 
   nftDetail: [],
   nftRecords: [],
   nftByOwner: [],
-  nftAddress: [],
 };
 
 const reducer = handleActions(
@@ -56,7 +51,7 @@ const reducer = handleActions(
     [`${GET_NFT_RECORDS}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        nftRecordsLoading: true,
+        nftRecordsLoading: false,
         nftRecords: payload,
       };
     },
@@ -76,9 +71,11 @@ const reducer = handleActions(
       };
     },
     [`${GET_NFT_BY_OWNER}_${SUCCESS}`](state, { payload }) {
+      const { pages: nftByOwnerPages, results: nftByOwner } = payload;
       return {
         ...state,
-        nftByOwner: payload,
+        nftByOwner,
+        nftByOwnerPages,
         nftByOwnerLoading: false,
       };
     },
@@ -86,28 +83,6 @@ const reducer = handleActions(
       return {
         ...state,
         nftByOwnerLoading: false,
-      };
-    },
-    /* -----------------
-    GET_NFT_ADDRESS
-    -------------------*/
-    [`${GET_NFT_ADDRESS}_${REQUEST}`](state) {
-      return {
-        ...state,
-        nftAddressLoading: false,
-      };
-    },
-    [`${GET_NFT_ADDRESS}_${SUCCESS}`](state, { payload }) {
-      return {
-        ...state,
-        nftAddressLoading: false,
-        nftAddress: payload,
-      };
-    },
-    [`${GET_NFT_ADDRESS}_${FAILURE}`](state) {
-      return {
-        ...state,
-        nftAddressLoading: false,
       };
     },
   },

@@ -16,6 +16,8 @@ import {
   Dashboard,
   Faucet,
   Icons,
+  Nft,
+  Nfts,
   NoMatch404,
   Proposal,
   Proposals,
@@ -57,6 +59,8 @@ const App = () => {
               <Route exact path="/dashboard" component={Dashboard} />
               <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
               <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
+              <Route path="/nft/:addr" component={Nft} />
+              <Route path="/nfts/:addr" component={Nfts} />
               <Route path="/proposal/:proposalId" component={Proposal} />
               <Route path="/proposals" component={Proposals} />
               <Route path="/tx/:txHash" component={Tx} />
