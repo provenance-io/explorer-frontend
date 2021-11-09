@@ -30,10 +30,10 @@ const AssetInformation = () => {
     tokens: { fungibleCount, nonFungibleCount } = {},
   } = assetInfo;
 
-  const assetMetadata = allMetadata.find((md) => md.base === marker);
+  const assetMetadata = allMetadata.find(md => md.base === marker);
   const displayDenom = assetMetadata?.display || marker;
   const exponent =
-    assetMetadata?.denomUnits.find((d) => d.denom === assetMetadata?.display)?.exponent || 0;
+    assetMetadata?.denomUnits.find(d => d.denom === assetMetadata?.display)?.exponent || 0;
 
   const { amount: conversionAmount, denom: conversionDenom } = currencyFormat(
     1,
@@ -86,7 +86,11 @@ const AssetInformation = () => {
     { title: 'Marker Status', value: capitalize(markerStatus) },
     { title: 'Marker Type', value: capitalize(markerType) },
     { title: 'Fungible Tokens', value: numberFormat(fungibleCount) },
-    { title: 'Non-Fungible Tokens', value: numberFormat(nonFungibleCount) },
+    {
+      title: 'Non-Fungible Tokens',
+      value: numberFormat(nonFungibleCount),
+      link: `/nfts/${holdingAccount}`,
+    },
   ];
 
   return (
