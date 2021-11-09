@@ -6,6 +6,8 @@ export { default as Blocks } from './Blocks';
 export { default as Dashboard } from './Dashboard';
 export { default as Faucet } from './Faucet';
 export { default as Icons } from './Icons';
+export { default as Nft } from './Nft';
+export { default as Nfts } from './Nfts';
 export { default as NoMatch404 } from './NoMatch404';
 export { default as Proposal } from './Proposal';
 export { default as Proposals } from './Proposals';

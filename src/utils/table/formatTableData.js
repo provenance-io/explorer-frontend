@@ -89,8 +89,18 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        // Address or hash leading to nft scope page
+        case 'scopeAddr': {
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11),
+            hover: serverValue,
+            link: `/nft/${serverValue}`,
+          };
+          break;
+        }
         // Address or hash without a link anywhere
         case 'consensusAddress':
+        case 'specAddr':
           finalObj[dataName] = { value: maxLength(serverValue, 11, 3), hover: serverValue };
           break;
         // Amount of currency/item and its denomination
@@ -201,6 +211,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Convert given time to standard readable UTC string
         case 'depositEndTime': // fallthrough
+        case 'lastUpdated': // fallthrough
         case 'submitTime': // fallthrough
         case 'time': // fallthrough
         case 'lastTxTimestamp': // fallthrough
@@ -327,6 +338,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'markerType': // fallthrough
         case 'proposalId': // fallthrough
         case 'proposalType': // fallthrough
+        case 'specName': // fallthrough
         case 'txMsgType':
           finalObj[dataName] = { value: capitalize(serverValue) };
           break;

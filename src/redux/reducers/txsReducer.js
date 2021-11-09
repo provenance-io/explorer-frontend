@@ -7,6 +7,7 @@ import {
   GET_TX_HISTORY,
   GET_TX_INFO,
   GET_TX_BY_MODULE,
+  GET_TXS_BY_NFT,
   GET_TX_MSGS,
   GET_TX_MSG_TYPES,
   GET_TXS_RECENT,
@@ -54,6 +55,10 @@ export const initialState = {
   txByModule: [],
   txByModuleLoading: false,
   txByModulePages: 0,
+  // TX by NFT
+  txByNft: [],
+  txByNftLoading: false,
+  txByNftPages: 0,
 };
 
 const reducer = handleActions(
@@ -340,6 +345,30 @@ const reducer = handleActions(
       return {
         ...state,
         txByModuleLoading: false,
+      };
+    },
+    /* -----------------
+    GET_TXS_BY_NFT
+    -------------------*/
+    [`${GET_TXS_BY_NFT}_${REQUEST}`](state) {
+      return {
+        ...state,
+        txByNftLoading: true,
+      };
+    },
+    [`${GET_TXS_BY_NFT}_${SUCCESS}`](state, { payload }) {
+      const { pages: txByNftPages, results: txByNft } = payload;
+      return {
+        ...state,
+        txByNft,
+        txByNftPages,
+        txByNftLoading: false,
+      };
+    },
+    [`${GET_TXS_BY_NFT}_${FAILURE}`](state) {
+      return {
+        ...state,
+        txByNftLoading: false,
       };
     },
   },

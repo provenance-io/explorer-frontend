@@ -8,6 +8,7 @@ import * as txsActions from './txsActions';
 import * as validatorsActions from './validatorsActions';
 import * as xhrActions from './xhrActions';
 import * as orderbookActions from './orderbookActions';
+import * as nftActions from './nftActions';
 
 export {
   accountsActions,
@@ -20,4 +21,5 @@ export {
   validatorsActions,
   xhrActions,
   orderbookActions,
+  nftActions,
 };

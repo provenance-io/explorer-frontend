@@ -23,6 +23,8 @@ export const GET_TX_TYPES = 'TX::GET_TX_TYPES';
 export const GET_TX_MSGS = 'TX::GET_TX_MSGS';
 export const GET_TX_MSG_TYPES = 'TX::GET_TX_MSG_TYPES';
 export const GET_TX_BY_MODULE = 'TX::GET_TX_BY_MODULE';
+export const TXS_BY_NFT = 'TX::GET_TX_BY_MODULE';
+export const GET_TXS_BY_NFT = 'TX::GET_TXS_BY_NFT';
 // -- Store
 export const RESET_TX_MSGS = 'TX::RESET_TX_MSGS';
 export const SET_RECENT_TXS_COUNT = 'TX::SET_RECENT_TXS_COUNT';
@@ -97,6 +99,15 @@ export const getTxByModule =
     const queries = !isEmpty(rest) ? `?${qs.stringify(rest)}` : '';
     ajaxGet(GET_TX_BY_MODULE, dispatch, `${TX_INFO_URL}/module/${module}${queries}`);
   };
+
+export const getTxsByNft =
+  ({ addr, count = 10, page = 1, ...rest }) =>
+  dispatch =>
+    ajaxGet(
+      GET_TXS_BY_NFT,
+      dispatch,
+      `${TX_INFO_URL}/nft/${addr}?${qs.stringify({ count, page, ...rest })}`
+    );
 
 // -- Store
 export const resetTxMsgs = createAction(RESET_TX_MSGS);

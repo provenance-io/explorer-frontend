@@ -45,6 +45,8 @@ export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
 // -- Order book
 export const ORDER_BOOK_URL =
   'https://www.dlob.io/aggregator/external/api/v1/order-books/pb18vd8fpwxzck93qlwghaj6arh4p7c5n894vnu5g';
+// -- NFT
+export const NFT_URL = `${BASE_URL}/nft/scope`;
 // -- Social Media/Contact Information
 export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
 export const SOCIAL_SLACK_URL =

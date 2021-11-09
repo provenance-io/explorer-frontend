@@ -1,3 +1,4 @@
+export { default as Accordion } from './Accordion';
 export { default as Navigation } from './Navigation';
 export { default as CopyValue } from './CopyValue';
 export { default as PopupNote } from './PopupNote';
