@@ -63,7 +63,7 @@ const Accordion = ({ children, showChevron, title }) => {
             color={theme.FONT_PRIMARY}
             icon={ICON_NAMES.CHEVRON}
             size="1.6rem"
-            spin={isOpen && -90}
+            spin={isOpen ? -90 : null}
             style={{ justifySelf: 'end' }}
           />
         )}
