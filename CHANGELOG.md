@@ -6,6 +6,10 @@
 
 - Add NFT information to assets and accounts #25
 
+### Bug Fixes
+
+- Remove the xhr timeout to allow more time for the chain data to be returned #204
+
 ## 2.2.4
 
 ### Improvements
