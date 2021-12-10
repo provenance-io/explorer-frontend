@@ -37,7 +37,7 @@ const AccountSpotlight = () => {
 
   const summaryData = [
     { title: 'Address', value: matches ? maxLength(addressId, 20, 3) : addressId, copy: addressId },
-    { title: 'Accont Type', value: accountType },
+    { title: 'Account Type', value: accountType },
     { title: 'Account Name', value: accountName || '--' },
     { title: 'Account Number', value: accountNumber },
     {

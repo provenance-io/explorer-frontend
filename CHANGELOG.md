@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fixed the spelling issue on account #203
+
 ### Features
 
 - Add NFT information to assets and accounts #25
