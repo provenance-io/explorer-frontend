@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 - Fixed the spelling issue on account #203
+- Fixed the rounding to 3 decimal places on hash USD price on dashboard #202
 
 ### Features
 
