@@ -3,7 +3,6 @@ import { createAction } from 'redux-actions';
 
 export const axios = _axios.create({
   baseURL: window.location.hostname,
-  timeout: 45000,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -35,7 +34,12 @@ export const ajaxGet = async (action, dispatch, url, config = null, meta = null)
   try {
     const result = await axios.get(url, config);
 
-    dispatch(createAction(`${action}_${SUCCESS}`, null, () => ({ responseHeaders: { ...result.headers }, ...meta }))(result.data));
+    dispatch(
+      createAction(`${action}_${SUCCESS}`, null, () => ({
+        responseHeaders: { ...result.headers },
+        ...meta,
+      }))(result.data)
+    );
 
     return Promise.resolve(result);
   } catch (error) {
@@ -51,7 +55,12 @@ export const ajaxPost = async (action, dispatch, url, data, config = null) => {
   try {
     const result = await axios.post(url, data, config);
 
-    dispatch(createAction(`${action}_${SUCCESS}`, null, () => ({ responseHeaders: { ...result.headers }, ...data }))(result.data));
+    dispatch(
+      createAction(`${action}_${SUCCESS}`, null, () => ({
+        responseHeaders: { ...result.headers },
+        ...data,
+      }))(result.data)
+    );
 
     return Promise.resolve(result.data);
   } catch (error) {
@@ -67,7 +76,12 @@ export const ajaxPut = async (action, dispatch, url, data, config = null) => {
   try {
     const result = await axios.put(url, data, config);
 
-    dispatch(createAction(`${action}_${SUCCESS}`, null, () => ({ responseHeaders: { ...result.headers }, ...data }))(result.data));
+    dispatch(
+      createAction(`${action}_${SUCCESS}`, null, () => ({
+        responseHeaders: { ...result.headers },
+        ...data,
+      }))(result.data)
+    );
 
     return Promise.resolve(result.data);
   } catch (error) {
