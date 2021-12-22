@@ -6,7 +6,7 @@ import { breakpoints } from 'consts';
 const PageWrapper = styled.div`
   padding: 106px 10%;
   position: relative;
-  background-color: ${({ theme }) => theme.BACKGROUND_LIGHT};
+  background-color: transparent;
   font-size: 1.4rem;
   @media ${breakpoints.down('lg')} {
     padding: ${({ noHeader }) => (noHeader ? '68px 10%' : '96px 10%')};

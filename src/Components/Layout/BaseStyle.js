@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Snow from 'let-it-snow';
 
 const BaseStyling = styled.div`
   height: 100%;
@@ -37,7 +38,12 @@ const BaseStyling = styled.div`
   }
 `;
 
-const BaseStyle = ({ children }) => <BaseStyling>{children}</BaseStyling>;
+const BaseStyle = ({ children }) => (
+  <BaseStyling>
+    <Snow />
+    {children}
+  </BaseStyling>
+);
 
 BaseStyle.propTypes = {
   children: PropTypes.node.isRequired,

@@ -17,8 +17,9 @@
     "big.js": "6.1.1",
     "date-fns": "2.22.1",
     "date-fns-tz": "1.1.4",
-    "echarts": "5.1.2",
+    "echarts": "5.2.2",
     "format-number": "3.0.0",
+    "let-it-snow": "1.1.6",
     "query-string": "7.0.1",
     "react": "17.0.2",
     "react-datepicker": "4.1.1",
@@ -39,7 +40,7 @@
     "yup": "0.32.9"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "3.9.8",
+    "@cypress/code-coverage": "3.9.12",
     "@cypress/instrument-cra": "1.4.0",
     "@provenance-io/frontend-scripts": "1.0.2",
     "@testing-library/cypress": "7.0.6",
