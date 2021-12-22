@@ -21,4 +21,8 @@ export const Links = {
     url: Path.GOV_URL,
     title: 'Gov',
   },
+  stats: {
+    url: Path.STATS_URL,
+    title: 'Stats',
+  },
 };

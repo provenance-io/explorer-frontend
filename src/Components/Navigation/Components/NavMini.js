@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { Links, Path } from 'consts';
+import { Links, StatsLinks, Path } from 'consts';
 // Direct import to prevent import order issues
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
@@ -50,6 +50,15 @@ const Link = styled(BaseLink)`
   `}
 `;
 
+const SubMenu = styled.div`
+  font-size: 1.4rem;
+  color: ${({ theme }) => theme.FONT_NAV};
+  opacity: 0.9;
+  :hover {
+    opacity: 1;
+  }
+`;
+
 const LogoLink = styled(BaseLink)`
   display: flex;
   align-items: center;
@@ -59,6 +68,9 @@ const DropdownContainer = styled.div`
   padding: 30px 5px 5px 5px;
   width: 100%;
   position: relative;
+`;
+const SubMenuContainer = styled(DropdownContainer)`
+  padding: 5px 0 5px 10px;
 `;
 const SearchContainer = styled.div`
   display: ${({ show }) => (show ? 'block' : 'none')};
@@ -79,20 +91,47 @@ const CloseIcon = styled(Sprite)`
 
 const NavMini = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const { pathname } = useLocation();
+
+  const subMenu = () =>
+    Object.keys(StatsLinks).map(linkName => {
+      const { url, title } = StatsLinks[linkName];
+      const active = pathname === url ? 'true' : undefined;
+      return (
+        <SubMenuContainer key={url} show={showSubMenu}>
+          <LinkWrapper key={url}>
+            <Link to={url} active={active} onClick={() => setShowMenu(false)}>
+              {title}
+            </Link>
+          </LinkWrapper>
+        </SubMenuContainer>
+      );
+    });
 
   const buildLinks = () =>
     Object.keys(Links).map(linkName => {
       const { url, title } = Links[linkName];
       const active = pathname === url ? 'true' : undefined;
-      return (
-        <LinkWrapper key={url}>
-          <Link to={url} active={active} onClick={() => setShowMenu(false)}>
-            {title}
-          </Link>
-        </LinkWrapper>
-      );
+      if (title !== 'Stats') {
+        return (
+          <LinkWrapper key={url}>
+            <Link to={url} active={active} onClick={() => setShowMenu(false)}>
+              {title}
+            </Link>
+          </LinkWrapper>
+        );
+      } else {
+        return (
+          <LinkWrapper key={url}>
+            <SubMenu key={url} onClick={() => setShowSubMenu(!showSubMenu)}>
+              {title}
+              {subMenu()}
+            </SubMenu>
+          </LinkWrapper>
+        );
+      }
     });
 
   const toggleMenu = () => {

@@ -10,6 +10,7 @@
 ### Features
 
 - Add NFT information to assets and accounts #25
+- Add page for chain versions #208
 
 ### Bug Fixes
 
