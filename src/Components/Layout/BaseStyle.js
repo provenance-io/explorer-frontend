@@ -39,7 +39,7 @@ const BaseStyling = styled.div`
 `;
 
 const BaseStyle = ({ children }) => (
-  <BaseStyling>
+  <BaseStyling data-testid="base-style">
     <Snow />
     {children}
   </BaseStyling>

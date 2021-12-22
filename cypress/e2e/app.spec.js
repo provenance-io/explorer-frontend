@@ -33,7 +33,7 @@ describe('App e2e', () => {
         oppositeColor = themes.default.BACKGROUND_LIGHT;
       }
 
-      cy.findByTestId('page-wrapper').should(
+      cy.findByTestId('base-style').should(
         'have.css',
         'background-color',
         Color(initialColor).string()
@@ -41,7 +41,7 @@ describe('App e2e', () => {
 
       cy.findByTestId('theme-switcher').click();
 
-      cy.findByTestId('page-wrapper').should(
+      cy.findByTestId('base-style').should(
         'have.css',
         'background-color',
         Color(oppositeColor).string()
@@ -53,7 +53,7 @@ describe('App e2e', () => {
         cy.findByTestId('theme-switcher').click();
       }
 
-      cy.findByTestId('page-wrapper').should(
+      cy.findByTestId('base-style').should(
         'have.css',
         'background-color',
         Color(themes.rainbow.BACKGROUND_LIGHT).string()
@@ -61,7 +61,7 @@ describe('App e2e', () => {
 
       cy.findByTestId('theme-switcher').click();
 
-      cy.findByTestId('page-wrapper').should(
+      cy.findByTestId('base-style').should(
         'have.css',
         'background-color',
         Color(themes.night.BACKGROUND_LIGHT).string()

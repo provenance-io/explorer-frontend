@@ -17,9 +17,7 @@ const PageWrapper = styled.div`
 `;
 
 const Wrapper = ({ children, noHeader }) => (
-  <PageWrapper data-testid="page-wrapper" noHeader={noHeader}>
-    {children}
-  </PageWrapper>
+  <PageWrapper noHeader={noHeader}>{children}</PageWrapper>
 );
 
 Wrapper.propTypes = {
