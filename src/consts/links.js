@@ -22,7 +22,13 @@ export const Links = {
     title: 'Gov',
   },
   stats: {
-    url: Path.STATS_URL,
+    url: Path.VERSIONS_URL,
     title: 'Stats',
+    subMenu: {
+      versions: {
+        url: Path.VERSIONS_URL,
+        title: 'Versions',
+      },
+    },
   },
 };

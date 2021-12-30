@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { Links, StatsLinks, Path } from 'consts';
+import { Links, Path } from 'consts';
 // Direct import to prevent import order issues
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
@@ -23,10 +23,11 @@ const InnerWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.div`
+  position: relative;
   margin: 10px 0;
   padding-bottom: 5px;
   &:first-of-type {
-    margin-top: 0;
+    margin-top: 30px;
   }
 `;
 
@@ -50,13 +51,9 @@ const Link = styled(BaseLink)`
   `}
 `;
 
-const SubMenu = styled.div`
-  font-size: 1.4rem;
-  color: ${({ theme }) => theme.FONT_NAV};
-  opacity: 0.9;
-  :hover {
-    opacity: 1;
-  }
+const DropSprite = styled(Sprite)`
+  position: absolute;
+  margin: 4px 0 0 -35px;
 `;
 
 const LogoLink = styled(BaseLink)`
@@ -64,13 +61,7 @@ const LogoLink = styled(BaseLink)`
   align-items: center;
 `;
 const DropdownContainer = styled.div`
-  display: ${({ show }) => (show ? 'block' : 'none')};
-  padding: 30px 5px 5px 5px;
-  width: 100%;
-  position: relative;
-`;
-const SubMenuContainer = styled(DropdownContainer)`
-  padding: 5px 0 5px 10px;
+  display: ${({ show }) => (show ? 'block' : 'none')}; ;
 `;
 const SearchContainer = styled.div`
   display: ${({ show }) => (show ? 'block' : 'none')};
@@ -85,54 +76,55 @@ const SearchClose = styled(Sprite)`
 `;
 const CloseIcon = styled(Sprite)`
   position: absolute;
-  right: 0;
-  top: 30px;
+  right: 20px;
+  top: 70px;
 `;
+const subMenuDrop = { margin: '15px 0 5px 10px' };
 
 const NavMini = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [showSubMenu, setShowSubMenu] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState('none');
   const [showSearch, setShowSearch] = useState(false);
   const { pathname } = useLocation();
 
-  const subMenu = () =>
-    Object.keys(StatsLinks).map(linkName => {
-      const { url, title } = StatsLinks[linkName];
-      const active = pathname === url ? 'true' : undefined;
-      return (
-        <SubMenuContainer key={url} show={showSubMenu}>
-          <LinkWrapper key={url}>
-            <Link to={url} active={active} onClick={() => setShowMenu(false)}>
-              {title}
-            </Link>
-          </LinkWrapper>
-        </SubMenuContainer>
-      );
-    });
+  const handleSubMenuClick = () => {
+    setShowSubMenu('none');
+    setShowMenu(false);
+  };
 
-  const buildLinks = () =>
-    Object.keys(Links).map(linkName => {
-      const { url, title } = Links[linkName];
-      const active = pathname === url ? 'true' : undefined;
-      if (title !== 'Stats') {
-        return (
-          <LinkWrapper key={url}>
-            <Link to={url} active={active} onClick={() => setShowMenu(false)}>
-              {title}
-            </Link>
-          </LinkWrapper>
-        );
-      } else {
-        return (
-          <LinkWrapper key={url}>
-            <SubMenu key={url} onClick={() => setShowSubMenu(!showSubMenu)}>
-              {title}
-              {subMenu()}
-            </SubMenu>
-          </LinkWrapper>
-        );
-      }
-    });
+  const buildLink = (linkName, { url, title, subMenu = {} }, style) => {
+    const active = pathname === url ? 'true' : undefined;
+    const isSubMenu = Links[linkName]?.subMenu;
+    return (
+      <LinkWrapper key={url} style={style}>
+        <Link
+          to={isSubMenu ? '#' : url}
+          active={active}
+          onClick={
+            isSubMenu
+              ? showSubMenu === linkName
+                ? () => setShowSubMenu('none')
+                : () => setShowSubMenu(linkName)
+              : () => setShowMenu(false)
+          }
+          style={style}
+        >
+          {title}
+          {isSubMenu ? <DropSprite icon="CHEVRON" height="10px" spin={270} /> : null}
+        </Link>
+        <DropdownContainer
+          show={linkName === showSubMenu ? true : false}
+          onClick={handleSubMenuClick}
+        >
+          {Object.keys(subMenu).map(subName =>
+            buildLink(subName, Links[linkName].subMenu[subName], subMenuDrop)
+          )}
+        </DropdownContainer>
+      </LinkWrapper>
+    );
+  };
+
+  const buildLinks = () => Object.keys(Links).map(linkName => buildLink(linkName, Links[linkName]));
 
   const toggleMenu = () => {
     showMenu ? setShowMenu(false) : openDropdown('menu');

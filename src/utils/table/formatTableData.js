@@ -302,32 +302,30 @@ export const formatTableData = (data = [], tableHeaders) => {
           }
           break;
         }
-        // Notes for upgrade version comments
-        case 'notes': {
-          const { text, hoverText } = serverValue;
-          if (text === 'skipped' || text === 'scheduled') {
-            finalObj[dataName] = {
-              value: capitalize(`${text} `),
-              icon: 'HELP_OUTLINE',
-              hover: hoverText,
-            };
-          } else {
-            finalObj[dataName] = {
-              value: '',
-              icon: '',
-            };
-          }
+        // Version update events
+        case 'events': {
+          finalObj[dataName] = {
+            value: dataObj.skipped ? 'Skipped' : dataObj.scheduled ? 'Scheduled' : '',
+            icon: dataObj.skipped || dataObj.scheduled ? 'HELP_OUTLINE' : '',
+            hover: serverValue,
+          };
           break;
         }
         // Boolean to string
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };
           break;
-        // Server value already correct
+        // Set text styles
         case 'upgradeHeight': // fallthrough
         case 'upgradeName': // fallthrough
-        case 'initialVersion': // fallthrough
         case 'currentVersion': // fallthrough
+          finalObj[dataName] = {
+            value: serverValue,
+            style: dataObj.skipped ? { textDecoration: 'line-through', fontStyle: 'italic' } : {},
+          };
+          break;
+        // Server value already correct
+        case 'initialVersion': // fallthrough
         case 'bondHeight': // fallthrough
         case 'unbondingHeight': // fallthrough
         case 'currency': // fallthrough

@@ -19,30 +19,12 @@ const Upgrades = () => {
     getTableData();
   }, [getTableData]);
 
-  // Iterate through tableData to combine skipped/scheduled data into one column
-  tableData.forEach(element => {
-    element.notes = { text: null, hoverText: null };
-    if (element.scheduled) {
-      element['notes'] = {
-        text: 'scheduled',
-        hoverText: `Not yet applied - will be applied at upgrade height ${element.upgradeHeight}`,
-      };
-    }
-    if (element.upgradeName === 'eigengrau') {
-      element['notes'] = {
-        text: 'skipped',
-        hoverText:
-          'Skipped due to a migration error. Start `provenanced` with the `--unsafe-skip-upgrades=3417970` to bypass',
-      };
-    }
-  });
-
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Upgrade Height', dataName: 'upgradeHeight' },
     { displayName: 'Upgrade Name', dataName: 'upgradeName' },
     { displayName: 'Recommended Version', dataName: 'currentVersion' },
-    { displayName: 'Events', dataName: 'notes' },
+    { displayName: 'Events', dataName: 'events' },
   ];
 
   return (

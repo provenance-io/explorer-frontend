@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import { Skips } from '../../consts';
 import {
   GET_UPGRADE_INFO, // To-Do: Add more here once this is working
 } from '../actions/statsActions';
@@ -22,10 +23,17 @@ const reducer = handleActions(
         upgradeInfoLoading: true,
       };
     },
-    [`${GET_UPGRADE_INFO}_${SUCCESS}`](state, { payload: upgradeInfo }) {
+    [`${GET_UPGRADE_INFO}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        upgradeInfo,
+        upgradeInfo: payload.map(i => ({
+          ...i,
+          events:
+            Skips[i.upgradeName] ||
+            (i.scheduled
+              ? `Not yet applied - will be applied at upgrade height ${i.upgradeHeight}`
+              : ''),
+        })),
         upgradeInfoLoading: false,
       };
     },

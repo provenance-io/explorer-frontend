@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import {
-  Content,
-  Loading,
-  Pagination as BasePagination,
-  PopupNote,
-  Sprite,
-  TimeTicker,
-} from 'Components';
+import { Content, Loading, Pagination as BasePagination, Sprite, TimeTicker } from 'Components';
 import { getUTCTime, formatTableData } from 'utils';
 
 const TableContainer = styled.div`
@@ -57,32 +50,6 @@ const Pagination = styled(BasePagination)`
 `;
 const LoadingContainer = styled.td``;
 
-const NoteContainer = styled.div`
-  position: relative;
-  margin-left: 3px;
-  align: left;
-`;
-
-const NoteText = styled.div`
-  min-width: 400px;
-  white-space: normal;
-`;
-
-const ValueRow = styled.div`
-  display: flex;
-`;
-
-const NewPopupNote = styled(PopupNote)`
-  right: -35%;
-  left: auto;
-  bottom: 125%;
-`;
-
-const StrikeThrough = styled(TableData)`
-  text-decoration: line-through;
-  font-style: italic;
-`;
-
 const Table = ({
   changePage,
   className,
@@ -114,8 +81,6 @@ const Table = ({
   // Add in age header if requested
   const showAgeHeader = { displayName: 'Age', dataName: showAge };
   finalTableHeaders = showAge ? [...tableHeaders, showAgeHeader] : finalTableHeaders;
-  // Set show note
-  const [showNote, setShowNote] = useState(false);
 
   const loaderRow = () => (
     <Row>
@@ -166,40 +131,13 @@ const Table = ({
         });
       }
 
-      const { link = false, value = '--', hover = false, icon } = rowData[dataName] || {};
-
-      // If we want to display an info icon
-      if (dataName === 'notes') {
-        return (
-          <TableData key={displayName}>
-            {icon !== '' ? (
-              <ValueRow>
-                {value}
-                <NoteContainer
-                  onMouseEnter={() => setShowNote(true)}
-                  onMouseLeave={() => setShowNote(false)}
-                >
-                  <NewPopupNote show={showNote} position="bottom" carat={false}>
-                    <NoteText>{hover}</NoteText>
-                  </NewPopupNote>
-                  <Sprite icon={icon} size="1.7rem" onClick={() => setShowNote(!showNote)} />
-                </NoteContainer>
-              </ValueRow>
-            ) : (
-              ''
-            )}
-          </TableData>
-        );
-      }
-
-      // Apply a strike through if required
-      if ('notes' in rowData && rowData['notes'].value === 'Skipped ') {
-        return (
-          <StrikeThrough title={hover || value} key={displayName}>
-            {value}
-          </StrikeThrough>
-        );
-      }
+      const {
+        link = false,
+        value = '--',
+        hover = false,
+        icon,
+        style = {},
+      } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
@@ -207,14 +145,17 @@ const Table = ({
       const valueMissing = value === '--' || value === '' || value === '--';
 
       return (
-        <TableData title={hover || value} key={displayName}>
+        <TableData title={hover || value} key={displayName} style={style}>
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}
               {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
             </Link>
           ) : (
-            value
+            <>
+              {value}
+              {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
+            </>
           )}
         </TableData>
       );
