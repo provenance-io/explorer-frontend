@@ -49,6 +49,7 @@ const reducer = handleActions(
       return {
         ...state,
         accountInfoLoading: true,
+        accountInfoFailure: false,
       };
     },
     [`${GET_ACCOUNT_INFO}_${SUCCESS}`](state, { payload: accountInfo }) {
@@ -56,12 +57,14 @@ const reducer = handleActions(
         ...state,
         accountInfoLoading: false,
         accountInfo,
+        accountInfoFailure: false,
       };
     },
     [`${GET_ACCOUNT_INFO}_${FAILURE}`](state) {
       return {
         ...state,
         accountInfoLoading: false,
+        accountInfoFailure: true,
       };
     },
     /* -----------------
