@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { useHistory } from 'react-router-dom';
@@ -36,7 +37,7 @@ const BackButtonText = styled.div`
   color: ${({ theme }) => theme.FONT_WHITE};
 `;
 
-const NoMatch404 = () => {
+const NoMatch404 = ({ message }) => {
   const { goBack } = useHistory();
 
   return (
@@ -45,7 +46,7 @@ const NoMatch404 = () => {
         <Content>
           <TextWrapper>
             <GiantText>404</GiantText>
-            <InfoText>Seems like you've taken a wrong path somewhere, this page doesn't exist.</InfoText>
+            <InfoText>{message}</InfoText>
             <BackButtonWrapper onClick={goBack}>
               <BackButtonText>Back</BackButtonText>
             </BackButtonWrapper>
@@ -54,6 +55,14 @@ const NoMatch404 = () => {
       </Section>
     </Wrapper>
   );
+};
+
+NoMatch404.propTypes = {
+  message: PropTypes.string,
+};
+
+NoMatch404.defaultProps = {
+  message: "Seems like you've taken a wrong path somewhere, this page doesn't exist.",
 };
 
 export default NoMatch404;
