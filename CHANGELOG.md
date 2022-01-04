@@ -6,6 +6,7 @@
 
 - Fixed the spelling issue on account #203
 - Fixed the rounding to 3 decimal places on hash USD price on dashboard #202
+- Show 404 when account not found #187
 
 ### Features
 
