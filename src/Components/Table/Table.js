@@ -40,12 +40,8 @@ const TableData = styled.td`
   text-align: left;
   border: none;
   min-width: 100px;
-  ${({ skipped }) =>
-    skipped &&
-    `
-    text-decoration: line-through;
-    font-style: italic;
-  `}
+  text-decoration: ${({ skipped }) => skipped && 'line-through'};
+  font-style: ${({ skipped }) => skipped && 'italic'};
 `;
 const Pagination = styled(BasePagination)`
   display: flex;

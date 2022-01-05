@@ -60,7 +60,7 @@ const DropdownUL = styled.ul`
   flex-direction: column;
   list-style: none;
   margin-left: -5px;
-  padding: 40px 0 0 0;
+  padding: 20px 0 0 0;
   ${NavSectionLI}:hover & {
     max-height: 150px;
     transition-delay: 500ms;
@@ -72,6 +72,7 @@ const Link = styled(BaseLink)`
   background: ${({ theme }) => theme.BACKGROUND_NAV};
   font-size: 1.4rem;
   opacity: 0.9;
+  border-bottom: ${({ theme }) => `2px solid ${theme.BACKGROUND_NAV};`};
   :hover {
     opacity: 1;
   }
@@ -89,19 +90,12 @@ const Link = styled(BaseLink)`
     margin: 0 10px 0 0;
   }
   :last-child {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 0px;
   }
   &&& {
     color: ${({ theme }) => theme.FONT_NAV};
   }
-  ${({ subdrop }) =>
-    subdrop &&
-    `
-    padding: 3px 7px 3px 7px;
-    :last-child {
-      margin: 0 0 0 0;
-    }
-  `}
+  padding: ${({ subdrop }) => subdrop && '3px 7px 3px 7px;'};
 `;
 
 const LogoLink = styled(BaseLink)`
@@ -112,7 +106,7 @@ const LogoLink = styled(BaseLink)`
 const DropSprite = styled(Sprite)`
   position: absolute;
   display: flex;
-  margin: 8px 0 0 47%;
+  margin: -19px 0 0 47%;
   transition-delay: 300ms;
   transition-duration: 300ms;
   ${NavSectionLI}:hover & {
@@ -141,19 +135,17 @@ const NavStandard = () => {
           data-testid={`${title.toLowerCase()}-navlink`}
         >
           {title}
-          {isSubMenu ? (
-            <>
-              <DropSprite icon="CHEVRON" height="10px" spin={270} />
-              <DropdownUL>
-                <>
-                  {Object.keys(subMenu).map(subName =>
-                    buildLink(subName, Links[linkName].subMenu[subName], 'true')
-                  )}
-                </>
-              </DropdownUL>
-            </>
-          ) : null}
         </Link>
+        {isSubMenu && (
+          <>
+            <DropSprite icon="CHEVRON" height="10px" spin={270} />
+            <DropdownUL>
+              {Object.keys(subMenu).map(subName =>
+                buildLink(subName, Links[linkName].subMenu[subName], 'true')
+              )}
+            </DropdownUL>
+          </>
+        )}
       </NavSectionLI>
     );
   };

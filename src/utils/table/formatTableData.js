@@ -321,7 +321,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'currentVersion':
           finalObj[dataName] = {
             value: serverValue,
-            skipped: dataObj.skipped ? true : false,
+            skipped: dataObj.skipped,
           };
           break;
         // Server value already correct
