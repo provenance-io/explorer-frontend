@@ -4,12 +4,10 @@ import { Link as BaseLink, useLocation } from 'react-router-dom';
 import { Links, Path, breakpoints } from 'consts';
 import { useApp, useColorScheme } from 'redux/hooks';
 // Direct import to prevent import order issues
-// import { setConstantValue } from 'typescript';
 import Sprite from '../../Sprite';
 import SearchBar from '../../SearchBar';
 import Toggle from '../../Toggle';
 import UserAccount from '../../UserAccount';
-// import { findLastIndex } from 'cypress/types/lodash';
 
 const NavigationWrapper = styled.div`
   position: fixed;
@@ -20,7 +18,7 @@ const NavigationWrapper = styled.div`
   left: 0;
   margin: 0 auto;
   width: 100%;
-  padding: 10px 10%;
+  padding: 15px 10%;
   background: ${({ theme }) => theme.BACKGROUND_NAV};
   @media ${breakpoints.down('lg')} {
     padding: 10px 20px;
@@ -51,7 +49,7 @@ const NavSectionLI = styled.li`
   margin-right: 10px;
   width: 100%;
   text-align: left;
-  margin-left: 10px;
+  margin-left: ${({ subdrop }) => (subdrop ? '0px' : '10px')};
 `;
 
 const DropdownUL = styled.ul`
@@ -60,9 +58,9 @@ const DropdownUL = styled.ul`
   overflow: hidden;
   transition-delay: 300ms;
   flex-direction: column;
-  margin-top: 40px;
   list-style: none;
-  margin-left: -45px;
+  margin-left: -5px;
+  padding: 40px 0 0 0;
   ${NavSectionLI}:hover & {
     max-height: 150px;
     transition-delay: 500ms;
@@ -70,9 +68,9 @@ const DropdownUL = styled.ul`
 `;
 
 const Link = styled(BaseLink)`
+  display: flex;
   background: ${({ theme }) => theme.BACKGROUND_NAV};
   font-size: 1.4rem;
-  padding-bottom: 0px;
   opacity: 0.9;
   :hover {
     opacity: 1;
@@ -80,12 +78,12 @@ const Link = styled(BaseLink)`
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
-  ${({ active, theme }) =>
+  ${({ active, theme, subdrop }) =>
     active &&
     `
     opacity: 1;
     font-weight: ${theme.FONT_WEIGHT_BOLDEST};
-    border-bottom: 2px solid ${theme.FONT_NAV};
+    border-bottom: ${subdrop ? '0px' : `2px solid ${theme.FONT_NAV}`};
     `}
   :first-child {
     margin: 0 10px 0 0;
@@ -96,6 +94,14 @@ const Link = styled(BaseLink)`
   &&& {
     color: ${({ theme }) => theme.FONT_NAV};
   }
+  ${({ subdrop }) =>
+    subdrop &&
+    `
+    padding: 3px 7px 3px 7px;
+    :last-child {
+      margin: 0 0 0 0;
+    }
+  `}
 `;
 
 const LogoLink = styled(BaseLink)`
@@ -105,8 +111,8 @@ const LogoLink = styled(BaseLink)`
 
 const DropSprite = styled(Sprite)`
   position: absolute;
-  flex-direction: column;
-  margin: 8px 0 0 48%;
+  display: flex;
+  margin: 8px 0 0 47%;
   transition-delay: 300ms;
   transition-duration: 300ms;
   ${NavSectionLI}:hover & {
@@ -116,35 +122,37 @@ const DropSprite = styled(Sprite)`
   }
 `;
 
-const subMenuTop = { display: 'flex', borderBottom: '0px', paddingRight: '0px' };
-
-const subMenuDrop = { padding: '3px 0 3px 7px', ...subMenuTop };
-
 const NavStandard = () => {
   const { setTheme } = useApp();
   const { themeName } = useColorScheme();
   const { pathname } = useLocation();
   const theme = useTheme();
 
-  const buildLink = (linkName, { url, title, subMenu = {} }, style) => {
+  const buildLink = (linkName, { url, title, subMenu = {} }, subdrop) => {
     const active = pathname === url ? 'true' : undefined;
-    const isSubMenu = Links[linkName]?.subMenu;
+    const isSubMenu = Links[linkName]?.subMenu ? 'true' : undefined;
     return (
-      <NavSectionLI key={url}>
+      <NavSectionLI key={url} subdrop={subdrop}>
         <Link
           key={url}
           to={isSubMenu ? '#' : url}
           active={active}
+          subdrop={subdrop}
           data-testid={`${title.toLowerCase()}-navlink`}
-          style={isSubMenu ? subMenuTop : style}
         >
           {title}
-          {isSubMenu ? <DropSprite icon="CHEVRON" height="10px" spin={270} /> : null}
-          <DropdownUL>
-            {Object.keys(subMenu).map(subName =>
-              buildLink(subName, Links[linkName].subMenu[subName], subMenuDrop)
-            )}
-          </DropdownUL>
+          {isSubMenu ? (
+            <>
+              <DropSprite icon="CHEVRON" height="10px" spin={270} />
+              <DropdownUL>
+                <>
+                  {Object.keys(subMenu).map(subName =>
+                    buildLink(subName, Links[linkName].subMenu[subName], 'true')
+                  )}
+                </>
+              </DropdownUL>
+            </>
+          ) : null}
         </Link>
       </NavSectionLI>
     );

@@ -1,12 +1,9 @@
 import { handleActions } from 'redux-actions';
 import { Skips } from '../../consts';
-import {
-  GET_UPGRADE_INFO, // To-Do: Add more here once this is working
-} from '../actions/statsActions';
+import { GET_UPGRADE_INFO } from '../actions/statsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
-  //To-Do: Add more here once this is working
   // Upgrade Info
   upgradeInfo: [],
   upgradeInfoLoading: false,

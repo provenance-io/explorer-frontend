@@ -40,6 +40,12 @@ const TableData = styled.td`
   text-align: left;
   border: none;
   min-width: 100px;
+  ${({ skipped }) =>
+    skipped &&
+    `
+    text-decoration: line-through;
+    font-style: italic;
+  `}
 `;
 const Pagination = styled(BasePagination)`
   display: flex;
@@ -136,7 +142,7 @@ const Table = ({
         value = '--',
         hover = false,
         icon,
-        style = {},
+        skipped = false,
       } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
@@ -145,7 +151,7 @@ const Table = ({
       const valueMissing = value === '--' || value === '' || value === '--';
 
       return (
-        <TableData title={hover || value} key={displayName} style={style}>
+        <TableData title={hover || value} key={displayName} skipped={skipped}>
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}

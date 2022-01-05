@@ -26,9 +26,13 @@ const LinkWrapper = styled.div`
   position: relative;
   margin: 10px 0;
   padding-bottom: 5px;
+  ${({ submenudrop }) =>
+    !submenudrop &&
+    `
   &:first-of-type {
     margin-top: 30px;
   }
+  `}
 `;
 
 const Link = styled(BaseLink)`
@@ -41,21 +45,21 @@ const Link = styled(BaseLink)`
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
-  ${({ active, theme }) =>
+  ${({ active, theme, submenudrop }) =>
     active &&
     `
       opacity: 1;
       font-weight: ${theme.FONT_WEIGHT_BOLDEST};
-      text-decoration: underline solid ${theme.FONT_NAV} 2px;
+      text-decoration: ${submenudrop ? '' : `underline solid ${theme.FONT_NAV} 2px`};
       text-underline-offset: 3px;
   `}
+  ${({ submenudrop }) => submenudrop && 'margin: 0 0 0 10px;'}
 `;
 
 const DropSprite = styled(Sprite)`
   position: absolute;
   margin: 4px 0 0 -35px;
 `;
-
 const LogoLink = styled(BaseLink)`
   display: flex;
   align-items: center;
@@ -79,7 +83,6 @@ const CloseIcon = styled(Sprite)`
   right: 20px;
   top: 70px;
 `;
-const subMenuDrop = { margin: '15px 0 5px 10px' };
 
 const NavMini = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -92,14 +95,15 @@ const NavMini = () => {
     setShowMenu(false);
   };
 
-  const buildLink = (linkName, { url, title, subMenu = {} }, style) => {
+  const buildLink = (linkName, { url, title, subMenu = {} }, subMenuDrop) => {
     const active = pathname === url ? 'true' : undefined;
     const isSubMenu = Links[linkName]?.subMenu;
     return (
-      <LinkWrapper key={url} style={style}>
+      <LinkWrapper key={url} submenudrop={subMenuDrop}>
         <Link
           to={isSubMenu ? '#' : url}
           active={active}
+          submenudrop={subMenuDrop}
           onClick={
             isSubMenu
               ? showSubMenu === linkName
@@ -107,7 +111,6 @@ const NavMini = () => {
                 : () => setShowSubMenu(linkName)
               : () => setShowMenu(false)
           }
-          style={style}
         >
           {title}
           {isSubMenu ? <DropSprite icon="CHEVRON" height="10px" spin={270} /> : null}
@@ -117,7 +120,7 @@ const NavMini = () => {
           onClick={handleSubMenuClick}
         >
           {Object.keys(subMenu).map(subName =>
-            buildLink(subName, Links[linkName].subMenu[subName], subMenuDrop)
+            buildLink(subName, Links[linkName].subMenu[subName], 'true')
           )}
         </DropdownContainer>
       </LinkWrapper>

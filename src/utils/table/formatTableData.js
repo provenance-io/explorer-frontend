@@ -318,10 +318,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Set text styles
         case 'upgradeHeight': // fallthrough
         case 'upgradeName': // fallthrough
-        case 'currentVersion': // fallthrough
+        case 'currentVersion':
           finalObj[dataName] = {
             value: serverValue,
-            style: dataObj.skipped ? { textDecoration: 'line-through', fontStyle: 'italic' } : {},
+            skipped: dataObj.skipped ? true : false,
           };
           break;
         // Server value already correct
