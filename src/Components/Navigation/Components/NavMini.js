@@ -26,8 +26,8 @@ const LinkWrapper = styled.div`
   position: relative;
   margin: 10px 0;
   padding-bottom: 5px;
-  ${({ submenudrop }) =>
-    !submenudrop &&
+  ${({ $subMenuDrop }) =>
+    !$subMenuDrop &&
     `
   &:first-of-type {
     margin-top: 30px;
@@ -45,15 +45,15 @@ const Link = styled(BaseLink)`
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
-  ${({ active, theme, submenudrop }) =>
-    active &&
+  ${({ $active, theme, $subMenuDrop }) =>
+    $active &&
     `
       opacity: 1;
       font-weight: ${theme.FONT_WEIGHT_BOLDEST};
-      text-decoration: ${!submenudrop && `underline solid ${theme.FONT_NAV} 2px`};
+      text-decoration: ${!$subMenuDrop && `underline solid ${theme.FONT_NAV} 2px`};
       text-underline-offset: 3px;
   `}
-  ${({ submenudrop }) => submenudrop && 'margin: 0 0 0 10px;'}
+  ${({ $subMenuDrop }) => $subMenuDrop && 'margin: 0 0 0 10px;'}
 `;
 
 const DropSprite = styled(Sprite)`
@@ -95,15 +95,15 @@ const NavMini = () => {
     setShowMenu(false);
   };
 
-  const buildLink = (linkName, { url, title, subMenu = {} }, submenudrop) => {
-    const active = pathname === url ? 'true' : undefined;
+  const buildLink = (linkName, { url, title, subMenu = {} }, subMenuDrop) => {
+    const active = pathname === url;
     const isSubMenu = Links[linkName]?.subMenu;
     return (
-      <LinkWrapper key={url} submenudrop={submenudrop}>
+      <LinkWrapper key={url} $subMenuDrop={subMenuDrop}>
         <Link
           to={isSubMenu ? '#' : url}
-          active={active}
-          submenudrop={submenudrop}
+          $active={active}
+          $subMenuDrop={subMenuDrop}
           onClick={
             isSubMenu
               ? showSubMenu === linkName
@@ -117,7 +117,7 @@ const NavMini = () => {
         </Link>
         <DropdownContainer show={linkName === showSubMenu} onClick={handleSubMenuClick}>
           {Object.keys(subMenu).map(subName =>
-            buildLink(subName, Links[linkName].subMenu[subName], 'true')
+            buildLink(subName, Links[linkName].subMenu[subName], true)
           )}
         </DropdownContainer>
       </LinkWrapper>

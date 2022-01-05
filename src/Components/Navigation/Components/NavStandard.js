@@ -49,7 +49,7 @@ const NavSectionLI = styled.li`
   margin-right: 10px;
   width: 100%;
   text-align: left;
-  margin-left: ${({ subdrop }) => (subdrop ? '0px' : '10px')};
+  margin-left: ${({ $subDrop }) => ($subDrop ? '0px' : '10px')};
 `;
 
 const DropdownUL = styled.ul`
@@ -79,12 +79,12 @@ const Link = styled(BaseLink)`
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
-  ${({ active, theme, subdrop }) =>
-    active &&
+  ${({ $active, theme, $subDrop }) =>
+    $active &&
     `
     opacity: 1;
     font-weight: ${theme.FONT_WEIGHT_BOLDEST};
-    border-bottom: ${subdrop ? '0px' : `2px solid ${theme.FONT_NAV}`};
+    border-bottom: ${$subDrop ? '0px' : `2px solid ${theme.FONT_NAV}`};
     `}
   :first-child {
     margin: 0 10px 0 0;
@@ -95,7 +95,7 @@ const Link = styled(BaseLink)`
   &&& {
     color: ${({ theme }) => theme.FONT_NAV};
   }
-  padding: ${({ subdrop }) => subdrop && '3px 7px 3px 7px;'};
+  padding: ${({ $subDrop }) => $subDrop && '3px 7px 3px 7px;'};
 `;
 
 const LogoLink = styled(BaseLink)`
@@ -122,16 +122,16 @@ const NavStandard = () => {
   const { pathname } = useLocation();
   const theme = useTheme();
 
-  const buildLink = (linkName, { url, title, subMenu = {} }, subdrop) => {
-    const active = pathname === url ? 'true' : undefined;
-    const isSubMenu = Links[linkName]?.subMenu ? 'true' : undefined;
+  const buildLink = (linkName, { url, title, subMenu = {} }, subDrop) => {
+    const active = pathname === url;
+    const isSubMenu = Links[linkName]?.subMenu || undefined;
     return (
-      <NavSectionLI key={url} subdrop={subdrop}>
+      <NavSectionLI key={url} $subDrop={subDrop}>
         <Link
           key={url}
           to={isSubMenu ? '#' : url}
-          active={active}
-          subdrop={subdrop}
+          $active={active}
+          $subDrop={subDrop}
           data-testid={`${title.toLowerCase()}-navlink`}
         >
           {title}
@@ -141,7 +141,7 @@ const NavStandard = () => {
             <DropSprite icon="CHEVRON" height="10px" spin={270} />
             <DropdownUL>
               {Object.keys(subMenu).map(subName =>
-                buildLink(subName, Links[linkName].subMenu[subName], 'true')
+                buildLink(subName, Links[linkName].subMenu[subName], true)
               )}
             </DropdownUL>
           </>
