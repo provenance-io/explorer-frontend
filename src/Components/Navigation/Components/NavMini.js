@@ -23,11 +23,16 @@ const InnerWrapper = styled.div`
 `;
 
 const LinkWrapper = styled.div`
+  position: relative;
   margin: 10px 0;
   padding-bottom: 5px;
+  ${({ $subMenuDrop }) =>
+    !$subMenuDrop &&
+    `
   &:first-of-type {
-    margin-top: 0;
+    margin-top: 30px;
   }
+  `}
 `;
 
 const Link = styled(BaseLink)`
@@ -40,25 +45,27 @@ const Link = styled(BaseLink)`
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
-  ${({ active, theme }) =>
-    active &&
+  ${({ $active, theme, $subMenuDrop }) =>
+    $active &&
     `
       opacity: 1;
       font-weight: ${theme.FONT_WEIGHT_BOLDEST};
-      text-decoration: underline solid ${theme.FONT_NAV} 2px;
+      text-decoration: ${!$subMenuDrop && `underline solid ${theme.FONT_NAV} 2px`};
       text-underline-offset: 3px;
   `}
+  ${({ $subMenuDrop }) => $subMenuDrop && 'margin: 0 0 0 10px;'}
 `;
 
+const DropSprite = styled(Sprite)`
+  position: absolute;
+  margin: 4px 0 0 -35px;
+`;
 const LogoLink = styled(BaseLink)`
   display: flex;
   align-items: center;
 `;
 const DropdownContainer = styled.div`
-  display: ${({ show }) => (show ? 'block' : 'none')};
-  padding: 30px 5px 5px 5px;
-  width: 100%;
-  position: relative;
+  display: ${({ show }) => (show ? 'block' : 'none')}; ;
 `;
 const SearchContainer = styled.div`
   display: ${({ show }) => (show ? 'block' : 'none')};
@@ -73,27 +80,51 @@ const SearchClose = styled(Sprite)`
 `;
 const CloseIcon = styled(Sprite)`
   position: absolute;
-  right: 0;
-  top: 30px;
+  right: 20px;
+  top: 70px;
 `;
 
 const NavMini = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState('none');
   const [showSearch, setShowSearch] = useState(false);
   const { pathname } = useLocation();
 
-  const buildLinks = () =>
-    Object.keys(Links).map(linkName => {
-      const { url, title } = Links[linkName];
-      const active = pathname === url ? 'true' : undefined;
-      return (
-        <LinkWrapper key={url}>
-          <Link to={url} active={active} onClick={() => setShowMenu(false)}>
-            {title}
-          </Link>
-        </LinkWrapper>
-      );
-    });
+  const handleSubMenuClick = () => {
+    setShowSubMenu('none');
+    setShowMenu(false);
+  };
+
+  const buildLink = (linkName, { url, title, subMenu = {} }, subMenuDrop) => {
+    const active = pathname === url;
+    const isSubMenu = Links[linkName]?.subMenu;
+    return (
+      <LinkWrapper key={url} $subMenuDrop={subMenuDrop}>
+        <Link
+          to={isSubMenu ? '#' : url}
+          $active={active}
+          $subMenuDrop={subMenuDrop}
+          onClick={
+            isSubMenu
+              ? showSubMenu === linkName
+                ? () => setShowSubMenu('none')
+                : () => setShowSubMenu(linkName)
+              : () => setShowMenu(false)
+          }
+        >
+          {title}
+          {isSubMenu ? <DropSprite icon="CHEVRON" height="10px" spin={270} /> : null}
+        </Link>
+        <DropdownContainer show={linkName === showSubMenu} onClick={handleSubMenuClick}>
+          {Object.keys(subMenu).map(subName =>
+            buildLink(subName, Links[linkName].subMenu[subName], true)
+          )}
+        </DropdownContainer>
+      </LinkWrapper>
+    );
+  };
+
+  const buildLinks = () => Object.keys(Links).map(linkName => buildLink(linkName, Links[linkName]));
 
   const toggleMenu = () => {
     showMenu ? setShowMenu(false) : openDropdown('menu');

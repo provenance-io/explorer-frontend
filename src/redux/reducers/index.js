@@ -8,6 +8,7 @@ import txsReducer from './txsReducer';
 import validatorsReducer from './validatorsReducer';
 import orderbookReducer from './orderbookReducer';
 import nftReducer from './nftReducer';
+import statsReducer from './statsReducer';
 
 const rootReducer = {
   accountsReducer,
@@ -20,6 +21,7 @@ const rootReducer = {
   validatorsReducer,
   orderbookReducer,
   nftReducer,
+  statsReducer,
 };
 
 export default rootReducer;
