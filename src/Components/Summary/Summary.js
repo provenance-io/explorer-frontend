@@ -32,29 +32,12 @@ const NoteRow = styled.div`
   word-break: normal;
 `;
 const NoteTitle = styled.div`
-  min-width: 100px;
+  min-width: ${({ titleMinWidth }) => (titleMinWidth ? titleMinWidth : '100px')};
 `;
 const NoteValue = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   display: flex;
-  min-width: 100px;
-`;
-const UList = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-`;
-const ListItem = styled.li`
-  margin: 0;
-  padding: 0;
-  display: flex;
-`;
-const ListTitle = styled(SummaryValue)`
-  min-width: 40px;
-`;
-const ListValue = styled(SummaryValue)`
-  margin-left: 5px;
-  font-weight: normal;
+  min-width: ${({ noteMinWidth }) => (noteMinWidth ? noteMinWidth : '100px')};
 `;
 
 const buildPopupNote = popupData => {
@@ -65,6 +48,8 @@ const buildPopupNote = popupData => {
     fontColor = 'FONT_WHITE',
     data = [],
     position = 'above',
+    titleMinWidth = '',
+    noteMinWidth = '',
   } = popupData;
   const showOnHover = method.includes('hover');
   const showOnClick = method.includes('click');
@@ -72,8 +57,8 @@ const buildPopupNote = popupData => {
 
   const buildPopupRow = ({ title, value, hideTitle = false }) => (
     <NoteRow key={title}>
-      {!hideTitle && <NoteTitle>{title}</NoteTitle>}
-      <NoteValue>{value}</NoteValue>
+      {!hideTitle && <NoteTitle titleMinWidth={titleMinWidth}>{title}</NoteTitle>}
+      <NoteValue noteMinWidth={noteMinWidth}>{value}</NoteValue>
     </NoteRow>
   );
 
@@ -116,29 +101,13 @@ const getCopyValue = (copyValue, title, children) => (
     {children} <CopyValue value={copyValue} title={`Copy ${title}`} />
   </Fragment>
 );
-const getList = (list, children) => (
-  <UList>
-    {children.map(row => (
-      <ListItem>
-        <ListTitle>{row[0]}</ListTitle>
-        <ListValue $list={list}>{row[1]}</ListValue>
-      </ListItem>
-    ))}
-  </UList>
-);
 
 const buildSummaryValue = (rowData, theme) => {
-  const { value, link, change, externalLink, popupNote, copy, title, isJson, list } = rowData;
+  const { value, link, change, externalLink, popupNote, copy, title, isJson } = rowData;
 
   let finalValue = value;
   if (change) {
     finalValue = getChangeValue(change, finalValue);
-  }
-  if (list) {
-    finalValue = getList(list, finalValue);
-  }
-  if (popupNote) {
-    finalValue = getPopupValue(popupNote, finalValue);
   }
   if (externalLink) {
     finalValue = getExternalLinkValue(externalLink, finalValue);
@@ -148,6 +117,9 @@ const buildSummaryValue = (rowData, theme) => {
   }
   if (copy) {
     finalValue = getCopyValue(copy, title, finalValue);
+  }
+  if (popupNote) {
+    finalValue = getPopupValue(popupNote, finalValue);
   }
   if (isJson) {
     finalValue = (

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useAccounts, useMediaQuery } from 'redux/hooks';
@@ -19,7 +19,8 @@ const AccountSpotlight = () => {
   const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo } = useAccounts();
   const { addressId } = useParams();
   const { matches } = useMediaQuery(breakpoints.down('sm'));
-  const { matches: matchesList } = useMediaQuery(breakpoints.down('xl'));
+  const { matches: matchesLong } = useMediaQuery(breakpoints.down('xl'));
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     getAccountAssets(addressId);
@@ -31,11 +32,26 @@ const AccountSpotlight = () => {
     accountNumber = '--',
     accountType = '--',
     publicKeys = {},
+    publicKey = publicKeys.pubKey,
+    publicKeyType = publicKeys.type,
     sequence = '--',
     tokens = {},
   } = accountInfo;
-  const publicKey = publicKeys.pubKey;
-  const publicKeyType = publicKeys.type;
+
+  const popupNoteKeyType = {
+    visibility: { visible: showPopup, setVisible: setShowPopup },
+    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    method: ['click', 'hover'],
+    fontColor: 'FONT_WHITE',
+    data: [
+      {
+        title: 'Key Type:',
+        value: publicKeyType,
+      },
+    ],
+    titleMinWidth: '70px',
+    noteMinWidth: '70px',
+  };
 
   const summaryData = [
     { title: 'Address', value: matches ? maxLength(addressId, 20, 3) : addressId, copy: addressId },
@@ -44,12 +60,9 @@ const AccountSpotlight = () => {
     { title: 'Account Number', value: accountNumber },
     {
       title: 'Public Key',
-      value: [
-        [`Type:`, `${publicKeyType}`],
-        [`Key:`, `${matchesList ? maxLength(publicKey, 20, 3) : publicKey}`],
-      ],
+      value: matchesLong ? maxLength(publicKey, 20, 3) : publicKey,
       copy: publicKey,
-      list: true,
+      popupNote: popupNoteKeyType,
     },
     { title: 'Sequence', value: sequence },
     { title: 'Fungible Tokens', value: tokens.fungibleCount },
