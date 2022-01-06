@@ -19,6 +19,7 @@ const AccountSpotlight = () => {
   const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo } = useAccounts();
   const { addressId } = useParams();
   const { matches } = useMediaQuery(breakpoints.down('sm'));
+  const { matches: matchesList } = useMediaQuery(breakpoints.down('xl'));
 
   useEffect(() => {
     getAccountAssets(addressId);
@@ -33,7 +34,8 @@ const AccountSpotlight = () => {
     sequence = '--',
     tokens = {},
   } = accountInfo;
-  const publicKey = publicKeys.signers ? publicKeys.signers[0] : '';
+  const publicKey = publicKeys.pubKey;
+  const publicKeyType = publicKeys.type;
 
   const summaryData = [
     { title: 'Address', value: matches ? maxLength(addressId, 20, 3) : addressId, copy: addressId },
@@ -42,8 +44,12 @@ const AccountSpotlight = () => {
     { title: 'Account Number', value: accountNumber },
     {
       title: 'Public Key',
-      value: matches ? maxLength(publicKey, 20, 3) : publicKey,
+      value: [
+        [`Type:`, `${publicKeyType}`],
+        [`Key:`, `${matchesList ? maxLength(publicKey, 20, 3) : publicKey}`],
+      ],
       copy: publicKey,
+      list: true,
     },
     { title: 'Sequence', value: sequence },
     { title: 'Fungible Tokens', value: tokens.fungibleCount },

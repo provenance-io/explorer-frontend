@@ -12,7 +12,6 @@ import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '.
 
 const SummaryRow = styled(DataRow)`
   word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
-
   @media ${breakpoints.up('md')} {
     flex-basis: ${({ isJson }) => (isJson ? 100 : 50)}%;
   }
@@ -39,6 +38,23 @@ const NoteValue = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   display: flex;
   min-width: 100px;
+`;
+const UList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+`;
+const ListItem = styled.li`
+  margin: 0;
+  padding: 0;
+  display: flex;
+`;
+const ListTitle = styled(SummaryValue)`
+  min-width: 40px;
+`;
+const ListValue = styled(SummaryValue)`
+  margin-left: 5px;
+  font-weight: normal;
 `;
 
 const buildPopupNote = popupData => {
@@ -100,12 +116,26 @@ const getCopyValue = (copyValue, title, children) => (
     {children} <CopyValue value={copyValue} title={`Copy ${title}`} />
   </Fragment>
 );
+const getList = (list, children) => (
+  <UList>
+    {children.map(row => (
+      <ListItem>
+        <ListTitle>{row[0]}</ListTitle>
+        <ListValue $list={list}>{row[1]}</ListValue>
+      </ListItem>
+    ))}
+  </UList>
+);
 
 const buildSummaryValue = (rowData, theme) => {
-  const { value, link, change, externalLink, popupNote, copy, title, isJson } = rowData;
+  const { value, link, change, externalLink, popupNote, copy, title, isJson, list } = rowData;
+
   let finalValue = value;
   if (change) {
     finalValue = getChangeValue(change, finalValue);
+  }
+  if (list) {
+    finalValue = getList(list, finalValue);
   }
   if (popupNote) {
     finalValue = getPopupValue(popupNote, finalValue);
