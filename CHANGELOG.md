@@ -2,19 +2,28 @@
 
 ## Unreleased
 
+### Features
+
+- Add undelegate countdown #188
+
+## 2.3.0
+
+### Release Name: Erik the Red
+
 ### Bug Fixes
 
-- Fixed the spelling issue on account #203
-- Fixed the rounding to 3 decimal places on hash USD price on dashboard #202
+- Fixed the spelling issue on account [#203](https://github.com/provenance-io/explorer-frontend/issues/203)
+- Fixed the rounding to 3 decimal places on hash USD price on dashboard [#202](https://github.com/provenance-io/explorer-frontend/issues/202)
+- Show 404 when account not found [#187](https://github.com/provenance-io/explorer-frontend/issues/187)
 
 ### Features
 
-- Add NFT information to assets and accounts #25
-- Add undelegate countdown #188
+- Add NFT information to assets and accounts [#25](https://github.com/provenance-io/explorer-frontend/issues/25)
+- Add page for chain versions [#208](https://github.com/provenance-io/explorer-frontend/issues/208)
 
 ### Bug Fixes
 
-- Remove the xhr timeout to allow more time for the chain data to be returned #204
+- Remove the xhr timeout to allow more time for the chain data to be returned [#204](https://github.com/provenance-io/explorer-frontend/issues/204)
 
 ## 2.2.4
 
