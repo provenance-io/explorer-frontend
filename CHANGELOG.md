@@ -10,6 +10,7 @@
 ### Features
 
 - Add NFT information to assets and accounts #25
+- Add undelegate countdown #188
 
 ### Bug Fixes
 

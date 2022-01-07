@@ -55,6 +55,8 @@ const ValidatorList = () => {
     }
   }, [myValTableFilterStatus, accountDelegations, accountRedelegations, accountUnbonding]);
 
+  console.log(accountRedelegations);
+
   const isJailed = tableFilterStatus === 'jailed';
   const isDelegateFilter = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
 
@@ -87,7 +89,8 @@ const ValidatorList = () => {
     { displayName: 'Voting Power', dataName: 'votingPower' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Delegation Amount', dataName: 'amount' },
-    { displayName: 'Reward', dataName: 'reward' },
+    isDelegateFilter && { displayName: 'Reward', dataName: 'reward' },
+    !isDelegateFilter && { displayName: 'End Time', dataName: 'endTime' },
   ] // Remove the nulls
     .filter(th => th);
 
