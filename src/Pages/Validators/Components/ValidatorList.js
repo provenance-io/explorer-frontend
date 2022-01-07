@@ -55,8 +55,6 @@ const ValidatorList = () => {
     }
   }, [myValTableFilterStatus, accountDelegations, accountRedelegations, accountUnbonding]);
 
-  console.log(accountRedelegations);
-
   const isJailed = tableFilterStatus === 'jailed';
   const isDelegateFilter = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
 
