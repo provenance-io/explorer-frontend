@@ -21,4 +21,14 @@ export const Links = {
     url: Path.GOV_URL,
     title: 'Gov',
   },
+  stats: {
+    url: Path.VERSIONS_URL,
+    title: 'Stats',
+    subMenu: {
+      versions: {
+        url: Path.VERSIONS_URL,
+        title: 'Versions',
+      },
+    },
+  },
 };

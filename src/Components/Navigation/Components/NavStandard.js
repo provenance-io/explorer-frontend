@@ -12,6 +12,7 @@ import UserAccount from '../../UserAccount';
 const NavigationWrapper = styled.div`
   position: fixed;
   display: flex;
+  flex-direction: row;
   align-items: center;
   top: 0;
   left: 0;
@@ -35,39 +36,84 @@ const NavSection = styled.div`
   }
 `;
 
+const NavSectionUL = styled.ul`
+  list-style: none;
+  display: flex;
+  :last-child {
+    margin: 0 20px 0 0;
+  }
+`;
+
+const NavSectionLI = styled.li`
+  position: relative;
+  margin-right: 10px;
+  width: 100%;
+  text-align: left;
+  margin-left: ${({ $subDrop }) => ($subDrop ? '0px' : '10px')};
+`;
+
+const DropdownUL = styled.ul`
+  position: absolute;
+  max-height: 0;
+  overflow: hidden;
+  transition-delay: 300ms;
+  flex-direction: column;
+  list-style: none;
+  margin-left: -5px;
+  padding: 20px 0 0 0;
+  ${NavSectionLI}:hover & {
+    max-height: 150px;
+    transition-delay: 500ms;
+  }
+`;
+
 const Link = styled(BaseLink)`
-  margin: 0 10px;
+  display: flex;
+  background: ${({ theme }) => theme.BACKGROUND_NAV};
   font-size: 1.4rem;
-  padding-bottom: 5px;
   opacity: 0.9;
+  border-bottom: ${({ theme }) => `2px solid ${theme.BACKGROUND_NAV};`};
   :hover {
     opacity: 1;
   }
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
-  ${({ active, theme }) =>
-    active &&
+  ${({ $active, theme, $subDrop }) =>
+    $active &&
     `
     opacity: 1;
     font-weight: ${theme.FONT_WEIGHT_BOLDEST};
-    border-bottom: 2px solid ${theme.FONT_NAV};
+    border-bottom: ${$subDrop ? '0px' : `2px solid ${theme.FONT_NAV}`};
     `}
   :first-child {
     margin: 0 10px 0 0;
   }
   :last-child {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 0px;
   }
   &&& {
     color: ${({ theme }) => theme.FONT_NAV};
   }
+  padding: ${({ $subDrop }) => $subDrop && '3px 7px 3px 7px;'};
 `;
 
 const LogoLink = styled(BaseLink)`
   display: flex;
   align-items: center;
-  margin-right: 60px;
+`;
+
+const DropSprite = styled(Sprite)`
+  position: absolute;
+  display: flex;
+  margin: -19px 0 0 47%;
+  transition-delay: 300ms;
+  transition-duration: 300ms;
+  ${NavSectionLI}:hover & {
+    transition-delay: 300ms;
+    transition-duration: 300ms;
+    transform: rotate(450deg);
+  }
 `;
 
 const NavStandard = () => {
@@ -76,16 +122,35 @@ const NavStandard = () => {
   const { pathname } = useLocation();
   const theme = useTheme();
 
-  const buildLinks = () =>
-    Object.keys(Links).map(linkName => {
-      const { url, title } = Links[linkName];
-      const active = pathname === url ? 'true' : undefined;
-      return (
-        <Link key={url} to={url} active={active} data-testid={`${title.toLowerCase()}-navlink`}>
+  const buildLink = (linkName, { url, title, subMenu = {} }, subDrop) => {
+    const active = pathname === url;
+    const isSubMenu = Links[linkName]?.subMenu || undefined;
+    return (
+      <NavSectionLI key={url} $subDrop={subDrop}>
+        <Link
+          key={url}
+          to={isSubMenu ? '#' : url}
+          $active={active}
+          $subDrop={subDrop}
+          data-testid={`${title.toLowerCase()}-navlink`}
+        >
           {title}
         </Link>
-      );
-    });
+        {isSubMenu && (
+          <>
+            <DropSprite icon="CHEVRON" height="10px" spin={270} />
+            <DropdownUL>
+              {Object.keys(subMenu).map(subName =>
+                buildLink(subName, Links[linkName].subMenu[subName], true)
+              )}
+            </DropdownUL>
+          </>
+        )}
+      </NavSectionLI>
+    );
+  };
+
+  const buildLinks = () => Object.keys(Links).map(linkName => buildLink(linkName, Links[linkName]));
 
   return (
     <NavigationWrapper>
@@ -94,7 +159,9 @@ const NavStandard = () => {
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
       </NavSection>
-      <NavSection>{buildLinks()}</NavSection>
+      <NavSection>
+        <NavSectionUL>{buildLinks()}</NavSectionUL>
+      </NavSection>
       <SearchBar />
       <UserAccount />
       <Toggle

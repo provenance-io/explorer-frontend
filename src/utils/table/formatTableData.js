@@ -302,11 +302,30 @@ export const formatTableData = (data = [], tableHeaders) => {
           }
           break;
         }
+        // Version update events
+        case 'events': {
+          finalObj[dataName] = {
+            value: dataObj.skipped ? 'Skipped' : dataObj.scheduled ? 'Scheduled' : '',
+            icon: dataObj.skipped || dataObj.scheduled ? 'HELP_OUTLINE' : '',
+            hover: serverValue,
+          };
+          break;
+        }
         // Boolean to string
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };
           break;
+        // Set text styles
+        case 'upgradeHeight': // fallthrough
+        case 'upgradeName': // fallthrough
+        case 'currentVersion':
+          finalObj[dataName] = {
+            value: serverValue,
+            skipped: dataObj.skipped,
+          };
+          break;
         // Server value already correct
+        case 'initialVersion': // fallthrough
         case 'bondHeight': // fallthrough
         case 'unbondingHeight': // fallthrough
         case 'currency': // fallthrough
