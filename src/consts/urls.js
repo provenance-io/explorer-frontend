@@ -52,6 +52,14 @@ export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-fron
 export const SOCIAL_SLACK_URL =
   'https://join.slack.com/t/provenanceio/shared_invite/zt-vysymaqb-VqgW3frXoNNXNlyOiP7mog';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
+// --Stats
+export const ID_INFO_URL = `${BASE_URL}/chain/id`;
+export const UPGRADE_INFO_URL = `${BASE_URL}/chain/upgrades`;
+export const FEE_STATS_URL = `${BASE_URL}/gas/fees/statistics`;
+export const GAS_STATS_URL = `${BASE_URL}/gas/stats`;
+export const GAS_VOL_URL = `${BASE_URL}/gas/volume`;
+export const SPOTLIGHT_STATS_URL = `${BASE_URL}/spotlight`;
+export const TOKEN_STATS_URL = `${BASE_URL}/token/stats`;
 // -- Txs
 export const TX_INFO_URL = `${BASE_URL}/txs`;
 export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;

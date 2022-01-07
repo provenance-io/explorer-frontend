@@ -52,7 +52,7 @@ const reducer = handleActions(
       return {
         ...state,
         nftRecordsLoading: false,
-        nftRecords: payload,
+        nftRecords: payload.filter(record => !record.status.match(/NON_CONFORMING|ORPHAN/)),
       };
     },
     [`${GET_NFT_RECORDS}_${FAILURE}`](state) {

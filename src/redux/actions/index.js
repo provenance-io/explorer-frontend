@@ -9,6 +9,7 @@ import * as validatorsActions from './validatorsActions';
 import * as xhrActions from './xhrActions';
 import * as orderbookActions from './orderbookActions';
 import * as nftActions from './nftActions';
+import * as statsActions from './statsActions';
 
 export {
   accountsActions,
@@ -22,4 +23,5 @@ export {
   xhrActions,
   orderbookActions,
   nftActions,
+  statsActions,
 };

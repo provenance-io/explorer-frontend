@@ -15,3 +15,4 @@ export { default as Tx } from './Tx';
 export { default as Txs } from './Txs';
 export { default as Validator } from './Validator';
 export { default as Validators } from './Validators';
+export { default as Stats } from './Stats';

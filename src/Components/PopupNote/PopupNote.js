@@ -69,7 +69,7 @@ const Caret = styled(Sprite)`
   }}
 `;
 
-const PopupNote = ({ show, children, position, delay, className, minWidth }) => {
+const PopupNote = ({ show, children, position, carat, delay, className, minWidth }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [fadingIn, setFadingIn] = useState(false);
   const [fadingOut, setFadingOut] = useState(false);
@@ -105,8 +105,13 @@ const PopupNote = ({ show, children, position, delay, className, minWidth }) => 
   );
 
   return showPopup ? (
-    <PopupContainer delay={delay} position={position} className={`${className} ${show ? 'show' : 'hide'}`} minWidth={minWidth}>
-      <Caret icon="CARET" size="1.8rem" position={position} />
+    <PopupContainer
+      delay={delay}
+      position={position}
+      className={`${className} ${show ? 'show' : 'hide'}`}
+      minWidth={minWidth}
+    >
+      {carat ? <Caret icon="CARET" size="1.8rem" position={position} /> : null}
       {children}
     </PopupContainer>
   ) : null;
@@ -116,6 +121,7 @@ PopupNote.propTypes = {
   show: PropTypes.bool,
   children: PropTypes.node,
   position: PropTypes.string,
+  carat: PropTypes.bool,
   delay: PropTypes.number,
   className: PropTypes.string,
   minWidth: PropTypes.string,
@@ -125,6 +131,7 @@ PopupNote.defaultProps = {
   show: false,
   children: null,
   position: 'below',
+  carat: true,
   delay: 250,
   className: '',
   minWidth: '',

@@ -21,6 +21,7 @@ import {
   NoMatch404,
   Proposal,
   Proposals,
+  Stats,
   Tx,
   Txs,
   Validator,
@@ -63,6 +64,8 @@ const App = () => {
               <Route path="/nfts/:addr" component={Nfts} />
               <Route path="/proposal/:proposalId" component={Proposal} />
               <Route path="/proposals" component={Proposals} />
+              <Route path="/stats" component={Stats} />
+              <Route path="/stats/versions" />
               <Route path="/tx/:txHash" component={Tx} />
               <Route path="/txs" component={Txs} />
               <Route path="/validator/:validatorId" component={Validator} />
