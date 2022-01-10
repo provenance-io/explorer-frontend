@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Bug Fixes
+- Show public key instead of address #198
+
 ## 2.3.0
 
 ### Release Name: Erik the Red
