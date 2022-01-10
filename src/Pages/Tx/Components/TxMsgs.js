@@ -97,7 +97,7 @@ const TxMsgs = () => {
           return {
             title,
             value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
-            link: `/accounts/${value}`,
+            link: key === 'validatorAddress' ? `/validator/${value}` : `/accounts/${value}`,
           };
         case 'time':
           return {

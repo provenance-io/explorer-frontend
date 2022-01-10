@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Fixed Tx validators links to link to validators not accounts #182
+
 ## 2.3.0
 
 ### Release Name: Erik the Red
