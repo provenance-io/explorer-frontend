@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Show public key instead of address #198
+
 ### Features
 
 - Add undelegate countdown #188
