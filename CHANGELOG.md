@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 - Fixed Tx validators links to link to validators not accounts #182
+- Show public key instead of address #198
 
 ## 2.3.0
 
