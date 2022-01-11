@@ -59,11 +59,11 @@ const TxFees = () => {
       setChart(echart);
       // Function to return the full set of finalized chart data
       const buildChartData = () => {
-        // Legend data shows the validators, their name, and their color on the right
+        // Legend data shows the fees and their color on the right
         const legendData = [];
         // Series data, this is the information in the actual drawn-out chart
         const seriesData = [];
-        // Track selected validators (able to toggle them on/off in the legend)
+        // Track selected fees (able to toggle them on/off in the legend)
         const selectedData = {};
         // Add data into both sets of data (legend/series)
         fees.forEach(({ type, value, amount, roundAmount }) => {
@@ -79,7 +79,7 @@ const TxFees = () => {
         });
 
         return {
-          // Colors for each of the top 10 validators in the chart
+          // Colors for each of the 4 types of fees
           color: [theme.CHART_PIE_C, theme.CHART_PIE_K, theme.CHART_PIE_I, theme.CHART_PIE_L],
           // When you hover over the pie chart, the data that gets displayed
           tooltip: {
@@ -147,7 +147,7 @@ const TxFees = () => {
       ) : haveTxInfo ? (
         <StyledChart ref={chartElementRef} />
       ) : (
-        <div>No validators available</div>
+        <div>Fee information not available for this transaction</div>
       )}
     </Content>
   );
