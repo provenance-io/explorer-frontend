@@ -14,6 +14,7 @@ export const initialState = {
   // Account
   accountInfo: {},
   accountInfoLoading: false,
+  accountInfoFailure: false,
   // Account Txs
   accountTxsLoading: false,
   accountTxs: [],

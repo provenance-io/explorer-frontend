@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Bug Fixes
+
+- Show public key instead of address #198
+
 ### Features
 
 - Show transaction fees #209
