@@ -34,7 +34,8 @@ const FiltersWrapper = styled.div`
 
 const TxMsgs = () => {
   const [filterMsgType, setFilterMsgType] = useState('');
-  const { tableCount } = useApp();
+  const { tableCount, getChaincodePrefixes, chaincodePrefixes, chaincodePrefixesLoading } =
+    useApp();
   const {
     txInfo,
     getTxMsgs,
@@ -48,6 +49,14 @@ const TxMsgs = () => {
     txMsgLoading,
   } = useTxs();
   const { txHash } = useParams();
+  const prefixesExist = Object.keys(chaincodePrefixes).length > 0;
+
+  // Get chaincode prefixes
+  useEffect(() => {
+    if (!prefixesExist) {
+      getChaincodePrefixes();
+    }
+  }, [getChaincodePrefixes, prefixesExist]);
 
   const loadMsgs = useCallback(
     page => {
@@ -92,13 +101,19 @@ const TxMsgs = () => {
         case 'invoker': // fallthrough
         case 'proposer': // fallthrough
         case 'toAddress': // fallthrough
-        case 'validatorAddress': //fallthrough
         case 'voter': //fallthrough
+        case 'validatorAddr': //fallthrough
+        case 'validatorAddress': {
+          let prefix = chaincodePrefixes
+            .find(pre => pre.prefix === value.substring(0, pre.prefix.length))
+            .type.toLowerCase();
+          prefix = prefix === 'account' ? 'accounts' : prefix;
           return {
             title,
             value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
-            link: key === 'validatorAddress' ? `/validator/${value}` : `/accounts/${value}`,
+            link: `/${prefix}/${value}`,
           };
+        }
         case 'time':
           return {
             title,
@@ -108,6 +123,10 @@ const TxMsgs = () => {
         default:
           if (isArray(value) || isObject(value)) {
             return { title, value: JSON.stringify(value), isJson: true };
+          }
+          // Summary does not accept booleans
+          if (typeof value === 'boolean') {
+            return { title, value: value.toString() };
           }
 
           return { title, value };
@@ -139,7 +158,7 @@ const TxMsgs = () => {
         )
       }
     >
-      {txMsgsLoading && !infoExists && <Loading />}
+      {txMsgsLoading && !infoExists && chaincodePrefixesLoading && <Loading />}
       {infoExists ? (
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
           {({ sentryRef, hasNextPage }) => (

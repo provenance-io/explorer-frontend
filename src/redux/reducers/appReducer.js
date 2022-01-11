@@ -2,6 +2,7 @@ import { handleActions } from 'redux-actions';
 import { setCookie, getCookie } from 'utils';
 import {
   GET_CHAINCODE_ID,
+  GET_CHAINCODE_PREFIXES,
   SET_THEME,
   SET_WALLET_URL,
   SET_IS_LOGGED_IN,
@@ -15,8 +16,10 @@ export const initialState = {
   validatorCount: 100,
   theme: getCookie('theme') || '',
   chaincodeId: '',
+  chaincodePrefixes: [],
   // Loading states
   chaincodeIdLoading: false,
+  chaincodePrefixesLoading: false,
   walletUrl: getCookie('walletUrl', true) || '',
   isLoggedIn: false,
 };
@@ -65,6 +68,28 @@ const reducer = handleActions(
       return {
         ...state,
         chaincodeIdLoading: false,
+      };
+    },
+    /* -----------------
+    GET_CHAINCODE_PREFIXES
+    -------------------*/
+    [`${GET_CHAINCODE_PREFIXES}_${REQUEST}`](state) {
+      return {
+        ...state,
+        chaincodePrefixesLoading: true,
+      };
+    },
+    [`${GET_CHAINCODE_PREFIXES}_${SUCCESS}`](state, { payload: chaincodePrefixes }) {
+      return {
+        ...state,
+        chaincodePrefixes,
+        chaincodePrefixesLoading: false,
+      };
+    },
+    [`${GET_CHAINCODE_PREFIXES}_${FAILURE}`](state) {
+      return {
+        ...state,
+        chaincodePrefixesLoading: false,
       };
     },
   },

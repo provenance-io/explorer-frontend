@@ -38,6 +38,8 @@ export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 // -- Chaincode id
 export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
+// -- Chain address prefixes
+export const CHAINCODE_PREFIXES_URL = `${BASE_URL}/chain/prefixes`;
 // -- Governance
 export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
