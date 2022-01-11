@@ -87,6 +87,8 @@ export const Colors = {
   CHART_PIE_H: allColors.TEAL_LIGHT,
   CHART_PIE_I: allColors.TEAL_PRIMARY,
   CHART_PIE_J: allColors.TEAL_DARK,
+  CHART_PIE_K: allColors.RED_PRIMARY,
+  CHART_PIE_L: allColors.PURPLE_PRIMARY,
   // Line-chart (colors for a line graph)
   CHART_LINE_MAIN: allColors.BLUE_PRIMARY,
   CHART_LINE_GRADIENT_START: allColors.BLUE_LIGHTER,

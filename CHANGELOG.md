@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Features
+
+- Show transaction fees #209
+
 ## 2.3.0
 
 ### Release Name: Erik the Red
