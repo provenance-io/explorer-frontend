@@ -3,7 +3,12 @@
 ## Unreleased
 
 ### Bug Fixes
+
 - Show public key instead of address #198
+
+### Features
+
+- Update versions page #221
 
 ## 2.3.0
 

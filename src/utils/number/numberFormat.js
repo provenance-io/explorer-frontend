@@ -1,6 +1,7 @@
 export const numberFormat = (rawValue, digits = 1, extraOptions = {}) => {
   // If we don't have a value to start with just return it
-  if (rawValue === null || rawValue === undefined || rawValue === '' || rawValue === '--') return rawValue;
+  if (rawValue === null || rawValue === undefined || rawValue === '' || rawValue === '--')
+    return rawValue;
 
   // If we just want to shorthand a number, don't bother with other calculations
   // Eg: numberFormat(1245, 3, { shorthand: true }) => 1.24K
@@ -37,6 +38,7 @@ export const numberFormat = (rawValue, digits = 1, extraOptions = {}) => {
   // Amount of significant digits to return in string
   if (typeof digits === 'number' && digits >= 0) {
     options.maximumFractionDigits = digits;
+    options.minimumFractionDigits = digits;
   }
 
   return value.toLocaleString('en-US', { ...options, ...extraOptions });

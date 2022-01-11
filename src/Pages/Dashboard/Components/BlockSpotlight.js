@@ -87,7 +87,7 @@ const BlockSpotlight = () => {
     height,
     icon,
     moniker,
-    proposerAddress,
+    proposerAddress = '',
     time,
     validatorCount = {},
     votingPower = {},

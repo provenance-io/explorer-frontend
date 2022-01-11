@@ -305,9 +305,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Version update events
         case 'events': {
           finalObj[dataName] = {
-            value: dataObj.skipped ? 'Skipped' : dataObj.scheduled ? 'Scheduled' : '',
-            icon: dataObj.skipped || dataObj.scheduled ? 'HELP_OUTLINE' : '',
-            hover: serverValue,
+            value: dataObj.skipped ? '* Skipped' : dataObj.scheduled ? 'Scheduled' : '',
+            //icon: dataObj.skipped || dataObj.scheduled ? 'HELP_OUTLINE' : '',
+            //hover: serverValue,
+            raw: serverValue,
           };
           break;
         }

@@ -3,7 +3,8 @@ import styled, { useTheme } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Content, Loading, Pagination as BasePagination, Sprite, TimeTicker } from 'Components';
-import { getUTCTime, formatTableData } from 'utils';
+import { capitalize, getUTCTime, formatTableData } from 'utils';
+import { Skips } from '../../consts';
 
 const TableContainer = styled.div`
   flex-basis: 100%;
@@ -51,6 +52,15 @@ const Pagination = styled(BasePagination)`
   margin-left: auto;
 `;
 const LoadingContainer = styled.td``;
+const Notes = styled.ul`
+  font-size: 1.4rem;
+  padding: 5px 0 10px 5px;
+  list-style-type: '- ';
+`;
+const List = styled.li`
+  font-size: 1.2rem;
+  margin-left: 30px;
+`;
 
 const Table = ({
   changePage,
@@ -59,6 +69,7 @@ const Table = ({
   isLoading,
   ManageStakingBtn,
   noResults,
+  notes,
   resultsPerPage,
   showAge,
   showIndex,
@@ -83,6 +94,17 @@ const Table = ({
   // Add in age header if requested
   const showAgeHeader = { displayName: 'Age', dataName: showAge };
   finalTableHeaders = showAge ? [...tableHeaders, showAgeHeader] : finalTableHeaders;
+
+  // Notes lists
+  const notesList = () => {
+    switch (notes) {
+      case 'skipped': {
+        return Object.keys(Skips).map(version => <List>{`${version}:  ${Skips[version]}`}</List>);
+      }
+      default:
+        return null;
+    }
+  };
 
   const loaderRow = () => (
     <Row>
@@ -168,6 +190,12 @@ const Table = ({
 
   return (
     <Content className={className} size={size} title={title}>
+      {notes && (
+        <Notes>
+          {`* ${capitalize(notes)}`}
+          {notesList()}
+        </Notes>
+      )}
       <TableContainer>
         <TableMain>
           <TableHead>
@@ -206,6 +234,7 @@ Table.propTypes = {
   isLoading: PropTypes.bool,
   ManageStakingBtn: PropTypes.func,
   noResults: PropTypes.string,
+  notes: PropTypes.string,
   resultsPerPage: PropTypes.number,
   showIndex: PropTypes.any,
   showAge: PropTypes.string,
@@ -222,6 +251,7 @@ Table.defaultProps = {
   isLoading: false,
   ManageStakingBtn: null,
   noResults: 'No data available, refresh page to retry',
+  notes: null,
   resultsPerPage: 0,
   showAge: '',
   showIndex: false,
