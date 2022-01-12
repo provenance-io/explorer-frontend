@@ -8,7 +8,7 @@ const Assets = () => (
     <Section header>
       <AssetsAUM />
     </Section>
-    <Section header>
+    <Section>
       <AssetsList />
     </Section>
   </Wrapper>

@@ -132,12 +132,12 @@ const reducer = handleActions(
           pricePerToken: formatDenom(
             result.supply.pricePerToken.amount,
             result.supply.pricePerToken.denom,
-            { decimal: 2 }
+            { decimal: 2, minimumFractionDigits: 2 }
           ),
           totalBalancePrice: formatDenom(
             result.supply.totalBalancePrice.amount,
             result.supply.totalBalancePrice.denom,
-            { decimal: 2 }
+            { decimal: 2, minimumFractionDigits: 2 }
           ),
         })),
         assetsPages,
@@ -166,12 +166,12 @@ const reducer = handleActions(
         pricePerToken: formatDenom(
           assetInfo.supply.pricePerToken.amount,
           assetInfo.supply.pricePerToken.denom,
-          { decimal: 2 }
+          { decimal: 2, minimumFractionDigits: 2 }
         ),
         totalBalancePrice: formatDenom(
           assetInfo.supply.totalBalancePrice.amount,
           assetInfo.supply.totalBalancePrice.denom,
-          { decimal: 2 }
+          { decimal: 2, minimumFractionDigits: 2 }
         ),
         assetInfoLoading: false,
       };

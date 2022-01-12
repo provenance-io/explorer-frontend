@@ -90,7 +90,10 @@ const AccountSpotlight = () => {
     },
     {
       title: 'Account AUM',
-      value: `$${formatDenom(accountAum.amount, accountAum.denom, { decimal: 2 })}`,
+      value: `$${formatDenom(accountAum.amount, accountAum.denom, {
+        decimal: 2,
+        minimumFractionDigits: 2,
+      })}`,
       popupNote: popupNoteAccountAUM,
     },
   ];

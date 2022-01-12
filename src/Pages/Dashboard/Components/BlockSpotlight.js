@@ -168,7 +168,7 @@ const BlockSpotlight = () => {
             </DataCard>
             <DataCard icon="PRICE" title="Latest Price">
               {`$${formatDenom(dailyPrice.latestDisplayPricePerDisplayUnit, 'USD', {
-                decimal: 3,
+                minimumFractionDigits: 3,
               })} (${priceChangePercent})`}
             </DataCard>
             <DataCard icon="LINE_CHART" title="Market Cap">
@@ -180,6 +180,7 @@ const BlockSpotlight = () => {
             <DataCard icon="PROVENANCE" title="Chain Value">
               {`$${formatDenom(totalAum.amount, totalAum.denom, {
                 decimal: 2,
+                minimumFractionDigits: 2,
               })}`}
             </DataCard>
           </Group>

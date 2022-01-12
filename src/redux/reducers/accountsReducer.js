@@ -88,11 +88,12 @@ const reducer = handleActions(
           ...result,
           pricePerToken: formatDenom(result.pricePerToken.amount, result.pricePerToken.denom, {
             decimal: 2,
+            minimumFractionDigits: 2,
           }),
           totalBalancePrice: formatDenom(
             result.totalBalancePrice.amount,
             result.totalBalancePrice.denom,
-            { decimal: 2 }
+            { decimal: 2, minimumFractionDigits: 2 }
           ),
         })),
         accountAssetsPages,

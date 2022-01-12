@@ -76,13 +76,11 @@ const ValidatorList = () => {
           ? accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr)
           : {};
         const rewardBalancePrice = formatDenom(
-          rewards.reward[0]?.totalBalancePrice.amount,
-          rewards.reward[0]?.totalBalancePrice.denom,
-          { decimal: 4 }
+          rewards?.reward[0]?.totalBalancePrice.amount,
+          rewards?.reward[0]?.totalBalancePrice.denom,
+          { decimal: 4, minimumFractionDigits: 2 }
         );
-        const totalBalancePrice = rewardBalancePrice
-          ? `$${rewardBalancePrice}`
-          : rewardBalancePrice;
+        const totalBalancePrice = rewardBalancePrice && `$${rewardBalancePrice}`;
         return { ...rewards, totalBalancePrice, ...validator, ...d };
       })
     );
