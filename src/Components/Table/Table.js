@@ -125,6 +125,17 @@ const Table = ({
         );
       }
 
+      if (dataName === 'endTime' && rowData[dataName].raw?.millis) {
+        // Pull the raw value since time will have a string of '+UTC' attached making it an invalid date
+        const endTime = getUTCTime(new Date(rowData[dataName].raw.millis));
+
+        return (
+          <TableData key={displayName} title={`End date: ${endTime}`}>
+            <TimeTicker timestamp={endTime} text="" />
+          </TableData>
+        );
+      }
+
       if (!rowData[dataName]) {
         console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
           rowData,
