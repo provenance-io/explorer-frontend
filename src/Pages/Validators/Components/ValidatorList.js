@@ -94,8 +94,9 @@ const ValidatorList = () => {
     { displayName: 'Voting Power', dataName: 'votingPower' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Delegation Amount', dataName: 'amount' },
-    { displayName: 'Reward', dataName: 'reward' },
+    isDelegateFilter && { displayName: 'Reward', dataName: 'reward' },
     isDelegateFilter && { displayName: 'Total Value', dataName: 'totalBalancePrice' },
+    !isDelegateFilter && { displayName: 'End Time', dataName: 'endTime' },
   ] // Remove the nulls
     .filter(th => th);
 

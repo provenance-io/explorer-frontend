@@ -9,6 +9,7 @@
 ### Features
 
 - Add pricing info to accounts, assets, dashboard #225
+- Add undelegate countdown #188
 
 ## 2.3.0
 
