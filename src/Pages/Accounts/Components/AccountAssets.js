@@ -7,15 +7,17 @@ const AccountAssets = () => {
   const { accountInfoLoading: tableLoading, accountAssets } = useAccounts();
   const { assetMetadata } = useAssets();
 
-  const tableData = accountAssets.map((a) => ({
+  const tableData = accountAssets.map(a => ({
     ...a,
-    displayDenom: assetMetadata.find((md) => md.base === a.denom)?.display,
+    displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
   }));
 
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Asset', dataName: 'denom' },
+    { displayName: 'Price', dataName: 'pricePerToken' },
     { displayName: 'Total Balance', dataName: 'balances' },
+    { displayName: 'Total Value', dataName: 'totalBalancePrice' },
   ];
 
   return (

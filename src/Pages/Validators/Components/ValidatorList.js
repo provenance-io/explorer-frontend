@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
+import { formatDenom } from 'utils';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { MY_VALIDATOR_STATUS_OPTIONS, STAKING_TYPES, VALIDATOR_STATUS_OPTIONS } from 'consts';
 import ManageStakingModal from './ManageStakingModal';
@@ -74,7 +75,15 @@ const ValidatorList = () => {
         const rewards = isDelegateFilter
           ? accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr)
           : {};
-        return { ...rewards, ...validator, ...d };
+        const rewardBalancePrice = formatDenom(
+          rewards.reward[0]?.totalBalancePrice.amount,
+          rewards.reward[0]?.totalBalancePrice.denom,
+          { decimal: 4 }
+        );
+        const totalBalancePrice = rewardBalancePrice
+          ? `$${rewardBalancePrice}`
+          : rewardBalancePrice;
+        return { ...rewards, totalBalancePrice, ...validator, ...d };
       })
     );
 
@@ -88,6 +97,7 @@ const ValidatorList = () => {
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Delegation Amount', dataName: 'amount' },
     { displayName: 'Reward', dataName: 'reward' },
+    isDelegateFilter && { displayName: 'Total Value', dataName: 'totalBalancePrice' },
   ] // Remove the nulls
     .filter(th => th);
 

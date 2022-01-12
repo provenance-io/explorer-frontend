@@ -3,7 +3,12 @@
 ## Unreleased
 
 ### Bug Fixes
+
 - Show public key instead of address #198
+
+### Features
+
+- Add pricing info to accounts, assets, dashboard #225
 
 ## 2.3.0
 

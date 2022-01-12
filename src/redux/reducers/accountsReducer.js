@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import { formatDenom } from 'utils';
 import {
   GET_ACCOUNT_INFO,
   GET_ACCOUNT_ASSETS,
@@ -34,6 +35,7 @@ export const initialState = {
   // Account Rewards
   accountRewardsLoading: false,
   accountRewards: { total: [], rewards: [] },
+  totalBalancePrice: [],
   accountRewardsPages: 0,
   // Account Unbonding
   accountUnbondingLoading: false,
@@ -82,7 +84,17 @@ const reducer = handleActions(
       return {
         ...state,
         accountAssetsLoading: false,
-        accountAssets,
+        accountAssets: accountAssets.map(result => ({
+          ...result,
+          pricePerToken: formatDenom(result.pricePerToken.amount, result.pricePerToken.denom, {
+            decimal: 2,
+          }),
+          totalBalancePrice: formatDenom(
+            result.totalBalancePrice.amount,
+            result.totalBalancePrice.denom,
+            { decimal: 2 }
+          ),
+        })),
         accountAssetsPages,
       };
     },

@@ -81,7 +81,13 @@ const BlockSpotlight = () => {
   );
 
   // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
-  const { avgBlockTime, bondedTokens = {}, latestBlock = {}, totalTxCount } = blockLatest;
+  const {
+    avgBlockTime,
+    bondedTokens = {},
+    latestBlock = {},
+    totalTxCount,
+    totalAum = {},
+  } = blockLatest;
   const { count: bondedTokensCount, denom, total: bondedTokensTotal } = bondedTokens;
   const {
     height,
@@ -168,6 +174,11 @@ const BlockSpotlight = () => {
             <DataCard icon="LINE_CHART" title="Market Cap">
               {`$${formatDenom(marketCap, 'USD', {
                 shorthand: true,
+                decimal: 2,
+              })}`}
+            </DataCard>
+            <DataCard icon="PROVENANCE" title="Chain Value">
+              {`$${formatDenom(totalAum.amount, totalAum.denom, {
                 decimal: 2,
               })}`}
             </DataCard>

@@ -29,9 +29,9 @@ const Header = styled.h3`
     display: flex;
     align-items: center;
     flex-basis: 100%;
-    margin: 0 0 18px;
+    margin: ${({ headerMargin }) => (headerMargin ? headerMargin : '0 0 18px')};
     @media ${breakpoints.between('sm', 'md')} {
-      margin: 0 0 12px;
+      margin: ${({ headerMargin }) => (headerMargin ? headerMargin : '0 0 12px')};
     }
   }
 `;
@@ -62,12 +62,13 @@ const Content = ({
   alignSelf,
   alignContent,
   headerContent,
+  headerMargin,
 }) => {
   const { to: linkTo, title: linkTitle } = link;
   const showHeader = title || icon || linkTo || linkTitle;
 
   const buildHeader = () => (
-    <Header>
+    <Header headerMargin={headerMargin}>
       {icon && <Sprite icon={icon} size="2rem" />}
       {title && <Title>{title}</Title>}
       {linkTo && linkTitle && <Link to={link.to}>{link.title}</Link>}
@@ -97,6 +98,7 @@ Content.propTypes = {
   link: PropTypes.object,
   className: PropTypes.string,
   headerContent: PropTypes.node,
+  headerMargin: PropTypes.string,
 };
 
 Content.defaultProps = {
@@ -111,6 +113,7 @@ Content.defaultProps = {
   icon: null,
   link: {},
   headerContent: '',
+  headerMargin: null,
 };
 
 export default Content;
