@@ -3,4 +3,5 @@ export const polling = {
   dailyPrice: 90000,
   recentBlocks: 10000,
   recentTxs: 30000,
+  totalAum: 1000000,
 };

@@ -18,21 +18,21 @@ const Item = styled.div`
 const AssetsAUM = () => {
   const { blockLatest, getBlockSpotlight, blockSpotlightFailed, blockSpotlightLoading } =
     useBlocks();
+  const { totalAum = {} } = blockLatest;
 
   // Initial load, get most recent blocks
   useEffect(() => {
     getBlockSpotlight();
   }, [getBlockSpotlight]);
 
-  // Poll the API for new data every 5s
+  // Poll the API for new AUM data every 1000s
   useInterval(
     () => !blockSpotlightLoading && getBlockSpotlight(),
-    polling.blockSpotlight,
+    polling.totalAum,
     blockSpotlightFailed
   );
 
-  // Dropping in '--' to know which values are missing from the tendermintRPC and need to be added by a BE API
-  const { totalAum = {} } = blockLatest;
+  // Format total AUM for Provenance
   const provenanceAUM = `$${formatDenom(totalAum.amount, totalAum.denom, {
     decimal: 2,
     minimumFractionDigits: 2,
