@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useAccounts, useMediaQuery } from 'redux/hooks';
 import { Content, Summary, Sprite, Loading } from 'Components';
 import { breakpoints } from 'consts';
-import { maxLength } from 'utils';
+import { maxLength, formatDenom } from 'utils';
 
 const Column = styled.div`
   ${({ flexBasis }) => flexBasis && `flex-basis: ${flexBasis};`}
@@ -20,7 +20,8 @@ const AccountSpotlight = () => {
   const { addressId } = useParams();
   const { matches } = useMediaQuery(breakpoints.down('sm'));
   const { matches: matchesLong } = useMediaQuery(breakpoints.down('xl'));
-  const [showPopup, setShowPopup] = useState(false);
+  const [showKeyPopup, setShowKeyPopup] = useState(false);
+  const [showAUMPopup, setShowAUMPopup] = useState(false);
 
   useEffect(() => {
     getAccountAssets(addressId);
@@ -36,10 +37,11 @@ const AccountSpotlight = () => {
     publicKeyType = publicKeys.type,
     sequence = '--',
     tokens = {},
+    accountAum = {},
   } = accountInfo;
 
   const popupNoteKeyType = {
-    visibility: { visible: showPopup, setVisible: setShowPopup },
+    visibility: { visible: showKeyPopup, setVisible: setShowKeyPopup },
     icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
@@ -51,6 +53,21 @@ const AccountSpotlight = () => {
     ],
     titleMinWidth: '70px',
     noteMinWidth: '70px',
+  };
+
+  const popupNoteAccountAUM = {
+    visibility: { visible: showAUMPopup, setVisible: setShowAUMPopup },
+    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    method: ['click', 'hover'],
+    fontColor: 'FONT_WHITE',
+    data: [
+      {
+        //title: 'Assets Under Management',
+        value: 'Total value of all account assets under management (AUM)',
+      },
+    ],
+    titleMinWidth: '0px',
+    noteMinWidth: '150px',
   };
 
   const summaryData = [
@@ -70,6 +87,14 @@ const AccountSpotlight = () => {
       title: 'Non-Fungible Tokens',
       value: tokens.nonFungibleCount,
       link: `/nfts/${addressId}`,
+    },
+    {
+      title: 'Account AUM',
+      value: `$${formatDenom(accountAum.amount, accountAum.denom, {
+        decimal: 2,
+        minimumFractionDigits: 2,
+      })}`,
+      popupNote: popupNoteAccountAUM,
     },
   ];
 

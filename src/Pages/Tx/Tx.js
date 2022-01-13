@@ -4,7 +4,7 @@ import { useMediaQuery, useTxs } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { maxLength } from 'utils';
 import { useParams } from 'react-router-dom';
-import { TxInformation, TxMsgs } from './Components';
+import { TxInformation, TxMsgs, TxFees, TxJSON } from './Components';
 
 const Tx = () => {
   const { matches: isMed } = useMediaQuery(breakpoints.down('lg'));
@@ -25,6 +25,10 @@ const Tx = () => {
       />
       <Section header>
         <TxInformation />
+        <TxFees />
+      </Section>
+      <Section>
+        <TxJSON />
       </Section>
       <Section>
         <TxMsgs />

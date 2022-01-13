@@ -12,7 +12,14 @@ const ConversionWrapper = styled.div`
 const AssetInformation = () => {
   const [showConversion, setShowConversion] = useState(false);
   const { assetId } = useParams();
-  const { getAssetInfo, assetInfo, assetInfoLoading, assetMetadata: allMetadata } = useAssets();
+  const {
+    getAssetInfo,
+    assetInfo,
+    pricePerToken,
+    totalBalancePrice,
+    assetInfoLoading,
+    assetMetadata: allMetadata,
+  } = useAssets();
 
   useEffect(() => {
     getAssetInfo(assetId);
@@ -91,6 +98,8 @@ const AssetInformation = () => {
       value: numberFormat(nonFungibleCount),
       link: `/nfts/${holdingAccount}`,
     },
+    { title: 'Price', value: pricePerToken },
+    { title: 'Total Value', value: `$${totalBalancePrice}` },
   ];
 
   return (

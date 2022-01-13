@@ -162,6 +162,7 @@ const TxMsgs = () => {
   return (
     <Content
       title={`Messages (${txMsgsTotal})`}
+      icon="REPORTS"
       headerContent={
         !txMsgLoading &&
         msgTypesExist && (

@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { setCookie, getCookie } from 'utils';
+import { formatDenom, setCookie, getCookie } from 'utils';
 import {
   GET_ASSET_INFO,
   GET_ASSET_ADMIN_TRANSACTIONS,
@@ -126,9 +126,19 @@ const reducer = handleActions(
         ...state,
         // assets,
         // remove the map once server returns null instead of 'null'
-        assets: assets.map((result) => ({
+        assets: assets.map(result => ({
           ...result,
           lastTxTimestamp: result.lastTxTimestamp === 'null' ? null : result.lastTxTimestamp,
+          pricePerToken: formatDenom(
+            result.supply.pricePerToken.amount,
+            result.supply.pricePerToken.denom,
+            { decimal: 2, minimumFractionDigits: 2 }
+          ),
+          totalBalancePrice: formatDenom(
+            result.supply.totalBalancePrice.amount,
+            result.supply.totalBalancePrice.denom,
+            { decimal: 2, minimumFractionDigits: 2 }
+          ),
         })),
         assetsPages,
         assetsLoading: false,
@@ -153,6 +163,16 @@ const reducer = handleActions(
       return {
         ...state,
         assetInfo,
+        pricePerToken: formatDenom(
+          assetInfo.supply.pricePerToken.amount,
+          assetInfo.supply.pricePerToken.denom,
+          { decimal: 2, minimumFractionDigits: 2 }
+        ),
+        totalBalancePrice: formatDenom(
+          assetInfo.supply.totalBalancePrice.amount,
+          assetInfo.supply.totalBalancePrice.denom,
+          { decimal: 2, minimumFractionDigits: 2 }
+        ),
         assetInfoLoading: false,
       };
     },
