@@ -61,6 +61,9 @@ const DropdownUL = styled.ul`
   list-style: none;
   margin-left: -5px;
   padding: 20px 0 0 0;
+  @media ${breakpoints.down('lg')} {
+    padding: 15px 0 0 0;
+  }
   ${NavSectionLI}:hover & {
     max-height: 150px;
     transition-delay: 500ms;
