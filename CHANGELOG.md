@@ -1,5 +1,13 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
+## Unreleased
+
+### Bug fixes
+
+### Features
+
+- Show transaction fees #209
+
 ## 2.4.0
 
 ### Release Name: Frederick Whymper
