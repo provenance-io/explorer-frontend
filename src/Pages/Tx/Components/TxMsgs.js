@@ -49,14 +49,13 @@ const TxMsgs = () => {
     txMsgLoading,
   } = useTxs();
   const { txHash } = useParams();
-  const prefixesExist = Object.keys(chaincodePrefixes).length > 0;
 
   // Get chaincode prefixes
   useEffect(() => {
-    if (!prefixesExist) {
+    if (isEmpty(chaincodePrefixes)) {
       getChaincodePrefixes();
     }
-  }, [getChaincodePrefixes, prefixesExist]);
+  }, [getChaincodePrefixes, chaincodePrefixes]);
 
   const loadMsgs = useCallback(
     page => {
@@ -79,6 +78,24 @@ const TxMsgs = () => {
   const updateMsgFilterType = newType => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterMsgType(finalType);
+  };
+
+  // Determine link prefix
+  const getPrefix = value => {
+    // Ensure we are starting at the shortest prefix, since there are
+    // duplicates (e.g., tp and tpvaloper)
+    const prefixCheck = chaincodePrefixes.sort((a, b) =>
+      a.prefix.length > b.prefix.length ? 1 : -1
+    );
+    // Initialize prefix
+    let prefix = '';
+    // Loop over each prefix, if a match, then set prefix value
+    prefixCheck.forEach(pre => {
+      if (value.match(pre.prefix)) prefix = pre.type.toLowerCase();
+    });
+    // Set prefix to accounts if necessary
+    if (prefix === 'account') prefix = prefix + 's';
+    return prefix;
   };
 
   const msgs = txMsgs?.[txHash]?.map(msg => [
@@ -104,14 +121,10 @@ const TxMsgs = () => {
         case 'voter': //fallthrough
         case 'validatorAddr': //fallthrough
         case 'validatorAddress': {
-          let prefix = chaincodePrefixes
-            .find(pre => pre.prefix === value.substring(0, pre.prefix.length))
-            .type.toLowerCase();
-          prefix = prefix === 'account' ? 'accounts' : prefix;
           return {
             title,
             value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
-            link: `/${prefix}/${value}`,
+            link: `/${getPrefix(value)}/${value}`,
           };
         }
         case 'time':
@@ -158,7 +171,7 @@ const TxMsgs = () => {
         )
       }
     >
-      {txMsgsLoading && !infoExists && chaincodePrefixesLoading && <Loading />}
+      {(txMsgsLoading && !infoExists) || (chaincodePrefixesLoading && <Loading />)}
       {infoExists ? (
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
           {({ sentryRef, hasNextPage }) => (

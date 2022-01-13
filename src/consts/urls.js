@@ -72,4 +72,5 @@ export const TX_TYPES_URL = `${BASE_URL}/txs/types`;
 // -- Validators
 export const VALIDATOR_INFO_URL = `${BASE_URL}/validators`;
 export const VALIDATORS_RECENT_URL = `${BASE_URL}/validators/recent`;
+export const VALIDATORS_GET_ALL_URL = `${BASE_URL}/validators/recent/abbrev`;
 export const BLOCK_VALIDATORS_URL = `${BASE_URL}/validators/height`;
