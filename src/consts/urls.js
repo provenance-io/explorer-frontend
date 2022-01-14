@@ -38,6 +38,8 @@ export const BLOCKS_RECENT_URL = `${BASE_URL}/blocks/recent`;
 export const BLOCK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
 // -- Chaincode id
 export const CHAINCODE_ID_URL = `${BASE_URL}/chain/id`;
+// -- Chain address prefixes
+export const CHAINCODE_PREFIXES_URL = `${BASE_URL}/chain/prefixes`;
 // -- Governance
 export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
@@ -70,4 +72,5 @@ export const TX_TYPES_URL = `${BASE_URL}/txs/types`;
 // -- Validators
 export const VALIDATOR_INFO_URL = `${BASE_URL}/validators`;
 export const VALIDATORS_RECENT_URL = `${BASE_URL}/validators/recent`;
+export const VALIDATORS_GET_ALL_URL = `${BASE_URL}/validators/recent/abbrev`;
 export const BLOCK_VALIDATORS_URL = `${BASE_URL}/validators/height`;

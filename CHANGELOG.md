@@ -4,6 +4,8 @@
 
 ### Bug fixes
 
+- Fixed Tx validators links to link to validators not accounts #182
+
 ### Features
 
 - Show transaction fees #209
