@@ -38,7 +38,6 @@ export const numberFormat = (rawValue, digits = 1, extraOptions = {}) => {
   // Amount of significant digits to return in string
   if (typeof digits === 'number' && digits >= 0) {
     options.maximumFractionDigits = digits;
-    options.minimumFractionDigits = digits;
   }
 
   return value.toLocaleString('en-US', { ...options, ...extraOptions });
