@@ -99,7 +99,9 @@ const Table = ({
   const notesList = () => {
     switch (notes) {
       case 'skipped': {
-        return Object.keys(Skips).map(version => <List>{`${version}:  ${Skips[version]}`}</List>);
+        return Object.keys(Skips).map(version => (
+          <List key={version}>{`${version}:  ${Skips[version]}`}</List>
+        ));
       }
       default:
         return null;
@@ -192,7 +194,7 @@ const Table = ({
     <Content className={className} size={size} title={title}>
       {notes && (
         <Notes>
-          {`* ${capitalize(notes)}`}
+          {`* ${capitalize(notes)}:`}
           {notesList()}
         </Notes>
       )}

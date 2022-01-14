@@ -306,8 +306,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'events': {
           finalObj[dataName] = {
             value: dataObj.skipped ? '* Skipped' : dataObj.scheduled ? 'Scheduled' : '',
-            //icon: dataObj.skipped || dataObj.scheduled ? 'HELP_OUTLINE' : '',
-            //hover: serverValue,
+            hover: serverValue,
             raw: serverValue,
           };
           break;
