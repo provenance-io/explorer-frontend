@@ -2,13 +2,25 @@
 
 ## Unreleased
 
-### Bug Fixes
-
-- Show public key instead of address #198
+### Bug fixes
 
 ### Features
 
+- Show transaction fees #209
 - Update versions page #221
+
+## 2.4.0
+
+### Release Name: Frederick Whymper
+
+### Bug Fixes
+
+- Show public key instead of address [#198](https://github.com/provenance-io/explorer-frontend/issues/198)
+
+### Features
+
+- Add pricing info to accounts, assets, dashboard [#225](https://github.com/provenance-io/explorer-frontend/issues/225)
+- Add undelegate countdown [#188](https://github.com/provenance-io/explorer-frontend/issues/188)
 
 ## 2.3.0
 

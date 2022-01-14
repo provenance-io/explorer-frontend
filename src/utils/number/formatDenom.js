@@ -20,5 +20,7 @@ export const formatDenom = (amount, denom, options = {}) => {
   const { amount: finalAmount, denom: finalDenom } = currencyFormat(amount, denom);
   const { shorthand = false, decimal = 7, showDenom = true } = options;
   // Convert to formatted number with decimal places and optional shorthand
-  return `${numberFormat(finalAmount, decimal, { shorthand })} ${showDenom ? finalDenom : ''}`;
+  return `${numberFormat(finalAmount, decimal, { shorthand, ...options })} ${
+    showDenom ? finalDenom : ''
+  }`;
 };
