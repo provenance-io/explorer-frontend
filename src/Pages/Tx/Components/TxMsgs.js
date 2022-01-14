@@ -82,20 +82,15 @@ const TxMsgs = () => {
 
   // Determine link prefix
   const getPrefix = value => {
-    // Ensure we are starting at the shortest prefix, since there are
-    // duplicates (e.g., tp and tpvaloper)
-    const prefixCheck = chaincodePrefixes.sort((a, b) =>
-      a.prefix.length > b.prefix.length ? 1 : -1
-    );
-    // Initialize prefix
-    let prefix = '';
-    // Loop over each prefix, if a match, then set prefix value
-    prefixCheck.forEach(pre => {
-      if (value.match(pre.prefix)) prefix = pre.type.toLowerCase();
-    });
-    // Set prefix to accounts if necessary
-    if (prefix === 'account') prefix = prefix + 's';
-    return prefix;
+    const prefix = chaincodePrefixes
+      // Sort the response of prefixes so longest are first
+      .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
+      // Find the matching prefix in the account hash
+      .find(pre => value.match(pre.prefix))
+      // Lowercase the prefix
+      ?.type?.toLowerCase();
+    // If account, add an s for a valid link
+    return prefix === 'account' ? `${prefix}s` : prefix;
   };
 
   const msgs = txMsgs?.[txHash]?.map(msg => [
