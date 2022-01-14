@@ -34,6 +34,7 @@ const Upgrades = () => {
         tableData={tableData}
         isLoading={tableLoading}
         title="Version History"
+        notes="skipped"
       />
     </UpgradesListContainer>
   );

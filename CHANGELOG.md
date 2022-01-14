@@ -9,6 +9,7 @@
 ### Features
 
 - Show transaction fees #209
+- Update versions page #221
 
 ## 2.4.0
 

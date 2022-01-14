@@ -23,7 +23,7 @@ const reducer = handleActions(
     [`${GET_UPGRADE_INFO}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        upgradeInfo: payload.map(i => ({
+        upgradeInfo: payload.reverse().map(i => ({
           ...i,
           events:
             Skips[i.upgradeName] ||
