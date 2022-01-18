@@ -167,7 +167,7 @@ const TxMsgs = () => {
         )
       }
     >
-      {(txMsgsLoading && !infoExists) || (chaincodePrefixesLoading && <Loading />)}
+      {((txMsgsLoading && !infoExists) || chaincodePrefixesLoading) && <Loading />}
       {infoExists ? (
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
           {({ sentryRef, hasNextPage }) => (
