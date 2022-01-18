@@ -5,6 +5,7 @@
 ### Bug fixes
 
 - Fixed Tx validators links to link to validators not accounts #182
+- Fixed logic to display undelegates #230
 
 ### Features
 
