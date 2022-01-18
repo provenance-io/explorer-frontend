@@ -6,6 +6,7 @@
 
 - Fixed Tx validators links to link to validators not accounts #182
 - Fixed logic to display undelegates #230
+- Fixed to handle null values in asset/account pricing #232
 
 ### Features
 

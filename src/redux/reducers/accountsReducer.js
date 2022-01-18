@@ -86,15 +86,18 @@ const reducer = handleActions(
         accountAssetsLoading: false,
         accountAssets: accountAssets.map(result => ({
           ...result,
-          pricePerToken: formatDenom(result.pricePerToken.amount, result.pricePerToken.denom, {
-            decimal: 2,
-            minimumFractionDigits: 2,
-          }),
-          totalBalancePrice: formatDenom(
-            result.totalBalancePrice.amount,
-            result.totalBalancePrice.denom,
-            { decimal: 2, minimumFractionDigits: 2 }
-          ),
+          pricePerToken: result.pricePerToken
+            ? formatDenom(result.pricePerToken.amount, result.pricePerToken.denom, {
+                decimal: 2,
+                minimumFractionDigits: 2,
+              })
+            : '-- --',
+          totalBalancePrice: result.totalBalancePrice
+            ? formatDenom(result.totalBalancePrice.amount, result.totalBalancePrice.denom, {
+                decimal: 2,
+                minimumFractionDigits: 2,
+              })
+            : '-- --',
         })),
         accountAssetsPages,
       };
