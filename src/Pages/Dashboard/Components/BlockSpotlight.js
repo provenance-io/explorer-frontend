@@ -2,11 +2,9 @@ import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
 import { useBlocks, useInterval } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
-import Big from 'big.js';
 import { BlockImage, Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
 import { maxLength, getUTCTime, numberFormat, formatSeconds, formatDenom } from 'utils';
 import { polling } from 'consts';
-import useOrderbook from 'redux/hooks/useOrderbook';
 
 const Group = styled.div`
   display: flex;
@@ -34,7 +32,6 @@ const BlockSpotlight = () => {
   const [blockLoading, setBlockLoading] = useState(false);
   const { blockLatest, getBlockSpotlight, blockSpotlightFailed, blockSpotlightLoading } =
     useBlocks();
-  const { dailyPrice, getDailyPrice } = useOrderbook();
 
   // Initial load, get most recent blocks
   useEffect(() => {
@@ -44,14 +41,14 @@ const BlockSpotlight = () => {
         setInitialLoad(false);
         // Get initial blocks
         try {
-          await Promise.all([getBlockSpotlight(), getDailyPrice()]);
+          await Promise.all([getBlockSpotlight()]);
           setBlockLoading(false);
         } catch (e) {
           setBlockLoading(false);
         }
       }
     })();
-  }, [getBlockSpotlight, getDailyPrice, initialLoad]);
+  }, [getBlockSpotlight, initialLoad]);
 
   // Poll the API for new data every 5s
   useInterval(
@@ -88,9 +85,6 @@ const BlockSpotlight = () => {
   })}%`;
   const txTotalCountShorthand = numberFormat(totalTxCount, 1, { shorthand: true });
 
-  const latestPrice = new Big(dailyPrice.latestDisplayPricePerDisplayUnit || 0);
-  const twentyFourHourVolume = latestPrice.times(dailyPrice.displayVolumeTraded || 0);
-
   return (
     <Content justify="center" alignItems="flex-start">
       {blockLoading && <Loading />}
@@ -118,6 +112,13 @@ const BlockSpotlight = () => {
             </BlockPreviewLine>
           </Group>
           <Group size="70%">
+            <DataCard icon="PROVENANCE" title="Chain Value">
+              {`$${formatDenom(totalAum.amount, totalAum.denom, {
+                decimal: 2,
+                minimumFractionDigits: 2,
+              })}`}
+              <Link to={'/assets'}>All Assets</Link>
+            </DataCard>
             <DataCard icon="ADMIN" title="Transactions">
               <Link to="/txs/">{txTotalCountShorthand}</Link>
               {utcTime}
@@ -138,18 +139,6 @@ const BlockSpotlight = () => {
                 {formatDenom(bondedTokensCount, denom, { shorthand: true, decimal: 2 })} /{' '}
                 {formatDenom(bondedTokensTotal, denom, { shorthand: true, decimal: 2 })}
               </Fragment>
-            </DataCard>
-            <DataCard icon="CALENDAR" title="24hr Volume">
-              {`$${formatDenom(twentyFourHourVolume, 'USD', {
-                shorthand: true,
-                decimal: 2,
-              })}`}
-            </DataCard>
-            <DataCard icon="PROVENANCE" title="Chain Value">
-              {`$${formatDenom(totalAum.amount, totalAum.denom, {
-                decimal: 2,
-                minimumFractionDigits: 2,
-              })}`}
             </DataCard>
           </Group>
         </>

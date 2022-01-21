@@ -9,6 +9,7 @@
 ### Features
 
 - Add date-defined chart for dlob price history #189
+- Move 24-hr volume block to hash dashboard #236
 
 ## 2.5.0
 
