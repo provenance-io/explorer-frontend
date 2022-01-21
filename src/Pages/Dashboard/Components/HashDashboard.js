@@ -1,11 +1,22 @@
 import React, { useEffect } from 'react';
 import Big from 'big.js';
+import styled from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';
 import { formatDenom } from 'utils';
 import { useMediaQuery } from 'redux/hooks';
 import useOrderbook from 'redux/hooks/useOrderbook';
 import isYesterday from 'date-fns/isYesterday';
 import { breakpoints } from 'consts';
+
+const HashSpan = styled.span`
+  font-size: 1.8rem;
+  margin-left: 5%;
+`;
+const PercentChange = styled.span`
+  color: ${({ color }) => color};
+  font-size: 1.8rem;
+  font-weight: bold;
+`;
 
 const HashDashboard = () => {
   const {
@@ -47,12 +58,12 @@ const HashDashboard = () => {
   }, [getDailyPrice, getPriceHistory]);
 
   const latestPrice = new Big(dailyPrice.latestDisplayPricePerDisplayUnit || 0);
+  const twentyFourHourVolume = latestPrice.times(dailyPrice.displayVolumeTraded || 0);
   const marketCap = latestPrice.times(100000000000);
 
   return (
     <Content
       justify="center"
-      //alignContent="space-around"
       alignItems="flex-start"
       icon="HASH"
       title="Hash Value"
@@ -64,13 +75,28 @@ const HashDashboard = () => {
       )}
       {!dailyPriceLoading && !dailyPriceFailed && (
         <>
-          <DataCard icon="PRICE" title="Latest Price" width="100%">
-            {`$${formatDenom(dailyPrice.latestDisplayPricePerDisplayUnit, 'USD', {
-              minimumFractionDigits: 3,
-            })} (${priceChangePercent})`}
+          <DataCard icon="PRICE" title="Latest Price" width="100%" fontWeight="true">
+            <>
+              {`$${formatDenom(dailyPrice.latestDisplayPricePerDisplayUnit, 'USD', {
+                minimumFractionDigits: 3,
+              })}    `}
+              <HashSpan>
+                (
+                <PercentChange color={priceChangePercent < 0 ? 'red' : 'rgb(78, 210, 44)'}>
+                  {priceChangePercent}
+                </PercentChange>
+                )
+              </HashSpan>
+            </>
           </DataCard>
           <DataCard icon="LINE_CHART" title="Hash Market Cap" width="100%">
             {`$${formatDenom(marketCap, 'USD', {
+              shorthand: true,
+              decimal: 2,
+            })}`}
+          </DataCard>
+          <DataCard icon="CALENDAR" title="24hr Volume" width="100%">
+            {`$${formatDenom(twentyFourHourVolume, 'USD', {
               shorthand: true,
               decimal: 2,
             })}`}
