@@ -1,5 +1,15 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
+## Unreleased
+
+### Bug fixes
+
+
+
+### Features
+
+- Add date-defined chart for dlob price history #189
+
 ## 2.5.0
 
 ### Release Name: Grigory Grum-Grshimailo

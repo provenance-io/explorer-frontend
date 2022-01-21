@@ -1,7 +1,15 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Section, Wrapper } from 'Components';
-import { BlockSpotlight, TopValidators, TxHistory, RecentBlocks, RecentTxs } from './Components';
+import {
+  BlockSpotlight,
+  TopValidators,
+  TxHistory,
+  RecentBlocks,
+  RecentTxs,
+  PriceHistory,
+  HashDashboard,
+} from './Components';
 
 const Dashboard = () => (
   <Wrapper noHeader>
@@ -10,6 +18,10 @@ const Dashboard = () => (
     </Helmet>
     <Section>
       <BlockSpotlight />
+    </Section>
+    <Section>
+      <HashDashboard />
+      <PriceHistory />
     </Section>
     <Section>
       <TopValidators />

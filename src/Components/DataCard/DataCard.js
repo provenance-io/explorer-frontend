@@ -5,7 +5,7 @@ import { Sprite as BaseSprite } from 'Components';
 import { breakpoints } from 'consts';
 
 const DataCardContainer = styled.div`
-  width: 50%;
+  width: ${({ width }) => (width ? width : '50%')};
   @media ${breakpoints.down('sm')} {
     min-width: 100%;
   }
@@ -46,8 +46,8 @@ const DataItem = styled.div`
   }
 `;
 
-const DataCard = ({ className, icon, title, children }) => (
-  <DataCardContainer className={className}>
+const DataCard = ({ className, icon, title, children, width }) => (
+  <DataCardContainer className={className} width={width}>
     <DataContent>
       <TitleRow>
         {icon && <Sprite icon={icon} size="1.8rem" />} <Title>{title}</Title>
@@ -68,10 +68,12 @@ DataCard.propTypes = {
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
+  width: PropTypes.string,
 };
 DataCard.defaultProps = {
   className: '',
   icon: '',
+  width: '',
 };
 
 export default DataCard;

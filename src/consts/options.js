@@ -31,3 +31,8 @@ export const TRANSACTION_HISTORY_GRANULARITY_OPTIONS = {
   day: { title: 'Day', isDefault: true },
   hour: { title: 'Hour' },
 };
+
+export const PRICE_HISTORY_GRANULARITY_OPTIONS = {
+  day: { title: 'Day', isDefault: true },
+  hour: { title: 'Hour' },
+};
