@@ -62,7 +62,7 @@ const AccountSpotlight = () => {
     fontColor: 'FONT_WHITE',
     data: [
       {
-        //title: 'Assets Under Management',
+        title: '',
         value: 'Total value of all account assets under management (AUM)',
       },
     ],

@@ -4,10 +4,26 @@
 
 ### Bug fixes
 
+
+
 ### Features
 
-- Show transaction fees #209
 - Add date-defined chart for dlob price history #189
+
+## 2.5.0
+
+### Release Name: Grigory Grum-Grshimailo
+
+### Bug fixes
+
+- Fixed Tx validators links to link to validators not accounts [#182](https://github.com/provenance-io/explorer-frontend/issues/182)
+- Fixed logic to display undelegates [#230](https://github.com/provenance-io/explorer-frontend/issues/230)
+- Fixed to handle null values in asset/account pricing [#232](https://github.com/provenance-io/explorer-frontend/issues/232)
+
+### Features
+
+- Show transaction fees [#209](https://github.com/provenance-io/explorer-frontend/issues/209)
+- Update versions page [#221](https://github.com/provenance-io/explorer-frontend/issues/221)
 
 ## 2.4.0
 

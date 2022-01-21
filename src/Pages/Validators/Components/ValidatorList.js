@@ -72,15 +72,15 @@ const ValidatorList = () => {
     setMyValTableData(
       currentVals.map(d => {
         const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
-        const rewards = isDelegateFilter
-          ? accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr)
-          : {};
-        const rewardBalancePrice = formatDenom(
-          rewards?.reward[0]?.totalBalancePrice.amount,
-          rewards?.reward[0]?.totalBalancePrice.denom,
-          { decimal: 4, minimumFractionDigits: 2 }
-        );
-        const totalBalancePrice = rewardBalancePrice && `$${rewardBalancePrice}`;
+        const rewards = accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr);
+        const totalBalancePrice =
+          rewards?.reward.length > 0
+            ? `$${formatDenom(
+                rewards.reward[0].totalBalancePrice.amount,
+                rewards.reward[0].totalBalancePrice.denom,
+                { decimal: 4, minimumFractionDigits: 2 }
+              )}`
+            : '-- --';
         return { ...rewards, totalBalancePrice, ...validator, ...d };
       })
     );

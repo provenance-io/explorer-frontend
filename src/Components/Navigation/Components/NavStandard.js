@@ -21,7 +21,7 @@ const NavigationWrapper = styled.div`
   padding: 15px 15px;
   background: ${({ theme }) => theme.BACKGROUND_NAV};
   @media ${breakpoints.down('lg')} {
-    padding: 10px 20px;
+    padding: 10px 15px;
   }
 `;
 
@@ -61,7 +61,7 @@ const DropdownUL = styled.ul`
   list-style: none;
   margin-left: -5px;
   padding: 20px 0 0 0;
-  @media ${breakpoints.down('lg')} {
+  @media ${breakpoints.down('xl')} {
     padding: 15px 0 0 0;
   }
   ${NavSectionLI}:hover & {

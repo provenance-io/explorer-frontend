@@ -129,16 +129,19 @@ const reducer = handleActions(
         assets: assets.map(result => ({
           ...result,
           lastTxTimestamp: result.lastTxTimestamp === 'null' ? null : result.lastTxTimestamp,
-          pricePerToken: formatDenom(
-            result.supply.pricePerToken.amount,
-            result.supply.pricePerToken.denom,
-            { decimal: 2, minimumFractionDigits: 2 }
-          ),
-          totalBalancePrice: formatDenom(
-            result.supply.totalBalancePrice.amount,
-            result.supply.totalBalancePrice.denom,
-            { decimal: 2, minimumFractionDigits: 2 }
-          ),
+          pricePerToken: result.supply.pricePerToken
+            ? formatDenom(result.supply.pricePerToken.amount, result.supply.pricePerToken.denom, {
+                decimal: 2,
+                minimumFractionDigits: 2,
+              })
+            : '-- --',
+          totalBalancePrice: result.supply.totalBalancePrice
+            ? formatDenom(
+                result.supply.totalBalancePrice.amount,
+                result.supply.totalBalancePrice.denom,
+                { decimal: 2, minimumFractionDigits: 2 }
+              )
+            : '-- --',
         })),
         assetsPages,
         assetsLoading: false,
@@ -163,16 +166,20 @@ const reducer = handleActions(
       return {
         ...state,
         assetInfo,
-        pricePerToken: formatDenom(
-          assetInfo.supply.pricePerToken.amount,
-          assetInfo.supply.pricePerToken.denom,
-          { decimal: 2, minimumFractionDigits: 2 }
-        ),
-        totalBalancePrice: formatDenom(
-          assetInfo.supply.totalBalancePrice.amount,
-          assetInfo.supply.totalBalancePrice.denom,
-          { decimal: 2, minimumFractionDigits: 2 }
-        ),
+        pricePerToken: assetInfo.supply.pricePerToken
+          ? formatDenom(
+              assetInfo.supply.pricePerToken.amount,
+              assetInfo.supply.pricePerToken.denom,
+              { decimal: 2, minimumFractionDigits: 2 }
+            )
+          : '-- --',
+        totalBalancePrice: assetInfo.supply.totalBalancePrice
+          ? formatDenom(
+              assetInfo.supply.totalBalancePrice.amount,
+              assetInfo.supply.totalBalancePrice.denom,
+              { decimal: 2, minimumFractionDigits: 2 }
+            )
+          : '-- --',
         assetInfoLoading: false,
       };
     },

@@ -34,7 +34,8 @@ const FiltersWrapper = styled.div`
 
 const TxMsgs = () => {
   const [filterMsgType, setFilterMsgType] = useState('');
-  const { tableCount } = useApp();
+  const { tableCount, getChaincodePrefixes, chaincodePrefixes, chaincodePrefixesLoading } =
+    useApp();
   const {
     txInfo,
     getTxMsgs,
@@ -48,6 +49,13 @@ const TxMsgs = () => {
     txMsgLoading,
   } = useTxs();
   const { txHash } = useParams();
+
+  // Get chaincode prefixes
+  useEffect(() => {
+    if (isEmpty(chaincodePrefixes)) {
+      getChaincodePrefixes();
+    }
+  }, [getChaincodePrefixes, chaincodePrefixes]);
 
   const loadMsgs = useCallback(
     page => {
@@ -72,6 +80,19 @@ const TxMsgs = () => {
     setFilterMsgType(finalType);
   };
 
+  // Determine link prefix
+  const getPrefix = value => {
+    const prefix = chaincodePrefixes
+      // Sort the response of prefixes so longest are first
+      .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
+      // Find the matching prefix in the account hash
+      .find(pre => value.match(pre.prefix))
+      // Lowercase the prefix
+      ?.type?.toLowerCase();
+    // If account, add an s for a valid link
+    return prefix === 'account' ? `${prefix}s` : prefix;
+  };
+
   const msgs = txMsgs?.[txHash]?.map(msg => [
     { title: 'Tx Type', value: capitalize(msg.type) },
     ...Object.entries(msg?.msg).map(([key, value]) => {
@@ -92,13 +113,15 @@ const TxMsgs = () => {
         case 'invoker': // fallthrough
         case 'proposer': // fallthrough
         case 'toAddress': // fallthrough
-        case 'validatorAddress': //fallthrough
         case 'voter': //fallthrough
+        case 'validatorAddr': //fallthrough
+        case 'validatorAddress': {
           return {
             title,
             value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
-            link: `/accounts/${value}`,
+            link: `/${getPrefix(value)}/${value}`,
           };
+        }
         case 'time':
           return {
             title,
@@ -108,6 +131,10 @@ const TxMsgs = () => {
         default:
           if (isArray(value) || isObject(value)) {
             return { title, value: JSON.stringify(value), isJson: true };
+          }
+          // Summary does not accept booleans
+          if (typeof value === 'boolean') {
+            return { title, value: value.toString() };
           }
 
           return { title, value };
@@ -140,7 +167,7 @@ const TxMsgs = () => {
         )
       }
     >
-      {txMsgsLoading && !infoExists && <Loading />}
+      {((txMsgsLoading && !infoExists) || chaincodePrefixesLoading) && <Loading />}
       {infoExists ? (
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
           {({ sentryRef, hasNextPage }) => (
