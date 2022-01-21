@@ -12,7 +12,7 @@ const FiltersWrapper = styled.div`
 `;
 
 const FilterError = styled.div`
-  position: absolute;
+  position: relative;
   top: -16px;
   left: 0;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
@@ -93,7 +93,7 @@ const TxHistory = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select From Date',
-        onChange: (date) => setTxHistoryFrom(format(date, defaultDateFormat)),
+        onChange: date => date && setTxHistoryFrom(format(date, defaultDateFormat)),
         selected: endDate,
         dateFormat: defaultDateFormat,
         maxDate: subtractDays(startDate, 1), // 15 Days from the start day is the max length of time
@@ -105,7 +105,7 @@ const TxHistory = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select To Date',
-        onChange: (date) => setTxHistoryTo(format(date, defaultDateFormat)),
+        onChange: date => date && setTxHistoryTo(format(date, defaultDateFormat)),
         selected: startDate,
         dateFormat: defaultDateFormat,
         maxDate: today,

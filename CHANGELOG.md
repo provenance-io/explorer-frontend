@@ -7,6 +7,7 @@
 ### Features
 
 - Show transaction fees #209
+- Add date-defined chart for dlob price history #189
 
 ## 2.4.0
 
