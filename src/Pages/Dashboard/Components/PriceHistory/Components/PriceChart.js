@@ -55,19 +55,6 @@ const chartData = {
   yAxis: {
     type: 'value',
     boundaryGap: false,
-    axisLabel: {},
-    max: obj => {
-      const ma = obj.max;
-      const mi = obj.min;
-      const val = (ma + (ma - mi) / 2).toFixed(3);
-      return val;
-    },
-    min: obj => {
-      const ma = obj.max;
-      const mi = obj.min;
-      const val = (mi - (ma - mi) / 2).toFixed(3);
-      return val <= 0 ? 0 : val;
-    },
   },
   series: [
     {
