@@ -54,8 +54,7 @@ const chartData = {
   },
   yAxis: {
     type: 'value',
-    boundaryGap: [0, '100%'],
-    axisLabel: {},
+    boundaryGap: false,
   },
   series: [
     {
@@ -82,6 +81,10 @@ const PriceChart = ({ startDate, endDate, data }) => {
         dateTime,
         parseFloat(formatDenom(displayPricePerDisplayUnit, 'USD')).toFixed(3),
       ]);
+      // Find min data values
+      const dataMin = Math.min(...data.map(item => item.displayPricePerDisplayUnit));
+
+      // Build dynamic chart items
       chartData.tooltip.axisPointer = { lineStyle: { color: theme.CHART_LINE_MAIN, width: '1' } };
       chartData.xAxis.axisLabel.color = theme.FONT_PRIMARY;
       chartData.yAxis.offset = isSmall ? -14 : 0;
@@ -89,6 +92,9 @@ const PriceChart = ({ startDate, endDate, data }) => {
         rotate: isLg ? 45 : 0,
         color: theme.FONT_PRIMARY,
       };
+      chartData.yAxis.max = obj => obj.max;
+      chartData.yAxis.min = obj =>
+        obj.min === dataMin ? 0 : (obj.min - (obj.max - obj.min) * 0.05).toFixed(2);
       chartData.color = theme.CHART_LINE_MAIN;
       chartData.dataZoom = [
         {

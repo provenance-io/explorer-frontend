@@ -10,6 +10,7 @@
 
 - Add date-defined chart for dlob price history #189
 - Move 24-hr volume block to hash dashboard #236
+- Make y-axis dynamic based on zoom min/max values #238
 
 ## 2.5.0
 
