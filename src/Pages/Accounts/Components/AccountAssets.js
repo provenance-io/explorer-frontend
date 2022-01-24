@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'Components';
+import { useParams } from 'react-router-dom';
 import { useAccounts, useAssets } from 'redux/hooks';
 
 const AccountAssets = () => {
-  // Spotlight pulls all account data including balances, no need to refetch in this Component
-  const { accountInfoLoading: tableLoading, accountAssets } = useAccounts();
+  const [tableCurrentPage, setTableCurrentPage] = useState(1);
+  const { addressId } = useParams();
+  const {
+    accountAssets,
+    accountAssetsTotal,
+    accountAssetsPages: tablePages,
+    getAccountAssets: getTableData,
+    accountAssetsLoading: tableLoading,
+  } = useAccounts();
+
   const { assetMetadata } = useAssets();
 
+  // Build table data
   const tableData = accountAssets.map(a => ({
     ...a,
     displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
   }));
+
+  useEffect(() => {
+    getTableData({
+      address: addressId,
+      page: tableCurrentPage,
+      count: 10,
+    });
+  }, [getTableData, tableCurrentPage, addressId]);
 
   // Table header values in order
   const tableHeaders = [
@@ -24,8 +42,11 @@ const AccountAssets = () => {
     <Table
       tableHeaders={tableHeaders}
       tableData={tableData}
+      currentPage={tableCurrentPage}
+      changePage={setTableCurrentPage}
+      totalPages={tablePages}
       isLoading={tableLoading}
-      title="Account Assets"
+      title={`Account Assets (${accountAssetsTotal} total)`}
     />
   );
 };

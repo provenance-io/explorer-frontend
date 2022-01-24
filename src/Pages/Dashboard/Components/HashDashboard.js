@@ -82,7 +82,7 @@ const HashDashboard = () => {
               })}    `}
               <HashSpan>
                 (
-                <PercentChange color={priceChangePercent < 0 ? 'red' : 'rgb(78, 210, 44)'}>
+                <PercentChange color={priceIncrease ? 'rgb(78, 210, 44)' : 'red'}>
                   {priceChangePercent}
                 </PercentChange>
                 )
