@@ -24,6 +24,7 @@ export const initialState = {
   accountAssetsLoading: false,
   accountAssets: [],
   accountAssetsPages: 0,
+  accountAssetsTotal: 0,
   // Account Delegations
   accountDelegationsLoading: false,
   accountDelegations: [],
@@ -80,7 +81,11 @@ const reducer = handleActions(
       };
     },
     [`${GET_ACCOUNT_ASSETS}_${SUCCESS}`](state, { payload }) {
-      const { pages: accountAssetsPages, results: accountAssets = [] } = payload;
+      const {
+        pages: accountAssetsPages,
+        results: accountAssets = [],
+        total: accountAssetsTotal,
+      } = payload;
       return {
         ...state,
         accountAssetsLoading: false,
@@ -100,6 +105,7 @@ const reducer = handleActions(
             : '-- --',
         })),
         accountAssetsPages,
+        accountAssetsTotal,
       };
     },
     [`${GET_ACCOUNT_ASSETS}_${FAILURE}`](state) {

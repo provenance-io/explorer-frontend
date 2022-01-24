@@ -24,7 +24,7 @@ const AccountSpotlight = () => {
   const [showAUMPopup, setShowAUMPopup] = useState(false);
 
   useEffect(() => {
-    getAccountAssets(addressId);
+    getAccountAssets({ address: addressId });
     getAccountInfo(addressId);
   }, [getAccountAssets, getAccountInfo, addressId]);
 
