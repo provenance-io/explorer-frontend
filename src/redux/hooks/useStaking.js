@@ -67,7 +67,7 @@ const useStaking = () => {
     (async () => {
       try {
         if (shouldPull && isLoggedIn) {
-          getAccountAssets(delegatorAddress);
+          getAccountAssets({ address: delegatorAddress });
           getAccountDelegations({ address: delegatorAddress, count: 100, page: 1 });
           getAccountRedelegations(delegatorAddress);
           getAccountUnbonding(delegatorAddress);

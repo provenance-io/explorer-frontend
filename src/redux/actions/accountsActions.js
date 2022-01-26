@@ -15,8 +15,14 @@ export const GET_ACCOUNT_UNBONDING = 'ACCOUNTS::GET_ACCOUNT_UNBONDING';
 export const getAccountInfo = address => async dispatch =>
   ajaxGet(GET_ACCOUNT_INFO, dispatch, `${ACCOUNT_INFO_URL}/${address}`);
 
-export const getAccountAssets = address => async dispatch =>
-  ajaxGet(GET_ACCOUNT_ASSETS, dispatch, `${ACCOUNT_INFO_URL}/${address}/balances`);
+export const getAccountAssets =
+  ({ address, page = 1, count = 10 }) =>
+  async dispatch =>
+    ajaxGet(
+      GET_ACCOUNT_ASSETS,
+      dispatch,
+      `${ACCOUNT_INFO_URL}/${address}/balances?page=${page}&count=${count}`
+    );
 
 export const getAccountDelegations =
   ({ address, page = 1, count = 10 }) =>

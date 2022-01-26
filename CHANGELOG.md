@@ -12,6 +12,7 @@
 - Move 24-hr volume block to hash dashboard #236
 - Make y-axis dynamic based on zoom min/max values #238
 - Add account delegations/unbondings to account page #218
+- Add pagination to account assets #224
 
 ## 2.5.0
 

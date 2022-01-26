@@ -18,6 +18,7 @@ const TokenIcon = styled.div``;
 const AccountSpotlight = () => {
   const {
     accountRewards,
+    accountRewardsLoading,
     accountInfo,
     accountInfoLoading,
     getAccountAssets,
@@ -32,7 +33,7 @@ const AccountSpotlight = () => {
   const [showAUMPopup, setShowAUMPopup] = useState(false);
 
   useEffect(() => {
-    getAccountAssets(addressId);
+    getAccountAssets({ address: addressId });
     getAccountInfo(addressId);
     getAccountRewards(addressId);
   }, [getAccountAssets, getAccountInfo, getAccountRewards, addressId]);
@@ -51,6 +52,7 @@ const AccountSpotlight = () => {
 
   const totalRewards =
     accountRewards.total[0] &&
+    !accountRewardsLoading &&
     `$${formatDenom(
       accountRewards.total[0].totalBalancePrice.amount,
       accountRewards.total[0].totalBalancePrice.denom,
@@ -118,7 +120,7 @@ const AccountSpotlight = () => {
 
   return (
     <Content justify="flex-start">
-      {accountInfoLoading ? (
+      {accountInfoLoading || accountRewardsLoading ? (
         <Loading />
       ) : (
         <Fragment>

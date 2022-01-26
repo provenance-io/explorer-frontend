@@ -1,18 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useAccounts, useAssets } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
 const AccountAssets = () => {
   const [showContent, setShowContent] = useState(true);
   const [showButton, setShowButton] = useState(false);
-  // Spotlight pulls all account data including balances, no need to refetch in this Component
-  const { accountInfoLoading: tableLoading, accountAssets } = useAccounts();
+  const [tableCurrentPage, setTableCurrentPage] = useState(1);
+  const { addressId } = useParams();
+  const {
+    accountAssets,
+    accountAssetsTotal,
+    accountAssetsPages: tablePages,
+    getAccountAssets: getTableData,
+    accountAssetsLoading: tableLoading,
+  } = useAccounts();
+
   const { assetMetadata } = useAssets();
 
+  // Build table data
   const tableData = accountAssets.map(a => ({
     ...a,
     displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
   }));
+
+  useEffect(() => {
+    getTableData({
+      address: addressId,
+      page: tableCurrentPage,
+      count: 10,
+    });
+  }, [getTableData, tableCurrentPage, addressId]);
 
   // Table header values in order
   const tableHeaders = [
@@ -34,10 +52,13 @@ const AccountAssets = () => {
       showButton={showButton}
       showContent={showContent}
       hasLength={[...accountAssets]?.length > 0}
-      isLoading={tableLoading || false}
+      setTableCurrentPage={setTableCurrentPage}
+      tableCurrentPage={tableCurrentPage}
+      isLoading={tableLoading}
       tableData={tableData}
       tableHeaders={tableHeaders}
-      tableTitle="Account Assets"
+      tableTitle={`Account Assets (${accountAssetsTotal} total)`}
+      totalPages={tablePages}
       addButtonTitle="Hide"
     />
   );
