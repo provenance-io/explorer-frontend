@@ -1,8 +1,10 @@
-import React from 'react';
-import { Table } from 'Components';
+import React, { useState } from 'react';
 import { useAccounts, useAssets } from 'redux/hooks';
+import ButtonTables from './ButtonTables';
 
 const AccountAssets = () => {
+  const [showContent, setShowContent] = useState(true);
+  const [showButton, setShowButton] = useState(false);
   // Spotlight pulls all account data including balances, no need to refetch in this Component
   const { accountInfoLoading: tableLoading, accountAssets } = useAccounts();
   const { assetMetadata } = useAssets();
@@ -20,12 +22,23 @@ const AccountAssets = () => {
     { displayName: 'Total Value', dataName: 'totalBalancePrice' },
   ];
 
+  const handleButtonClick = () => {
+    setShowButton(!showButton); // Show/hide main button
+    setShowContent(!showContent); // Show/hide content
+  };
+
   return (
-    <Table
-      tableHeaders={tableHeaders}
+    <ButtonTables
+      buttonTitle="Assets"
+      handleButtonClick={handleButtonClick}
+      showButton={showButton}
+      showContent={showContent}
+      hasLength={[...accountAssets]?.length > 0}
+      isLoading={tableLoading || false}
       tableData={tableData}
-      isLoading={tableLoading}
-      title="Account Assets"
+      tableHeaders={tableHeaders}
+      tableTitle="Account Assets"
+      addButtonTitle="Hide"
     />
   );
 };

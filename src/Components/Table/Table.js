@@ -78,6 +78,8 @@ const Table = ({
   tableHeaders,
   totalPages,
   title,
+  addButton,
+  onButtonClick,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const theme = useTheme();
@@ -149,17 +151,6 @@ const Table = ({
         );
       }
 
-      if (dataName === 'endTime' && rowData[dataName].raw?.millis) {
-        // Pull the raw value since time will have a string of '+UTC' attached making it an invalid date
-        const endTime = getUTCTime(new Date(rowData[dataName].raw.millis));
-
-        return (
-          <TableData key={displayName} title={`End date: ${endTime}`}>
-            <TimeTicker timestamp={endTime} text="" />
-          </TableData>
-        );
-      }
-
       if (!rowData[dataName]) {
         console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
           rowData,
@@ -202,7 +193,13 @@ const Table = ({
     tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
-    <Content className={className} size={size} title={title}>
+    <Content
+      className={className}
+      size={size}
+      title={title}
+      headerButton={addButton}
+      headerButtonClick={onButtonClick}
+    >
       {notes && (
         <Notes>
           {`* ${capitalize(notes)}:`}
@@ -256,6 +253,8 @@ Table.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   totalPages: PropTypes.number,
   title: PropTypes.string,
+  addButton: PropTypes.string,
+  onButtonClick: PropTypes.func,
 };
 Table.defaultProps = {
   changePage: null,
@@ -272,6 +271,8 @@ Table.defaultProps = {
   tableData: [],
   title: '',
   totalPages: 0,
+  addButton: null,
+  onButtonClick: null,
 };
 
 export default Table;

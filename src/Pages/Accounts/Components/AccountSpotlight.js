@@ -16,7 +16,15 @@ const Column = styled.div`
 const TokenIcon = styled.div``;
 
 const AccountSpotlight = () => {
-  const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo } = useAccounts();
+  const {
+    accountRewards,
+    accountInfo,
+    accountInfoLoading,
+    getAccountAssets,
+    getAccountInfo,
+    getAccountRewards,
+  } = useAccounts();
+
   const { addressId } = useParams();
   const { matches } = useMediaQuery(breakpoints.down('sm'));
   const { matches: matchesLong } = useMediaQuery(breakpoints.down('xl'));
@@ -26,7 +34,8 @@ const AccountSpotlight = () => {
   useEffect(() => {
     getAccountAssets(addressId);
     getAccountInfo(addressId);
-  }, [getAccountAssets, getAccountInfo, addressId]);
+    getAccountRewards(addressId);
+  }, [getAccountAssets, getAccountInfo, getAccountRewards, addressId]);
 
   const {
     accountName = '--',
@@ -39,6 +48,14 @@ const AccountSpotlight = () => {
     tokens = {},
     accountAum = {},
   } = accountInfo;
+
+  const totalRewards =
+    accountRewards.total[0] &&
+    `$${formatDenom(
+      accountRewards.total[0].totalBalancePrice.amount,
+      accountRewards.total[0].totalBalancePrice.denom,
+      { decimal: 2, minimumFractionDigits: 2 }
+    )}`;
 
   const popupNoteKeyType = {
     visibility: { visible: showKeyPopup, setVisible: setShowKeyPopup },
@@ -96,6 +113,7 @@ const AccountSpotlight = () => {
       })}`,
       popupNote: popupNoteAccountAUM,
     },
+    { title: 'Rewards', value: totalRewards },
   ];
 
   return (

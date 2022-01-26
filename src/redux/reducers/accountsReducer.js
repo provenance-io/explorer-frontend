@@ -28,6 +28,7 @@ export const initialState = {
   accountDelegationsLoading: false,
   accountDelegations: [],
   accountDelegationsPages: 0,
+  accountDelegationsCount: 0,
   // Account Redelegations
   accountRedelegationsLoading: false,
   accountRedelegations: [],
@@ -143,12 +144,17 @@ const reducer = handleActions(
       };
     },
     [`${GET_ACCOUNT_DELEGATIONS}_${SUCCESS}`](state, { payload }) {
-      const { pages: accountDelegationsPages, results: accountDelegations } = payload;
+      const {
+        pages: accountDelegationsPages,
+        total: accountDelegationsCount,
+        results: accountDelegations,
+      } = payload;
       return {
         ...state,
         accountDelegations,
         accountDelegationsLoading: false,
         accountDelegationsPages,
+        accountDelegationsCount,
       };
     },
     [`${GET_ACCOUNT_DELEGATIONS}_${FAILURE}`](state) {
@@ -216,7 +222,7 @@ const reducer = handleActions(
     [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state, { payload: accountUnbonding }) {
       return {
         ...state,
-        accountUnbonding,
+        accountUnbonding: accountUnbonding.reverse(),
         accountUnbondingLoading: false,
       };
     },
