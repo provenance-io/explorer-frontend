@@ -50,7 +50,7 @@ const AccountRewards = () => {
   ];
 
   const totalRewards =
-    accountRewards.total[0] && !accountRewardsLoading
+    accountRewards?.total[0] && !accountRewardsLoading
       ? `${formatDenom(accountRewards.total[0].amount, accountRewards.total[0].denom, {
           decimal: 2,
           minimumFractionDigits: 2,
