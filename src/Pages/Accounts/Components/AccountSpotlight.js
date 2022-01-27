@@ -20,7 +20,7 @@ const AccountSpotlight = () => {
     useAccounts();
 
   const { addressId } = useParams();
-  const { matches } = useMediaQuery(breakpoints.down('sm'));
+  const { matches } = useMediaQuery(breakpoints.down('xl'));
   const { matches: matchesLong } = useMediaQuery(breakpoints.down('xl'));
   const [showKeyPopup, setShowKeyPopup] = useState(false);
   const [showAUMPopup, setShowAUMPopup] = useState(false);
