@@ -20,7 +20,7 @@ const TableMain = styled.table`
   border-spacing: 0;
 `;
 const TableHead = styled.thead`
-  padding: 10px 0;
+  padding: 0px 0;
   border-bottom: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
   text-align: left;
 `;
@@ -34,13 +34,13 @@ const TableBody = styled.tbody``;
 const TableHeadData = styled.th`
   color: ${({ theme }) => theme.FONT_TITLE_INFO};
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
-  padding: 10px 20px;
+  ${({ alignHeaderText }) => alignHeaderText && `text-align: ${alignHeaderText}`};
+  padding: 10px 15px;
 `;
 const TableData = styled.td`
-  padding: 10px 20px;
-  text-align: left;
+  padding: 10px 15px;
+  text-align: ${({ center }) => center};
   border: none;
-  min-width: 100px;
   text-decoration: ${({ skipped }) => skipped && 'line-through'};
   font-style: ${({ skipped }) => skipped && 'italic'};
 `;
@@ -119,8 +119,10 @@ const Table = ({
   );
 
   const buildTableHead = () =>
-    finalTableHeaders.map(({ displayName }) => (
-      <TableHeadData key={displayName}>{displayName}</TableHeadData>
+    finalTableHeaders.map(({ displayName, alignHeaderText = '' }) => (
+      <TableHeadData key={displayName} alignHeaderText={alignHeaderText}>
+        {displayName}
+      </TableHeadData>
     ));
 
   const buildSingleRow = (rowData, index) =>
@@ -173,9 +175,11 @@ const Table = ({
       // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
       const finalValue = Array.isArray(value) ? value.map(singleValue => singleValue) : value;
       const valueMissing = value === '--' || value === '' || value === '--';
+      // If only displaying an icon, center it
+      const center = icon && value === '' ? 'center' : 'left';
 
       return (
-        <TableData title={hover || value} key={displayName} skipped={skipped}>
+        <TableData title={hover || value} key={displayName} skipped={skipped} center={center}>
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}
