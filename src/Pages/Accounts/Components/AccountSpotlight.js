@@ -16,7 +16,9 @@ const Column = styled.div`
 const TokenIcon = styled.div``;
 
 const AccountSpotlight = () => {
-  const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo } = useAccounts();
+  const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo, getAccountRewards } =
+    useAccounts();
+
   const { addressId } = useParams();
   const { matches } = useMediaQuery(breakpoints.down('sm'));
   const { matches: matchesLong } = useMediaQuery(breakpoints.down('xl'));
@@ -26,7 +28,8 @@ const AccountSpotlight = () => {
   useEffect(() => {
     getAccountAssets({ address: addressId });
     getAccountInfo(addressId);
-  }, [getAccountAssets, getAccountInfo, addressId]);
+    getAccountRewards(addressId);
+  }, [getAccountAssets, getAccountInfo, getAccountRewards, addressId]);
 
   const {
     accountName = '--',

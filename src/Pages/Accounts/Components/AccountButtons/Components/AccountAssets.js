@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useAccounts, useAssets } from 'redux/hooks';
+import ButtonTables from './ButtonTables';
 
 const AccountAssets = () => {
+  const [showContent, setShowContent] = useState(true);
+  const [showButton, setShowButton] = useState(false);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { addressId } = useParams();
   const {
@@ -38,15 +40,29 @@ const AccountAssets = () => {
     { displayName: 'Total Value', dataName: 'totalBalancePrice' },
   ];
 
+  const handleButtonClick = () => {
+    setShowButton(!showButton); // Show/hide main button
+    setShowContent(!showContent); // Show/hide content
+  };
+
   return (
-    <Table
-      tableHeaders={tableHeaders}
-      tableData={tableData}
-      currentPage={tableCurrentPage}
-      changePage={setTableCurrentPage}
-      totalPages={tablePages}
-      isLoading={tableLoading}
-      title={`Account Assets (${accountAssetsTotal} total)`}
+    <ButtonTables
+      buttonTitle={`Assets (${accountAssetsTotal})`}
+      handleButtonClick={handleButtonClick}
+      showButton={showButton}
+      showContent={showContent}
+      hasLength={[...accountAssets]?.length > 0}
+      tableProps={{
+        changePage: setTableCurrentPage,
+        currentPage: tableCurrentPage,
+        isLoading: tableLoading,
+        tableData,
+        tableHeaders,
+        title: `Account Assets (${accountAssetsTotal})`,
+        totalPages: tablePages,
+        addButton: 'Hide',
+        onButtonClick: handleButtonClick,
+      }}
     />
   );
 };

@@ -24,15 +24,10 @@ const AssetHolders = () => {
     { displayName: 'Percentage', dataName: 'percentageHolders' },
   ];
 
-  // TODO: TEMP: Table data from the server is un-sorted, sort it based on the quantity of the asset
-  const sortedTableData = tableData.sort((a, b) =>
-    a?.balance?.count < b?.balance?.count ? 1 : -1
-  );
-
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={sortedTableData}
+      tableData={tableData}
       currentPage={tableCurrentPage}
       changePage={setTableCurrentPage}
       resultsPerPage={tableCount}

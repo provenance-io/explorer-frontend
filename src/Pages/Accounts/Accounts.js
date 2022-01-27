@@ -4,15 +4,15 @@ import { useParams } from 'react-router-dom';
 import { useAccounts, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { maxLength } from 'utils';
-import { AccountSpotlight, AccountTxs, AccountAssets } from './Components';
+import { AccountSpotlight, AccountTxs, AccountButtons } from './Components';
 import { NoMatch404 } from '../';
 
 const Accounts = () => {
   const { addressId } = useParams();
-  const { matches } = useMediaQuery(breakpoints.down('sm'));
+  const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { accountInfoFailure } = useAccounts();
 
-  const headerValue = matches ? maxLength(addressId, 20, 3) : addressId;
+  const headerValue = sizeSm ? maxLength(addressId, 20, 3) : addressId;
 
   return (
     <Wrapper>
@@ -29,9 +29,7 @@ const Accounts = () => {
           <Section header>
             <AccountSpotlight />
           </Section>
-          <Section>
-            <AccountAssets />
-          </Section>
+          <AccountButtons />
           <Section>
             <AccountTxs />
           </Section>
