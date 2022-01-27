@@ -76,7 +76,7 @@ const AccountRewards = () => {
           isLoading: accountDelegationsLoading || accountRewardsLoading || allValidatorsLoading,
           tableData: tableData.filter(element => element.totalBalancePrice),
           tableHeaders,
-          title: 'Rewards',
+          title: `Rewards (${totalRewards})`,
           totalPages: accountDelegationsPages,
           addButton: 'Hide',
           onButtonClick: handleButtonClick,

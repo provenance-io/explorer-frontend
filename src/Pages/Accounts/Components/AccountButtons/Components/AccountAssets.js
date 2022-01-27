@@ -60,7 +60,7 @@ const AccountAssets = () => {
         isLoading: tableLoading,
         tableData,
         tableHeaders,
-        title: `Account Assets (${accountAssetsTotal})`,
+        title: `Assets (${accountAssetsTotal})`,
         totalPages: tablePages,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,

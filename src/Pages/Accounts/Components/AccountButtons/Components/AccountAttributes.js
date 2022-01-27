@@ -29,16 +29,16 @@ const AccountAttributes = () => {
 
   return (
     <ButtonTables
-      buttonTitle={`Attributes`}
+      buttonTitle={`Attributes (${tableData ? tableData.length : 0})`}
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
-      hasLength={true}
+      hasLength={(tableData ? tableData.length : 0) > 0}
       tableProps={{
         isLoading: accountInfoLoading,
         tableData,
         tableHeaders,
-        title: `Attributes`,
+        title: `Attributes (${tableData ? tableData.length : 0})`,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,
       }}
