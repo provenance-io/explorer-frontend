@@ -342,7 +342,16 @@ export const formatTableData = (data = [], tableHeaders) => {
             skipped: dataObj.skipped,
           };
           break;
+        // Attribute data
+        case 'data':
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 20, 3),
+            copy: true,
+            hover: `${dataObj.attribute} data`,
+          };
+          break;
         // Server value already correct
+        case 'attribute': // fallthrough
         case 'initialVersion': // fallthrough
         case 'bondHeight': // fallthrough
         case 'unbondingHeight': // fallthrough

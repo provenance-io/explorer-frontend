@@ -50,12 +50,12 @@ const AccountRewards = () => {
   ];
 
   const totalRewards =
-    accountRewards.total[0] && !accountRewardsLoading
+    accountRewards?.total[0] && !accountRewardsLoading
       ? `${formatDenom(accountRewards.total[0].amount, accountRewards.total[0].denom, {
           decimal: 2,
           minimumFractionDigits: 2,
         })}`
-      : null;
+      : '0 hash';
 
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
@@ -63,24 +63,26 @@ const AccountRewards = () => {
   };
 
   return (
-    <ButtonTables
-      buttonTitle={`Rewards (${totalRewards})`}
-      handleButtonClick={handleButtonClick}
-      showButton={showButton}
-      showContent={showContent}
-      hasLength={[...accountDelegations]?.length > 0}
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: accountDelegationsLoading || accountRewardsLoading || allValidatorsLoading,
-        tableData: tableData.filter(element => element.totalBalancePrice),
-        tableHeaders,
-        title: 'Rewards',
-        totalPages: accountDelegationsPages,
-        addButton: 'Hide',
-        onButtonClick: handleButtonClick,
-      }}
-    />
+    !accountRewardsLoading && (
+      <ButtonTables
+        buttonTitle={`Rewards (${totalRewards})`}
+        handleButtonClick={handleButtonClick}
+        showButton={showButton}
+        showContent={showContent}
+        hasLength={[...accountDelegations]?.length > 0}
+        tableProps={{
+          changePage: setTableCurrentPage,
+          currentPage: tableCurrentPage,
+          isLoading: accountDelegationsLoading || accountRewardsLoading || allValidatorsLoading,
+          tableData: tableData.filter(element => element.totalBalancePrice),
+          tableHeaders,
+          title: `Rewards (${totalRewards})`,
+          totalPages: accountDelegationsPages,
+          addButton: 'Hide',
+          onButtonClick: handleButtonClick,
+        }}
+      />
+    )
   );
 };
 

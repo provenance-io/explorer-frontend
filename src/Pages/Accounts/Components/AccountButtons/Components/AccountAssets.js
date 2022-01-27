@@ -52,13 +52,15 @@ const AccountAssets = () => {
       showButton={showButton}
       showContent={showContent}
       hasLength={[...accountAssets]?.length > 0}
+      size="100%"
+      iconPercent="76%"
       tableProps={{
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
         isLoading: tableLoading,
         tableData,
         tableHeaders,
-        title: `Account Assets (${accountAssetsTotal})`,
+        title: `Assets (${accountAssetsTotal})`,
         totalPages: tablePages,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,

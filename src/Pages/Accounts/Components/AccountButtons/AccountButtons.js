@@ -2,7 +2,13 @@ import React from 'react';
 import { Section } from 'Components';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
-import { AccountAssets, AccountDelegations, AccountRewards, AccountUnbondings } from './Components';
+import {
+  AccountAssets,
+  AccountDelegations,
+  AccountRewards,
+  AccountUnbondings,
+  AccountAttributes,
+} from './Components';
 
 const AccountButtons = () => {
   const { matches: sizeMd } = useMediaQuery(breakpoints.down('md'));
@@ -11,11 +17,14 @@ const AccountButtons = () => {
     <>
       <Section>
         <AccountAssets />
-        <AccountDelegations />
       </Section>
       <Section>
+        <AccountDelegations />
         <AccountUnbondings />
+      </Section>
+      <Section>
         <AccountRewards />
+        <AccountAttributes />
       </Section>
     </>
   );
@@ -33,6 +42,9 @@ const AccountButtons = () => {
       </Section>
       <Section>
         <AccountRewards />
+      </Section>
+      <Section>
+        <AccountAttributes />
       </Section>
     </>
   );
