@@ -60,32 +60,10 @@ const ButtonTables = ({
         <ListContainer show={showContent}>
           {hasLength && (
             <Fragment>
-              <Table
-                {...tableProps}
-                //changePage={setTableCurrentPage}
-                //currentPage={tableCurrentPage}
-                //isLoading={isLoading}
-                //ManageStakingBtn={manageStakingBtn}
-                //tableData={tableData}
-                //tableHeaders={tableHeaders}
-                //title={tableTitle}
-                //totalPages={totalPages}
-                //addButton={addButtonTitle}
-                //onButtonClick={handleButtonClick}
-              />
+              <Table {...tableProps} />
             </Fragment>
           )}
-          {!isEmpty(stakingProps) && (
-            <ManageStakingModal
-              {...stakingProps}
-              //isDelegate={isDelegate}
-              //isLoggedIn={isLoggedIn}
-              //modalOpen={modalOpen}
-              //onClose={onClose}
-              //onStaking={handleStaking}
-              //validator={validator || {}}
-            />
-          )}
+          {!isEmpty(stakingProps) && <ManageStakingModal {...stakingProps} />}
         </ListContainer>
       )}
     </>
