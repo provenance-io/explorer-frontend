@@ -34,8 +34,7 @@ const AccountDelegations = () => {
     { displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Amount', dataName: 'amount' },
-  ] // Remove the nulls
-    .filter(th => th);
+  ];
 
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
@@ -49,21 +48,26 @@ const AccountDelegations = () => {
       showButton={showButton}
       showContent={showContent}
       hasLength={[...accountDelegations]?.length > 0}
-      setTableCurrentPage={setTableCurrentPage}
-      tableCurrentPage={tableCurrentPage}
-      isLoading={accountDelegationsLoading || allValidatorsLoading || false}
-      manageStakingBtn={ManageStakingBtn}
-      tableData={tableData}
-      tableHeaders={tableHeaders}
-      tableTitle="My Delegations"
-      totalPages={accountDelegationsPages}
-      addButtonTitle="Hide"
-      isDelegate={isDelegate}
-      isLoggedIn={isLoggedIn}
-      modalOpen={modalFns.modalOpen}
-      onClose={modalFns.deactivateModalOpen}
-      handleStaking={handleStaking}
-      validator={validator}
+      tableProps={{
+        changePage: setTableCurrentPage,
+        currentPage: tableCurrentPage,
+        isLoading: accountDelegationsLoading || allValidatorsLoading,
+        ManageStakingBtn,
+        tableData,
+        tableHeaders,
+        title: 'Delegations',
+        totalPages: accountDelegationsPages,
+        addButton: 'Hide',
+        onButtonClick: handleButtonClick,
+      }}
+      stakingProps={{
+        isDelegate,
+        isLoggedIn,
+        modalOpen: modalFns.modalOpen,
+        onClose: modalFns.deactivateModalOpen,
+        onStaking: handleStaking,
+        validator: validator || {},
+      }}
     />
   );
 };

@@ -47,19 +47,22 @@ const AccountAssets = () => {
 
   return (
     <ButtonTables
-      buttonTitle="Assets"
+      buttonTitle={`Assets (${accountAssetsTotal})`}
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
       hasLength={[...accountAssets]?.length > 0}
-      setTableCurrentPage={setTableCurrentPage}
-      tableCurrentPage={tableCurrentPage}
-      isLoading={tableLoading}
-      tableData={tableData}
-      tableHeaders={tableHeaders}
-      tableTitle={`Account Assets (${accountAssetsTotal} total)`}
-      totalPages={tablePages}
-      addButtonTitle="Hide"
+      tableProps={{
+        changePage: setTableCurrentPage,
+        currentPage: tableCurrentPage,
+        isLoading: tableLoading,
+        tableData,
+        tableHeaders,
+        title: `Account Assets (${accountAssetsTotal})`,
+        totalPages: tablePages,
+        addButton: 'Hide',
+        onButtonClick: handleButtonClick,
+      }}
     />
   );
 };

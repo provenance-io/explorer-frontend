@@ -36,8 +36,7 @@ const AccountUnbondings = () => {
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Amount', dataName: 'amount' },
     { displayName: 'End Time', dataName: 'endTime' },
-  ] // Remove the nulls
-    .filter(th => th);
+  ];
 
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
@@ -51,16 +50,17 @@ const AccountUnbondings = () => {
       showButton={showButton}
       showContent={showContent}
       hasLength={[...accountRedelegations, ...accountUnbonding]?.length > 0}
-      setTableCurrentPage={setTableCurrentPage}
-      tableCurrentPage={tableCurrentPage}
-      isLoading={
-        accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading || false
-      }
-      tableData={tableData}
-      tableHeaders={tableHeaders}
-      tableTitle="Unbondings/Redelegations"
-      totalPages={1}
-      addButtonTitle="Hide"
+      tableProps={{
+        changePage: setTableCurrentPage,
+        currentPage: tableCurrentPage,
+        isLoading: accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading,
+        tableData,
+        tableHeaders,
+        title: 'Unbondings/Redelegations',
+        totalPages: 1,
+        addButton: 'Hide',
+        onButtonClick: handleButtonClick,
+      }}
     />
   );
 };

@@ -16,15 +16,8 @@ const Column = styled.div`
 const TokenIcon = styled.div``;
 
 const AccountSpotlight = () => {
-  const {
-    accountRewards,
-    accountRewardsLoading,
-    accountInfo,
-    accountInfoLoading,
-    getAccountAssets,
-    getAccountInfo,
-    getAccountRewards,
-  } = useAccounts();
+  const { accountInfo, accountInfoLoading, getAccountAssets, getAccountInfo, getAccountRewards } =
+    useAccounts();
 
   const { addressId } = useParams();
   const { matches } = useMediaQuery(breakpoints.down('sm'));
@@ -49,15 +42,6 @@ const AccountSpotlight = () => {
     tokens = {},
     accountAum = {},
   } = accountInfo;
-
-  const totalRewards =
-    accountRewards.total[0] &&
-    !accountRewardsLoading &&
-    `$${formatDenom(
-      accountRewards.total[0].totalBalancePrice.amount,
-      accountRewards.total[0].totalBalancePrice.denom,
-      { decimal: 2, minimumFractionDigits: 2 }
-    )}`;
 
   const popupNoteKeyType = {
     visibility: { visible: showKeyPopup, setVisible: setShowKeyPopup },
@@ -115,12 +99,11 @@ const AccountSpotlight = () => {
       })}`,
       popupNote: popupNoteAccountAUM,
     },
-    { title: 'Rewards', value: totalRewards },
   ];
 
   return (
     <Content justify="flex-start">
-      {accountInfoLoading || accountRewardsLoading ? (
+      {accountInfoLoading ? (
         <Loading />
       ) : (
         <Fragment>
