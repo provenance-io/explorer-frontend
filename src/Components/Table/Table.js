@@ -9,8 +9,9 @@ import {
   Sprite,
   TimeTicker,
   CopyValue,
+  BlockImage,
 } from 'Components';
-import { capitalize, getUTCTime, formatTableData } from 'utils';
+import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
 import { Skips } from '../../consts';
 
 const TableContainer = styled.div`
@@ -178,6 +179,7 @@ const Table = ({
         color = theme.FONT_LINK,
         size = '1.4rem',
         copy = false,
+        blockImage = {},
       } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
@@ -188,7 +190,22 @@ const Table = ({
       const center = icon && value === '' ? 'center' : 'left';
 
       return (
-        <TableData title={hover || value} key={displayName} skipped={skipped} copy={copy} center={center}>
+        <TableData
+          title={hover || value}
+          key={displayName}
+          skipped={skipped}
+          copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
+          center={center}
+        >
+          {blockImage && displayName === 'Moniker' && (
+            <BlockImage
+              icon={blockImage.icon}
+              moniker={blockImage.moniker}
+              address={blockImage.address}
+              sizeText="1.6rem"
+              sizeContainer="2.2rem"
+            />
+          )}
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}
