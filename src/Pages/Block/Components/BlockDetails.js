@@ -27,14 +27,23 @@ const BlockDetails = () => {
     }
   }, [blockHeight, getBlockInfo, loaded, setLocalBlockHeight, localBlockHeight]);
 
-  const { hash, proposerAddress, moniker, votingPower = {}, txNum, validatorCount = {}, time, userName } = blockInfo;
+  const {
+    hash,
+    proposerAddress,
+    moniker,
+    votingPower = {},
+    txNum,
+    validatorCount = {},
+    time,
+    userName,
+  } = blockInfo;
   const { count: votingPowerCount, total: votingPowerTotal } = votingPower;
   const { count: validatorCountAmount, total: validatorCountTotal } = validatorCount;
   const utcTime = getUTCTime(time);
   const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
 
   const summaryData = [
-    { title: 'Block Hash', value: hash, copy: hash },
+    { title: 'Block Hash', value: maxLength(hash, 20, 3), copy: hash },
     {
       title: 'Proposer',
       value: userName || maxLength(moniker, 20, 5),
@@ -47,7 +56,9 @@ const BlockDetails = () => {
     { title: 'Timestamp', value: `${utcTime}+UTC` },
   ];
 
-  return <Content size="100%">{blockInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>;
+  return (
+    <Content size="100%">{blockInfoLoading ? <Loading /> : <Summary data={summaryData} />}</Content>
+  );
 };
 
 export default BlockDetails;

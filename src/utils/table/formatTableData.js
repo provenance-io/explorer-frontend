@@ -311,6 +311,24 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        // Block proposer true/false
+        case 'isProposer':
+          finalObj[dataName] = {
+            value: '',
+            icon: serverValue ? 'CHECK' : '',
+            color: serverValue ? 'rgb(78, 210, 44)' : 'red',
+            size: '1.8rem',
+          };
+          break;
+        // Validator voting status
+        case 'didVote':
+          finalObj[dataName] = {
+            value: '',
+            icon: serverValue ? 'CHECK' : 'CLEAR',
+            color: serverValue ? 'rgb(78, 210, 44)' : 'red',
+            size: '1.8rem',
+          };
+          break;
         // Boolean to string
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };

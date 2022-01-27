@@ -165,6 +165,8 @@ const Table = ({
         hover = false,
         icon,
         skipped = false,
+        color = theme.FONT_LINK,
+        size = '1.4rem',
       } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
@@ -177,12 +179,12 @@ const Table = ({
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}
-              {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
+              {icon && <Sprite icon={icon} size={size} color={color} />}
             </Link>
           ) : (
             <>
               {value}
-              {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
+              {icon && <Sprite icon={icon} size={size} color={color} />}
             </>
           )}
         </TableData>
