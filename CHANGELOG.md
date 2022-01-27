@@ -13,6 +13,7 @@
 - Make y-axis dynamic based on zoom min/max values #238
 - Add account delegations/unbondings to account page #218
 - Add pagination to account assets #224
+- Add vote indicator for block validators #167
 - Add account attributes #244
 
 ## 2.5.0

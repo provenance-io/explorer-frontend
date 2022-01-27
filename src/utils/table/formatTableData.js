@@ -311,6 +311,17 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        // Block proposer true/false
+        // Validator voting status
+        case 'isProposer': // fallthrough
+        case 'didVote':
+          finalObj[dataName] = {
+            value: '',
+            icon: serverValue ? 'CHECK' : dataName === 'didVote' ? 'CLEAR' : '',
+            color: serverValue ? 'rgb(78, 210, 44)' : 'red',
+            size: '2.0rem',
+          };
+          break;
         // Boolean to string
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };

@@ -22,6 +22,8 @@ const BlockValidators = () => {
   const tableHeaders = [
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Operator', dataName: 'addressId' },
+    { displayName: 'Voted', dataName: 'didVote', alignHeaderText: 'center' },
+    { displayName: 'Proposer', dataName: 'isProposer', alignHeaderText: 'center' },
     { displayName: 'Consensus Address', dataName: 'consensusAddress' },
     { displayName: 'Proposer Priority', dataName: 'proposerPriority' },
     { displayName: 'Voting Power', dataName: 'votingPower' },
