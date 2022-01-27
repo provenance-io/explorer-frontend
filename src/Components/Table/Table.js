@@ -2,7 +2,14 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { Content, Loading, Pagination as BasePagination, Sprite, TimeTicker } from 'Components';
+import {
+  Content,
+  Loading,
+  Pagination as BasePagination,
+  Sprite,
+  TimeTicker,
+  CopyValue,
+} from 'Components';
 import { capitalize, getUTCTime, formatTableData } from 'utils';
 import { Skips } from '../../consts';
 
@@ -39,6 +46,7 @@ const TableHeadData = styled.th`
 const TableData = styled.td`
   padding: 10px 20px;
   text-align: left;
+  display: ${({ copy }) => (copy ? 'flex' : '')};
   border: none;
   min-width: 100px;
   text-decoration: ${({ skipped }) => skipped && 'line-through'};
@@ -165,6 +173,7 @@ const Table = ({
         hover = false,
         icon,
         skipped = false,
+        copy = false,
       } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
@@ -173,16 +182,18 @@ const Table = ({
       const valueMissing = value === '--' || value === '' || value === '--';
 
       return (
-        <TableData title={hover || value} key={displayName} skipped={skipped}>
+        <TableData title={hover || value} key={displayName} skipped={skipped} copy={copy}>
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}
               {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
+              {copy && <CopyValue value={value} title={`Copy ${hover}`} />}
             </Link>
           ) : (
             <>
               {value}
               {icon && <Sprite icon={icon} size={'1.4rem'} color={theme.FONT_LINK} />}
+              {copy && <CopyValue value={value} title={`Copy ${hover}`} />}
             </>
           )}
         </TableData>
