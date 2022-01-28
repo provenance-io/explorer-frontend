@@ -185,7 +185,7 @@ const reducer = handleActions(
     [`${GET_ACCOUNT_REDELEGATIONS}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        accountRedelegations: payload.records,
+        accountRedelegations: payload.records.reverse(),
         accountRedelegationsTotal: payload.rollupTotals.redelegationTotal,
         accountRedelegationsLoading: false,
       };
@@ -232,7 +232,7 @@ const reducer = handleActions(
     [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        accountUnbonding: payload.records,
+        accountUnbonding: payload.records.reverse(),
         accountUnbondingTotal: payload.rollupTotals.unbondingTotal,
         accountUnbondingLoading: false,
       };

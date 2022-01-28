@@ -40,6 +40,7 @@ export const initialState = {
   validatorUnbondingDelegations: [],
   validatorUnbondingDelegationsLoading: false,
   validatorUnbondingDelegationsPages: 1,
+  validatorUnbondingDelegationsTotal: 0,
   // Validator Delegation Txs
   validatorDelegationTxs: [],
   validatorDelegationTxsLoading: false,
@@ -138,15 +139,13 @@ const reducer = handleActions(
         validatorUnbondingDelegationsLoading: true,
       };
     },
-    [`${GET_VALIDATOR_UNBONDING_DELEGATIONS}_${SUCCESS}`](
-      state,
-      { payload: validatorUnbondingDelegations }
-    ) {
+    [`${GET_VALIDATOR_UNBONDING_DELEGATIONS}_${SUCCESS}`](state, { payload }) {
       // TODO: Change this when pagination is supported
       // const { pages: validatorUnbondingDelegationsPages, results: validatorUnbondingDelegations } = payload;
       return {
         ...state,
-        validatorUnbondingDelegations,
+        validatorUnbondingDelegations: payload.records,
+        validatorUnbondingDelegationsTotal: payload.rollupTotals.unbondingTotal,
         // validatorUnbondingDelegationsPages,
         validatorUnbondingDelegationsLoading: false,
       };

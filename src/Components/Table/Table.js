@@ -207,9 +207,9 @@ const Table = ({
               sizeText="17px"
               sizeContainer="25px"
               marginRight="20px"
-              colorBackground="#0F52BA"
-              colorFont={theme.FONT_SECONDARY}
-              fontWeight={theme.FONT_WEIGHT_BOLD}
+              colorBackground="#5A4FCF"
+              colorFont={theme.FONT_WHITE}
+              fontWeight={theme.FONT_WEIGHT_THIN}
             />
           )}
           {link && !valueMissing && link !== pathname ? (

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { formatDenom } from 'utils';
 import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery, useValidators } from 'redux/hooks';
@@ -12,6 +13,7 @@ const ValidatorUnbondingDelegations = () => {
     validatorUnbondingDelegations: tableData,
     validatorUnbondingDelegationsLoading: tableLoading,
     validatorUnbondingDelegationsPages: tablePages,
+    validatorUnbondingDelegationsTotal: total,
   } = useValidators();
   const { validatorId } = useParams();
   // Results to display per page of table
@@ -29,6 +31,8 @@ const ValidatorUnbondingDelegations = () => {
     { displayName: 'End Time', dataName: 'endTime' },
   ];
 
+  const totalAmount = formatDenom(total.amount, total.denom, { decimal: 2 });
+
   return (
     <Table
       tableHeaders={tableHeaders}
@@ -37,7 +41,7 @@ const ValidatorUnbondingDelegations = () => {
       changePage={setTableCurrentPage}
       totalPages={tablePages}
       isLoading={tableLoading}
-      title="Unbonding Delegations"
+      title={`Unbonding Delegations (${totalAmount})`}
       size={matches && '50%'}
     />
   );
