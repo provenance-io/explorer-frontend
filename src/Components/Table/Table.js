@@ -9,8 +9,8 @@ import {
   Sprite,
   TimeTicker,
   CopyValue,
-  BlockImage,
 } from 'Components';
+import OgBlockImage from 'Components/BlockImage';
 import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
 import { Skips } from '../../consts';
 
@@ -49,6 +49,7 @@ const TableData = styled.td`
   padding: 10px 15px;
   text-align: ${({ center }) => center};
   display: ${({ copy }) => (copy ? 'flex' : '')};
+  align-items: ${({ copy }) => (copy ? 'center' : '')};
   border: none;
   text-decoration: ${({ skipped }) => skipped && 'line-through'};
   font-style: ${({ skipped }) => skipped && 'italic'};
@@ -198,12 +199,16 @@ const Table = ({
           center={center}
         >
           {blockImage && displayName === 'Moniker' && (
-            <BlockImage
+            <OgBlockImage
               icon={blockImage.icon}
               moniker={blockImage.moniker}
               address={blockImage.address}
-              sizeText="1.6rem"
-              sizeContainer="2.2rem"
+              sizeText="17px"
+              sizeContainer="25px"
+              marginRight="20px"
+              colorBackground="#0F52BA"
+              colorFont={theme.FONT_SECONDARY}
+              fontWeight={theme.FONT_WEIGHT_BOLD}
             />
           )}
           {link && !valueMissing && link !== pathname ? (
