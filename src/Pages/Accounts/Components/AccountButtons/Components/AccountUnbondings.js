@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useValidators, useApp, useAccounts } from 'redux/hooks';
+import { useParams } from 'react-router-dom';
+import { useValidators, useAccounts } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
 const AccountUnbondings = () => {
@@ -12,18 +13,22 @@ const AccountUnbondings = () => {
     accountRedelegationsLoading,
     accountUnbonding,
     accountUnbondingLoading,
+    getAccountRedelegations,
+    getAccountUnbonding,
   } = useAccounts();
-  const { isLoggedIn } = useApp();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
+  const { addressId } = useParams();
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    if (isLoggedIn) getAllValidators();
-  }, [isLoggedIn, getAllValidators]);
+    getAllValidators();
+    getAccountUnbonding(addressId);
+    getAccountRedelegations(addressId);
+  }, [addressId, getAllValidators, getAccountUnbonding, getAccountRedelegations]);
 
   useEffect(() => {
     setTableData(
-      (accountRedelegations, accountUnbonding).map(d => {
+      [...accountRedelegations, ...accountUnbonding].map(d => {
         const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
         return { ...validator, ...d };
       })

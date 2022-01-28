@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { formatDenom } from 'utils';
-import { useValidators, useApp, useAccounts } from 'redux/hooks';
+import { useParams } from 'react-router-dom';
+import { formatDenom, isEmpty } from 'utils';
+import { useValidators, useAccounts } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
 const AccountRewards = () => {
@@ -8,40 +9,35 @@ const AccountRewards = () => {
   const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
-  const {
-    accountDelegations,
-    accountDelegationsLoading,
-    accountDelegationsPages,
-    accountRewards,
-    accountRewardsLoading,
-  } = useAccounts();
-  const { isLoggedIn } = useApp();
+  const { accountRewards, accountRewardsLoading, getAccountRewards } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
+  const { addressId } = useParams();
+  const haveRewards = !isEmpty(accountRewards);
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    if (isLoggedIn) getAllValidators();
-  }, [isLoggedIn, getAllValidators]);
+    getAllValidators();
+    getAccountRewards(addressId);
+  }, [getAllValidators, addressId, getAccountRewards]);
 
   useEffect(() => {
     setTableData(
-      accountDelegations.map(d => {
-        const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
-        const rewards = accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr);
+      accountRewards.rewards.map(d => {
+        const validator = allValidators.find(v => v.addressId === d.validatorAddress);
         const totalBalancePrice =
-          rewards?.reward.length > 0
+          d.reward.length > 0
             ? `$${formatDenom(
-                rewards.reward[0].totalBalancePrice.amount,
-                rewards.reward[0].totalBalancePrice.denom,
+                d.reward[0].totalBalancePrice.amount,
+                d.reward[0].totalBalancePrice.denom,
                 { decimal: 4, minimumFractionDigits: 2 }
               )}`
             : null;
-        return { ...rewards, totalBalancePrice, ...validator, ...d };
+        return { totalBalancePrice, ...validator, ...d };
       })
     );
 
     setTableCurrentPage(1);
-  }, [accountRewards, allValidators, accountDelegations, setTableData]);
+  }, [accountRewards, allValidators, setTableData]);
 
   const tableHeaders = [
     { displayName: 'Moniker', dataName: 'moniker' },
@@ -50,7 +46,7 @@ const AccountRewards = () => {
   ];
 
   const totalRewards =
-    accountRewards?.total[0] && !accountRewardsLoading
+    haveRewards && accountRewards.total.length > 0
       ? `${formatDenom(accountRewards.total[0].amount, accountRewards.total[0].denom, {
           decimal: 2,
           minimumFractionDigits: 2,
@@ -69,15 +65,14 @@ const AccountRewards = () => {
         handleButtonClick={handleButtonClick}
         showButton={showButton}
         showContent={showContent}
-        hasLength={[...accountDelegations]?.length > 0}
         tableProps={{
           changePage: setTableCurrentPage,
           currentPage: tableCurrentPage,
-          isLoading: accountDelegationsLoading || accountRewardsLoading || allValidatorsLoading,
+          isLoading: accountRewardsLoading || allValidatorsLoading,
           tableData: tableData.filter(element => element.totalBalancePrice),
           tableHeaders,
           title: `Rewards (${totalRewards})`,
-          totalPages: accountDelegationsPages,
+          totalPages: 1,
           addButton: 'Hide',
           onButtonClick: handleButtonClick,
         }}

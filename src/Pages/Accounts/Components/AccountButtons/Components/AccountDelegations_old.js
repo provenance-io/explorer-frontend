@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useValidators, useAccounts } from 'redux/hooks';
+import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
 const AccountDelegations = () => {
@@ -14,14 +14,17 @@ const AccountDelegations = () => {
     accountDelegationsPages,
     getAccountDelegations,
   } = useAccounts();
+  // const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
+  // const { isLoggedIn } = useApp();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
+
   const { addressId } = useParams();
 
   useEffect(() => {
     // pulling first 100 validators with status=all
     getAllValidators();
-    getAccountDelegations({ address: addressId });
-  }, [addressId, getAllValidators, getAccountDelegations]);
+    getAccountDelegations(addressId);
+  }, [getAllValidators, getAccountDelegations, addressId]);
 
   useEffect(() => {
     setTableData(
@@ -34,8 +37,10 @@ const AccountDelegations = () => {
     setTableCurrentPage(1);
   }, [allValidators, accountDelegations, setTableData]);
 
+  console.log(accountDelegations);
+
   const tableHeaders = [
-    //{ displayName: 'Staking', dataName: 'manageStaking' },
+    { displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Amount', dataName: 'amount' },
   ];
@@ -55,6 +60,7 @@ const AccountDelegations = () => {
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
         isLoading: accountDelegationsLoading || allValidatorsLoading,
+        //ManageStakingBtn,
         tableData,
         tableHeaders,
         title: 'Delegations',
@@ -62,6 +68,14 @@ const AccountDelegations = () => {
         addButton: 'Hide',
         onButtonClick: handleButtonClick,
       }}
+      //stakingProps={{
+      //  isDelegate,
+      //  isLoggedIn,
+      //  modalOpen: modalFns.modalOpen,
+      //  onClose: modalFns.deactivateModalOpen,
+      //  onStaking: handleStaking,
+      //  validator: validator || {},
+      //}}
     />
   );
 };
