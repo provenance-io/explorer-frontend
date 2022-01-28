@@ -19,6 +19,9 @@ const Upgrades = () => {
     getTableData();
   }, [getTableData]);
 
+  // Only display skipped notes if something is skipped
+  const skipped = tableData.find(v => v.skipped) ? 'skipped' : '';
+
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Upgrade Height', dataName: 'upgradeHeight' },
@@ -34,7 +37,7 @@ const Upgrades = () => {
         tableData={tableData}
         isLoading={tableLoading}
         title="Version History"
-        notes="skipped"
+        notes={skipped}
       />
     </UpgradesListContainer>
   );
