@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { formatDenom } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
@@ -10,9 +11,11 @@ const AccountUnbondings = () => {
   const [tableData, setTableData] = useState([]);
   const {
     accountRedelegations,
+    accountRedelegationsTotal: { amount: rAmount },
     accountRedelegationsLoading,
     accountUnbonding,
     accountUnbondingLoading,
+    accountUnbondingTotal: { amount: uAmount, denom: uDenom },
     getAccountRedelegations,
     getAccountUnbonding,
   } = useAccounts();
@@ -43,6 +46,8 @@ const AccountUnbondings = () => {
     { displayName: 'End Time', dataName: 'endTime' },
   ];
 
+  const totalAmount = formatDenom(rAmount + uAmount, uDenom, { decimal: 2 });
+
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
     setShowContent(!showContent); // hide content
@@ -50,7 +55,7 @@ const AccountUnbondings = () => {
 
   return (
     <ButtonTables
-      buttonTitle="Unbondings/Redelegations"
+      buttonTitle={`Unbondings/Redelegations (${totalAmount})`}
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
@@ -61,7 +66,7 @@ const AccountUnbondings = () => {
         isLoading: accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading,
         tableData,
         tableHeaders,
-        title: 'Unbondings/Redelegations',
+        title: `Unbondings/Redelegations (${totalAmount})`,
         totalPages: 1,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,
