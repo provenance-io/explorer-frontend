@@ -4,7 +4,7 @@
 
 ### Bug fixes
 
-
+- Fix account button rendering issues #249
 
 ### Features
 
