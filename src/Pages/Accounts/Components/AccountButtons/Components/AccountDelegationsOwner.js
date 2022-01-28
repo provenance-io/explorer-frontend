@@ -1,30 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
-const AccountDelegations = () => {
+const AccountDelegationsOwner = () => {
   const [showContent, setShowContent] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
-  const {
-    accountDelegations,
-    accountDelegationsLoading,
-    accountDelegationsPages,
-    getAccountDelegations,
-  } = useAccounts();
-  // const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
-  // const { isLoggedIn } = useApp();
+  const { accountDelegations, accountDelegationsLoading, accountDelegationsPages } = useAccounts();
+  const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
+  const { isLoggedIn } = useApp();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
-
-  const { addressId } = useParams();
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    getAllValidators();
-    getAccountDelegations(addressId);
-  }, [getAllValidators, getAccountDelegations, addressId]);
+    if (isLoggedIn) getAllValidators();
+  }, [isLoggedIn, getAllValidators]);
 
   useEffect(() => {
     setTableData(
@@ -36,8 +27,6 @@ const AccountDelegations = () => {
 
     setTableCurrentPage(1);
   }, [allValidators, accountDelegations, setTableData]);
-
-  console.log(accountDelegations);
 
   const tableHeaders = [
     { displayName: 'Staking', dataName: 'manageStaking' },
@@ -60,7 +49,7 @@ const AccountDelegations = () => {
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
         isLoading: accountDelegationsLoading || allValidatorsLoading,
-        //ManageStakingBtn,
+        ManageStakingBtn,
         tableData,
         tableHeaders,
         title: 'Delegations',
@@ -68,16 +57,16 @@ const AccountDelegations = () => {
         addButton: 'Hide',
         onButtonClick: handleButtonClick,
       }}
-      //stakingProps={{
-      //  isDelegate,
-      //  isLoggedIn,
-      //  modalOpen: modalFns.modalOpen,
-      //  onClose: modalFns.deactivateModalOpen,
-      //  onStaking: handleStaking,
-      //  validator: validator || {},
-      //}}
+      stakingProps={{
+        isDelegate,
+        isLoggedIn,
+        modalOpen: modalFns.modalOpen,
+        onClose: modalFns.deactivateModalOpen,
+        onStaking: handleStaking,
+        validator: validator || {},
+      }}
     />
   );
 };
 
-export default AccountDelegations;
+export default AccountDelegationsOwner;
