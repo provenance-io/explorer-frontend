@@ -178,6 +178,7 @@ const Table = ({
         color = theme.FONT_LINK,
         size = '1.4rem',
         copy = false,
+        raw = '',
       } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
@@ -188,18 +189,24 @@ const Table = ({
       const center = icon && value === '' ? 'center' : 'left';
 
       return (
-        <TableData title={hover || value} key={displayName} skipped={skipped} copy={copy} center={center}>
+        <TableData
+          title={hover || value}
+          key={displayName}
+          skipped={skipped}
+          copy={copy}
+          center={center}
+        >
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}
               {icon && <Sprite icon={icon} size={size} color={color} />}
-              {copy && <CopyValue value={value} title={`Copy ${hover}`} />}
+              {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
             </Link>
           ) : (
             <>
               {value}
               {icon && <Sprite icon={icon} size={size} color={color} />}
-              {copy && <CopyValue value={value} title={`Copy ${hover}`} />}
+              {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
             </>
           )}
         </TableData>

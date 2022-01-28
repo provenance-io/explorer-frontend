@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { formatDenom } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
@@ -12,6 +13,7 @@ const AccountDelegations = () => {
     accountDelegations,
     accountDelegationsLoading,
     accountDelegationsPages,
+    accountDelegationsTotal: { amount, denom },
     getAccountDelegations,
   } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
@@ -40,6 +42,8 @@ const AccountDelegations = () => {
     { displayName: 'Amount', dataName: 'amount' },
   ];
 
+  const totalAmount = formatDenom(amount, denom, { decimal: 2 });
+
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
     setShowContent(!showContent); // hide content
@@ -47,7 +51,7 @@ const AccountDelegations = () => {
 
   return (
     <ButtonTables
-      buttonTitle="Delegations"
+      buttonTitle={`Delegations (${totalAmount})`}
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
@@ -57,7 +61,7 @@ const AccountDelegations = () => {
         isLoading: accountDelegationsLoading || allValidatorsLoading,
         tableData,
         tableHeaders,
-        title: 'Delegations',
+        title: `Delegations (${totalAmount})`,
         totalPages: accountDelegationsPages,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,

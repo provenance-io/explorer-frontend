@@ -30,10 +30,11 @@ export const initialState = {
   accountDelegations: [],
   accountDelegationsPages: 0,
   accountDelegationsCount: 0,
+  accountDelegationsTotal: 0,
   // Account Redelegations
   accountRedelegationsLoading: false,
   accountRedelegations: [],
-  accountRedelegationsPages: 0,
+  accountRedelegationsTotal: 0,
   // Account Rewards
   accountRewardsLoading: false,
   accountRewards: { total: [], rewards: [] },
@@ -42,7 +43,7 @@ export const initialState = {
   // Account Unbonding
   accountUnbondingLoading: false,
   accountUnbonding: [],
-  accountUnbondingPages: 0,
+  accountUnbondingTotal: 0,
 };
 
 const reducer = handleActions(
@@ -154,6 +155,7 @@ const reducer = handleActions(
         pages: accountDelegationsPages,
         total: accountDelegationsCount,
         results: accountDelegations,
+        rollupTotals,
       } = payload;
       return {
         ...state,
@@ -161,6 +163,7 @@ const reducer = handleActions(
         accountDelegationsLoading: false,
         accountDelegationsPages,
         accountDelegationsCount,
+        accountDelegationsTotal: rollupTotals.bondedTotal,
       };
     },
     [`${GET_ACCOUNT_DELEGATIONS}_${FAILURE}`](state) {
@@ -179,10 +182,11 @@ const reducer = handleActions(
         accountRedelegationsLoading: true,
       };
     },
-    [`${GET_ACCOUNT_REDELEGATIONS}_${SUCCESS}`](state, { payload: accountRedelegations }) {
+    [`${GET_ACCOUNT_REDELEGATIONS}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        accountRedelegations,
+        accountRedelegations: payload.records,
+        accountRedelegationsTotal: payload.rollupTotals.redelegationTotal,
         accountRedelegationsLoading: false,
       };
     },
@@ -225,10 +229,11 @@ const reducer = handleActions(
         accountUnbondingLoading: true,
       };
     },
-    [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state, { payload: accountUnbonding }) {
+    [`${GET_ACCOUNT_UNBONDING}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        accountUnbonding: accountUnbonding.reverse(),
+        accountUnbonding: payload.records,
+        accountUnbondingTotal: payload.rollupTotals.unbondingTotal,
         accountUnbondingLoading: false,
       };
     },
