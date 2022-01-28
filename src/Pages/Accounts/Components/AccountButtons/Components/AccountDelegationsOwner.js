@@ -1,52 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { formatDenom } from 'utils';
-import { useValidators, useAccounts } from 'redux/hooks';
+import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
-const AccountUnbondings = () => {
+const AccountDelegationsOwner = () => {
   const [showContent, setShowContent] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const {
-    accountRedelegations,
-    accountRedelegationsTotal: { amount: rAmount },
-    accountRedelegationsLoading,
-    accountUnbonding,
-    accountUnbondingLoading,
-    accountUnbondingTotal: { amount: uAmount, denom: uDenom },
-    getAccountRedelegations,
-    getAccountUnbonding,
+    accountDelegations,
+    accountDelegationsLoading,
+    accountDelegationsPages,
+    accountDelegationsTotal: { amount, denom },
   } = useAccounts();
+  const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
+  const { isLoggedIn } = useApp();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
-  const { addressId } = useParams();
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    getAllValidators();
-    getAccountUnbonding(addressId);
-    getAccountRedelegations(addressId);
-  }, [addressId, getAllValidators, getAccountUnbonding, getAccountRedelegations]);
+    if (isLoggedIn) getAllValidators();
+  }, [isLoggedIn, getAllValidators]);
 
   useEffect(() => {
     setTableData(
-      [...accountRedelegations, ...accountUnbonding].map(d => {
+      accountDelegations.map(d => {
         const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
         return { ...validator, ...d };
       })
     );
 
     setTableCurrentPage(1);
-  }, [allValidators, accountRedelegations, accountUnbonding, setTableData]);
+  }, [allValidators, accountDelegations, setTableData]);
 
   const tableHeaders = [
+    { displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Amount', dataName: 'amount' },
-    { displayName: 'End Time', dataName: 'endTime' },
   ];
 
-  const totalAmount = formatDenom(rAmount + uAmount, uDenom, { decimal: 2 });
+  const totalAmount = formatDenom(amount, denom, { decimal: 2 });
 
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
@@ -55,24 +49,32 @@ const AccountUnbondings = () => {
 
   return (
     <ButtonTables
-      buttonTitle={`Unbondings/Redelegations (${totalAmount})`}
+      buttonTitle={`Delegations (${totalAmount})`}
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
-      hasLength={[...accountRedelegations, ...accountUnbonding]?.length > 0}
       tableProps={{
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
-        isLoading: accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading,
+        isLoading: accountDelegationsLoading || allValidatorsLoading,
+        ManageStakingBtn,
         tableData,
         tableHeaders,
-        title: `Unbondings/Redelegations (${totalAmount})`,
-        totalPages: 1,
+        title: `Delegations (${totalAmount})`,
+        totalPages: accountDelegationsPages,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,
+      }}
+      stakingProps={{
+        isDelegate,
+        isLoggedIn,
+        modalOpen: modalFns.modalOpen,
+        onClose: modalFns.deactivateModalOpen,
+        onStaking: handleStaking,
+        validator: validator || {},
       }}
     />
   );
 };
 
-export default AccountUnbondings;
+export default AccountDelegationsOwner;

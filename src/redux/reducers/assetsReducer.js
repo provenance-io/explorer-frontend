@@ -130,17 +130,21 @@ const reducer = handleActions(
           ...result,
           lastTxTimestamp: result.lastTxTimestamp === 'null' ? null : result.lastTxTimestamp,
           pricePerToken: result.supply.pricePerToken
-            ? formatDenom(result.supply.pricePerToken.amount, result.supply.pricePerToken.denom, {
-                decimal: 2,
-                minimumFractionDigits: 2,
-              })
+            ? `$${formatDenom(
+                result.supply.pricePerToken.amount,
+                result.supply.pricePerToken.denom,
+                {
+                  decimal: 2,
+                  minimumFractionDigits: 2,
+                }
+              )}`
             : '-- --',
           totalBalancePrice: result.supply.totalBalancePrice
-            ? formatDenom(
+            ? `$${formatDenom(
                 result.supply.totalBalancePrice.amount,
                 result.supply.totalBalancePrice.denom,
                 { decimal: 2, minimumFractionDigits: 2 }
-              )
+              )}`
             : '-- --',
         })),
         assetsPages,

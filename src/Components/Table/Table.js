@@ -181,6 +181,7 @@ const Table = ({
         size = '1.4rem',
         copy = false,
         blockImage = {},
+        raw = '',
       } = rowData[dataName] || {};
 
       // Note: if the value is an array, split all values out
@@ -215,13 +216,13 @@ const Table = ({
             <Link to={link}>
               {finalValue}
               {icon && <Sprite icon={icon} size={size} color={color} />}
-              {copy && <CopyValue value={value} title={`Copy ${hover}`} />}
+              {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
             </Link>
           ) : (
             <>
               {value}
               {icon && <Sprite icon={icon} size={size} color={color} />}
-              {copy && <CopyValue value={value} title={`Copy ${hover}`} />}
+              {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
             </>
           )}
         </TableData>

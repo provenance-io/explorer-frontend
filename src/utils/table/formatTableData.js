@@ -346,6 +346,7 @@ export const formatTableData = (data = [], tableHeaders) => {
             value: maxLength(serverValue, 20, 3),
             copy: true,
             hover: `${dataObj.attribute} data`,
+            raw: serverValue,
           };
           break;
         // Server value already correct

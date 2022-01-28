@@ -41,7 +41,6 @@ const ButtonTables = ({
   handleButtonClick, // function for handling button clicks (required)
   showButton, // bool to control showing button (required)
   showContent, // bool to control showing content (required)
-  hasLength, // bool to ensure ready to render (required)
   size, // string for size of button and content
   iconPercent, // string to adjust margin % for icon rendering
   tableProps, // object pass through to Table component (required)
@@ -59,11 +58,9 @@ const ButtonTables = ({
       )}
       {showContent && (
         <ListContainer show={showContent} size={size}>
-          {hasLength && (
-            <Fragment>
-              <Table {...tableProps} />
-            </Fragment>
-          )}
+          <Fragment>
+            <Table {...tableProps} />
+          </Fragment>
           {!isEmpty(stakingProps) && <ManageStakingModal {...stakingProps} />}
         </ListContainer>
       )}
@@ -76,7 +73,6 @@ ButtonTables.propTypes = {
   handleButtonClick: PropTypes.func.isRequired,
   showButton: PropTypes.bool.isRequired,
   showContent: PropTypes.bool.isRequired,
-  hasLength: PropTypes.bool.isRequired,
   size: PropTypes.string,
   iconPercent: PropTypes.string,
   tableProps: PropTypes.object.isRequired,

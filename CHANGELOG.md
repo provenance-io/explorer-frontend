@@ -4,7 +4,8 @@
 
 ### Bug fixes
 
-
+- Fix account button rendering issues #249
+- Fix listing truncations and new unbonding objects #251
 
 ### Features
 

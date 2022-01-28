@@ -25,13 +25,31 @@ const FilterError = styled.div`
 const PriceHistory = () => {
   const today = new Date();
   const defaultDateFormat = 'yyyy-MM-dd';
-  const { priceHistoryLoading, priceHistory, getPriceHistory } = useOrderbook();
-  const havePriceHistory = priceHistory.length > 1000; //Make sure we have it all
+  const { priceHistoryLoading, getPriceHistory } = useOrderbook();
+  // Because priceHistory may not include a value for today's date
+  let { priceHistory } = useOrderbook();
+  // Make sure we have all the data
+  const havePriceHistory = priceHistory.length > 1000;
   // Default view is 30 day history
   const defaultDayFrom = format(subtractDays(today, 29), defaultDateFormat);
   const defaultDayTo = format(today, defaultDateFormat);
   const oldestDate =
     havePriceHistory && new Date(priceHistory[0].dateTime.slice(0, 10).replace(/-/, '/'));
+
+  // There may be cases where there is no priceHistory returned for the current day.
+  // If so, use the most recent price as a current value until a new price is
+  // available for the current date:
+  if (
+    havePriceHistory &&
+    // Check if the current date is the last available date in the
+    // priceHistory array.
+    defaultDayTo !== priceHistory[priceHistory.length - 1].dateTime.slice(0, 10)
+  ) {
+    const tempPrice = priceHistory[priceHistory.length - 1].displayPricePerUnit;
+    const tempDate = `${defaultDayTo}T00:00:00Z`;
+    const tempValue = { dateTime: tempDate, displayPricePerUnit: tempPrice };
+    priceHistory = [...priceHistory, tempValue];
+  }
 
   const [priceHistoryTo, setPriceHistoryTo] = useState(defaultDayTo);
   const [priceHistoryFrom, setPriceHistoryFrom] = useState(defaultDayFrom);

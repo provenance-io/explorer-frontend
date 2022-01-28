@@ -33,7 +33,6 @@ const AccountAttributes = () => {
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
-      hasLength={(tableData ? tableData.length : 0) > 0}
       tableProps={{
         isLoading: accountInfoLoading,
         tableData,

@@ -98,8 +98,11 @@ const AssetInformation = () => {
       value: numberFormat(nonFungibleCount),
       link: `/nfts/${holdingAccount}`,
     },
-    { title: 'Price', value: `$${pricePerToken}` },
-    { title: 'Total Value', value: `$${totalBalancePrice}` },
+    { title: 'Price', value: pricePerToken === '-- --' ? pricePerToken : `$${pricePerToken}` },
+    {
+      title: 'Total Value',
+      value: totalBalancePrice === '-- --' ? totalBalancePrice : `$${totalBalancePrice}`,
+    },
   ];
 
   return (

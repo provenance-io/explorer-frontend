@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
+import { useParams } from 'react-router-dom';
+import { formatDenom } from 'utils';
+import { useValidators, useAccounts } from 'redux/hooks';
 import ButtonTables from './ButtonTables';
 
 const AccountDelegations = () => {
@@ -7,17 +9,21 @@ const AccountDelegations = () => {
   const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
-  const { accountDelegations, accountDelegationsLoading, accountDelegationsPages } = useAccounts();
-  const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
-  const { isLoggedIn } = useApp();
+  const {
+    accountDelegations,
+    accountDelegationsLoading,
+    accountDelegationsPages,
+    accountDelegationsTotal: { amount, denom },
+    getAccountDelegations,
+  } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
+  const { addressId } = useParams();
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    if (isLoggedIn) {
-      getAllValidators();
-    }
-  }, [isLoggedIn, getAllValidators]);
+    getAllValidators();
+    getAccountDelegations({ address: addressId });
+  }, [addressId, getAllValidators, getAccountDelegations]);
 
   useEffect(() => {
     setTableData(
@@ -31,10 +37,12 @@ const AccountDelegations = () => {
   }, [allValidators, accountDelegations, setTableData]);
 
   const tableHeaders = [
-    { displayName: 'Staking', dataName: 'manageStaking' },
+    //{ displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Amount', dataName: 'amount' },
   ];
+
+  const totalAmount = formatDenom(amount, denom, { decimal: 2 });
 
   const handleButtonClick = () => {
     setShowButton(!showButton); // Show main button
@@ -43,30 +51,20 @@ const AccountDelegations = () => {
 
   return (
     <ButtonTables
-      buttonTitle="Delegations"
+      buttonTitle={`Delegations (${totalAmount})`}
       handleButtonClick={handleButtonClick}
       showButton={showButton}
       showContent={showContent}
-      hasLength={[...accountDelegations]?.length > 0}
       tableProps={{
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
         isLoading: accountDelegationsLoading || allValidatorsLoading,
-        ManageStakingBtn,
         tableData,
         tableHeaders,
-        title: 'Delegations',
+        title: `Delegations (${totalAmount})`,
         totalPages: accountDelegationsPages,
         addButton: 'Hide',
         onButtonClick: handleButtonClick,
-      }}
-      stakingProps={{
-        isDelegate,
-        isLoggedIn,
-        modalOpen: modalFns.modalOpen,
-        onClose: modalFns.deactivateModalOpen,
-        onStaking: handleStaking,
-        validator: validator || {},
       }}
     />
   );
