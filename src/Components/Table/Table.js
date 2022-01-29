@@ -204,10 +204,9 @@ const Table = ({
               icon={blockImage.icon}
               moniker={blockImage.moniker}
               address={blockImage.address}
-              sizeText="17px"
-              sizeContainer="25px"
+              sizeText={17}
               marginRight="20px"
-              colorBackground="#5A4FCF"
+              colorBackground={theme.IRIS_PRIMARY}
               colorFont={theme.FONT_WHITE}
               fontWeight={theme.FONT_WEIGHT_THIN}
             />

@@ -10,15 +10,16 @@ const BlockImageContainer = styled.div`
   justify-content: center;
   border-radius: 100%;
   background: ${({ theme, color }) => (color ? color : theme.BACKGROUND_LIGHT)};
-  height: ${({ sizeContainer }) => (sizeContainer ? sizeContainer : '150px')};
-  width: ${({ sizeContainer }) => (sizeContainer ? sizeContainer : '150px')};
+  height: ${({ sizeContainer }) => (sizeContainer ? `${sizeContainer}px` : '150px')};
+  width: ${({ sizeContainer }) => (sizeContainer ? `${sizeContainer}px` : '150px')};
   overflow: hidden;
 `;
 
 const BlockImageLetter = styled.span`
-  font-size: ${({ sizeText }) => (sizeText ? sizeText : '7rem')};
+  font-size: ${({ sizeText }) => (sizeText ? `${sizeText}px` : '7rem')};
   color: ${({ theme, color }) => (color ? color : theme.FONT_PRIMARY)};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '')};
+  text-transform: uppercase;
 `;
 
 const ImageElement = styled.img`
@@ -30,14 +31,13 @@ const BlockImage = ({
   moniker,
   address,
   sizeText,
-  sizeContainer,
   marginRight,
   colorBackground,
   colorFont,
   fontWeight,
 }) => (
   <BlockImageContainer
-    sizeContainer={sizeContainer}
+    sizeContainer={sizeText * 2}
     marginRight={marginRight}
     color={colorBackground}
     title={moniker ? moniker : address}
@@ -60,8 +60,7 @@ BlockImage.propTypes = {
   icon: PropTypes.string,
   moniker: PropTypes.string,
   address: PropTypes.string.isRequired,
-  sizeText: PropTypes.string,
-  sizeContainer: PropTypes.string,
+  sizeText: PropTypes.number,
   marginRight: PropTypes.string,
   colorBackground: PropTypes.string,
   colorFont: PropTypes.string,
@@ -71,8 +70,7 @@ BlockImage.propTypes = {
 BlockImage.defaultProps = {
   icon: null,
   moniker: null,
-  sizeText: '',
-  sizeContainer: '',
+  sizeText: 0,
   marginRight: '',
   colorBackground: '',
   colorFont: '',
