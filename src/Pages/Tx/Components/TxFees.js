@@ -141,6 +141,8 @@ const TxFees = () => {
       let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
       if (!echart) echart = echarts.init(chartElementRef.current);
+      // Refresh on window resize
+      window.allCharts.push(echart);
       setChart(echart);
       // Build the dataset
       const data = addData(fees);

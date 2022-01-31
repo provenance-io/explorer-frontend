@@ -44,6 +44,7 @@ const TopValidators = () => {
       let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
       if (!echart) echart = echarts.init(chartElementRef.current);
+      window.allCharts.push(echart);
       setChart(echart);
       // Function to return the full set of finalized chart data
       const buildChartData = () => {
