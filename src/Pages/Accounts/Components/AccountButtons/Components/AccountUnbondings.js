@@ -31,10 +31,13 @@ const AccountUnbondings = () => {
 
   useEffect(() => {
     setTableData(
-      [...accountRedelegations, ...accountUnbonding].map(d => {
-        const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
-        return { ...validator, ...d };
-      })
+      [...accountRedelegations, ...accountUnbonding]
+        .map(d => {
+          const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
+          return { ...validator, ...d };
+          // Sort from earliest to latest end date
+        })
+        .sort((a, b) => a.endTime.millis - b.endTime.millis)
     );
 
     setTableCurrentPage(1);
