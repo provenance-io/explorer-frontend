@@ -45,6 +45,8 @@ const PriceHistory = () => {
     // priceHistory array.
     defaultDayTo !== priceHistory[priceHistory.length - 1].dateTime.slice(0, 10)
   ) {
+    // If current date is not the last available date in the priceHistory
+    // array, then there is no pricing. Add it in temporarily to today.
     const tempPrice = priceHistory[priceHistory.length - 1].displayPricePerUnit;
     const tempDate = `${defaultDayTo}T00:00:00Z`;
     const tempValue = { dateTime: tempDate, displayPricePerUnit: tempPrice };
