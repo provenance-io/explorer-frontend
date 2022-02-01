@@ -48,7 +48,6 @@ const chartData = {
     type: 'time',
     boundaryGap: false,
     axisLabel: {
-      rotate: 0,
       formatter: '{MMM}-{dd}',
     },
   },
@@ -85,8 +84,10 @@ const PriceChart = ({ startDate, endDate, data }) => {
       const dataMin = Math.min(...data.map(item => item.displayPricePerDisplayUnit));
 
       // Build dynamic chart items
+      chartData.grid = { bottom: isLg ? 90 : 75 };
       chartData.tooltip.axisPointer = { lineStyle: { color: theme.CHART_LINE_MAIN, width: '1' } };
       chartData.xAxis.axisLabel.color = theme.FONT_PRIMARY;
+      chartData.xAxis.axisLabel.rotate = isLg ? 45 : 0;
       chartData.yAxis.offset = isSmall ? -14 : 0;
       chartData.yAxis.axisLabel = {
         rotate: isLg ? 45 : 0,
@@ -131,6 +132,7 @@ const PriceChart = ({ startDate, endDate, data }) => {
     let echart = echarts.getInstanceByDom(chartElementRef.current);
     // if it isn't initialized then init
     if (!echart) echart = echarts.init(chartElementRef.current);
+    window.allCharts.push(echart);
     setChart(echart);
     // Update the chart with the data
     buildChartData(data, startDate, endDate);

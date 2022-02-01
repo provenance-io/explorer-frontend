@@ -34,6 +34,8 @@ const TxChart = ({ txHistoryGran }) => {
       let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
       if (!echart) echart = echarts.init(chartElementRef.current);
+      // Push chart to page chart array in App.js
+      window.allCharts.push(echart);
       setChart(echart);
       const buildChartData = () => {
         const xAxisData = txHistory.map(({ date }) =>
