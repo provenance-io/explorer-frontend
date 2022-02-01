@@ -5,26 +5,43 @@ import { maxLength } from 'utils';
 
 const BlockImageContainer = styled.div`
   display: flex;
+  margin-right: ${({ marginRight }) => (marginRight ? marginRight : '5px')};
   align-items: center;
   justify-content: center;
   border-radius: 100%;
-  background: ${({ theme }) => theme.BACKGROUND_LIGHT};
-  height: 150px;
-  width: 150px;
+  background: ${({ theme, color }) => (color ? color : theme.BACKGROUND_LIGHT)};
+  height: ${({ sizeContainer }) => (sizeContainer ? `${sizeContainer}px` : '150px')};
+  width: ${({ sizeContainer }) => (sizeContainer ? `${sizeContainer}px` : '150px')};
   overflow: hidden;
 `;
 
 const BlockImageLetter = styled.span`
-  font-size: 7rem;
-  color: ${({ theme }) => theme.FONT_PRIMARY};
+  font-size: ${({ sizeText }) => (sizeText ? `${sizeText}px` : '7rem')};
+  color: ${({ theme, color }) => (color ? color : theme.FONT_PRIMARY)};
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '')};
+  text-transform: uppercase;
 `;
 
 const ImageElement = styled.img`
   width: 100%;
 `;
 
-const BlockImage = ({ icon, moniker, address }) => (
-  <BlockImageContainer title={moniker ? moniker : address}>
+const BlockImage = ({
+  icon,
+  moniker,
+  address,
+  sizeText,
+  marginRight,
+  colorBackground,
+  colorFont,
+  fontWeight,
+}) => (
+  <BlockImageContainer
+    sizeContainer={sizeText * 2}
+    marginRight={marginRight}
+    color={colorBackground}
+    title={moniker ? moniker : address}
+  >
     {icon ? (
       <ImageElement
         src={icon}
@@ -32,7 +49,9 @@ const BlockImage = ({ icon, moniker, address }) => (
         title={moniker ? maxLength(moniker, 16) : '?'}
       />
     ) : (
-      <BlockImageLetter>{moniker ? moniker[0] : `${address}`[0]}</BlockImageLetter>
+      <BlockImageLetter sizeText={sizeText} color={colorFont} fontWeight={fontWeight}>
+        {moniker ? moniker[0] : `${address}`[0]}
+      </BlockImageLetter>
     )}
   </BlockImageContainer>
 );
@@ -41,11 +60,21 @@ BlockImage.propTypes = {
   icon: PropTypes.string,
   moniker: PropTypes.string,
   address: PropTypes.string.isRequired,
+  sizeText: PropTypes.number,
+  marginRight: PropTypes.string,
+  colorBackground: PropTypes.string,
+  colorFont: PropTypes.string,
+  fontWeight: PropTypes.string,
 };
 
 BlockImage.defaultProps = {
   icon: null,
   moniker: null,
+  sizeText: 0,
+  marginRight: '',
+  colorBackground: '',
+  colorFont: '',
+  fontWeight: '',
 };
 
 export default BlockImage;

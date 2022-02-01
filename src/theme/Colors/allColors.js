@@ -72,4 +72,6 @@ export const allColors = {
   PURPLE_DARK: '#5F2489',
   PURPLE_DARKER: '#3A0065',
   PURPLE_DARKEST: '#2A0045',
+  // IRIS
+  IRIS_PRIMARY: '#5A4FCF',
 };

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Big from 'big.js';
+import { format } from 'date-fns';
 import styled from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';
 import { formatDenom } from 'utils';
@@ -34,6 +35,28 @@ const HashDashboard = () => {
 
   // Find all the prev day's prices and get the average price for the previous day
   const prevDayPrices = priceHistory.filter(i => isYesterday(new Date(i.dateTime)));
+
+  let recentDate = '';
+
+  // It's possible the previous day has no data, which results in an error.
+  if (prevDayPrices.length === 0) {
+    const today = format(new Date(), 'yyyy-MM-dd');
+    // Starting from the end of priceHistory, find the next date with data
+    for (let i = priceHistory.length - 1; i >= 0; i--) {
+      recentDate = priceHistory[i].dateTime.slice(0, 10);
+      // Once the date is not equal to today
+      if (recentDate !== today) {
+        // For each of the previous date with data, add to prevDayPrices,
+        // then exit the loop.
+        while (priceHistory[i].dateTime.slice(0, 10) === recentDate) {
+          prevDayPrices.push(priceHistory[i]);
+          i--;
+        }
+        break;
+      }
+    }
+  }
+
   const prevDayAverage = prevDayPrices
     .reduce((acc, curr) => acc.add(curr.displayPricePerDisplayUnit), new Big(0))
     .div(prevDayPrices.length || 1);

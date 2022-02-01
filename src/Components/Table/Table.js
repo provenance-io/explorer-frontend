@@ -10,7 +10,8 @@ import {
   TimeTicker,
   CopyValue,
 } from 'Components';
-import { capitalize, getUTCTime, formatTableData } from 'utils';
+import OgBlockImage from 'Components/BlockImage';
+import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
 import { Skips } from '../../consts';
 
 const TableContainer = styled.div`
@@ -48,6 +49,7 @@ const TableData = styled.td`
   padding: 10px 15px;
   text-align: ${({ center }) => center};
   display: ${({ copy }) => (copy ? 'flex' : '')};
+  align-items: ${({ copy }) => (copy ? 'center' : '')};
   border: none;
   text-decoration: ${({ skipped }) => skipped && 'line-through'};
   font-style: ${({ skipped }) => skipped && 'italic'};
@@ -178,6 +180,7 @@ const Table = ({
         color = theme.FONT_LINK,
         size = '1.4rem',
         copy = false,
+        blockImage = {},
         raw = '',
       } = rowData[dataName] || {};
 
@@ -193,9 +196,21 @@ const Table = ({
           title={hover || value}
           key={displayName}
           skipped={skipped}
-          copy={copy}
+          copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
           center={center}
         >
+          {blockImage && displayName === 'Moniker' && (
+            <OgBlockImage
+              icon={blockImage.icon}
+              moniker={blockImage.moniker}
+              address={blockImage.address}
+              sizeText={17}
+              marginRight="20px"
+              colorBackground={theme.IRIS_PRIMARY}
+              colorFont={theme.FONT_WHITE}
+              fontWeight={theme.FONT_WEIGHT_THIN}
+            />
+          )}
           {link && !valueMissing && link !== pathname ? (
             <Link to={link}>
               {finalValue}

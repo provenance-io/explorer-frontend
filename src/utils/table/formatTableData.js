@@ -192,6 +192,11 @@ export const formatTableData = (data = [], tableHeaders) => {
             value: maxLength(serverValue, 16, 3),
             link: `/validator/${linkAddress}`,
             hover: serverValue,
+            blockImage: dataObj && {
+              icon: dataObj.imgUrl,
+              moniker: serverValue,
+              address: linkAddress,
+            },
           };
           break;
         }
