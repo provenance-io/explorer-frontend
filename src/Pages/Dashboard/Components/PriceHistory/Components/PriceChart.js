@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { formatDenom } from 'utils';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { useMediaQuery } from 'redux/hooks';
@@ -21,8 +20,8 @@ const getZoom = (date, data) => {
   let zoomValue = data[data.length - 1];
   // Start from end of array and find matches
   for (let i = data.length - 1; i >= 0; i--) {
-    if (date === data[i].dateTime.slice(0, 10)) {
-      zoomValue = data[i].dateTime;
+    if (date === data[i].trade_timestamp.slice(0, 10)) {
+      zoomValue = data[i].trade_timestamp;
       break;
     }
   }
@@ -76,12 +75,9 @@ const PriceChart = ({ startDate, endDate, data }) => {
   // Build dynamic chart data
   const buildChartData = useCallback(
     (data, startDate, endDate) => {
-      const seriesData = data.map(({ displayPricePerDisplayUnit, dateTime }) => [
-        dateTime,
-        parseFloat(formatDenom(displayPricePerDisplayUnit, 'USD')).toFixed(3),
-      ]);
+      const seriesData = data.map(({ price, trade_timestamp }) => [trade_timestamp, price]);
       // Find min data values
-      const dataMin = Math.min(...data.map(item => item.displayPricePerDisplayUnit));
+      const dataMin = Math.min(...data.map(item => item.price));
 
       // Build dynamic chart items
       chartData.grid = { bottom: isLg ? 90 : 75 };

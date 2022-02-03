@@ -19,7 +19,7 @@ const reducer = handleActions(
     [`${GET_DAILY_PRICE}_${REQUEST}`](state) {
       return {
         ...state,
-        dailyPrice: {},
+        dailyPrice: 0,
         dailyPriceFailed: false,
         dailyPriceLoading: true,
       };
@@ -27,7 +27,7 @@ const reducer = handleActions(
     [`${GET_DAILY_PRICE}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        dailyPrice: payload,
+        dailyPrice: payload.find(ticker => ticker.ticker_id === 'HASH_USD'),
         dailyPriceLoading: false,
       };
     },
@@ -52,7 +52,12 @@ const reducer = handleActions(
     [`${GET_PRICE_HISTORY}_${SUCCESS}`](state, { payload }) {
       return {
         ...state,
-        priceHistory: payload,
+        // Only grabbing the buy info for this
+        priceHistory: payload.buy.map(item => {
+          // Convert epoch seconds to ISO time format
+          item.trade_timestamp = new Date(item.trade_timestamp * 1000).toISOString();
+          return { ...item };
+        }),
         priceHistoryLoading: false,
       };
     },
