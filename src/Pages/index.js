@@ -5,6 +5,7 @@ export { default as Block } from './Block';
 export { default as Blocks } from './Blocks';
 export { default as Dashboard } from './Dashboard';
 export { default as Faucet } from './Faucet';
+export { default as Ibc } from './Ibc';
 export { default as Icons } from './Icons';
 export { default as Nft } from './Nft';
 export { default as Nfts } from './Nfts';

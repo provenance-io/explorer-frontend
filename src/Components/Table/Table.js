@@ -90,6 +90,7 @@ const Table = ({
   title,
   addButton,
   onButtonClick,
+  contentBorder,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const theme = useTheme();
@@ -236,6 +237,7 @@ const Table = ({
       className={className}
       size={size}
       title={title}
+      border={contentBorder}
       headerButton={addButton}
       headerButtonClick={onButtonClick}
     >
@@ -294,6 +296,7 @@ Table.propTypes = {
   title: PropTypes.string,
   addButton: PropTypes.string,
   onButtonClick: PropTypes.func,
+  contentBorder: PropTypes.bool,
 };
 Table.defaultProps = {
   changePage: null,
@@ -312,6 +315,7 @@ Table.defaultProps = {
   totalPages: 0,
   addButton: null,
   onButtonClick: null,
+  contentBorder: true,
 };
 
 export default Table;

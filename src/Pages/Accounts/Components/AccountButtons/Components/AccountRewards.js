@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDenom, isEmpty } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { ButtonTables } from 'Components';
 
 const AccountRewards = () => {
-  const [showContent, setShowContent] = useState(false);
-  const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const { accountRewards, accountRewardsLoading, getAccountRewards } = useAccounts();
@@ -53,31 +51,22 @@ const AccountRewards = () => {
         })}`
       : '0 hash';
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show main button
-    setShowContent(!showContent); // hide content
-  };
-
   return (
-    !accountRewardsLoading && (
-      <ButtonTables
-        buttonTitle={`Rewards (${totalRewards})`}
-        handleButtonClick={handleButtonClick}
-        showButton={showButton}
-        showContent={showContent}
-        tableProps={{
-          changePage: setTableCurrentPage,
-          currentPage: tableCurrentPage,
-          isLoading: accountRewardsLoading || allValidatorsLoading,
-          tableData: tableData.filter(element => element.totalBalancePrice),
-          tableHeaders,
-          title: `Rewards (${totalRewards})`,
-          totalPages: 1,
-          addButton: 'Hide',
-          onButtonClick: handleButtonClick,
-        }}
-      />
-    )
+    <ButtonTables
+      buttonTitle={`Rewards (${totalRewards})`}
+      size="100%"
+      iconPercent="76%"
+      spinIcon={true}
+      tableProps={{
+        changePage: setTableCurrentPage,
+        currentPage: tableCurrentPage,
+        isLoading: accountRewardsLoading || allValidatorsLoading,
+        tableData: tableData.filter(element => element.totalBalancePrice),
+        tableHeaders,
+        totalPages: 1,
+        contentBorder: false,
+      }}
+    />
   );
 };
 

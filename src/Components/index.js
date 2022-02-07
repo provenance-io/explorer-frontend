@@ -17,6 +17,7 @@ export { default as MultiTable } from './MultiTable';
 export { default as Filters } from './Filters';
 export { default as Summary } from './Summary';
 export { default as Button } from './Button';
+export { default as ButtonTables } from './ButtonTables';
 export { default as BlockImage } from './BlockImage';
 export { default as DataCard } from './DataCard';
 export { default as DataMissing } from './DataMissing';

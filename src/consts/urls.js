@@ -44,6 +44,12 @@ export const CHAINCODE_PREFIXES_URL = `${BASE_URL}/chain/prefixes`;
 export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
 export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
+// -- IBC
+export const IBC_CHAIN_URL = `${BASE_URL}/ibc/balances/chain`;
+export const IBC_CHANNEL_URL = `${BASE_URL}/ibc/balances/channel`;
+export const IBC_BALANCES_DENOM_URL = `${BASE_URL}/ibc/balances/denom`;
+export const IBC_CHANNEL_STATUS_URL = `${BASE_URL}/ibc/channels/status`;
+export const IBC_DENOMS_ALL_URL = `${BASE_URL}/ibc/denoms/all`;
 // -- Order book
 export const ORDER_BOOK_URL =
   'https://www.dlob.io/aggregator/external/api/v1/order-books/pb18vd8fpwxzck93qlwghaj6arh4p7c5n894vnu5g';

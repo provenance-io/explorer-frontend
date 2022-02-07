@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { formatDenom } from 'utils';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { ButtonTables } from 'Components';
 
 const AccountDelegationsOwner = () => {
-  const [showContent, setShowContent] = useState(false);
-  const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const {
@@ -42,17 +40,12 @@ const AccountDelegationsOwner = () => {
 
   const totalAmount = formatDenom(amount, denom, { decimal: 2 });
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show main button
-    setShowContent(!showContent); // hide content
-  };
-
   return (
     <ButtonTables
       buttonTitle={`Delegations (${totalAmount})`}
-      handleButtonClick={handleButtonClick}
-      showButton={showButton}
-      showContent={showContent}
+      size="100%"
+      iconPercent="76%"
+      spinIcon={true}
       tableProps={{
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
@@ -60,10 +53,8 @@ const AccountDelegationsOwner = () => {
         ManageStakingBtn,
         tableData,
         tableHeaders,
-        title: `Delegations (${totalAmount})`,
         totalPages: accountDelegationsPages,
-        addButton: 'Hide',
-        onButtonClick: handleButtonClick,
+        contentBorder: false,
       }}
       stakingProps={{
         isDelegate,

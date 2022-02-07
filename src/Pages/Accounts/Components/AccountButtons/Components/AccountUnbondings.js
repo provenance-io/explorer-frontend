@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { formatDenom } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { ButtonTables } from 'Components';
 
 const AccountUnbondings = () => {
-  const [showContent, setShowContent] = useState(false);
-  const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const {
@@ -51,28 +49,20 @@ const AccountUnbondings = () => {
 
   const totalAmount = formatDenom(rAmount + uAmount, uDenom, { decimal: 2 });
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show main button
-    setShowContent(!showContent); // hide content
-  };
-
   return (
     <ButtonTables
       buttonTitle={`Unbondings/Redelegations (${totalAmount})`}
-      handleButtonClick={handleButtonClick}
-      showButton={showButton}
-      showContent={showContent}
-      hasLength={[...accountRedelegations, ...accountUnbonding]?.length > 0}
+      size="100%"
+      iconPercent="76%"
+      spinIcon={true}
       tableProps={{
         changePage: setTableCurrentPage,
         currentPage: tableCurrentPage,
         isLoading: accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading,
         tableData,
         tableHeaders,
-        title: `Unbondings/Redelegations (${totalAmount})`,
         totalPages: 1,
-        addButton: 'Hide',
-        onButtonClick: handleButtonClick,
+        contentBorder: false,
       }}
     />
   );

@@ -9,7 +9,7 @@ const Svg = styled.svg`
   height: ${({ size, height }) => height || size};
   transform: ${({ flipX }) => flipX && `scaleX(-1)`} ${({ flipY }) => flipY && `scaleY(-1)`}
     ${({ spin }) => Boolean(spin) && `rotate(${spin}deg)`};
-  transition: ${({ animate }) => animate && 'transform 150ms linear'};
+  transition: ${({ animate }) => animate && 'transform 300ms linear'};
 `;
 
 const Sprite = ({ alt, animate, color, icon, secondaryColor, ...svgIcons }) => {

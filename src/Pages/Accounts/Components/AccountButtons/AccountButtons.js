@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useWallet } from '@provenanceio/wallet-lib';
-import { Section } from 'Components';
+import { Section as BaseSection } from 'Components';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import {
@@ -12,6 +13,18 @@ import {
   AccountUnbondings,
   AccountAttributes,
 } from './Components';
+
+const Section = styled(BaseSection)`
+  max-width: 100%;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountButtons = () => {
   const { matches: sizeMd } = useMediaQuery(breakpoints.down('md'));
@@ -26,15 +39,25 @@ const AccountButtons = () => {
   const getLargeSize = () => (
     <>
       <Section>
-        <AccountAssets />
+        <ButtonWrapper>
+          <AccountAssets />
+        </ButtonWrapper>
       </Section>
       <Section>
-        {isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}
-        <AccountUnbondings />
+        <ButtonWrapper>
+          {isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}
+        </ButtonWrapper>
+        <ButtonWrapper>
+          <AccountUnbondings />
+        </ButtonWrapper>
       </Section>
       <Section>
-        <AccountRewards />
-        <AccountAttributes />
+        <ButtonWrapper>
+          <AccountRewards />
+        </ButtonWrapper>
+        <ButtonWrapper>
+          <AccountAttributes />
+        </ButtonWrapper>
       </Section>
     </>
   );
@@ -42,17 +65,29 @@ const AccountButtons = () => {
   const getMediumSize = () => (
     <>
       <Section>
-        <AccountAssets />
-      </Section>
-      <Section>{isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}</Section>
-      <Section>
-        <AccountUnbondings />
+        <ButtonWrapper>
+          <AccountAssets />
+        </ButtonWrapper>
       </Section>
       <Section>
-        <AccountRewards />
+        <ButtonWrapper>
+          {isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}
+        </ButtonWrapper>
       </Section>
       <Section>
-        <AccountAttributes />
+        <ButtonWrapper>
+          <AccountUnbondings />
+        </ButtonWrapper>
+      </Section>
+      <Section>
+        <ButtonWrapper>
+          <AccountRewards />
+        </ButtonWrapper>
+      </Section>
+      <Section>
+        <ButtonWrapper>
+          <AccountAttributes />
+        </ButtonWrapper>
       </Section>
     </>
   );

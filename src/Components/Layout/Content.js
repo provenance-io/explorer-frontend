@@ -7,11 +7,10 @@ import { Sprite as BaseSprite, Button as BaseButton } from 'Components';
 import { breakpoints } from 'consts';
 
 const ContentWrapper = styled.div`
-  max-width: 100%;
+  max-width: ${({ size }) => (size ? size : '100%')};
   position: relative;
   flex-basis: ${({ size }) => size};
   ${({ alignSelf }) => alignSelf && `align-self: ${alignSelf};`};
-  max-width: ${({ size }) => size};
 `;
 const ContentSpacer = styled.div`
   padding: 20px;
@@ -19,7 +18,7 @@ const ContentSpacer = styled.div`
   align-items: ${({ alignItems }) => alignItems};
   ${({ alignContent }) => alignContent && `align-content: ${alignContent};`};
   background: ${({ theme }) => theme.BACKGROUND_CONTENT};
-  border: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
+  border: ${({ border, theme }) => (border ? `1px solid ${theme.BORDER_PRIMARY}` : '')};
   flex-wrap: wrap;
   height: 100%;
   justify-content: ${({ justify }) => justify};
@@ -49,7 +48,6 @@ const Link = styled(BaseLink)`
     color: ${({ theme }) => theme.FONT_LINK_VISITED};
   }
 `;
-
 const Button = styled(BaseButton)`
   justify-content: flex-end;
   margin-left: auto;
@@ -60,6 +58,7 @@ const Content = ({
   size,
   justify,
   alignItems,
+  border,
   title,
   icon,
   link,
@@ -86,7 +85,12 @@ const Content = ({
 
   return (
     <ContentWrapper size={size} className={className} alignSelf={alignSelf}>
-      <ContentSpacer justify={justify} alignItems={alignItems} alignContent={alignContent}>
+      <ContentSpacer
+        border={border}
+        justify={justify}
+        alignItems={alignItems}
+        alignContent={alignContent}
+      >
         {showHeader && buildHeader()}
         {children}
       </ContentSpacer>
@@ -101,6 +105,7 @@ Content.propTypes = {
   alignItems: PropTypes.string,
   alignSelf: PropTypes.string,
   alignContent: PropTypes.string,
+  border: PropTypes.bool,
   title: PropTypes.string,
   icon: PropTypes.string,
   link: PropTypes.object,
@@ -119,6 +124,7 @@ Content.defaultProps = {
   alignItems: 'center',
   alignSelf: '',
   alignContent: 'flex-start',
+  border: true,
   title: null,
   icon: null,
   link: {},

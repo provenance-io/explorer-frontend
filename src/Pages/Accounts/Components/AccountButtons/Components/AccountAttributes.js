@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAccounts } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { ButtonTables } from 'Components';
 
 const AccountAttributes = () => {
-  const [showContent, setShowContent] = useState(false);
-  const [showButton, setShowButton] = useState(true);
   const { accountInfo, accountInfoLoading, getAccountInfo } = useAccounts();
 
   const { addressId } = useParams();
@@ -22,24 +20,17 @@ const AccountAttributes = () => {
     { displayName: 'Data', dataName: 'data' },
   ];
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show/hide main button
-    setShowContent(!showContent); // Show/hide content
-  };
-
   return (
     <ButtonTables
       buttonTitle={`Attributes (${tableData ? tableData.length : 0})`}
-      handleButtonClick={handleButtonClick}
-      showButton={showButton}
-      showContent={showContent}
+      size="100%"
+      iconPercent="76%"
+      spinIcon={true}
       tableProps={{
         isLoading: accountInfoLoading,
         tableData,
         tableHeaders,
-        title: `Attributes (${tableData ? tableData.length : 0})`,
-        addButton: 'Hide',
-        onButtonClick: handleButtonClick,
+        contentBorder: false,
       }}
     />
   );

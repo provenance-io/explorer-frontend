@@ -18,6 +18,7 @@
 - Add vote indicator for block validators #167
 - Add account attributes #244
 - Add validator icons #248
+- Add IBC UI #130
 
 ## 2.5.0
 
