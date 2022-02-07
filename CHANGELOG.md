@@ -19,6 +19,7 @@
 - Add account attributes #244
 - Add validator icons #248
 - Add IBC UI #130
+- Migrate orderbook to gecko API #255
 
 ## 2.5.0
 

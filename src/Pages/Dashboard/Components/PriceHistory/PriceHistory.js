@@ -25,32 +25,32 @@ const FilterError = styled.div`
 const PriceHistory = () => {
   const today = new Date();
   const defaultDateFormat = 'yyyy-MM-dd';
-  const { priceHistoryLoading, getPriceHistory } = useOrderbook();
-  // Because priceHistory may not include a value for today's date
-  let { priceHistory } = useOrderbook();
+  const { dailyPrice, priceHistoryLoading, getPriceHistory, priceHistory } = useOrderbook();
   // Make sure we have all the data
   const havePriceHistory = priceHistory.length > 1000;
+
   // Default view is 30 day history
   const defaultDayFrom = format(subtractDays(today, 29), defaultDateFormat);
   const defaultDayTo = format(today, defaultDateFormat);
   const oldestDate =
-    havePriceHistory && new Date(priceHistory[0].dateTime.slice(0, 10).replace(/-/, '/'));
+    havePriceHistory && new Date(priceHistory[0].trade_timestamp.slice(0, 10).replace(/-/, '/'));
 
   // There may be cases where there is no priceHistory returned for the current day.
   // If so, use the most recent price as a current value until a new price is
   // available for the current date:
+  let data = [...priceHistory];
   if (
     havePriceHistory &&
     // Check if the current date is the last available date in the
     // priceHistory array.
-    defaultDayTo !== priceHistory[priceHistory.length - 1].dateTime.slice(0, 10)
+    defaultDayTo !== priceHistory[priceHistory.length - 1].trade_timestamp.slice(0, 10)
   ) {
     // If current date is not the last available date in the priceHistory
     // array, then there is no pricing. Add it in temporarily to today.
-    const tempPrice = priceHistory[priceHistory.length - 1].displayPricePerUnit;
-    const tempDate = `${defaultDayTo}T00:00:00Z`;
-    const tempValue = { dateTime: tempDate, displayPricePerUnit: tempPrice };
-    priceHistory = [...priceHistory, tempValue];
+    const tempPrice = dailyPrice;
+    const tempDate = new Date().toISOString();
+    const tempValue = { price: tempPrice, trade_timestamp: tempDate };
+    data = [...data, tempValue];
   }
 
   const [priceHistoryTo, setPriceHistoryTo] = useState(defaultDayTo);
@@ -70,7 +70,7 @@ const PriceHistory = () => {
 
   // On initial load get all the priceHistory
   useEffect(() => {
-    getPriceHistory('ALL');
+    getPriceHistory();
   }, [getPriceHistory]);
 
   // Check for a valid filter before making api call
@@ -143,7 +143,7 @@ const PriceHistory = () => {
               flush
             />
           </FiltersWrapper>
-          <PriceChart startDate={priceHistoryTo} endDate={priceHistoryFrom} data={priceHistory} />
+          <PriceChart startDate={priceHistoryTo} endDate={priceHistoryFrom} data={data} />
         </>
       ) : (
         <Loading />

@@ -3,7 +3,7 @@ import Big from 'big.js';
 import { format } from 'date-fns';
 import styled from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';
-import { formatDenom } from 'utils';
+import { formatDenom, subtractDays } from 'utils';
 import { useMediaQuery } from 'redux/hooks';
 import useOrderbook from 'redux/hooks/useOrderbook';
 import isYesterday from 'date-fns/isYesterday';
@@ -34,21 +34,19 @@ const HashDashboard = () => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
 
   // Find all the prev day's prices and get the average price for the previous day
-  const prevDayPrices = priceHistory.filter(i => isYesterday(new Date(i.dateTime)));
-
-  let recentDate = '';
+  const prevDayPrices = priceHistory.filter(i => isYesterday(new Date(i.trade_timestamp)));
 
   // It's possible the previous day has no data, which results in an error.
   if (prevDayPrices.length === 0) {
     const today = format(new Date(), 'yyyy-MM-dd');
     // Starting from the end of priceHistory, find the next date with data
     for (let i = priceHistory.length - 1; i >= 0; i--) {
-      recentDate = priceHistory[i].dateTime.slice(0, 10);
+      const recentDate = priceHistory[i].trade_timestamp.slice(0, 10);
       // Once the date is not equal to today
       if (recentDate !== today) {
         // For each of the previous date with data, add to prevDayPrices,
         // then exit the loop.
-        while (priceHistory[i].dateTime.slice(0, 10) === recentDate) {
+        while (priceHistory[i].trade_timestamp.slice(0, 10) === recentDate) {
           prevDayPrices.push(priceHistory[i]);
           i--;
         }
@@ -58,10 +56,10 @@ const HashDashboard = () => {
   }
 
   const prevDayAverage = prevDayPrices
-    .reduce((acc, curr) => acc.add(curr.displayPricePerDisplayUnit), new Big(0))
+    .reduce((acc, curr) => acc.add(curr.price), new Big(0))
     .div(prevDayPrices.length || 1);
 
-  const latestDisplayPrice = dailyPrice.latestDisplayPricePerDisplayUnit || 1;
+  const latestDisplayPrice = dailyPrice.last_price || 1;
   // Check if the price increased from yesterday
   const priceIncrease = prevDayAverage.lte(latestDisplayPrice);
   // figure out the price change from yesterday
@@ -74,14 +72,17 @@ const HashDashboard = () => {
     .times(100)
     .toFixed(0)}%`;
 
+  const defaultDateFormat = 'dd-MM-yyyy';
+  const today = format(new Date(), defaultDateFormat);
+  const weekAgo = format(subtractDays(new Date(), 7), defaultDateFormat);
   // Initial load, get most recent blocks
   useEffect(() => {
     getDailyPrice();
-    getPriceHistory('WEEK');
-  }, [getDailyPrice, getPriceHistory]);
+    getPriceHistory(weekAgo, today);
+  }, [getDailyPrice, getPriceHistory, today, weekAgo]);
 
-  const latestPrice = new Big(dailyPrice.latestDisplayPricePerDisplayUnit || 0);
-  const twentyFourHourVolume = latestPrice.times(dailyPrice.displayVolumeTraded || 0);
+  const latestPrice = new Big(dailyPrice.last_price || 0);
+  const twentyFourHourVolume = latestPrice.times(dailyPrice.base_volume || 0);
   const marketCap = latestPrice.times(100000000000);
 
   return (
@@ -100,7 +101,7 @@ const HashDashboard = () => {
         <>
           <DataCard icon="PRICE" title="Latest Price" width="100%" fontWeight="true">
             <>
-              {`$${formatDenom(dailyPrice.latestDisplayPricePerDisplayUnit, 'USD', {
+              {`$${formatDenom(dailyPrice.last_price, 'USD', {
                 minimumFractionDigits: 3,
               })}    `}
               <HashSpan>
