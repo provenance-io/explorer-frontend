@@ -105,10 +105,32 @@ const IbcList = () => {
 
   const getIbcLists = ibcData.map(chain => {
     const tableHeaders = [
-      { displayName: 'Provenance', dataName: 'srcChannel' },
+      {
+        displayName: 'Provenance',
+        dataName: 'srcChannel',
+        blockImage: {
+          spriteProps: { icon: 'PROVENANCE', size: '11px', color: 'white' },
+          spriteMargin: '4px',
+          address: '',
+          sizeText: 11,
+          marginRight: '10px',
+          colorBackground: theme.IRIS_PRIMARY,
+          colorFont: theme.FONT_WHITE,
+          fontWeight: theme.FONT_WEIGHT_THIN,
+        },
+      },
       {
         displayName: capitalize(chain.chainId.split('-')[0].toUpperCase()),
         dataName: 'dstChannel',
+        blockImage: {
+          moniker: chain.chainId,
+          address: '',
+          sizeText: 11,
+          marginRight: '10px',
+          colorBackground: theme.IRIS_PRIMARY,
+          colorFont: theme.FONT_WHITE,
+          fontWeight: theme.FONT_WEIGHT_BOLD,
+        },
       },
       { displayName: 'Status', dataName: 'channelStatus' },
       { displayName: 'Last Tx', dataName: 'lastTx' },
