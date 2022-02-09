@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useAccounts, useAssets } from 'redux/hooks';
-import { ButtonTables } from 'Components';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountAssets = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -33,27 +42,29 @@ const AccountAssets = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Asset', dataName: 'denom' },
-    { displayName: 'Price', dataName: 'pricePerToken' },
     { displayName: 'Total Balance', dataName: 'balances' },
+    { displayName: 'Price Per Unit', dataName: 'pricePerToken' },
     { displayName: 'Total Value', dataName: 'totalBalancePrice' },
   ];
 
   return (
-    <ButtonTables
-      buttonTitle={`Assets (${accountAssetsTotal})`}
-      size="100%"
-      iconPercent="76%"
-      spinIcon={true}
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: tableLoading,
-        tableData,
-        tableHeaders,
-        totalPages: tablePages,
-        contentBorder: false,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Assets (${accountAssetsTotal})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+        startOpen={true}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={tableLoading}
+          tableData={tableData}
+          tableHeaders={tableHeaders}
+          totalPages={tablePages}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

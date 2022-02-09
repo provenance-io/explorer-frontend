@@ -187,7 +187,8 @@ export const formatTableData = (data = [], tableHeaders) => {
             dataObj?.addressId ||
             dataObj?.proposerAddress ||
             dataObj?.ownerAddress ||
-            dataObj?.holdingAccount;
+            dataObj?.holdingAccount ||
+            '';
           finalObj[dataName] = {
             value: maxLength(serverValue, 16, 3),
             link: `/validator/${linkAddress}`,

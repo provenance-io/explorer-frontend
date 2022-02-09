@@ -1,15 +1,36 @@
 import React, { useEffect } from 'react';
 import { breakpoints } from 'consts';
-import { Content, ButtonTables } from 'Components';
+import { Content, Section, Accordion, Table, BlockImage } from 'Components';
 import styled, { useTheme } from 'styled-components';
 import { useIbc, useMediaQuery } from 'redux/hooks';
 import { getUTCTime, capitalize } from 'utils';
 
-const ButtonTitle = styled.span`
+const HeaderInfo = styled.span`
+  display: grid;
+  grid-template-columns: 0.1fr 1fr 1fr;
+  align-items: center;
+`;
+
+const Title = styled.div`
+  grid-column-start: 2;
   font-size: 2rem;
-  @media ${breakpoints.down('md')} {
-    font-size: 1.4rem;
-  }
+  align-items: center;
+`;
+
+const SubTitle = styled.div`
+  font-size: 1.4rem;
+  grid-column-start: 2;
+`;
+
+const Data = styled.div`
+  grid-column-start: 3;
+  text-align: right;
+  align-self: end;
+  font-size: 1.2rem;
+`;
+
+const Stats = styled.span`
+  color: ${({ color }) => color};
 `;
 
 const IbcList = () => {
@@ -137,41 +158,42 @@ const IbcList = () => {
     ];
     const tableData = chain.channelList;
 
-    return (
-      <ButtonTables
-        key={chain.chainId}
-        buttonTitle={<ButtonTitle>{chain.chainId.split('-')[0].toUpperCase()}</ButtonTitle>}
-        buttonStartContent={isLarge && <span>{chain.chainId}</span>}
-        buttonEndContent={
-          <span>
-            {isLarge && 'Channel Status: '}
-            {chain.channelStats}
+    const buttonInfo = (
+      <>
+        <HeaderInfo>
+          <BlockImage
+            moniker={chain.chainId}
+            address={''}
+            sizeText={isLarge ? 25 : 14}
+            marginRight={'20px'}
+            colorBackground={theme.IRIS_PRIMARY}
+            colorFont={theme.FONT_WHITE}
+            fontWeight={theme.FONT_WEIGHT_THIN}
+          />
+          <Title>
+            {chain.chainId.split('-')[0].toUpperCase()}
+            <SubTitle>{isLarge && chain.chainId}</SubTitle>
+          </Title>
+          <Data>
+            {isLarge && `Channel Status: `}
+            <Stats
+              color={chain.channelStats[0] === 0 ? theme.NEGATIVE_CHANGE : theme.POSITIVE_CHANGE}
+            >
+              {chain.channelStats}
+            </Stats>
             <br />
             {isLarge && `Last Tx: ${getUTCTime(chain.chainLastTx)}+UTC`}
-          </span>
-        }
-        buttonMinHeight="80px"
-        size="100%"
-        iconPercent="76%"
-        spinIcon={true}
-        buttonProps={{
-          blockImageProps: {
-            moniker: chain.chainId,
-            address: '',
-            sizeText: isLarge ? 25 : 14,
-            marginRight: '20px',
-            colorBackground: theme.IRIS_PRIMARY,
-            colorFont: theme.FONT_WHITE,
-            fontWeight: theme.FONT_WEIGHT_THIN,
-          },
-        }}
-        tableProps={{
-          isLoading: tableLoading,
-          tableData,
-          tableHeaders,
-          contentBorder: false,
-        }}
-      />
+          </Data>
+        </HeaderInfo>
+      </>
+    );
+
+    return (
+      <Section key={chain.chainId}>
+        <Accordion showChevron title={buttonInfo} changeColumns={'16fr 1fr'}>
+          <Table isLoading={tableLoading} tableData={tableData} tableHeaders={tableHeaders} />
+        </Accordion>
+      </Section>
     );
   });
 

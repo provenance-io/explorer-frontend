@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { formatDenom } from 'utils';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
-import { ButtonTables } from 'Components';
+import { Accordion, Table } from 'Components';
+import ManageStakingModal from '../../../../Validators/Components/ManageStakingModal';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountDelegationsOwner = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -9,7 +19,7 @@ const AccountDelegationsOwner = () => {
   const {
     accountDelegations,
     accountDelegationsLoading,
-    accountDelegationsPages,
+    accountDelegationsPages: tablePages,
     accountDelegationsTotal: { amount, denom },
   } = useAccounts();
   const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
@@ -41,30 +51,31 @@ const AccountDelegationsOwner = () => {
   const totalAmount = formatDenom(amount, denom, { decimal: 2 });
 
   return (
-    <ButtonTables
-      buttonTitle={`Delegations (${totalAmount})`}
-      size="100%"
-      iconPercent="76%"
-      spinIcon={true}
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: accountDelegationsLoading || allValidatorsLoading,
-        ManageStakingBtn,
-        tableData,
-        tableHeaders,
-        totalPages: accountDelegationsPages,
-        contentBorder: false,
-      }}
-      stakingProps={{
-        isDelegate,
-        isLoggedIn,
-        modalOpen: modalFns.modalOpen,
-        onClose: modalFns.deactivateModalOpen,
-        onStaking: handleStaking,
-        validator: validator || {},
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Delegations (${totalAmount})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={accountDelegationsLoading || allValidatorsLoading}
+          ManageStakingBtn={ManageStakingBtn}
+          tableData={tableData}
+          tableHeaders={tableHeaders}
+          totalPages={tablePages}
+        />
+        <ManageStakingModal
+          isDelegate={isDelegate}
+          isLoggedIn={isLoggedIn}
+          modalOpen={modalFns.modalOpen}
+          onClose={modalFns.deactivateModalOpen}
+          onStaking={handleStaking}
+          validator={validator || {}}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

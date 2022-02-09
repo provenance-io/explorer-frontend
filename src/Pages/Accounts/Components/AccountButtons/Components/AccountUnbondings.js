@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { formatDenom } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import { ButtonTables } from 'Components';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountUnbondings = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -50,21 +59,22 @@ const AccountUnbondings = () => {
   const totalAmount = formatDenom(rAmount + uAmount, uDenom, { decimal: 2 });
 
   return (
-    <ButtonTables
-      buttonTitle={`Unbondings/Redelegations (${totalAmount})`}
-      size="100%"
-      iconPercent="76%"
-      spinIcon={true}
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading,
-        tableData,
-        tableHeaders,
-        totalPages: 1,
-        contentBorder: false,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Unbondings/Redelegations (${totalAmount})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading}
+          tableData={tableData}
+          tableHeaders={tableHeaders}
+          totalPages={1}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Section, Wrapper, Header } from 'Components';
+import { Section, Wrapper, Header, Content } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useAccounts, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
@@ -27,9 +27,11 @@ const Accounts = () => {
       ) : (
         <Fragment>
           <Section header>
-            <AccountSpotlight />
+            <Content justify="flex-start">
+              <AccountSpotlight />
+              <AccountButtons />
+            </Content>
           </Section>
-          <AccountButtons />
           <Section>
             <AccountTxs />
           </Section>

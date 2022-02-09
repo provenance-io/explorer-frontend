@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { formatDenom, isEmpty } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import { ButtonTables } from 'Components';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountRewards = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -52,21 +61,22 @@ const AccountRewards = () => {
       : '0 hash';
 
   return (
-    <ButtonTables
-      buttonTitle={`Rewards (${totalRewards})`}
-      size="100%"
-      iconPercent="76%"
-      spinIcon={true}
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: accountRewardsLoading || allValidatorsLoading,
-        tableData: tableData.filter(element => element.totalBalancePrice),
-        tableHeaders,
-        totalPages: 1,
-        contentBorder: false,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Rewards (${totalRewards})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={accountRewardsLoading || allValidatorsLoading}
+          tableData={tableData.filter(element => element.totalBalancePrice)}
+          tableHeaders={tableHeaders}
+          totalPages={1}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

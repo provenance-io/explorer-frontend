@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { formatDenom } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import { ButtonTables } from 'Components';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -10,7 +19,7 @@ const AccountDelegations = () => {
   const {
     accountDelegations,
     accountDelegationsLoading,
-    accountDelegationsPages,
+    accountDelegationsPages: tablePages,
     accountDelegationsTotal: { amount, denom },
     getAccountDelegations,
   } = useAccounts();
@@ -43,21 +52,22 @@ const AccountDelegations = () => {
   const totalAmount = formatDenom(amount, denom, { decimal: 2 });
 
   return (
-    <ButtonTables
-      buttonTitle={`Delegations (${totalAmount})`}
-      size="100%"
-      iconPercent="76%"
-      spinIcon={true}
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: accountDelegationsLoading || allValidatorsLoading,
-        tableData,
-        tableHeaders,
-        totalPages: accountDelegationsPages,
-        contentBorder: false,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Delegations (${totalAmount})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={accountDelegationsLoading || allValidatorsLoading}
+          tableData={tableData}
+          tableHeaders={tableHeaders}
+          totalPages={tablePages}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

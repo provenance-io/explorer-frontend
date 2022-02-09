@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Sprite from 'Components/Sprite';
-import BlockImage from 'Components/BlockImage';
-import { isEmpty } from 'utils';
 
 const StyledButton = styled.button`
   text-align: left;
@@ -39,32 +37,18 @@ const ButtonContent = styled.div`
 const ButtonIcon = styled.div`
   margin-left: 10px;
   display: flex;
-  ${({ iconEnd }) =>
-    iconEnd &&
-    `
-    justify-content: flex-end;
-    align-items: center;
-    flex: 1;`}
-`;
-const AddInfo = styled.div`
-  margin-right: 15px;
-  margin-left: 10px;
-  font-size: 1.4rem;
 `;
 
 const Button = ({
   className,
   color,
-  endContent,
   icon,
   iconSize,
   iconColor,
-  iconEnd,
   iconOptions,
   onClick,
   children,
   disabled,
-  blockImageProps,
 }) => (
   <StyledButton
     className={className}
@@ -77,11 +61,9 @@ const Button = ({
     }}
     disabled={disabled}
   >
-    {!isEmpty(blockImageProps) && <BlockImage {...blockImageProps} />}
     <ButtonContent>{children}</ButtonContent>
     {icon && (
-      <ButtonIcon iconEnd={iconEnd}>
-        <AddInfo>{endContent}</AddInfo>
+      <ButtonIcon>
         <Sprite {...iconOptions} icon={icon} size={iconSize} color={iconColor} />
       </ButtonIcon>
     )}
@@ -91,29 +73,23 @@ const Button = ({
 Button.propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
-  endContent: PropTypes.node,
   icon: PropTypes.string,
   iconSize: PropTypes.string,
-  iconEnd: PropTypes.bool,
   iconColor: PropTypes.string,
   iconOptions: PropTypes.object, // see Components/Sprite for available options
   onClick: PropTypes.func,
   children: PropTypes.node.isRequired,
   disabled: PropTypes.bool,
-  blockImageProps: PropTypes.object,
 };
 Button.defaultProps = {
   className: '',
   color: 'primary',
-  endContent: null,
   icon: '',
   iconSize: '2.2rem',
-  iconEnd: false,
   iconColor: 'ICON_WHITE',
   iconOptions: null,
   onClick: () => {},
   disabled: false,
-  blockImageProps: {},
 };
 
 export default Button;

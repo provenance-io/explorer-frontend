@@ -18,14 +18,6 @@ const Section = styled(BaseSection)`
   max-width: 100%;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-`;
-
 const AccountButtons = () => {
   const { matches: sizeMd } = useMediaQuery(breakpoints.down('md'));
   const { walletService } = useWallet();
@@ -39,25 +31,15 @@ const AccountButtons = () => {
   const getLargeSize = () => (
     <>
       <Section>
-        <ButtonWrapper>
-          <AccountAssets />
-        </ButtonWrapper>
+        <AccountAssets />
       </Section>
       <Section>
-        <ButtonWrapper>
-          {isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <AccountUnbondings />
-        </ButtonWrapper>
+        {isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}
+        <AccountUnbondings />
       </Section>
       <Section>
-        <ButtonWrapper>
-          <AccountRewards />
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <AccountAttributes />
-        </ButtonWrapper>
+        <AccountRewards />
+        <AccountAttributes />
       </Section>
     </>
   );
@@ -65,29 +47,17 @@ const AccountButtons = () => {
   const getMediumSize = () => (
     <>
       <Section>
-        <ButtonWrapper>
-          <AccountAssets />
-        </ButtonWrapper>
+        <AccountAssets />
+      </Section>
+      <Section>{isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}</Section>
+      <Section>
+        <AccountUnbondings />
       </Section>
       <Section>
-        <ButtonWrapper>
-          {isOwnAccount ? <AccountDelegationsOwner /> : <AccountDelegations />}
-        </ButtonWrapper>
+        <AccountRewards />
       </Section>
       <Section>
-        <ButtonWrapper>
-          <AccountUnbondings />
-        </ButtonWrapper>
-      </Section>
-      <Section>
-        <ButtonWrapper>
-          <AccountRewards />
-        </ButtonWrapper>
-      </Section>
-      <Section>
-        <ButtonWrapper>
-          <AccountAttributes />
-        </ButtonWrapper>
+        <AccountAttributes />
       </Section>
     </>
   );

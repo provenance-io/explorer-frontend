@@ -28,7 +28,7 @@ const TableMain = styled.table`
   border-spacing: 0;
 `;
 const TableHead = styled.thead`
-  padding: 0 0;
+  padding: 0;
   border-bottom: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
   text-align: left;
 `;
@@ -46,7 +46,7 @@ const TableHeadData = styled.th`
   padding: 10px 15px;
 `;
 const TableData = styled.td`
-  padding: ${({ tablePadding }) => (tablePadding ? tablePadding : '10px 15px')};
+  padding: ${({ tablePadding }) => tablePadding || '10px 15px'};
   text-align: ${({ center }) => center};
   display: ${({ copy }) => (copy ? 'flex' : '')};
   align-items: ${({ copy }) => (copy ? 'center' : '')};
@@ -72,8 +72,8 @@ const List = styled.li`
   margin-left: 30px;
 `;
 const FlexContainer = styled.div`
-  display: ${({ addImage }) => (addImage ? 'flex' : '')};
-  align-items: ${({ addImage }) => (addImage ? 'center' : '')};
+  display: ${({ addImage }) => addImage && 'flex'};
+  align-items: ${({ addImage }) => addImage && 'center'};
 `;
 
 const Table = ({
@@ -92,9 +92,6 @@ const Table = ({
   tableHeaders,
   totalPages,
   title,
-  addButton,
-  onButtonClick,
-  contentBorder,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const theme = useTheme();
@@ -250,14 +247,7 @@ const Table = ({
     tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
-    <Content
-      className={className}
-      size={size}
-      title={title}
-      border={contentBorder}
-      headerButton={addButton}
-      headerButtonClick={onButtonClick}
-    >
+    <Content className={className} size={size} title={title}>
       {notes && (
         <Notes>
           {`* ${capitalize(notes)}:`}
@@ -311,9 +301,6 @@ Table.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   totalPages: PropTypes.number,
   title: PropTypes.string,
-  addButton: PropTypes.string,
-  onButtonClick: PropTypes.func,
-  contentBorder: PropTypes.bool,
 };
 Table.defaultProps = {
   changePage: null,
@@ -330,9 +317,6 @@ Table.defaultProps = {
   tableData: [],
   title: '',
   totalPages: 0,
-  addButton: null,
-  onButtonClick: null,
-  contentBorder: true,
 };
 
 export default Table;

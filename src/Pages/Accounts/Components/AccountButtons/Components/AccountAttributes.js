@@ -1,10 +1,19 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useAccounts } from 'redux/hooks';
-import { ButtonTables } from 'Components';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountAttributes = () => {
-  const { accountInfo, accountInfoLoading, getAccountInfo } = useAccounts();
+  const { accountInfo, accountInfoLoading: tableLoading, getAccountInfo } = useAccounts();
 
   const { addressId } = useParams();
 
@@ -21,18 +30,15 @@ const AccountAttributes = () => {
   ];
 
   return (
-    <ButtonTables
-      buttonTitle={`Attributes (${tableData ? tableData.length : 0})`}
-      size="100%"
-      iconPercent="76%"
-      spinIcon={true}
-      tableProps={{
-        isLoading: accountInfoLoading,
-        tableData,
-        tableHeaders,
-        contentBorder: false,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Attributes (${tableData ? tableData.length : 0})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table isLoading={tableLoading} tableData={tableData} tableHeaders={tableHeaders} />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

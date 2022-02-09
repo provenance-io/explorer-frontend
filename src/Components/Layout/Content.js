@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
-import { Sprite as BaseSprite, Button as BaseButton } from 'Components';
+import { Sprite as BaseSprite } from 'Components';
 
 import { breakpoints } from 'consts';
 
@@ -18,7 +18,7 @@ const ContentSpacer = styled.div`
   align-items: ${({ alignItems }) => alignItems};
   ${({ alignContent }) => alignContent && `align-content: ${alignContent};`};
   background: ${({ theme }) => theme.BACKGROUND_CONTENT};
-  border: ${({ border, theme }) => (border ? `1px solid ${theme.BORDER_PRIMARY}` : '')};
+  border: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
   flex-wrap: wrap;
   height: 100%;
   justify-content: ${({ justify }) => justify};
@@ -48,17 +48,12 @@ const Link = styled(BaseLink)`
     color: ${({ theme }) => theme.FONT_LINK_VISITED};
   }
 `;
-const Button = styled(BaseButton)`
-  justify-content: flex-end;
-  margin-left: auto;
-`;
 
 const Content = ({
   children,
   size,
   justify,
   alignItems,
-  border,
   title,
   icon,
   link,
@@ -67,8 +62,6 @@ const Content = ({
   alignContent,
   headerContent,
   headerMargin,
-  headerButton,
-  headerButtonClick,
 }) => {
   const { to: linkTo, title: linkTitle } = link;
   const showHeader = title || icon || linkTo || linkTitle;
@@ -79,18 +72,12 @@ const Content = ({
       {title && <Title>{title}</Title>}
       {linkTo && linkTitle && <Link to={link.to}>{link.title}</Link>}
       {headerContent}
-      {headerButton && <Button onClick={headerButtonClick}>{headerButton}</Button>}
     </Header>
   );
 
   return (
     <ContentWrapper size={size} className={className} alignSelf={alignSelf}>
-      <ContentSpacer
-        border={border}
-        justify={justify}
-        alignItems={alignItems}
-        alignContent={alignContent}
-      >
+      <ContentSpacer justify={justify} alignItems={alignItems} alignContent={alignContent}>
         {showHeader && buildHeader()}
         {children}
       </ContentSpacer>
@@ -105,15 +92,12 @@ Content.propTypes = {
   alignItems: PropTypes.string,
   alignSelf: PropTypes.string,
   alignContent: PropTypes.string,
-  border: PropTypes.bool,
   title: PropTypes.string,
   icon: PropTypes.string,
   link: PropTypes.object,
   className: PropTypes.string,
   headerContent: PropTypes.node,
   headerMargin: PropTypes.string,
-  headerButton: PropTypes.string,
-  headerButtonClick: PropTypes.func,
 };
 
 Content.defaultProps = {
@@ -124,14 +108,11 @@ Content.defaultProps = {
   alignItems: 'center',
   alignSelf: '',
   alignContent: 'flex-start',
-  border: true,
   title: null,
   icon: null,
   link: {},
   headerContent: '',
   headerMargin: null,
-  headerButton: null,
-  headerButtonClick: null,
 };
 
 export default Content;
