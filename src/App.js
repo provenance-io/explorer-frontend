@@ -15,6 +15,7 @@ import {
   Blocks,
   Dashboard,
   Faucet,
+  Ibc,
   Icons,
   Nft,
   Nfts,
@@ -60,6 +61,7 @@ const App = () => {
               <Route path="/block/:blockHeight" component={Block} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
+              <Route path="/ibc" component={Ibc} />
               <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
               <Route path="/nft/:addr" component={Nft} />
               <Route path="/nfts/:addr" component={Nfts} />

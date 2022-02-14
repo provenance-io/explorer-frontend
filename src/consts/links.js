@@ -21,6 +21,10 @@ export const Links = {
     url: Path.GOV_URL,
     title: 'Gov',
   },
+  ibc: {
+    url: Path.IBC_URL,
+    title: 'IBC',
+  },
   // Dropdown menu
   network: {
     url: '',

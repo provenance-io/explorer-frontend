@@ -99,6 +99,9 @@ export const Colors = {
   TOGGLE_NOTCH: allColors.WHITE,
   // Warnings
   WARNING_BORDER: allColors.RED_PRIMARY,
+  // +/- indicators
+  POSITIVE_CHANGE: allColors.GREEN_POSITIVE_PRIMARY,
+  NEGATIVE_CHANGE: allColors.RED_NEGATIVE_PRIMARY,
   // All other colors
   ...allColors,
 };

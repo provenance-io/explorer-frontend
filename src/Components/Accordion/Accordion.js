@@ -30,7 +30,8 @@ const Wrapper = styled.div`
 
 const AccordionHeader = styled.header`
   display: grid;
-  grid-template-columns: ${({ showChevron }) => (showChevron ? '2fr 1fr' : '1fr')};
+  grid-template-columns: ${({ showChevron, changeColumns }) =>
+    showChevron ? (changeColumns ? changeColumns : '2fr 1fr') : '1fr'};
   align-items: center;
   padding: 20px;
   cursor: pointer;
@@ -46,15 +47,20 @@ const AccordionBody = styled.div`
   visibility: ${({ isOpen }) => !isOpen && 'hidden'};
 `;
 
-const Accordion = ({ children, showChevron, title }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Accordion = ({ children, showChevron, title, startOpen, changeColumns }) => {
+  const [isOpen, setIsOpen] = useState(startOpen);
   const theme = useTheme();
 
   const toggleState = () => setIsOpen(open => !open);
 
   return (
     <Wrapper isOpen={isOpen}>
-      <AccordionHeader onClick={toggleState} isOpen={isOpen} showChevron={showChevron}>
+      <AccordionHeader
+        onClick={toggleState}
+        isOpen={isOpen}
+        showChevron={showChevron}
+        changeColumns={changeColumns}
+      >
         {title}
         {showChevron && (
           <Sprite
@@ -77,10 +83,14 @@ Accordion.propTypes = {
   children: PropTypes.any.isRequired,
   showChevron: PropTypes.bool,
   title: PropTypes.any.isRequired,
+  startOpen: PropTypes.bool,
+  changeColumns: PropTypes.string,
 };
 
 Accordion.defaultProps = {
   showChevron: false,
+  startOpen: false,
+  changeColumns: '',
 };
 
 export default Accordion;

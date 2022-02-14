@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useAccounts, useMediaQuery } from 'redux/hooks';
-import { Content, Summary, Sprite, Loading } from 'Components';
+import { Summary, Sprite, Loading } from 'Components';
 import { breakpoints } from 'consts';
 import { maxLength, formatDenom } from 'utils';
 
@@ -11,6 +11,7 @@ const Column = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
+  margin-bottom: 20px;
 `;
 
 const TokenIcon = styled.div``;
@@ -101,21 +102,17 @@ const AccountSpotlight = () => {
     },
   ];
 
-  return (
-    <Content justify="flex-start">
-      {accountInfoLoading ? (
-        <Loading />
-      ) : (
-        <Fragment>
-          <Column flexBasis="10%">
-            <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
-          </Column>
-          <Column flexBasis="90%">
-            <Summary data={summaryData} />
-          </Column>
-        </Fragment>
-      )}
-    </Content>
+  return accountInfoLoading ? (
+    <Loading />
+  ) : (
+    <Fragment>
+      <Column flexBasis="10%">
+        <TokenIcon>{<Sprite size="8rem" icon="HASH" />}</TokenIcon>
+      </Column>
+      <Column flexBasis="90%">
+        <Summary data={summaryData} />
+      </Column>
+    </Fragment>
   );
 };
 

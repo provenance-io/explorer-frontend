@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useAccounts, useAssets } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountAssets = () => {
-  const [showContent, setShowContent] = useState(true);
-  const [showButton, setShowButton] = useState(false);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const { addressId } = useParams();
   const {
@@ -35,37 +42,29 @@ const AccountAssets = () => {
   // Table header values in order
   const tableHeaders = [
     { displayName: 'Asset', dataName: 'denom' },
-    { displayName: 'Price', dataName: 'pricePerToken' },
     { displayName: 'Total Balance', dataName: 'balances' },
+    { displayName: 'Price Per Unit', dataName: 'pricePerToken' },
     { displayName: 'Total Value', dataName: 'totalBalancePrice' },
   ];
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show/hide main button
-    setShowContent(!showContent); // Show/hide content
-  };
-
   return (
-    <ButtonTables
-      buttonTitle={`Assets (${accountAssetsTotal})`}
-      handleButtonClick={handleButtonClick}
-      showButton={showButton}
-      showContent={showContent}
-      hasLength={[...accountAssets]?.length > 0}
-      size="100%"
-      iconPercent="76%"
-      tableProps={{
-        changePage: setTableCurrentPage,
-        currentPage: tableCurrentPage,
-        isLoading: tableLoading,
-        tableData,
-        tableHeaders,
-        title: `Assets (${accountAssetsTotal})`,
-        totalPages: tablePages,
-        addButton: 'Hide',
-        onButtonClick: handleButtonClick,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Assets (${accountAssetsTotal})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+        startOpen={true}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={tableLoading}
+          tableData={tableData}
+          tableHeaders={tableHeaders}
+          totalPages={tablePages}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

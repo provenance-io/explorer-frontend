@@ -39,12 +39,22 @@ const ButtonIcon = styled.div`
   display: flex;
 `;
 
-const Button = ({ className, color, icon, iconSize, iconColor, iconOptions, onClick, children, disabled }) => (
+const Button = ({
+  className,
+  color,
+  icon,
+  iconSize,
+  iconColor,
+  iconOptions,
+  onClick,
+  children,
+  disabled,
+}) => (
   <StyledButton
     className={className}
     onClick={onClick}
     color={color.toUpperCase()}
-    onKeyPress={(e) => {
+    onKeyPress={e => {
       if (e.key === 'Enter') {
         onClick();
       }

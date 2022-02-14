@@ -187,7 +187,8 @@ export const formatTableData = (data = [], tableHeaders) => {
             dataObj?.addressId ||
             dataObj?.proposerAddress ||
             dataObj?.ownerAddress ||
-            dataObj?.holdingAccount;
+            dataObj?.holdingAccount ||
+            '';
           finalObj[dataName] = {
             value: maxLength(serverValue, 16, 3),
             link: `/validator/${linkAddress}`,
@@ -219,6 +220,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'lastUpdated': // fallthrough
         case 'submitTime': // fallthrough
         case 'time': // fallthrough
+        case 'lastTx': // fallthrough
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': // fallthrough
         case 'txTimestamp': // fallthrough
@@ -349,7 +351,17 @@ export const formatTableData = (data = [], tableHeaders) => {
             raw: serverValue,
           };
           break;
+        // Regex for channel state
+        case 'channelStatus': {
+          const state = serverValue.match(/_(.*)/)[1];
+          finalObj[dataName] = { value: capitalize(state) };
+          break;
+        }
         // Server value already correct
+        case 'chainId': // fallthrough
+        case 'channelStats': // fallthrough
+        case 'srcChannel': // fallthrough
+        case 'dstChannel': // fallthrough
         case 'attribute': // fallthrough
         case 'initialVersion': // fallthrough
         case 'bondHeight': // fallthrough

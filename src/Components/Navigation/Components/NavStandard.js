@@ -97,6 +97,13 @@ const Link = styled(BaseLink)`
   }
   &&& {
     color: ${({ theme }) => theme.FONT_NAV};
+    ${({ $subDrop, theme }) =>
+      $subDrop &&
+      `
+      :hover {
+        color: ${theme.FONT_LINK};
+      }
+    `}
   }
   padding: ${({ $subDrop }) => $subDrop && '3px 7px 3px 7px;'};
 `;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useWallet } from '@provenanceio/wallet-lib';
-import { Section } from 'Components';
+import { Section as BaseSection } from 'Components';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import {
@@ -12,6 +13,10 @@ import {
   AccountUnbondings,
   AccountAttributes,
 } from './Components';
+
+const Section = styled(BaseSection)`
+  max-width: 100%;
+`;
 
 const AccountButtons = () => {
   const { matches: sizeMd } = useMediaQuery(breakpoints.down('md'));

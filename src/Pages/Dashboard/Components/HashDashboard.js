@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Big from 'big.js';
 import { format } from 'date-fns';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';
 import { formatDenom, subtractDays } from 'utils';
 import { useMediaQuery } from 'redux/hooks';
@@ -30,6 +30,8 @@ const HashDashboard = () => {
     getDailyPrice,
     getPriceHistory,
   } = useOrderbook();
+
+  const theme = useTheme();
 
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
 
@@ -106,7 +108,9 @@ const HashDashboard = () => {
               })}    `}
               <HashSpan>
                 (
-                <PercentChange color={priceIncrease ? 'rgb(78, 210, 44)' : 'red'}>
+                <PercentChange
+                  color={priceIncrease ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
+                >
                   {priceChangePercent}
                 </PercentChange>
                 )

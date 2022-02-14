@@ -2,16 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
-import { Sprite as BaseSprite, Button as BaseButton } from 'Components';
+import { Sprite as BaseSprite } from 'Components';
 
 import { breakpoints } from 'consts';
 
 const ContentWrapper = styled.div`
-  max-width: 100%;
+  max-width: ${({ size }) => (size ? size : '100%')};
   position: relative;
   flex-basis: ${({ size }) => size};
   ${({ alignSelf }) => alignSelf && `align-self: ${alignSelf};`};
-  max-width: ${({ size }) => size};
 `;
 const ContentSpacer = styled.div`
   padding: 20px;
@@ -50,11 +49,6 @@ const Link = styled(BaseLink)`
   }
 `;
 
-const Button = styled(BaseButton)`
-  justify-content: flex-end;
-  margin-left: auto;
-`;
-
 const Content = ({
   children,
   size,
@@ -68,8 +62,6 @@ const Content = ({
   alignContent,
   headerContent,
   headerMargin,
-  headerButton,
-  headerButtonClick,
 }) => {
   const { to: linkTo, title: linkTitle } = link;
   const showHeader = title || icon || linkTo || linkTitle;
@@ -80,7 +72,6 @@ const Content = ({
       {title && <Title>{title}</Title>}
       {linkTo && linkTitle && <Link to={link.to}>{link.title}</Link>}
       {headerContent}
-      {headerButton && <Button onClick={headerButtonClick}>{headerButton}</Button>}
     </Header>
   );
 
@@ -107,8 +98,6 @@ Content.propTypes = {
   className: PropTypes.string,
   headerContent: PropTypes.node,
   headerMargin: PropTypes.string,
-  headerButton: PropTypes.string,
-  headerButtonClick: PropTypes.func,
 };
 
 Content.defaultProps = {
@@ -124,8 +113,6 @@ Content.defaultProps = {
   link: {},
   headerContent: '',
   headerMargin: null,
-  headerButton: null,
-  headerButtonClick: null,
 };
 
 export default Content;

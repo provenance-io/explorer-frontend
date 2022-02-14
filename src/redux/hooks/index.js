@@ -5,6 +5,7 @@ export { default as useBlocks } from './useBlocks';
 export { default as useColorScheme } from './useColorScheme';
 export { default as useFaucet } from './useFaucet';
 export { default as useGovernance } from './useGovernance';
+export { default as useIbc } from './useIbc';
 export { default as useInterval } from './useInterval';
 export { default as useMediaQuery } from './useMediaQuery';
 export { default as useOrderbook } from './useOrderbook';
