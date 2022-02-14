@@ -21,13 +21,18 @@ export const Links = {
     url: Path.GOV_URL,
     title: 'Gov',
   },
-  stats: {
-    url: Path.VERSIONS_URL,
-    title: 'Stats',
+  // Dropdown menu
+  network: {
+    url: '',
+    title: 'Network',
     subMenu: {
       versions: {
-        url: Path.VERSIONS_URL,
-        title: 'Versions',
+        url: Path.UPGRADES_URL,
+        title: 'Upgrades',
+      },
+      params: {
+        url: Path.PARAMS_URL,
+        title: 'Params',
       },
     },
   },

@@ -75,13 +75,53 @@ const PriceChart = ({ startDate, endDate, data }) => {
   // Build dynamic chart data
   const buildChartData = useCallback(
     (data, startDate, endDate) => {
-      const seriesData = data.map(({ price, trade_timestamp }) => [trade_timestamp, price]);
+      const seriesData = data.map(({ price, trade_timestamp, trade_id }) => [
+        trade_timestamp,
+        price,
+        trade_id,
+      ]);
       // Find min data values
       const dataMin = Math.min(...data.map(item => item.price));
 
       // Build dynamic chart items
       chartData.grid = { bottom: isLg ? 90 : 75 };
       chartData.tooltip.axisPointer = { lineStyle: { color: theme.CHART_LINE_MAIN, width: '1' } };
+      chartData.tooltip.position = isSmall && ['10%', '70%'];
+      // formatting the tooltip output into table
+      chartData.tooltip.formatter = params => {
+        const day = `Date: ${params[0].value[0].slice(0, 10)}`;
+        let returnString = '';
+        let calcAvg = 0;
+        params.forEach(param => {
+          const time = `${new Date(param.value[0]).toLocaleTimeString('en-US')}`;
+          const price = `$${param.value[1].toFixed(3)}`;
+          const tradeId = `${param.value[2]}`;
+          calcAvg += param.value[1];
+          returnString += `
+          <tr>
+            <td style="text-align:left; padding:0 15px; border-right:1px solid black;">${time}</td>
+            <td style="text-align:center; padding:0 20px;">${price}</td>
+            <td style="text-align:left; padding:0 15px; border-left:1px solid black;">${tradeId}</td>
+          </tr>`;
+        });
+        const Avg = `$${(calcAvg / params.length).toFixed(3)}`;
+        return `
+        <table>
+          <div style="display:flex; justify-content:space-between;">
+            <div style="text-align:left;"><b>${day}</b></div>
+            <div><b>Average Price: ${Avg}</b></div>
+          </div>
+          <tr>
+            <th style="border-bottom:1px solid black;">Time</th>
+            <th style="border-bottom:1px solid black;">Price (USD)</th>
+            <th style="border-bottom:1px solid black;">Trade ID</th>
+          </tr>
+          <tbody>
+            ${returnString}
+          <tbody>
+        </table>
+        <div style="text-align:center;"><b>Transactions: ${params.length}</b></div>`;
+      };
       chartData.xAxis.axisLabel.color = theme.FONT_PRIMARY;
       chartData.xAxis.axisLabel.rotate = isLg ? 45 : 0;
       chartData.yAxis.offset = isSmall ? -14 : 0;

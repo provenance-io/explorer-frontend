@@ -19,11 +19,12 @@ import {
   Nft,
   Nfts,
   NoMatch404,
+  Params,
   Proposal,
   Proposals,
-  Stats,
   Tx,
   Txs,
+  Upgrades,
   Validator,
   Validators,
 } from 'Pages';
@@ -64,8 +65,8 @@ const App = () => {
               <Route path="/nfts/:addr" component={Nfts} />
               <Route path="/proposal/:proposalId" component={Proposal} />
               <Route path="/proposals" component={Proposals} />
-              <Route path="/stats" component={Stats} />
-              <Route path="/stats/versions" />
+              <Route path="/network/upgrades" component={Upgrades} />
+              <Route path="/network/params" component={Params} />
               <Route path="/tx/:txHash" component={Tx} />
               <Route path="/txs" component={Txs} />
               <Route path="/validator/:validatorId" component={Validator} />
