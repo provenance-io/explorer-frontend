@@ -25,13 +25,18 @@ export const Links = {
     url: Path.IBC_URL,
     title: 'IBC',
   },
-  stats: {
-    url: Path.VERSIONS_URL,
-    title: 'Stats',
+  // Dropdown menu
+  network: {
+    url: '',
+    title: 'Network',
     subMenu: {
       versions: {
-        url: Path.VERSIONS_URL,
-        title: 'Versions',
+        url: Path.UPGRADES_URL,
+        title: 'Upgrades',
+      },
+      params: {
+        url: Path.PARAMS_URL,
+        title: 'Params',
       },
     },
   },

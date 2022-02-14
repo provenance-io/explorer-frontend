@@ -374,6 +374,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'delegators': // fallthrough
         case 'pricePerToken': // fallthrough
         case 'totalBalancePrice': // fallthrough
+        case 'param_name': // fallthrough
+        case 'value': // fallthrough
         case 'proposerPriority':
           finalObj[dataName] = { value: serverValue };
           break;

@@ -62,7 +62,7 @@ const DropdownUL = styled.ul`
   margin-left: -5px;
   padding: 20px 0 0 0;
   @media ${breakpoints.down('lg')} {
-    padding: 15px 0 0 0;
+    padding: 14px 0 0 0;
   }
   ${NavSectionLI}:hover & {
     max-height: 150px;

@@ -6,7 +6,8 @@ export const Path = {
   GOV_URL: '/proposals',
   HOME_URL: '/',
   STAKING_URL: '/validators',
-  STATS_URL: '/stats',
-  VERSIONS_URL: '/stats/versions',
   TRANSFER_URL: '/txs',
+  // Network dropdown menu items
+  PARAMS_URL: '/network/params',
+  UPGRADES_URL: '/network/upgrades',
 };
