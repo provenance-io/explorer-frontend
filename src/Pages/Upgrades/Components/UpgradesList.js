@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Table } from 'Components';
-import { useStats } from 'redux/hooks';
+import { useNetwork } from 'redux/hooks';
 
 const UpgradesListContainer = styled.div`
   width: 100%;
@@ -9,10 +9,10 @@ const UpgradesListContainer = styled.div`
 
 const Upgrades = () => {
   const {
-    upgradeInfo: tableData,
-    getUpgradeInfo: getTableData,
-    upgradeInfoLoading: tableLoading,
-  } = useStats();
+    networkUpgrades: tableData,
+    getNetworkUpgrades: getTableData,
+    networkUpgradesLoading: tableLoading,
+  } = useNetwork();
 
   // Initial Fetch of upgrades
   useEffect(() => {

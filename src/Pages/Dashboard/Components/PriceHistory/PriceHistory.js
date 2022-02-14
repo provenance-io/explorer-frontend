@@ -39,18 +39,20 @@ const PriceHistory = () => {
   // If so, use the most recent price as a current value until a new price is
   // available for the current date:
   let data = [...priceHistory];
+
   if (
     havePriceHistory &&
     // Check if the current date is the last available date in the
     // priceHistory array.
     defaultDayTo !== priceHistory[priceHistory.length - 1].trade_timestamp.slice(0, 10)
   ) {
+    const tempData = priceHistory[priceHistory.length - 1];
+    // Ensure we get the latest daily price
+    tempData.price = dailyPrice.last_price;
+    tempData.trade_timestamp = new Date(defaultDayTo).toISOString();
     // If current date is not the last available date in the priceHistory
     // array, then there is no pricing. Add it in temporarily to today.
-    const tempPrice = dailyPrice;
-    const tempDate = new Date().toISOString();
-    const tempValue = { price: tempPrice, trade_timestamp: tempDate };
-    data = [...data, tempValue];
+    data = [...data, tempData];
   }
 
   const [priceHistoryTo, setPriceHistoryTo] = useState(defaultDayTo);
