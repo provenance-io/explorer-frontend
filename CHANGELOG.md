@@ -20,6 +20,7 @@
 - Add validator icons #248
 - Add IBC UI #130
 - Migrate orderbook to gecko API #255
+- Add 24 hr changes to validator list view #263
 - Add chain params to network dropdown #144
 
 ## 2.5.0

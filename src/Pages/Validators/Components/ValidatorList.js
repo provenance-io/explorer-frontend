@@ -58,6 +58,7 @@ const ValidatorList = () => {
 
   const isJailed = tableFilterStatus === 'jailed';
   const isDelegateFilter = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
+  const isCandidate = tableFilterStatus === 'candidate';
 
   useEffect(() => {
     // pulling first 100 validators with status=all
@@ -91,7 +92,6 @@ const ValidatorList = () => {
   const myValTableHeaders = [
     isDelegateFilter && { displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
-    { displayName: 'Voting Power', dataName: 'votingPower' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Delegation Amount', dataName: 'amount' },
     isDelegateFilter && { displayName: 'Reward', dataName: 'reward' },
@@ -107,11 +107,9 @@ const ValidatorList = () => {
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Bonded Tokens', dataName: 'bondedTokens' },
-    !isJailed && { displayName: 'Voting Power', dataName: 'votingPower' },
-    !isJailed && { displayName: 'Uptime', dataName: 'uptime' },
-    { displayName: 'Self Bonded', dataName: 'selfBonded' },
+    !isJailed && !isCandidate && { displayName: 'Voting Power', dataName: 'votingPower' },
+    !isJailed && !isCandidate && { displayName: '24Hr Power Change', dataName: 'hr24Change' },
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
-    !isJailed && { displayName: 'Bond Height', dataName: 'bondHeight' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
   ] // Remove the nulls
     .filter(th => th);

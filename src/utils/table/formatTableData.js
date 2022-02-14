@@ -357,6 +357,10 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: capitalize(state) };
           break;
         }
+        // Replace null with --
+        case 'hr24Change':
+          finalObj[dataName] = { value: serverValue || '--' };
+          break;
         // Server value already correct
         case 'chainId': // fallthrough
         case 'channelStats': // fallthrough
