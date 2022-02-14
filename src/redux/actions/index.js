@@ -4,6 +4,7 @@ import * as assetsActions from './assetsActions';
 import * as blocksActions from './blocksActions';
 import * as faucetActions from './faucetActions';
 import * as governanceActions from './governanceActions';
+import * as ibcActions from './ibcActions';
 import * as txsActions from './txsActions';
 import * as validatorsActions from './validatorsActions';
 import * as xhrActions from './xhrActions';
@@ -18,6 +19,7 @@ export {
   blocksActions,
   faucetActions,
   governanceActions,
+  ibcActions,
   txsActions,
   validatorsActions,
   xhrActions,

@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { formatDenom, isEmpty } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountRewards = () => {
-  const [showContent, setShowContent] = useState(false);
-  const [showButton, setShowButton] = useState(true);
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const { accountRewards, accountRewardsLoading, getAccountRewards } = useAccounts();
@@ -53,31 +60,23 @@ const AccountRewards = () => {
         })}`
       : '0 hash';
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show main button
-    setShowContent(!showContent); // hide content
-  };
-
   return (
-    !accountRewardsLoading && (
-      <ButtonTables
-        buttonTitle={`Rewards (${totalRewards})`}
-        handleButtonClick={handleButtonClick}
-        showButton={showButton}
-        showContent={showContent}
-        tableProps={{
-          changePage: setTableCurrentPage,
-          currentPage: tableCurrentPage,
-          isLoading: accountRewardsLoading || allValidatorsLoading,
-          tableData: tableData.filter(element => element.totalBalancePrice),
-          tableHeaders,
-          title: `Rewards (${totalRewards})`,
-          totalPages: 1,
-          addButton: 'Hide',
-          onButtonClick: handleButtonClick,
-        }}
-      />
-    )
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Rewards (${totalRewards})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table
+          changePage={setTableCurrentPage}
+          currentPage={tableCurrentPage}
+          isLoading={accountRewardsLoading || allValidatorsLoading}
+          tableData={tableData.filter(element => element.totalBalancePrice)}
+          tableHeaders={tableHeaders}
+          totalPages={1}
+        />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

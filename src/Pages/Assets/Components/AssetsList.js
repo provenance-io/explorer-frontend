@@ -27,8 +27,8 @@ const AssetsList = () => {
 
   const tableHeaders = [
     { displayName: 'Name', dataName: 'marker' },
-    { displayName: 'Price', dataName: 'pricePerToken' },
-    { displayName: 'Supply', dataName: 'supply' },
+    { displayName: 'Total Supply', dataName: 'supply' },
+    { displayName: 'Price Per Unit', dataName: 'pricePerToken' },
     { displayName: 'Total Value', dataName: 'totalBalancePrice' },
     { displayName: 'Holding Account', dataName: 'holdingAccount' },
     { displayName: 'Marker Type', dataName: 'markerType' },

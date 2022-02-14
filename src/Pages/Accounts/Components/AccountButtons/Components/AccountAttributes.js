@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { useAccounts } from 'redux/hooks';
-import ButtonTables from './ButtonTables';
+import { Accordion, Table } from 'Components';
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
 
 const AccountAttributes = () => {
-  const [showContent, setShowContent] = useState(false);
-  const [showButton, setShowButton] = useState(true);
-  const { accountInfo, accountInfoLoading, getAccountInfo } = useAccounts();
+  const { accountInfo, accountInfoLoading: tableLoading, getAccountInfo } = useAccounts();
 
   const { addressId } = useParams();
 
@@ -22,26 +29,16 @@ const AccountAttributes = () => {
     { displayName: 'Data', dataName: 'data' },
   ];
 
-  const handleButtonClick = () => {
-    setShowButton(!showButton); // Show/hide main button
-    setShowContent(!showContent); // Show/hide content
-  };
-
   return (
-    <ButtonTables
-      buttonTitle={`Attributes (${tableData ? tableData.length : 0})`}
-      handleButtonClick={handleButtonClick}
-      showButton={showButton}
-      showContent={showContent}
-      tableProps={{
-        isLoading: accountInfoLoading,
-        tableData,
-        tableHeaders,
-        title: `Attributes (${tableData ? tableData.length : 0})`,
-        addButton: 'Hide',
-        onButtonClick: handleButtonClick,
-      }}
-    />
+    <ButtonWrapper>
+      <Accordion
+        showChevron
+        title={`Attributes (${tableData ? tableData.length : 0})`}
+        titleFont={`font-weight: bold; font-size: 1.4rem`}
+      >
+        <Table isLoading={tableLoading} tableData={tableData} tableHeaders={tableHeaders} />
+      </Accordion>
+    </ButtonWrapper>
   );
 };
 

@@ -28,7 +28,7 @@ const TableMain = styled.table`
   border-spacing: 0;
 `;
 const TableHead = styled.thead`
-  padding: 0px 0;
+  padding: 0;
   border-bottom: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
   text-align: left;
 `;
@@ -46,7 +46,7 @@ const TableHeadData = styled.th`
   padding: 10px 15px;
 `;
 const TableData = styled.td`
-  padding: 10px 15px;
+  padding: ${({ tablePadding }) => tablePadding || '10px 15px'};
   text-align: ${({ center }) => center};
   display: ${({ copy }) => (copy ? 'flex' : '')};
   align-items: ${({ copy }) => (copy ? 'center' : '')};
@@ -71,6 +71,10 @@ const List = styled.li`
   font-size: 1.2rem;
   margin-left: 30px;
 `;
+const FlexContainer = styled.div`
+  display: ${({ addImage }) => addImage && 'flex'};
+  align-items: ${({ addImage }) => addImage && 'center'};
+`;
 
 const Table = ({
   changePage,
@@ -88,8 +92,6 @@ const Table = ({
   tableHeaders,
   totalPages,
   title,
-  addButton,
-  onButtonClick,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const theme = useTheme();
@@ -129,116 +131,123 @@ const Table = ({
   );
 
   const buildTableHead = () =>
-    finalTableHeaders.map(({ displayName, alignHeaderText = '' }) => (
+    finalTableHeaders.map(({ displayName, alignHeaderText = '', headerIcon, blockImage }) => (
       <TableHeadData key={displayName} alignHeaderText={alignHeaderText}>
-        {displayName}
+        <FlexContainer addImage={!isEmpty(blockImage) || !isEmpty(headerIcon)}>
+          {!isEmpty(headerIcon) && <Sprite {...headerIcon} />}
+          {!isEmpty(blockImage) && <OgBlockImage {...blockImage} />}
+          {displayName}
+        </FlexContainer>
       </TableHeadData>
     ));
 
   const buildSingleRow = (rowData, index) =>
-    finalTableHeaders.map(({ dataName, displayName }) => {
-      // If it's just the index, we don't need to get any real value
-      if (showIndex && dataName === 'index') {
-        return (
-          <TableData key={displayName}>{index + 1 + (currentPage - 1) * resultsPerPage}</TableData>
-        );
-      }
-      // If we want the age take the string key and render the timestamp
-      if (showAge && displayName === 'Age') {
-        // Pull the raw value since time will have a string of '+UTC' attached making it an invalid date
-        const time = getUTCTime(rowData[dataName].raw);
+    finalTableHeaders.map(
+      ({ dataName, displayName, headerIcon = {}, blockImage: headerBlockImage = {} }) => {
+        // If it's just the index, we don't need to get any real value
+        if (showIndex && dataName === 'index') {
+          return (
+            <TableData key={displayName}>
+              {index + 1 + (currentPage - 1) * resultsPerPage}
+            </TableData>
+          );
+        }
+        // If we want the age take the string key and render the timestamp
+        if (showAge && displayName === 'Age') {
+          // Pull the raw value since time will have a string of '+UTC' attached making it an invalid date
+          const time = getUTCTime(rowData[dataName].raw);
+
+          return (
+            <TableData key={displayName}>
+              <TimeTicker timestamp={time} text="" />
+            </TableData>
+          );
+        }
+
+        if (dataName === 'manageStaking' || dataName === 'delegate') {
+          return (
+            <TableData key={displayName}>
+              <ManageStakingBtn
+                delegate={dataName === 'delegate'}
+                validator={rawTableData[index]}
+              />
+            </TableData>
+          );
+        }
+
+        if (!rowData[dataName]) {
+          console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
+            rowData,
+            rawTableData: rawTableData[index],
+            dataName,
+          });
+        }
+
+        const {
+          link = false,
+          value = '--',
+          hover = false,
+          icon,
+          skipped = false,
+          color = theme.FONT_LINK,
+          size = '1.4rem',
+          copy = false,
+          blockImage = {},
+          raw = '',
+        } = rowData[dataName] || {};
+
+        // Note: if the value is an array, split all values out
+        // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
+        const finalValue = Array.isArray(value) ? value.map(singleValue => singleValue) : value;
+        const valueMissing = value === '--' || value === '' || value === '--';
+        // If only displaying an icon, center it
+        const center = icon && value === '' ? 'center' : 'left';
 
         return (
-          <TableData key={displayName}>
-            <TimeTicker timestamp={time} text="" />
+          <TableData
+            title={hover || value}
+            key={displayName}
+            skipped={skipped}
+            copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
+            center={center}
+            // Adjusts padding if an icon is added in to the table
+            tablePadding={(!isEmpty(headerIcon) || !isEmpty(headerBlockImage)) && '10px 50px'}
+          >
+            {blockImage && displayName === 'Moniker' && (
+              <OgBlockImage
+                icon={blockImage.icon}
+                moniker={blockImage.moniker}
+                address={blockImage.address}
+                sizeText={17}
+                marginRight="20px"
+                colorBackground={theme.IRIS_PRIMARY}
+                colorFont={theme.FONT_WHITE}
+                fontWeight={theme.FONT_WEIGHT_THIN}
+              />
+            )}
+            {link && !valueMissing && link !== pathname ? (
+              <Link to={link}>
+                {finalValue}
+                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
+              </Link>
+            ) : (
+              <>
+                {value}
+                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
+              </>
+            )}
           </TableData>
         );
       }
-
-      if (dataName === 'manageStaking' || dataName === 'delegate') {
-        return (
-          <TableData key={displayName}>
-            <ManageStakingBtn delegate={dataName === 'delegate'} validator={rawTableData[index]} />
-          </TableData>
-        );
-      }
-
-      if (!rowData[dataName]) {
-        console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
-          rowData,
-          rawTableData: rawTableData[index],
-          dataName,
-        });
-      }
-
-      const {
-        link = false,
-        value = '--',
-        hover = false,
-        icon,
-        skipped = false,
-        color = theme.FONT_LINK,
-        size = '1.4rem',
-        copy = false,
-        blockImage = {},
-        raw = '',
-      } = rowData[dataName] || {};
-
-      // Note: if the value is an array, split all values out
-      // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
-      const finalValue = Array.isArray(value) ? value.map(singleValue => singleValue) : value;
-      const valueMissing = value === '--' || value === '' || value === '--';
-      // If only displaying an icon, center it
-      const center = icon && value === '' ? 'center' : 'left';
-
-      return (
-        <TableData
-          title={hover || value}
-          key={displayName}
-          skipped={skipped}
-          copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
-          center={center}
-        >
-          {blockImage && displayName === 'Moniker' && (
-            <OgBlockImage
-              icon={blockImage.icon}
-              moniker={blockImage.moniker}
-              address={blockImage.address}
-              sizeText={17}
-              marginRight="20px"
-              colorBackground={theme.IRIS_PRIMARY}
-              colorFont={theme.FONT_WHITE}
-              fontWeight={theme.FONT_WEIGHT_THIN}
-            />
-          )}
-          {link && !valueMissing && link !== pathname ? (
-            <Link to={link}>
-              {finalValue}
-              {icon && <Sprite icon={icon} size={size} color={color} />}
-              {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
-            </Link>
-          ) : (
-            <>
-              {value}
-              {icon && <Sprite icon={icon} size={size} color={color} />}
-              {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
-            </>
-          )}
-        </TableData>
-      );
-    });
+    );
 
   const buildAllRows = () =>
     tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
-    <Content
-      className={className}
-      size={size}
-      title={title}
-      headerButton={addButton}
-      headerButtonClick={onButtonClick}
-    >
+    <Content className={className} size={size} title={title}>
       {notes && (
         <Notes>
           {`* ${capitalize(notes)}:`}
@@ -292,8 +301,6 @@ Table.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   totalPages: PropTypes.number,
   title: PropTypes.string,
-  addButton: PropTypes.string,
-  onButtonClick: PropTypes.func,
 };
 Table.defaultProps = {
   changePage: null,
@@ -310,8 +317,6 @@ Table.defaultProps = {
   tableData: [],
   title: '',
   totalPages: 0,
-  addButton: null,
-  onButtonClick: null,
 };
 
 export default Table;
