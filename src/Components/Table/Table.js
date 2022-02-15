@@ -53,6 +53,7 @@ const TableData = styled.td`
   border: none;
   text-decoration: ${({ skipped }) => skipped && 'line-through'};
   font-style: ${({ skipped }) => skipped && 'italic'};
+  color: ${({ color }) => color && color};
 `;
 const Pagination = styled(BasePagination)`
   display: flex;
@@ -189,7 +190,8 @@ const Table = ({
           hover = false,
           icon,
           skipped = false,
-          color = theme.FONT_LINK,
+          iconColor = theme.FONT_LINK,
+          color = '',
           size = '1.4rem',
           copy = false,
           blockImage = {},
@@ -210,6 +212,7 @@ const Table = ({
             skipped={skipped}
             copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
             center={center}
+            color={color}
             // Adjusts padding if an icon is added in to the table
             tablePadding={(!isEmpty(headerIcon) || !isEmpty(headerBlockImage)) && '10px 50px'}
           >
@@ -228,13 +231,13 @@ const Table = ({
             {link && !valueMissing && link !== pathname ? (
               <Link to={link}>
                 {finalValue}
-                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </Link>
             ) : (
               <>
                 {value}
-                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </>
             )}

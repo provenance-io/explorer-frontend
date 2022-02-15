@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Table, Content, Section, Accordion } from 'Components';
 import { useNetwork } from 'redux/hooks';
 import { isEmpty, capitalize } from 'utils';
@@ -26,16 +26,9 @@ const getTable = (data, type, tableLoading) => {
 };
 
 const ProvParamsList = () => {
-  const {
-    provParams: provTableData,
-    getNetworkParams,
-    networkParamsLoading: tableLoading,
-  } = useNetwork();
+  const { provParams: provTableData, networkParamsLoading: tableLoading } = useNetwork();
 
-  // Initial Fetch of params
-  useEffect(() => {
-    getNetworkParams();
-  }, [getNetworkParams]);
+  // Params fetch is done by CosmosParamsList
 
   const getProvTables = data => {
     const table = Object.keys(data).map(item => getTable(data, item, [], tableLoading));
