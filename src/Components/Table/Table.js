@@ -190,7 +190,8 @@ const Table = ({
           hover = false,
           icon,
           skipped = false,
-          color = theme.FONT_LINK,
+          iconColor = theme.FONT_LINK,
+          color = '',
           size = '1.4rem',
           copy = false,
           blockImage = {},
@@ -230,13 +231,13 @@ const Table = ({
             {link && !valueMissing && link !== pathname ? (
               <Link to={link}>
                 {finalValue}
-                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </Link>
             ) : (
               <>
                 {value}
-                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </>
             )}
