@@ -7,6 +7,7 @@
 - Fix account button rendering issues #249
 - Fix listing truncations and new unbonding objects #251
 - Rerender echarts on page resize #241
+- Minor fixes #273
 
 ### Features
 

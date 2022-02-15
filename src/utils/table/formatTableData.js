@@ -359,7 +359,10 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Replace null with --
         case 'hr24Change':
-          finalObj[dataName] = { value: serverValue || '--' };
+          finalObj[dataName] = {
+            value: serverValue || '--',
+            color: serverValue > 0 ? 'rgb(78, 210, 44)' : serverValue < 0 ? 'red' : '',
+          };
           break;
         // Server value already correct
         case 'chainId': // fallthrough

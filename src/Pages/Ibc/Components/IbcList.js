@@ -179,7 +179,7 @@ const IbcList = () => {
             <Stats
               color={chain.channelStats[0] === 0 ? theme.NEGATIVE_CHANGE : theme.POSITIVE_CHANGE}
             >
-              {chain.channelStats}
+              {isLarge && chain.channelStats}
             </Stats>
             <br />
             {isLarge && `Last Tx: ${getUTCTime(chain.chainLastTx)}+UTC`}

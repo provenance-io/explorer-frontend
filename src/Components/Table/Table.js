@@ -53,6 +53,7 @@ const TableData = styled.td`
   border: none;
   text-decoration: ${({ skipped }) => skipped && 'line-through'};
   font-style: ${({ skipped }) => skipped && 'italic'};
+  color: ${({ color }) => color && color};
 `;
 const Pagination = styled(BasePagination)`
   display: flex;
@@ -210,6 +211,7 @@ const Table = ({
             skipped={skipped}
             copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
             center={center}
+            color={color}
             // Adjusts padding if an icon is added in to the table
             tablePadding={(!isEmpty(headerIcon) || !isEmpty(headerBlockImage)) && '10px 50px'}
           >
