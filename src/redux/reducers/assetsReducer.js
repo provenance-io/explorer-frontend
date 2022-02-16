@@ -237,7 +237,9 @@ const reducer = handleActions(
         ...state,
         assetsDist: payload.map(a => {
           a.amountHash = formatDenom(a.amount.amount, a.amount.denom, { decimal: 0 });
-          a.percentTotal = (parseFloat(a.percent) * 100).toFixed(5) + '%';
+          const percentTotal = parseFloat(a.percent) * 100;
+          a.percentTotal =
+            (percentTotal < 0.01 ? percentTotal.toFixed(5) : percentTotal.toFixed(2)) + '%';
           // Replace last entry - with +
           if (a.range === payload.slice(-1)[0].range) a.range = a.range.replace('-', '+');
           return a;
