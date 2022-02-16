@@ -54,13 +54,7 @@ const CosmosParamsList = () => {
             const denom = item[subItem][0].denom;
             tempObj.value = formatDenom(amount, denom, { decimal: 2 });
           } else if (subItem === 'allowed_clients') {
-            tempObj.value = item[subItem].map(data => {
-              if (data === item[subItem][item[subItem].length - 1]) {
-                return data;
-              } else {
-                return data + ', ';
-              }
-            });
+            tempObj.value = item[subItem].join(', ');
           }
         }
         tempObj.param_name = subItem;
