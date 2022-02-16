@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Content, Section, Accordion } from 'Components';
 import { useNetwork } from 'redux/hooks';
-import { isEmpty, capitalize } from 'utils';
+import { isEmpty, capitalize, formatDenom } from 'utils';
 
 // Function to generate a simple table
 const getTable = (data, type, tableLoading) => {
@@ -12,10 +12,17 @@ const getTable = (data, type, tableLoading) => {
   ];
   const tableData = Object.keys(data[type]).map(item => {
     const tempObj = {};
-    tempObj.value = data[type][item].toString();
+    if (item === 'max_total_supply') {
+      tempObj.value = formatDenom(data[type][item], '', { decimal: 0 });
+    } else if (item === 'unrestricted_denom_regex') {
+      tempObj.value = JSON.stringify(data[type][item]);
+    } else {
+      tempObj.value = data[type][item].toString();
+    }
     tempObj.param_name = item;
     return tempObj;
   });
+
   return (
     <Section key={title}>
       <Accordion title={title} showChevron={true}>

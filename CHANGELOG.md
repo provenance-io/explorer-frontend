@@ -8,6 +8,7 @@
 - Fix listing truncations and new unbonding objects #251
 - Rerender echarts on page resize #241
 - Minor fixes #273
+- Fix params page after object change #275
 
 ### Features
 

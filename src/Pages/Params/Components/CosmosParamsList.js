@@ -46,15 +46,15 @@ const CosmosParamsList = () => {
     data.forEach(item => {
       Object.keys(item).forEach(subItem => {
         const tempObj = {};
-        if (subItem !== 'minDeposit' && subItem !== 'allowedClients') {
+        if (subItem !== 'min_deposit' && subItem !== 'allowed_clients') {
           tempObj.value = item[subItem].toString();
         } else {
-          if (subItem === 'minDeposit') {
+          if (subItem === 'min_deposit') {
             const amount = item[subItem][0].amount;
             const denom = item[subItem][0].denom;
             tempObj.value = formatDenom(amount, denom, { decimal: 2 });
-          } else if (subItem === 'allowedClients') {
-            tempObj.value = item[subItem].toString();
+          } else if (subItem === 'allowed_clients') {
+            tempObj.value = item[subItem].join(', ');
           }
         }
         tempObj.param_name = subItem;
