@@ -20,7 +20,7 @@ const Upgrades = () => {
   }, [getTableData]);
 
   // Only display skipped notes if something is skipped
-  const skipped = tableData.find(v => v.skipped) ? 'skipped' : '';
+  const skipped = tableData.find(v => v.skipped && !v.scheduled) ? 'skipped' : '';
 
   // Table header values in order
   const tableHeaders = [

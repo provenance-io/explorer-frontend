@@ -312,7 +312,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Version update events
         case 'events': {
           finalObj[dataName] = {
-            value: dataObj.skipped ? '* Skipped' : dataObj.scheduled ? 'Scheduled' : '',
+            value: dataObj.scheduled ? 'Scheduled' : dataObj.skipped ? '* Skipped' : '',
             hover: serverValue,
             raw: serverValue,
           };
@@ -335,11 +335,20 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Set text styles
         case 'upgradeHeight': // fallthrough
-        case 'upgradeName': // fallthrough
         case 'currentVersion':
           finalObj[dataName] = {
             value: serverValue,
             skipped: dataObj.skipped,
+            scheduled: dataObj.scheduled,
+          };
+          break;
+        // Add upgrade name url
+        case 'upgradeName':
+          finalObj[dataName] = {
+            value: serverValue,
+            externalLink: dataObj.releaseUrl,
+            skipped: dataObj.skipped,
+            scheduled: dataObj.scheduled,
           };
           break;
         // Attribute data
