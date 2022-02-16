@@ -23,6 +23,7 @@ import {
   Params,
   Proposal,
   Proposals,
+  TokenStats,
   Tx,
   Txs,
   Upgrades,
@@ -67,6 +68,7 @@ const App = () => {
               <Route path="/nfts/:addr" component={Nfts} />
               <Route path="/proposal/:proposalId" component={Proposal} />
               <Route path="/proposals" component={Proposals} />
+              <Route path="/network/token-stats" component={TokenStats} />
               <Route path="/network/upgrades" component={Upgrades} />
               <Route path="/network/params" component={Params} />
               <Route path="/tx/:txHash" component={Tx} />

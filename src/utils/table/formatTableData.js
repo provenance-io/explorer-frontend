@@ -365,6 +365,9 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         // Server value already correct
+        case 'percentTotal': // fallthrough
+        case 'amountHash': // fallthrough
+        case 'range': // fallthrough
         case 'chainId': // fallthrough
         case 'channelStats': // fallthrough
         case 'srcChannel': // fallthrough
