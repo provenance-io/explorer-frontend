@@ -13,6 +13,7 @@ export { default as NoMatch404 } from './NoMatch404';
 export { default as Params } from './Params';
 export { default as Proposal } from './Proposal';
 export { default as Proposals } from './Proposals';
+export { default as TokenStats } from './TokenStats';
 export { default as Tx } from './Tx';
 export { default as Txs } from './Txs';
 export { default as Upgrades } from './Upgrades';

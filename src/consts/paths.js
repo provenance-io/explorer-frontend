@@ -9,5 +9,6 @@ export const Path = {
   TRANSFER_URL: '/txs',
   // Network dropdown menu items
   PARAMS_URL: '/network/params',
+  TOKEN_STATS_URL: '/network/token-stats',
   UPGRADES_URL: '/network/upgrades',
 };

@@ -56,6 +56,7 @@ const DropdownUL = styled.ul`
   position: absolute;
   max-height: 0;
   overflow: hidden;
+  white-space: nowrap;
   transition-delay: 300ms;
   flex-direction: column;
   list-style: none;

@@ -38,6 +38,10 @@ export const Links = {
         url: Path.PARAMS_URL,
         title: 'Params',
       },
+      token_stats: {
+        url: Path.TOKEN_STATS_URL,
+        title: 'Token Statistics',
+      },
     },
   },
 };

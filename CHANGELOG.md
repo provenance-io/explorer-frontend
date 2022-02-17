@@ -24,6 +24,7 @@
 - Migrate orderbook to gecko API #255
 - Add 24 hr changes to validator list view #263
 - Add chain params to network dropdown #144
+- Add token statistics to network dropdown #258
 
 ## 2.5.0
 

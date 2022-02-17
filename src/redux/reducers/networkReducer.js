@@ -1,6 +1,10 @@
 import { handleActions } from 'redux-actions';
 import { Skips } from '../../consts';
-import { GET_NETWORK_UPGRADES, GET_NETWORK_PARAMS } from '../actions/networkActions';
+import {
+  GET_NETWORK_UPGRADES,
+  GET_NETWORK_PARAMS,
+  GET_NETWORK_TOKEN_STATS,
+} from '../actions/networkActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -10,6 +14,9 @@ export const initialState = {
   // Params
   networkParams: [],
   networkParamsLoading: false,
+  // Token Stats
+  networkTokenStats: {},
+  networkTokenStatsLoading: false,
 };
 
 const reducer = handleActions(
@@ -65,6 +72,28 @@ const reducer = handleActions(
       return {
         ...state,
         networkParamsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_NETWORK_TOKEN_STATS
+    -------------------*/
+    [`${GET_NETWORK_TOKEN_STATS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        networkTokenStatsLoading: true,
+      };
+    },
+    [`${GET_NETWORK_TOKEN_STATS}_${SUCCESS}`](state, { payload: networkTokenStats }) {
+      return {
+        ...state,
+        networkTokenStats,
+        networkTokenStatsLoading: false,
+      };
+    },
+    [`${GET_NETWORK_TOKEN_STATS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        networkTokenStatsLoading: false,
       };
     },
   },
