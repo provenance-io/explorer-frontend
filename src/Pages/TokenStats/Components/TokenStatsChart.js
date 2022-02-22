@@ -122,12 +122,15 @@ const TokenStatsChart = () => {
       let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
       if (!echart) echart = echarts.init(chartElementRef.current);
-      window.allCharts.push(echart);
       setChart(echart);
       // Update the chart with the data
       buildChartData(getDataArray(networkTokenStats), totalHash);
       chart && chart.setOption(chartData);
+      window.addEventListener('resize', () => {chart && chart.resize()});
     }
+    return (
+      window.removeEventListener('resize', () => chart && chart.resize())
+    )
   }, [setChart, chart, networkTokenStats, buildChartData]);
 
   const totalHash =

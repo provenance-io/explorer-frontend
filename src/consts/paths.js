@@ -8,6 +8,7 @@ export const Path = {
   STAKING_URL: '/validators',
   TRANSFER_URL: '/txs',
   // Network dropdown menu items
+  GAS_URL: '/network/gas',
   PARAMS_URL: '/network/params',
   TOKEN_STATS_URL: '/network/token-stats',
   UPGRADES_URL: '/network/upgrades',

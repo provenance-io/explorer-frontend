@@ -1,9 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { ICON_NAMES } from 'consts';
 
-const Svg = styled.svg`
+interface SvgProps {
+  alt?: string;
+  animate?: boolean;
+  flipX?: boolean;
+  flipY?: boolean;
+  secondaryColor?: string;
+  size?: string;
+  spin?: string | number;
+};
+
+interface SpriteTypes extends SvgProps {
+  color?: string;
+  height?: string;
+  icon: string;
+  width?: string;
+}
+
+const Svg = styled.svg<SvgProps>`
   --secondaryColor: ${({ secondaryColor }) => secondaryColor};
   width: ${({ size, width }) => width || size};
   height: ${({ size, height }) => height || size};
@@ -12,7 +28,8 @@ const Svg = styled.svg`
   transition: ${({ animate }) => animate && 'transform 150ms linear'};
 `;
 
-const Sprite = ({ alt, animate, color, icon, secondaryColor, ...svgIcons }) => {
+const Sprite = ({ alt, animate = false, color = 'BLUE_PRIMARY', icon, secondaryColor = 'WHITE', ...svgIcons }: SpriteTypes) => {
+  // TODO: Fix this using style.d.ts and DefaultTheme
   const theme = useTheme();
 
   // Use the variable color name if it exists, else the actual color passed in, or else default color
@@ -32,33 +49,6 @@ const Sprite = ({ alt, animate, color, icon, secondaryColor, ...svgIcons }) => {
       <use href={`#${icon}`} />
     </Svg>
   );
-};
-
-Sprite.propTypes = {
-  alt: PropTypes.string,
-  animate: PropTypes.bool,
-  color: PropTypes.string,
-  flipX: PropTypes.bool,
-  flipY: PropTypes.bool,
-  height: PropTypes.string,
-  icon: PropTypes.string.isRequired,
-  secondaryColor: PropTypes.string,
-  size: PropTypes.string,
-  spin: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  width: PropTypes.string,
-};
-
-Sprite.defaultProps = {
-  alt: null,
-  animate: false,
-  color: '',
-  flipX: false,
-  flipY: false,
-  height: null,
-  secondaryColor: 'WHITE',
-  size: '100%',
-  spin: 0,
-  width: null,
 };
 
 // Exposes Icon constant so it doesn't need to be imported separately when consuming component
