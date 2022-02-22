@@ -10,7 +10,7 @@ interface SvgProps {
   secondaryColor?: string;
   size?: string;
   spin?: string | number;
-};
+}
 
 interface SpriteTypes extends SvgProps {
   color?: string;
@@ -19,7 +19,10 @@ interface SpriteTypes extends SvgProps {
   width?: string;
 }
 
-const Svg = styled.svg<SvgProps>`
+const Svg =
+  styled.svg <
+  SvgProps >
+  `
   --secondaryColor: ${({ secondaryColor }) => secondaryColor};
   width: ${({ size, width }) => width || size};
   height: ${({ size, height }) => height || size};
@@ -28,7 +31,16 @@ const Svg = styled.svg<SvgProps>`
   transition: ${({ animate }) => animate && 'transform 150ms linear'};
 `;
 
-const Sprite = ({ alt, animate = false, color = 'BLUE_PRIMARY', icon, secondaryColor = 'WHITE', ...svgIcons }: SpriteTypes) => {
+const Sprite = ({
+  alt,
+  animate = false,
+  color = 'BLUE_PRIMARY',
+  icon,
+  secondaryColor = 'WHITE',
+  size = '100%',
+  spin = 0,
+  ...svgIcons
+}: SpriteTypes) => {
   // TODO: Fix this using style.d.ts and DefaultTheme
   const theme = useTheme();
 
@@ -44,6 +56,8 @@ const Sprite = ({ alt, animate = false, color = 'BLUE_PRIMARY', icon, secondaryC
       alt={alt || `${icon} icon`}
       animate={animate}
       color={colorValue}
+      size={size}
+      spin={spin}
       secondaryColor={secondaryColorValue}
     >
       <use href={`#${icon}`} />
