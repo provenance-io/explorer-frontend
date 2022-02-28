@@ -10,6 +10,7 @@ const AssetsList = () => {
     assetsLoading: tableLoading,
     assetsPages: tablePages,
     assetMetadata,
+    getAssetMetadata,
     getAssetsList: getTableData,
   } = useAssets();
 
@@ -23,7 +24,8 @@ const AssetsList = () => {
       page: tableCurrentPage,
       count: tableCount,
     });
-  }, [getTableData, tableCount, tableCurrentPage]);
+    getAssetMetadata();
+  }, [getTableData, tableCount, tableCurrentPage, getAssetMetadata]);
 
   const tableHeaders = [
     { displayName: 'Name', dataName: 'marker' },

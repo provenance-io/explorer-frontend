@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useAssets } from 'redux/hooks';
 import { AssetHolders, AssetInformation, AssetTxsList, ManagingAccounts } from './Components';
 
 const Assets = () => {
-  const { assetMetadata } = useAssets();
+  const { assetMetadata, getAssetMetadata } = useAssets();
   const { assetId } = useParams();
 
-  const assetName = assetMetadata.find((md) => md.base === assetId)?.display || assetId;
+  useEffect(() => {
+    getAssetMetadata();
+  }, [getAssetMetadata]);
+
+  const assetName = assetMetadata.find(md => md.base === assetId)?.display || assetId;
 
   return (
     <Wrapper>

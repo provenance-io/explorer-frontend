@@ -5,6 +5,7 @@
 ### Bug fixes
 
 ### Features
+- Add calls to getAssetMetadata where explicitly needed #283
 
 ## 2.6.0
 

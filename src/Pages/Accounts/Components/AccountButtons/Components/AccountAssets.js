@@ -23,13 +23,7 @@ const AccountAssets = () => {
     accountAssetsLoading: tableLoading,
   } = useAccounts();
 
-  const { assetMetadata } = useAssets();
-
-  // Build table data
-  const tableData = accountAssets.map(a => ({
-    ...a,
-    displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
-  }));
+  const { assetMetadata, getAssetMetadata } = useAssets();
 
   useEffect(() => {
     getTableData({
@@ -37,7 +31,14 @@ const AccountAssets = () => {
       page: tableCurrentPage,
       count: 10,
     });
-  }, [getTableData, tableCurrentPage, addressId]);
+    getAssetMetadata();
+  }, [getTableData, tableCurrentPage, addressId, getAssetMetadata]);
+
+  // Build table data
+  const tableData = accountAssets.map(a => ({
+    ...a,
+    displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
+  }));
 
   // Table header values in order
   const tableHeaders = [
