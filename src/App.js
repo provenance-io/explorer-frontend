@@ -34,6 +34,7 @@ import {
 const App = () => {
   const { walletUrl } = useApp();
   const { activeTheme } = useColorScheme();
+
   const { assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed } =
     useAssets();
 

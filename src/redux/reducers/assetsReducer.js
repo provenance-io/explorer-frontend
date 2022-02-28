@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { formatDenom } from 'utils';
+import { formatDenom, setCookie } from 'utils';
 import {
   GET_ASSET_INFO,
   GET_ASSET_ADMIN_TRANSACTIONS,
@@ -208,6 +208,9 @@ const reducer = handleActions(
       };
     },
     [`${GET_ASSET_METADATA}_${SUCCESS}`](state, { payload: assetMetadata }) {
+      // Used by currencyFormat
+      setCookie('assetMetadata', JSON.stringify(assetMetadata), 5);
+
       return {
         ...state,
         assetMetadata,
