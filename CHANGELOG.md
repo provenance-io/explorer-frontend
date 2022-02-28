@@ -5,6 +5,7 @@
 ### Bug fixes
 
 ### Features
+- Remove asset metadata from cookies #283
 
 ## 2.6.0
 
