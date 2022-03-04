@@ -1,9 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import Sprite from 'Components/Sprite';
 
-const StyledButton = styled.button`
+interface ButtonProps {
+  className?: string;
+  color?: string;
+  icon?: string;
+  iconSize?: string;
+  iconColor?: string;
+  iconOptions?: object; // see Components/Sprite for available options
+  onClick?: () => void;
+  children: React.ReactNode;
+  disabled?: boolean;
+}
+
+const StyledButton = styled.button<ButtonProps>`
   text-align: left;
   display: flex;
   align-items: center;
@@ -41,15 +52,15 @@ const ButtonIcon = styled.div`
 
 const Button = ({
   className,
-  color,
+  color = 'primary',
   icon,
-  iconSize,
-  iconColor,
+  iconSize = '2.2rem',
+  iconColor = 'ICON_WHITE',
   iconOptions,
-  onClick,
+  onClick = () => {},
   children,
-  disabled,
-}) => (
+  disabled = false,
+}: ButtonProps) => (
   <StyledButton
     className={className}
     onClick={onClick}
@@ -70,26 +81,5 @@ const Button = ({
   </StyledButton>
 );
 
-Button.propTypes = {
-  className: PropTypes.string,
-  color: PropTypes.string,
-  icon: PropTypes.string,
-  iconSize: PropTypes.string,
-  iconColor: PropTypes.string,
-  iconOptions: PropTypes.object, // see Components/Sprite for available options
-  onClick: PropTypes.func,
-  children: PropTypes.node.isRequired,
-  disabled: PropTypes.bool,
-};
-Button.defaultProps = {
-  className: '',
-  color: 'primary',
-  icon: '',
-  iconSize: '2.2rem',
-  iconColor: 'ICON_WHITE',
-  iconOptions: null,
-  onClick: () => {},
-  disabled: false,
-};
 
 export default Button;

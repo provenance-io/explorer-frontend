@@ -5,7 +5,6 @@ import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
 import { useMediaQuery, useTxs } from 'redux/hooks';
 import { breakpoints } from 'consts';
-import { useParams } from 'react-router-dom';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -89,8 +88,7 @@ const TxFees = () => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
-  const { txHash } = useParams();
-  const { getTxInfo, txInfo, txInfoLoading } = useTxs();
+  const { txInfo, txInfoLoading } = useTxs();
   const haveTxInfo = !isEmpty(txInfo);
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
@@ -128,10 +126,7 @@ const TxFees = () => {
     [theme, chartRadius, chartCenter]
   );
 
-  // Get the Transaction Info
-  useEffect(() => {
-    getTxInfo(txHash);
-  }, [getTxInfo, txHash]);
+  // Transaction info comes from main page
 
   useEffect(() => {
     // Only render if transaction info is available
@@ -141,15 +136,17 @@ const TxFees = () => {
       let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
       if (!echart) echart = echarts.init(chartElementRef.current);
-      // Refresh on window resize
-      window.allCharts.push(echart);
       setChart(echart);
       // Build the dataset
       const data = addData(fees);
       // Update the chart with the data
       buildChartData(data.seriesData, data.legendData, data.selectedData);
       chart && chart.setOption(chartData);
+      window.addEventListener('resize', () => {chart && chart.resize()});
     }
+    return (
+      window.removeEventListener('resize', () => chart && chart.resize())
+    )
   }, [setChart, buildChartData, chart, fees]);
 
   return (

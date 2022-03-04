@@ -15,6 +15,7 @@ import {
   Blocks,
   Dashboard,
   Faucet,
+  Gas,
   Ibc,
   Icons,
   Nft,
@@ -70,6 +71,7 @@ const App = () => {
               <Route path="/proposal/:proposalId" component={Proposal} />
               <Route path="/proposals" component={Proposals} />
               <Route path="/network/token-stats" component={TokenStats} />
+              <Route path="/network/gas" component={Gas} />
               <Route path="/network/upgrades" component={Upgrades} />
               <Route path="/network/params" component={Params} />
               <Route path="/tx/:txHash" component={Tx} />

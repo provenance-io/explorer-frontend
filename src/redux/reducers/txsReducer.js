@@ -43,6 +43,7 @@ export const initialState = {
   // Tx Types (for filters)
   txTypesLoading: false,
   txTypes: {},
+  txTypesNoFormat: [],
   // Tx Msgs
   txMsgs: {},
   txMsgsLoading: false,
@@ -110,6 +111,7 @@ const reducer = handleActions(
 
       return {
         ...state,
+        txTypesNoFormat: payload,
         txTypes,
         txTypesLoading: false,
       };

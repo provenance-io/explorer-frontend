@@ -55,13 +55,13 @@ const TopValidators = () => {
         // Track selected validators (able to toggle them on/off in the legend)
         const selectedData = {};
         // Add data into both sets of data (legend/series)
-        topValidators.forEach(({ votingPower, moniker, addressId, uptime }) => {
+        topValidators.forEach(({ votingPower, moniker, addressId }) => {
           const name = moniker ? maxLength(moniker, 20) : maxLength(addressId, 20);
           const value = votingPower?.count;
           // Add to legendData
           legendData.push(name);
           // Add to seriesData
-          seriesData.push({ value, name, uptime });
+          seriesData.push({ value, name });
           // Add to selectedData (default to true/visible)
           selectedData[name] = true;
         });
@@ -89,10 +89,8 @@ const TopValidators = () => {
           tooltip: {
             trigger: 'item',
             formatter: ({ data, percent }) => {
-              const { name, value, uptime } = data;
-              return `${name}<br />Voting Power: ${numberFormat(
-                value
-              )} (${percent}%)<br />Uptime: ${uptime}%`;
+              const { name, value } = data;
+              return `${name}<br />Voting Power: ${numberFormat(value)} (${percent}%)`;
             },
           },
           // The legend/key on the right side showing color/name

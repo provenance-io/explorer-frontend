@@ -36,7 +36,11 @@ export const Links = {
       },
       params: {
         url: Path.PARAMS_URL,
-        title: 'Params',
+        title: 'Chain Parameters',
+      },
+      gas: {
+        url: Path.GAS_URL,
+        title: 'Gas Statistics',
       },
       token_stats: {
         url: Path.TOKEN_STATS_URL,
