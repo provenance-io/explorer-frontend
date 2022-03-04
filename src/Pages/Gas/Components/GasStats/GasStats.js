@@ -31,7 +31,7 @@ const GasStats = () => {
   const defaultGranularity = 'day';
 
   const { networkGasStats, networkGasStatsLoading, getNetworkGasStats } = useNetwork();
-  const { txTypes, txTypesLoading, getTxTypes } = useTxs();
+  const { txTypesNoFormat, txTypes, txTypesLoading, getTxTypes } = useTxs();
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
 
@@ -39,10 +39,10 @@ const GasStats = () => {
   const [gasStatsTo, setGasStatsTo] = useState(defaultDayTo);
   const [gasStatsFrom, setGasStatsFrom] = useState(defaultDayFrom);
   const [filterError, setFilterError] = useState('');
-  const [filterType, setFilterType] = useState('');
+  const [filterType, setFilterType] = useState('send');
   const [plotType, setPlotType] = useState('line');
-  const [filterTypeTo, setFilterTypeTo] = useState('');
-  const [plotTypeTo, setPlotTypeTo] = useState('');
+  const [filterTypeTo, setFilterTypeTo] = useState('send');
+  const [plotTypeTo, setPlotTypeTo] = useState('line');
 
   // Determine/Set Date range in days based on last api search/response
   // 'dayFrom' - 'dayTo' = diff in ms, then 1000ms * 60s * 60min * 24hours = days diff
@@ -55,6 +55,19 @@ const GasStats = () => {
 
   // Check if txTypes exist
   const txTypesExist = Object.keys(txTypes).length > 0;
+
+  // Get Tx types into Filter Format
+  const txTypesAll = {};
+  txTypesNoFormat.forEach(item => {
+    const isDefault = item.type === 'send';
+    txTypesAll[item.type] = {
+      title: item.type,
+      isDefault,
+    };
+  });
+
+  // Add all tx types to list
+  txTypesAll[''] = { title: 'Average All Tx Types' };
 
   // On initial load get the gasStats for the default time period
   useEffect(() => {
@@ -156,7 +169,8 @@ const GasStats = () => {
     {
       title: 'Message Type:',
       type: 'dropdown',
-      options: txTypes,
+      maxHeight: '21rem',
+      options: txTypesAll,
       action: updateFilterType,
     },
     {

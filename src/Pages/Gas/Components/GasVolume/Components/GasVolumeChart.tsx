@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
+import { formatDenom } from 'utils';
 
 const StyledChart = styled.div`
   height: 600px;
@@ -47,8 +48,14 @@ const chartData = {
         alignWithLabel: true,
       },
       axisLabel: {
-        formatter: '{value}',
         rotate: 0,
+        color: '',
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '',
+        },
       },
     },
   ],
@@ -65,13 +72,16 @@ const chartData = {
         },
       },
       axisLabel: {
-        formatter: '{value}e9',
         rotate: 0,
+        color: '',
+      },
+      nameTextStyle: {
+        align: 'right',
       },
     },
     {
       type: 'value',
-      name: 'Fee (1000 hash)',
+      name: 'Fee (hash)',
       position: 'left',
       alignTicks: true,
       axisLine: {
@@ -81,7 +91,11 @@ const chartData = {
         },
       },
       axisLabel: {
-        formatter: '{value}',
+        rotate: 0,
+        color: '',
+      },
+      nameTextStyle: {
+        align: 'left',
       },
     },
   ],
@@ -102,8 +116,6 @@ const chartData = {
     },
   ],
 };
-
-const getValue = (value: string): string => (parseInt(value)/1e9).toFixed(2);
 
 interface DataArray {
   gasUsed: string;
@@ -138,20 +150,20 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
         format(parseISO(date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm')
       );
       const gasUsedData = dataVal.map(({ gasUsed, date }) => ({
-        value: getValue(gasUsed),
+        value: parseFloat(gasUsed).toFixed(0),
         name: date,
       }));
       const gasWantedData = dataVal.map(({ gasWanted, date }) => ({
-        value: getValue(gasWanted),
+        value: parseFloat(gasWanted).toFixed(0),
         name: date,
       }));
       const feeAmountData = dataVal.map(({ feeAmount, date }) => ({
-        value: parseFloat(getValue(feeAmount))/1000,
+        value: parseFloat(feeAmount)/1e9,
         name: date,
       }));
 
       // Chart color palette:
-      const colors: string[] = [theme.CHART_PIE_H, theme.CHART_PIE_A, theme.CHART_PIE_K];
+      const colors: string[] = [theme.CHART_PIE_I, theme.CHART_LINE_MAIN, theme.CHART_PIE_K];
       chartData.legend.textStyle = {
         color: theme.FONT_PRIMARY,
       };
@@ -175,7 +187,9 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
             >
             </div>
             <div style="text-align:center;">
-              ${p.seriesName}: ${p.seriesName === "Fee" ? `${parseFloat(p.data.value)*1000} hash` : `${p.data.value}e9`}
+              ${p.seriesName}: ${p.seriesName === "Fee" ? 
+                `${formatDenom(parseFloat(p.data.value),'hash',{decimal:0})}` : 
+                `${formatDenom(parseFloat(p.data.value),'',{decimal:0})}`}
             </div>
             </div>`
             idx++;
@@ -186,17 +200,35 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
       // Set chart data items
       chartData.color = colors;
       // Set chart y-axis colors
-      chartData.yAxis[0].axisLine.lineStyle.color = theme.FONT_PRIMARY;
+      chartData.yAxis[0].axisLine.lineStyle.color = theme.CHART_LINE_MAIN;
       chartData.yAxis[1].axisLine.lineStyle.color = theme.CHART_PIE_K;
+      chartData.xAxis[0].axisLine.lineStyle.color = theme.CHART_LINE_MAIN;
       // Set chart data items
       chartData.xAxis[0].data = xAxisData;
       chartData.series[0].data = gasUsedData;
       chartData.series[1].data = gasWantedData;
       chartData.series[2].data = feeAmountData;
       // Large/small display settings
-      chartData.yAxis[0].axisLabel.rotate = isSmall ? -90 : 0;
-      chartData.yAxis[1].axisLabel.rotate = isSmall ? 90 : 0;
-      chartData.xAxis[0].axisLabel.rotate = isSmall ? 45 : 0;
+      chartData.yAxis[0].axisLabel = {
+        rotate: isSmall ? 90 : 0,
+        color: theme.FONT_PRIMARY,
+      };
+      chartData.yAxis[1].axisLabel = {
+        rotate: isSmall ? 90 : 0,
+        color: theme.CHART_PIE_K,
+      };
+      chartData.xAxis[0].axisLabel = {
+        rotate: isSmall ? 45 : 0,
+        color: theme.FONT_PRIMARY,
+      };
+      // Tool view
+      chartData.toolbox = {
+        feature: {
+          dataView: { show: isSmall ? false : true, readOnly: false },
+          restore: { show: isSmall ? false : true },
+          saveAsImage: { show: isSmall ? false : true },
+        },
+      };
     },
     [theme, granIsDay, isSmall]
   );

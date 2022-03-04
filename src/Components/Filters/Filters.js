@@ -11,6 +11,7 @@ const FilterContainer = styled.div`
   position: relative;
 `;
 const FilterItem = styled.div`
+  margin-bottom: 10px;
   margin-right: 10px;
   align-items: center;
   input {
@@ -30,12 +31,12 @@ const FilterTitle = styled.div`
 
 const Filters = ({ filterData, mustApply, flush }) => {
   const buildFilterItems = () =>
-    filterData.map((filterItem) => {
-      const { type, title, options, action } = filterItem;
+    filterData.map(filterItem => {
+      const { type, title, options, action, maxHeight } = filterItem;
       const buildFilterType = () => {
         switch (type) {
           case 'dropdown':
-            return <SelectFolders allOptions={options} action={action} />;
+            return <SelectFolders allOptions={options} action={action} maxHeight={maxHeight} />;
           case 'datepicker':
             return <DatePicker {...options} />;
           default:
@@ -75,6 +76,7 @@ Filters.propTypes = {
       type: PropTypes.string.isRequired,
       options: PropTypes.object,
       action: PropTypes.func,
+      maxHeight: PropTypes.string,
     })
   ).isRequired,
 };
