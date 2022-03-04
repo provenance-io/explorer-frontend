@@ -71,7 +71,7 @@ const GasStats = () => {
   AllTxTypes.forEach(item => {
     const isDefault = item.type === 'send';
     txTypesAll[item.type] = {
-      title: item.type,
+      title: capitalize(item.type.replaceAll('_', ' ')),
       isDefault,
     };
   });
