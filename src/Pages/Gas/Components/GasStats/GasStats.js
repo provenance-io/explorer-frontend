@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Loading, Filters } from 'Components';
+import { Content, Loading, Filters, Section } from 'Components';
 import { useNetwork, useMediaQuery, useTxs } from 'redux/hooks';
 import { breakpoints, GAS_GRANULARITY_OPTIONS } from 'consts';
 import { getUTCTime, subtractDays, capitalize } from 'utils';
@@ -56,9 +56,19 @@ const GasStats = () => {
   // Check if txTypes exist
   const txTypesExist = Object.keys(txTypes).length > 0;
 
+  // Sort Tx types by type
+  const AllTxTypes = txTypesNoFormat.sort((a, b) => {
+    if (a.type < b.type) {
+      return -1;
+    }
+    if (a.type > b.type) {
+      return 1;
+    }
+    return 0;
+  });
   // Get Tx types into Filter Format
   const txTypesAll = {};
-  txTypesNoFormat.forEach(item => {
+  AllTxTypes.forEach(item => {
     const isDefault = item.type === 'send';
     txTypesAll[item.type] = {
       title: item.type,
@@ -169,7 +179,7 @@ const GasStats = () => {
     {
       title: 'Message Type:',
       type: 'dropdown',
-      maxHeight: '21rem',
+      maxHeight: '30rem',
       options: txTypesAll,
       action: updateFilterType,
     },
@@ -224,7 +234,7 @@ const GasStats = () => {
           plotType={plotType}
         />
       ) : (
-        `No data exists for ${filterType} message type`
+        <Section>{`No data exists for ${filterType} message type`}</Section>
       )}
     </Content>
   );
