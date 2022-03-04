@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Bug fixes
+- Fix issues with gas stats charts #286
 
 ### Features
 - Add message type gas statistics #260
