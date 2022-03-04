@@ -41,7 +41,7 @@ const Sprite = ({
   spin = 0,
   ...svgIcons
 }: SpriteTypes) => {
-  // TODO: Fix this using style.d.ts and DefaultTheme
+  
   const theme = useTheme();
 
   // Use the variable color name if it exists, else the actual color passed in, or else default color

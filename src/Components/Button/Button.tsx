@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Sprite from 'Components/Sprite';
 
-// TODO: remove theme any and fix later
 interface ButtonProps {
   className?: string;
   color?: string;

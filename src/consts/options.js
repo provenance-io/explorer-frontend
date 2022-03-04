@@ -37,7 +37,7 @@ export const PRICE_HISTORY_GRANULARITY_OPTIONS = {
   hour: { title: 'Hour' },
 };
 
-export const GAS_VOLUME_GRANULARITY_OPTIONS = {
+export const GAS_GRANULARITY_OPTIONS = {
   day: { title: 'Day', isDefault: true },
   hour: { title: 'Hour' },
 };

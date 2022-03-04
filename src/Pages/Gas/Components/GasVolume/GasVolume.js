@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { format } from 'date-fns';
 import { Content, Loading, Filters } from 'Components';
 import { useNetwork, useMediaQuery } from 'redux/hooks';
-import { breakpoints, GAS_VOLUME_GRANULARITY_OPTIONS } from 'consts';
+import { breakpoints, GAS_GRANULARITY_OPTIONS } from 'consts';
 import { getUTCTime, subtractDays } from 'utils';
 import { GasVolumeChart } from './Components';
 
@@ -27,7 +27,7 @@ const GasVolume = () => {
   const defaultDateFormat = 'yyyy-MM-dd';
   const today = new Date();
   const defaultDayTo = format(today, defaultDateFormat);
-  const defaultDayFrom = format(subtractDays(today, 13), defaultDateFormat);
+  const defaultDayFrom = format(subtractDays(today, 14), defaultDateFormat);
   const defaultGranularity = 'day';
 
   const [gasVolumeGran, setGasVolumeGran] = useState(defaultGranularity);
@@ -120,7 +120,7 @@ const GasVolume = () => {
     {
       title: 'Granularity:',
       type: 'dropdown',
-      options: GAS_VOLUME_GRANULARITY_OPTIONS,
+      options: GAS_GRANULARITY_OPTIONS,
       action: setGasVolumeGran,
     },
   ];

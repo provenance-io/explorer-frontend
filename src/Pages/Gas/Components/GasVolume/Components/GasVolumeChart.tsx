@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
+import { useMediaQuery } from 'redux/hooks';
+import { breakpoints } from 'consts';
 
 const StyledChart = styled.div`
   height: 600px;
@@ -14,11 +15,15 @@ const StyledMessage = styled.div`
 `;
 
 const chartData = {
+  color: [''],
   tooltip: {
     trigger: 'axis',
     axisPointer: {
       type: 'cross',
     },
+    // Needed format for TypeScript
+    // eslint-disable-next-line no-empty-pattern
+    formatter: ([]) => '',
   },
   grid: {
     right: '20%',
@@ -31,16 +36,19 @@ const chartData = {
     },
   },
   legend: {
-    data: ['Gas Used', 'Gas Wanted', 'Fee Amount'],
+    data: ['Gas Used', 'Gas Wanted', 'Fee'],
+    textStyle: {},
   },
   xAxis: [
     {
       type: 'category',
+      data: {},
       axisTick: {
         alignWithLabel: true,
       },
       axisLabel: {
         formatter: '{value}',
+        rotate: 0,
       },
     },
   ],
@@ -52,23 +60,28 @@ const chartData = {
       alignTicks: true,
       axisLine: {
         show: true,
-        lineStyle: {},
+        lineStyle: {
+          color: '',
+        },
       },
       axisLabel: {
-        formatter: '{value}',
+        formatter: '{value}e9',
+        rotate: 0,
       },
     },
     {
       type: 'value',
-      name: 'Fee Amount',
+      name: 'Fee (1000 hash)',
       position: 'left',
       alignTicks: true,
       axisLine: {
         show: true,
-        lineStyle: {},
+        lineStyle: {
+          color: '',
+        },
       },
       axisLabel: {
-        formatter: '{value} hash',
+        formatter: '{value}',
       },
     },
   ],
@@ -76,78 +89,130 @@ const chartData = {
     {
       name: 'Gas Used',
       type: 'bar',
+      data: {},
     },
     {
       name: 'Gas Wanted',
       type: 'bar',
     },
     {
-      name: 'Fee Amount',
+      name: 'Fee',
       type: 'line',
       yAxisIndex: 1,
     },
   ],
 };
 
-const GasVolumeChart = ({ gasVolumeGran, data }) => {
+const getValue = (value: string): string => (parseInt(value)/1e9).toFixed(2);
+
+interface DataArray {
+  gasUsed: string;
+  gasWanted: string;
+  feeAmount: string;
+  date: string;
+}
+
+interface GasVolumeProps {
+  gasVolumeGran: string;
+  data: DataArray[];
+}
+
+interface ParamsArray {
+  name: string;
+  seriesName: string;
+  data: {value: string};
+}
+
+const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
+  const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
   const granIsDay = gasVolumeGran === 'day';
 
   const gasVolumeCount = data.length;
 
   const buildChartData = useCallback(
-    dataVal => {
+    (dataVal: DataArray[]) => {
       const xAxisData = dataVal.map(({ date }) =>
-        format(parseISO(date, "yyyy-MM-dd't'HH:mm:ss"), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm')
+        format(parseISO(date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm')
       );
       const gasUsedData = dataVal.map(({ gasUsed, date }) => ({
-        value: gasUsed / 1e9,
+        value: getValue(gasUsed),
         name: date,
       }));
       const gasWantedData = dataVal.map(({ gasWanted, date }) => ({
-        value: gasWanted / 1e9,
+        value: getValue(gasWanted),
         name: date,
       }));
       const feeAmountData = dataVal.map(({ feeAmount, date }) => ({
-        value: feeAmount / 1e9,
+        value: parseFloat(getValue(feeAmount))/1000,
         name: date,
       }));
 
       // Chart color palette:
-      const colors = [theme.CHART_PIE_H, theme.CHART_PIE_A, theme.CHART_PIE_K];
+      const colors: string[] = [theme.CHART_PIE_H, theme.CHART_PIE_A, theme.CHART_PIE_K];
       chartData.legend.textStyle = {
         color: theme.FONT_PRIMARY,
       };
+      // Set chart tooltip
+      chartData.tooltip.formatter = (params: ParamsArray[]) => {
+        const day = params[0].name.slice(0,10);
+        let returnString = "";
+        let idx = 0;
+        params.forEach(p => {
+          returnString += `
+          <div style="display:flex;padding:2px;">
+            <div 
+              style="
+                height:10px;
+                width:10px;
+                border-radius:50%;
+                align-self:center;
+                margin-right:10px;
+                background-color:${colors[idx]};
+              "
+            >
+            </div>
+            <div style="text-align:center;">
+              ${p.seriesName}: ${p.seriesName === "Fee" ? `${parseFloat(p.data.value)*1000} hash` : `${p.data.value}e9`}
+            </div>
+            </div>`
+            idx++;
+        });
+        returnString = `<div>${day}</div> ${returnString}`;
+        return returnString;
+      }
       // Set chart data items
       chartData.color = colors;
       // Set chart y-axis colors
       chartData.yAxis[0].axisLine.lineStyle.color = theme.FONT_PRIMARY;
       chartData.yAxis[1].axisLine.lineStyle.color = theme.CHART_PIE_K;
       // Set chart data items
-      chartData.xAxis.data = xAxisData;
-      chartData.xAxis[0].axisLabel.formatter = params => xAxisData[params];
+      chartData.xAxis[0].data = xAxisData;
       chartData.series[0].data = gasUsedData;
       chartData.series[1].data = gasWantedData;
       chartData.series[2].data = feeAmountData;
+      // Large/small display settings
+      chartData.yAxis[0].axisLabel.rotate = isSmall ? -90 : 0;
+      chartData.yAxis[1].axisLabel.rotate = isSmall ? 90 : 0;
+      chartData.xAxis[0].axisLabel.rotate = isSmall ? 45 : 0;
     },
-    [theme, granIsDay]
+    [theme, granIsDay, isSmall]
   );
 
   // Build Chart with data
   useEffect(() => {
+    let chart: echarts.ECharts | undefined;
     if (gasVolumeCount > 0) {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
-      let echart = echarts.getInstanceByDom(chartElementRef.current);
-      // if it isn't initialized then init
-      if (!echart) echart = echarts.init(chartElementRef.current);
-      // Push chart to page chart array in App.js
-      setChart(echart);
+      if (chartElementRef.current) {
+        chart = echarts.getInstanceByDom(chartElementRef.current) || echarts.init(chartElementRef.current);
+      }
       // Update the chart with the data
       buildChartData(data);
-      chart && chart.setOption(chartData);
+      chart?.setOption(chartData);
       window.addEventListener('resize', () => {chart && chart.resize()});
     }
     return (
@@ -160,11 +225,6 @@ const GasVolumeChart = ({ gasVolumeGran, data }) => {
   ) : (
     <StyledMessage>No transactions available</StyledMessage>
   );
-};
-
-GasVolumeChart.propTypes = {
-  gasVolumeGran: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
 };
 
 export default GasVolumeChart;
