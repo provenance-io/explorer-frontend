@@ -16,6 +16,7 @@ const StyledMessage = styled.div`
 `;
 
 const chartData = {
+  color: '',
   tooltip: {
     trigger: 'axis',
     axisPointer: {
@@ -42,12 +43,20 @@ const chartData = {
   xAxis: [
     {
       type: 'category',
+      name: 'Date',
       data: {},
       axisTick: {
         alignWithLabel: true,
       },
       axisLabel: {
         rotate: 0,
+        color: '',
+      },
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: '',
+        },
       },
     },
   ],
@@ -63,9 +72,13 @@ const chartData = {
     },
     axisLabel: {
       rotate: 0,
+      color: '',
     },
     max: '',
     min: '',
+    nameTextStyle: {
+      align: 'left',
+    },
   },
   series: [
     {
@@ -74,7 +87,7 @@ const chartData = {
       data: [{}],
     },
     {
-      name: 'Min/Max Gas Fees',
+      name: '',
       type: '',
       data: [{}],
       color: '',
@@ -85,10 +98,10 @@ const chartData = {
 };
 
 interface DataArray {
-  minGasPrice: number;
-  maxGasPrice: number;
-  avgGasPrice: number;
-  stdDevGasPrice: number;
+  minGasUsed: number;
+  maxGasUsed: number;
+  avgGasUsed: number;
+  stdDevGasUsed: number;
   messageType: string;
   date: string;
 }
@@ -103,9 +116,9 @@ interface GasStatsProps {
 interface plotDataProps {
   name: string;
   value: number;
-  minGasPrice?: number;
-  maxGasPrice?: number;
-  stdDevGasPrice?: number;
+  minGasUsed?: number;
+  maxGasUsed?: number;
+  stdDevGasUsed?: number;
   messageType?: string;
 }
 
@@ -138,17 +151,17 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
       data.forEach(item => {
         // If we have a message type and it matches what we are looking for:
         if (msgType && item.messageType === msgType) {
-          plotData.push({ 
-            value: item.avgGasPrice,
+        plotData.push({ 
+            value: item.avgGasUsed,
             name: item.date,
             messageType: item.messageType,
-            minGasPrice: item.minGasPrice,
-            maxGasPrice: item.maxGasPrice,
-            stdDevGasPrice: item.stdDevGasPrice,
+            minGasUsed: item.minGasUsed,
+            maxGasUsed: item.maxGasUsed,
+            stdDevGasUsed: item.stdDevGasUsed,
           });
           markLineData.push([
-            {name: '', xAxis: format(parseISO(item.date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: item.minGasPrice,},
-            {name: '', xAxis: format(parseISO(item.date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: item.maxGasPrice,}
+            {name: '', xAxis: format(parseISO(item.date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: item.minGasUsed,},
+            {name: '', xAxis: format(parseISO(item.date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: item.maxGasUsed,}
           ]);
           count++;
         };
@@ -159,21 +172,21 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
               value: 0, 
               name: item.date,
               messageType: '',
-              minGasPrice: 0,
-              maxGasPrice: 0,
-              stdDevGasPrice: 0,
+              minGasUsed: 0,
+              maxGasUsed: 0,
+              stdDevGasUsed: 0,
             });
           }
           if (plotData[count]?.name === item.date) {
-            averages.push(item.avgGasPrice);
-            avgMin.push(item.minGasPrice);
-            avgMax.push(item.maxGasPrice);
-            stdDev.push(item.stdDevGasPrice);
+            averages.push(item.avgGasUsed);
+            avgMin.push(item.minGasUsed);
+            avgMax.push(item.maxGasUsed);
+            stdDev.push(item.stdDevGasUsed);
           } else {
             plotData[count].value = averages.reduce((a,b) => a+b) / averages.length;
-            plotData[count].minGasPrice = avgMin.reduce((a,b) => a+b) / avgMin.length;
-            plotData[count].maxGasPrice = avgMax.reduce((a,b) => a+b) / avgMax.length;
-            plotData[count].stdDevGasPrice = stdDev.reduce((a,b) => a+b) / stdDev.length;
+            plotData[count].minGasUsed = avgMin.reduce((a,b) => a+b) / avgMin.length;
+            plotData[count].maxGasUsed = avgMax.reduce((a,b) => a+b) / avgMax.length;
+            plotData[count].stdDevGasUsed = stdDev.reduce((a,b) => a+b) / stdDev.length;
             markLineData.push([
               {name: '', xAxis: format(parseISO(plotData[count].name), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: avgMin.reduce((a,b) => a+b) / avgMin.length},
               {name: '', xAxis: format(parseISO(plotData[count].name), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: avgMax.reduce((a,b) => a+b) / avgMax.length},
@@ -183,9 +196,9 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
               value: 0, 
               name: item.date ,
               messageType: '',
-              minGasPrice: 0,
-              maxGasPrice: 0,
-              stdDevGasPrice: 0,
+              minGasUsed: 0,
+              maxGasUsed: 0,
+              stdDevGasUsed: 0,
             });
           }
         }
@@ -193,9 +206,9 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
       // Grab the last value for plotData if all tx types
       if (!msgType) {
         plotData[count].value = averages.reduce((a,b) => a+b) / averages.length;
-        plotData[count].minGasPrice = avgMin.reduce((a,b) => a+b) / avgMin.length;
-        plotData[count].maxGasPrice = avgMax.reduce((a,b) => a+b) / avgMax.length;
-        plotData[count].stdDevGasPrice = stdDev.reduce((a,b) => a+b) / stdDev.length;
+        plotData[count].minGasUsed = avgMin.reduce((a,b) => a+b) / avgMin.length;
+        plotData[count].maxGasUsed = avgMax.reduce((a,b) => a+b) / avgMax.length;
+        plotData[count].stdDevGasUsed = stdDev.reduce((a,b) => a+b) / stdDev.length;
         markLineData.push([
           {name: '', xAxis: format(parseISO(plotData[count].name), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: avgMin.reduce((a,b) => a+b) / avgMin.length},
           {name: '', xAxis: format(parseISO(plotData[count].name), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm'), yAxis: avgMax.reduce((a,b) => a+b) / avgMax.length},
@@ -205,29 +218,44 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
       if (xAxisData.length !== plotData.length && plotData.length > 0) {
         let idx = 0;
         xAxisData.forEach(item => {
-          if (item !== plotData[idx].name) {
+          if (idx >= plotData.length || item !== plotData[idx].name) {
             if (idx === 0) {
               plotData.unshift({
                 value: plotData[idx].value, 
                 name: item,
                 messageType: plotData[idx].messageType,
-                minGasPrice: plotData[idx].minGasPrice,
-                maxGasPrice: plotData[idx].maxGasPrice,
-                stdDevGasPrice: plotData[idx].stdDevGasPrice,
+                minGasUsed: plotData[idx].minGasUsed,
+                maxGasUsed: plotData[idx].maxGasUsed,
+                stdDevGasUsed: plotData[idx].stdDevGasUsed,
               });
               markLineData.unshift([
                 {name: '', xAxis: item, yAxis: markLineData[idx][0].yAxis},
                 {name: '', xAxis: item, yAxis: markLineData[idx][1].yAxis},
               ]);
-            } else {
+            } 
+            else if (idx >= plotData.length) {
+              plotData.push({
+                value: plotData[idx-1].value, 
+                name: item,
+                messageType: plotData[idx-1].messageType,
+                minGasUsed: plotData[idx-1].minGasUsed,
+                maxGasUsed: plotData[idx-1].maxGasUsed,
+                stdDevGasUsed: plotData[idx-1].stdDevGasUsed,
+              });
+              markLineData.push([
+                {name: '', xAxis: item, yAxis: markLineData[idx-1][0].yAxis},
+                {name: '', xAxis: item, yAxis: markLineData[idx-1][1].yAxis},
+              ]);
+            }
+            else {
               plotData.splice(idx, 0, 
                 {
                   value: plotData[idx].value, 
                   name: item,
                   messageType: plotData[idx].messageType,
-                  minGasPrice: plotData[idx].minGasPrice,
-                  maxGasPrice: plotData[idx].maxGasPrice,
-                  stdDevGasPrice: plotData[idx].stdDevGasPrice,
+                  minGasUsed: plotData[idx].minGasUsed,
+                  maxGasUsed: plotData[idx].maxGasUsed,
+                  stdDevGasUsed: plotData[idx].stdDevGasUsed,
                 }
               );
               markLineData.splice(idx, 0,
@@ -241,58 +269,78 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
           idx++;
         });
       };
+
       // Update xAxisData to ISO format
       xAxisData = xAxisData.map(item =>
         format(parseISO(item), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm')
       );
+      // Set chart series data
+      chartData.series = [
+        {
+          name: 'Average Gas Used',
+          type: plotType,
+          data: plotData,
+          color: theme.CHART_LINE_MAIN,
+          markLine: [],
+          barGap: "-100%",
+        },
+        {
+          name: 'Min/Max Gas Used',
+          type: plotType,
+          data: [],
+          color: theme.CHART_PIE_K,
+          markLine: {
+            data: markLineData,
+            symbol: 'line',
+            lineStyle: {
+              color: theme.CHART_PIE_K,
+              width: 2,
+            },
+          },
+          barGap: "-100%",
+        }
+      ];
+      // Set chart legend
+      chartData.legend.textStyle = {
+        color: theme.FONT_PRIMARY,
+      };
+      chartData.legend.data = [
+        'Average Gas Used', 'Min/Max Gas Used'
+      ];
       // Set chart xAxis data
       chartData.xAxis[0].data = xAxisData;
       // Set y axis min/max
-      chartData.yAxis.max = (Math.max(...markLineData.map(item => item[1].yAxis)) + 10).toFixed(0);
-      chartData.yAxis.min = (Math.min(...markLineData.map(item => item[0].yAxis)) - 10).toFixed(0);
+      chartData.yAxis.max = (Math.max(...markLineData.map(item => item[1].yAxis)) + 10000).toFixed(0);
+      chartData.yAxis.min = (Math.min(...markLineData.map(item => item[0].yAxis)) - 10000).toFixed(0);
       // Set x and y Axis rotation
       chartData.yAxis.axisLabel = {
         rotate: isSmall ? 90 : 0,
+        color: theme.FONT_PRIMARY,
       };
-      chartData.yAxis.name = isSmall ? '' : 'Gas';
+      chartData.yAxis.axisLine.lineStyle.color = theme.CHART_LINE_MAIN;
+      chartData.xAxis[0].axisLine.lineStyle.color = theme.CHART_LINE_MAIN;
       chartData.xAxis[0].axisLabel = {
         rotate: isSmall ? 90 : 0,
+        color: theme.FONT_PRIMARY,
       };
       // Set tooltip data
       chartData.tooltip.formatter = params => (`
         <table>
           <div style="text-align:center;"><b>${granIsDay ? params[0].data.name.slice(0,10) : params[0].data.name}</b></div>
           <div>Message Type: <b>${!msgType ? 'All Types Average' : msgType}</b></div>
-          <div>Average Gas Price: ${formatDenom(params[0].data.value,'',{ decimal: 0 })}</div>
-          <div>Minimum Gas Price: ${formatDenom(params[0].data.minGasPrice,'',{ decimal: 0 })}</div>
-          <div>Maximum Gas Price: ${formatDenom(params[0].data.maxGasPrice,'',{ decimal: 0 })}</div>
-          <div>Standard Deviation: ${formatDenom(params[0].data.stdDevGasPrice,'',{ decimal: 0 })}</div>
+          <div>Average Gas Used: ${formatDenom(params[0].data.value,'',{ decimal: 0 })}</div>
+          <div>Minimum Gas Used: ${formatDenom(params[0].data.minGasUsed,'',{ decimal: 0 })}</div>
+          <div>Maximum Gas Used: ${formatDenom(params[0].data.maxGasUsed,'',{ decimal: 0 })}</div>
+          <div>Standard Deviation: ${formatDenom(params[0].data.stdDevGasUsed,'',{ decimal: 0 })}</div>
         </div>
       `);
-      // Set chart legend
-      chartData.legend.textStyle = {
-        color: theme.FONT_PRIMARY,
-      };
-      // Set chart series data
-      chartData.series[0] = {
-        name: 'Message Fees',
-        type: plotType,
-        data: plotData,
-      };
-      chartData.legend.data = [
-        'Message Fees', 'Min/Max Gas Fees'
-      ];
-      chartData.series[1] = {
-        name: 'Min/Max Gas Fees',
-        type: plotType,
-        data: [],
-        color: 'red',
-        markLine: {
-          data: markLineData,
-          symbol: 'line',
-          lineStyle: {color: 'red'},
+      // Remove tools when small
+      chartData.toolbox = {
+        feature: {
+          dataView: { show: isSmall ? false : true, readOnly: false },
+          restore: { show: isSmall ? false : true },
+          saveAsImage: { show: isSmall ? false : true },
         },
-        barGap: "-100%",
       };
     },
     [theme, granIsDay, isSmall, msgType, plotType]
