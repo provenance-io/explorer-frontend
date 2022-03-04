@@ -4,6 +4,7 @@
 
 ### Bug fixes
 - Fix issues with gas stats charts #286
+- Fix how message types are displayed #288
 
 ### Features
 - Add message type gas statistics #260
