@@ -233,7 +233,11 @@ const ValidatorSpotlight = () => {
               <>
                 <DataRow>
                   <DataTitle>Jailed Until:</DataTitle>
-                  <DataValue>{getFormattedDate(new Date(jailedUntil.millis))}</DataValue>
+                  <DataValue>
+                    {jailedUntil.millis
+                      ? getFormattedDate(new Date(jailedUntil.millis))
+                      : 'unknown'}
+                  </DataValue>
                 </DataRow>
               </>
             )}

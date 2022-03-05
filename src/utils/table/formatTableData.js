@@ -232,7 +232,9 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         case 'endTime': {
-          const value = serverValue ? `${getUTCTime(new Date(serverValue.millis))}+UTC` : 'N/A';
+          const value = serverValue
+            ? `${getUTCTime(new Date(serverValue.millis ? serverValue.millis : serverValue))}+UTC`
+            : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;
         }
