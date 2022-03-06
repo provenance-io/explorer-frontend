@@ -6,6 +6,7 @@
 - Fix issues with gas stats charts #286
 - Fix how message types are displayed #288
 - Fix validator display #290
+- Fix jailedUntil in Validator #292
 
 ### Features
 - Add message type gas statistics #260
