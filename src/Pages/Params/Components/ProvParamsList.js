@@ -16,6 +16,10 @@ const getTable = (data, type, tableLoading) => {
       tempObj.value = formatDenom(data[type][item], '', { decimal: 0 });
     } else if (item === 'unrestricted_denom_regex') {
       tempObj.value = JSON.stringify(data[type][item]);
+    } else if (item === 'floor_gas_price') {
+      const amount = data[type][item].amount;
+      const denom = data[type][item].denom;
+      tempObj.value = formatDenom(amount, denom, { decimal: 10 });
     } else {
       tempObj.value = data[type][item].toString();
     }
