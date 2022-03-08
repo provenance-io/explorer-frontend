@@ -135,27 +135,28 @@ const ValidatorList = () => {
 
   return (
     <ValidatorListContainer>
-      {[...accountDelegations, ...accountRedelegations, ...accountUnbonding]?.length > 0 && (
-        <Fragment>
-          <Filters filterData={myValFilterData} />
-          <MyValTable
-            changePage={setMyValTableCurrentPage}
-            currentPage={myValTableCurrentPage}
-            isLoading={
-              accountDelegationsLoading ||
-              accountRedelegationsLoading ||
-              accountUnbondingLoading ||
-              accountRewardsLoading ||
-              allValidatorsLoading
-            }
-            ManageStakingBtn={ManageStakingBtn}
-            tableData={myValTableData}
-            tableHeaders={myValTableHeaders}
-            title="My Validators"
-            totalPages={isDelegateFilter ? accountDelegationsPages : 1}
-          />
-        </Fragment>
-      )}
+      {[...accountDelegations, ...accountRedelegations, ...accountUnbonding]?.length > 0 &&
+        isLoggedIn && (
+          <Fragment>
+            <Filters filterData={myValFilterData} />
+            <MyValTable
+              changePage={setMyValTableCurrentPage}
+              currentPage={myValTableCurrentPage}
+              isLoading={
+                accountDelegationsLoading ||
+                accountRedelegationsLoading ||
+                accountUnbondingLoading ||
+                accountRewardsLoading ||
+                allValidatorsLoading
+              }
+              ManageStakingBtn={ManageStakingBtn}
+              tableData={myValTableData}
+              tableHeaders={myValTableHeaders}
+              title="My Validators"
+              totalPages={isDelegateFilter ? accountDelegationsPages : 1}
+            />
+          </Fragment>
+        )}
 
       <Filters filterData={filterData} />
       <Table
