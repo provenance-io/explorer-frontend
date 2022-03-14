@@ -38,6 +38,7 @@ const AccountAssets = () => {
   const tableData = accountAssets.map(a => ({
     ...a,
     displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
+    exponent: assetMetadata.find(md => md.base === a.denom)?.denomUnits[1].exponent,
   }));
 
   // Table header values in order
@@ -45,7 +46,7 @@ const AccountAssets = () => {
     { displayName: 'Asset', dataName: 'denom' },
     { displayName: 'Total Balance', dataName: 'balances' },
     { displayName: 'Price Per Unit', dataName: 'pricePerToken' },
-    { displayName: 'Total Value', dataName: 'totalBalancePrice' },
+    { displayName: 'Total Value', dataName: 'totalBalancePrice.amount' },
   ];
 
   return (

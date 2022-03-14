@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-import { formatDenom } from 'utils';
 import {
   GET_ACCOUNT_INFO,
   GET_ACCOUNT_ASSETS,
@@ -91,21 +90,7 @@ const reducer = handleActions(
       return {
         ...state,
         accountAssetsLoading: false,
-        accountAssets: accountAssets.map(result => ({
-          ...result,
-          pricePerToken: result.pricePerToken
-            ? `$${formatDenom(result.pricePerToken.amount, result.pricePerToken.denom, {
-                decimal: 2,
-                minimumFractionDigits: 2,
-              })}`
-            : '-- --',
-          totalBalancePrice: result.totalBalancePrice
-            ? `$${formatDenom(result.totalBalancePrice.amount, result.totalBalancePrice.denom, {
-                decimal: 2,
-                minimumFractionDigits: 2,
-              })}`
-            : '-- --',
-        })),
+        accountAssets,
         accountAssetsPages,
         accountAssetsTotal,
       };

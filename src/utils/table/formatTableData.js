@@ -375,6 +375,31 @@ export const formatTableData = (data = [], tableHeaders) => {
             color: serverValue > 0 ? 'rgb(78, 210, 44)' : serverValue < 0 ? 'red' : '',
           };
           break;
+        // Break up pricing object
+        case 'pricePerToken': // fallthrough
+        case 'supply.pricePerToken': {
+          finalObj[dataName] = {
+            value: serverValue
+              ? `$${formatDenom(
+                  dataObj.exponent
+                    ? serverValue.amount * 10 ** dataObj.exponent
+                    : serverValue.amount,
+                  serverValue.denom,
+                  { decimal: 2, minimumFractionDigits: 2 }
+                )}`
+              : dataName === 'pricePerToken'
+              ? '--'
+              : '-- --',
+          };
+          break;
+        }
+
+        case 'totalBalancePrice.amount':
+          finalObj[dataName] = {
+            value: formatDenom(serverValue, 'USD', { decimal: 2 }),
+          };
+          break;
+
         // Server value already correct
         case 'percentTotal': // fallthrough
         case 'amountHash': // fallthrough
@@ -389,7 +414,6 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'unbondingHeight': // fallthrough
         case 'currency': // fallthrough
         case 'delegators': // fallthrough
-        case 'pricePerToken': // fallthrough
         case 'totalBalancePrice': // fallthrough
         case 'param_name': // fallthrough
         case 'value': // fallthrough

@@ -9,6 +9,7 @@
 - Fix jailedUntil in Validator #292
 
 ### Features
+- Update asset price per unit calcs for new data object #296
 - Add message type gas statistics #260
 - Add calls to getAssetMetadata where explicitly needed #283
 
