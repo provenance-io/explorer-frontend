@@ -14,7 +14,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const AccountUnbondings = () => {
-  const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const {
     accountRedelegations,
@@ -46,8 +45,6 @@ const AccountUnbondings = () => {
         })
         .sort((a, b) => a.endTime.millis - b.endTime.millis)
     );
-
-    setTableCurrentPage(1);
   }, [allValidators, accountRedelegations, accountUnbonding, setTableData]);
 
   const tableHeaders = [
@@ -66,12 +63,9 @@ const AccountUnbondings = () => {
         titleFont={`font-weight: bold; font-size: 1.4rem`}
       >
         <Table
-          changePage={setTableCurrentPage}
-          currentPage={tableCurrentPage}
           isLoading={accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading}
           tableData={tableData}
           tableHeaders={tableHeaders}
-          totalPages={1}
         />
       </Accordion>
     </ButtonWrapper>

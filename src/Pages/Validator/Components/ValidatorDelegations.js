@@ -37,7 +37,7 @@ const ValidatorDelegations = () => {
       totalPages={tablePages}
       isLoading={tableLoading}
       title="Delegations"
-      size={matches && '50%'}
+      size={matches && '48%'}
     />
   );
 };

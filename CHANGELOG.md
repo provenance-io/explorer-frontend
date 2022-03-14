@@ -7,6 +7,7 @@
 - Fix how message types are displayed #288
 - Fix validator display #290
 - Fix jailedUntil in Validator #292
+- Fix delegators pagination view #298
 
 ### Features
 - Update asset price per unit calcs for new data object #296
