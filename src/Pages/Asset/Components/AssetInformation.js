@@ -15,7 +15,6 @@ const AssetInformation = () => {
   const {
     getAssetInfo,
     assetInfo,
-    pricePerToken,
     totalBalancePrice,
     assetInfoLoading,
     assetMetadata: allMetadata,
@@ -47,6 +46,10 @@ const AssetInformation = () => {
     displayDenom,
     true
   );
+
+  let pricePerToken = assetInfo?.supply?.pricePerToken?.amount || '-- --';
+  if (exponent && pricePerToken !== '-- --') pricePerToken = pricePerToken * 10 ** exponent;
+  const priceDenom = assetInfo?.supply?.pricePerToken?.denom || '-- --';
 
   const popupNoteConversion = {
     visibility: { visible: showConversion, setVisible: setShowConversion },
@@ -98,7 +101,13 @@ const AssetInformation = () => {
       value: numberFormat(nonFungibleCount),
       link: `/nfts/${holdingAccount}`,
     },
-    { title: 'Price', value: pricePerToken === '-- --' ? pricePerToken : `$${pricePerToken}` },
+    {
+      title: 'Price Per Unit',
+      value:
+        pricePerToken === '-- --'
+          ? pricePerToken
+          : `$${formatDenom(pricePerToken, priceDenom, { decimal: 2, minimumFractionDigits: 2 })}`,
+    },
     {
       title: 'Total Value',
       value: totalBalancePrice === '-- --' ? totalBalancePrice : `$${totalBalancePrice}`,
