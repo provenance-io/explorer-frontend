@@ -25,12 +25,13 @@ const AccountDelegations = () => {
   } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
   const { addressId } = useParams();
+  const tableCount = 5;
 
   useEffect(() => {
     // pulling first 100 validators with status=all
     getAllValidators();
-    getAccountDelegations({ address: addressId });
-  }, [addressId, getAllValidators, getAccountDelegations]);
+    getAccountDelegations({ address: addressId, page: tableCurrentPage, count: tableCount });
+  }, [addressId, getAllValidators, getAccountDelegations, tableCurrentPage]);
 
   useEffect(() => {
     setTableData(
@@ -39,8 +40,6 @@ const AccountDelegations = () => {
         return { ...validator, ...d };
       })
     );
-
-    setTableCurrentPage(1);
   }, [allValidators, accountDelegations, setTableData]);
 
   const tableHeaders = [

@@ -42,7 +42,7 @@ const ValidatorUnbondingDelegations = () => {
       totalPages={tablePages}
       isLoading={tableLoading}
       title={`Unbonding Delegations (${totalAmount})`}
-      size={matches && '50%'}
+      size={matches && '48%'}
     />
   );
 };
