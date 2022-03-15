@@ -1,9 +1,18 @@
 import { STAKING_TYPES } from './staking';
+import { VOTING_TYPES } from './voting';
 
 export const MY_VALIDATOR_STATUS_OPTIONS = {
   [STAKING_TYPES.DELEGATE]: { isDefault: true, title: 'Delegate' },
   [STAKING_TYPES.REDELEGATE]: { title: 'Redelegate' },
   [STAKING_TYPES.UNDELEGATE]: { title: 'Undelegate' },
+};
+
+export const MY_VOTE_OPTIONS = {
+  [VOTING_TYPES.UNSPECIFIED]: { isDefault: true, title: '--' },
+  [VOTING_TYPES.YES]: { isDefault: true, title: 'Yes' },
+  [VOTING_TYPES.ABSTAIN]: { title: 'Abstain' },
+  [VOTING_TYPES.NO]: { title: 'No' },
+  [VOTING_TYPES.NO_WITH_VETO]: { title: 'No With Veto' },
 };
 
 export const VALIDATOR_STATUS_OPTIONS = {

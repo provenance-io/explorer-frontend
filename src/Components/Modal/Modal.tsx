@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
+// @ts-ignore
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 import { breakpoints } from 'consts';
 import OgSprite from 'Components/Sprite';
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isOpen: boolean}>`
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   position: fixed;
   top: 0;
@@ -63,7 +63,13 @@ const Body = styled.div`
   flex: 1 1 auto;
 `;
 
-const Modal = React.memo(({ children, isOpen, onClose }) => {
+interface ModalProps {
+  children: React.ReactElement;
+  isOpen?: boolean;
+  onClose: () => void;
+}
+
+const Modal = React.memo(({ children, isOpen = false, onClose }: ModalProps) => {
   const theme = useTheme();
   useOnEscape(onClose);
 
@@ -79,15 +85,5 @@ const Modal = React.memo(({ children, isOpen, onClose }) => {
     </Wrapper>
   );
 });
-
-Modal.propTypes = {
-  children: PropTypes.any.isRequired,
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func.isRequired,
-};
-
-Modal.defaultProps = {
-  isOpen: false,
-};
 
 export default Modal;
