@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useWallet, WINDOW_MESSAGES } from '@provenanceio/wallet-lib';
@@ -14,7 +14,7 @@ const Button = styled(OgButton)`
 
 /**
  * @typedef {Object} Voting
- * @property {function} handleVoting - The function to handle staking
+ * @property {function} handleVoting - The function to handle voting
  * @property {function} ManageVotingBtn - React component connected to the modalFns
  * @property {object} modalFns - The items to handle the modal
  * @property {boolean} modalFns.modalOpen - If modal should be open
@@ -28,7 +28,6 @@ const Button = styled(OgButton)`
  * @return {Voting}
  */
 const useVoting = () => {
-  const [shouldPull, setShouldPull] = useState(true);
   const { walletService, messageService } = useWallet();
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
@@ -43,25 +42,10 @@ const useVoting = () => {
   useEvent('message', evt => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
-        setShouldPull(true);
         deactivateModalOpen();
       }
     }
   });
-
-  useEffect(() => {
-    setShouldPull(true);
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    let timeout;
-    if (shouldPull) {
-      timeout = setTimeout(() => {
-        setShouldPull(false);
-      }, 2000);
-    }
-    return () => timeout && clearTimeout(timeout);
-  }, [shouldPull]);
 
   const handleVoting = (proposalId, voter, option) => {
     if (!isLoggedIn) return;
