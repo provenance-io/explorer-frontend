@@ -59,6 +59,7 @@ const AccountDelegationsOwner = () => {
         showChevron
         title={`Delegations (${totalAmount})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table
           changePage={setTableCurrentPage}

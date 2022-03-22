@@ -61,6 +61,7 @@ const AccountUnbondings = () => {
         showChevron
         title={`Unbondings/Redelegations (${totalAmount})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table
           isLoading={accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading}
