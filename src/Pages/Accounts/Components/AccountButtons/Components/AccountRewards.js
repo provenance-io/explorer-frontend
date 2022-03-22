@@ -63,6 +63,7 @@ const AccountRewards = () => {
         showChevron
         title={`Rewards (${totalRewards})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table
           isLoading={accountRewardsLoading || allValidatorsLoading}

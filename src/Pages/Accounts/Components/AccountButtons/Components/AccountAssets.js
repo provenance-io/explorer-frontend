@@ -56,6 +56,7 @@ const AccountAssets = () => {
         title={`Assets (${accountAssetsTotal})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
         startOpen={true}
+        dontDrop={true}
       >
         <Table
           changePage={setTableCurrentPage}

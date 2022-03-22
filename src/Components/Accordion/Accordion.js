@@ -6,7 +6,7 @@ import { ICON_NAMES } from 'consts';
 
 const Wrapper = styled.div`
   width: 100%;
-  margin: ${({ isOpen }) => isOpen && '16px 0'};
+  margin: ${({ isOpen, dontDrop }) => isOpen && !dontDrop && '16px 0'};
   border-top: ${({ theme, isOpen }) => !isOpen && `${theme.BORDER_PRIMARY} 1px solid`};
   box-shadow: ${({ theme, isOpen }) =>
     isOpen &&
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   }
 
   &:last-of-type {
-    margin: ${({ isOpen }) => isOpen && '16px 0 0'};
+    margin: ${({ isOpen, dontDrop }) => isOpen && !dontDrop && '16px 0 0'};
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
   }
@@ -47,14 +47,14 @@ const AccordionBody = styled.div`
   visibility: ${({ isOpen }) => !isOpen && 'hidden'};
 `;
 
-const Accordion = ({ children, showChevron, title, startOpen, changeColumns }) => {
+const Accordion = ({ children, showChevron, title, startOpen, changeColumns, dontDrop }) => {
   const [isOpen, setIsOpen] = useState(startOpen);
   const theme = useTheme();
 
   const toggleState = () => setIsOpen(open => !open);
 
   return (
-    <Wrapper isOpen={isOpen}>
+    <Wrapper isOpen={isOpen} dontDrop={dontDrop}>
       <AccordionHeader
         onClick={toggleState}
         isOpen={isOpen}
@@ -85,12 +85,14 @@ Accordion.propTypes = {
   title: PropTypes.any.isRequired,
   startOpen: PropTypes.bool,
   changeColumns: PropTypes.string,
+  dontDrop: PropTypes.bool,
 };
 
 Accordion.defaultProps = {
   showChevron: false,
   startOpen: false,
   changeColumns: '',
+  dontDrop: false,
 };
 
 export default Accordion;
