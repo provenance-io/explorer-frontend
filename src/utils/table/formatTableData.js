@@ -432,9 +432,16 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Server value capitalized, remove VOTE_OPTION_
-        case 'answer':
-          finalObj[dataName] = { value: capitalize(serverValue.replace(/vote_option_/gi, '')) };
+        case 'answer': {
+          const voteString = Object.keys(serverValue).map(
+            vote =>
+              `${capitalize(vote.replace(/vote_option_/gi, ''))} (${
+                serverValue[vote] ? parseFloat(serverValue[vote]) * 100 : '--'
+              }%); `
+          );
+          finalObj[dataName] = { value: voteString.join(' ') };
           break;
+        }
         case 'proposalStatus': // fallthrough
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue.replace(/proposal_status/gi, '')) };

@@ -17,6 +17,7 @@ interface SpriteTypes extends SvgProps {
   height?: string;
   icon: string;
   width?: string;
+  onClick?: () => void;
 }
 
 const Svg =
@@ -39,6 +40,7 @@ const Sprite = ({
   secondaryColor = 'WHITE',
   size = '100%',
   spin = 0,
+  onClick,
   ...svgIcons
 }: SpriteTypes) => {
   
@@ -59,6 +61,7 @@ const Sprite = ({
       size={size}
       spin={spin}
       secondaryColor={secondaryColorValue}
+      onClick={onClick}
     >
       <use href={`#${icon}`} />
     </Svg>

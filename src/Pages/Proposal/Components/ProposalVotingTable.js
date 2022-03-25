@@ -18,7 +18,7 @@ const ProposalTiming = () => {
   const tableHeaders = [
     { displayName: 'Voter', dataName: 'voter' },
     { displayName: 'Tx Hash', dataName: 'txHash' },
-    { displayName: 'Answer', dataName: 'answer' },
+    { displayName: 'Vote/Weight', dataName: 'answer' },
     { displayName: 'Block Height', dataName: 'blockHeight' },
     { displayName: 'Timestamp', dataName: 'txTimestamp' },
   ];

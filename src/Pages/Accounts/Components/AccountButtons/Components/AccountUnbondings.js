@@ -53,7 +53,9 @@ const AccountUnbondings = () => {
     { displayName: 'End Time', dataName: 'endTime' },
   ];
 
-  const totalAmount = formatDenom(rAmount + uAmount, uDenom, { decimal: 2 });
+  const totalAmount = formatDenom(parseFloat(rAmount) + parseFloat(uAmount), uDenom, {
+    decimal: 2,
+  });
 
   return (
     <ButtonWrapper>

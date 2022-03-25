@@ -16,3 +16,5 @@ export { default as useValidators } from './useValidators';
 export { default as useWalletLogin } from './useWalletLogin';
 export { default as useNft } from './useNft';
 export { default as useNetwork } from './useNetwork';
+export { default as useVoting } from './useVoting';
+export { default as useTimeout } from './useTimeout';

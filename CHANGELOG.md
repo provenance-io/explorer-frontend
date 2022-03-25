@@ -14,6 +14,7 @@
 - Update asset price per unit calcs for new data object #296
 - Add message type gas statistics #260
 - Add calls to getAssetMetadata where explicitly needed #283
+- Add buttons for governance voting #242
 
 ## 2.6.0
 
