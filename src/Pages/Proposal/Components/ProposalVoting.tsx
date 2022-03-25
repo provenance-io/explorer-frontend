@@ -19,7 +19,7 @@ const ProposalVoting = () => {
   } = proposal;
 
   const {
-    state: { address: delegatorAddress },
+    state: { address },
   } = walletService;
 
   return (
@@ -34,7 +34,7 @@ const ProposalVoting = () => {
           onVoting={handleVoting}
           proposalId={proposalId}
           description={description}
-          voterId={delegatorAddress}
+          voterId={address}
           title={title}
         />
       }

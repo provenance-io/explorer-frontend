@@ -11,6 +11,7 @@
 ### Features
 - Add message type gas statistics #260
 - Add calls to getAssetMetadata where explicitly needed #283
+- Add buttons for governance voting #242
 
 ## 2.6.0
 

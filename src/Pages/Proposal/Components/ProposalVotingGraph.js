@@ -33,7 +33,7 @@ const ProposalVotingGraph = () => {
   const progressData = [
     // yes
     {
-      color: 'CHART_PIE_YES',
+      color: 'CHART_PIE_G',
       content: () => (
         <div>
           <div>Yes</div>

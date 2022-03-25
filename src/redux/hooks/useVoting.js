@@ -47,36 +47,55 @@ const useVoting = () => {
     }
   });
 
-  const handleVoting = (proposalId, voter, option) => {
-    if (!isLoggedIn) return;
+  const getOptionType = option => {
     const optionType = {
       [VOTING_TYPES.YES]: 1, // 1 "OptionYes"
       [VOTING_TYPES.ABSTAIN]: 2, // 2 "OptionAbstain"
       [VOTING_TYPES.NO]: 3, // 3 "OptionNo"
       [VOTING_TYPES.NO_WITH_VETO]: 4, // 4 "OptionNoWithVeto"
     }[option];
-    let msg;
-
     switch (option) {
       case VOTING_TYPES.YES: // fallthrough
       case VOTING_TYPES.ABSTAIN: // fallthrough
       case VOTING_TYPES.NO: // fallthrough
       case VOTING_TYPES.NO_WITH_VETO: // fallthrough
-        msg = {
-          proposalId,
-          voter,
-          option: optionType,
-        };
-        break;
+        return optionType;
       default:
         console.warn(
           `An option must be selected. You have selected -${option}-, which is not supported`
         );
     }
+    return optionType;
+  };
 
-    if (optionType) {
-      const builtMsg = messageService.buildMessage('MsgVote', msg);
-      const msgAnyB64 = messageService.createAnyMessageBase64('MsgVote', builtMsg);
+  const handleVoting = (proposalId, voter, option, weighted) => {
+    const optionsList = [];
+    if (!isLoggedIn) return;
+    if (weighted) {
+      option.forEach(k => {
+        if (k.weight > 0) {
+          optionsList.push(k);
+        }
+        return;
+      });
+    } else {
+      option = getOptionType(option);
+    }
+
+    let msgType;
+    let msg;
+
+    if (!weighted) {
+      msgType = 'MsgVote';
+      msg = { proposalId, voter, option };
+    } else if (weighted) {
+      msgType = 'MsgVoteWeighted';
+      msg = { proposalId, voter, optionsList };
+    }
+
+    if (msgType) {
+      const builtMsg = messageService.buildMessage(msgType, msg);
+      const msgAnyB64 = messageService.createAnyMessageBase64(msgType, builtMsg);
       walletService.transaction({ msgAnyB64 });
     }
   };

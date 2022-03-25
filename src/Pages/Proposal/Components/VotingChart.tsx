@@ -4,7 +4,7 @@ import * as echarts from 'echarts';
 import { capitalize, formatDenom } from 'utils';
 
 const StyledChart = styled.div<{ width: string }>`
-  height: 230px;
+  height: 200px;
   width: ${({ width }) => `${width}px`};
 `;
 
@@ -31,6 +31,8 @@ const chartData = {
   },
   legend: {
     left: 'center',
+    itemGap: 20,
+    padding: 0,
     textStyle: {
       color: '',
     }
@@ -94,7 +96,7 @@ const VotingChart = ({voteData, proposalId}: VotingChartProps) => {
     (seriesData, _legendData, _selectedData) => {
       chartData.color = [
         theme.CHART_PIE_ABSTAIN, // abstain should be grey
-        theme.CHART_PIE_YES, // yes
+        theme.CHART_PIE_G, // yes
         theme.CHART_PIE_NO, // no - red
         theme.CHART_PIE_NOWITHVETO, // noWithVeto - light blue
       ];
