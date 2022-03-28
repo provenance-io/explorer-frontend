@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import { Content, Loading, Filters } from 'Components';
-import { useTxs, useMediaQuery } from 'redux/hooks';
+import { useTxs, useMediaQuery, useNetwork } from 'redux/hooks';
 import { breakpoints, TRANSACTION_HISTORY_GRANULARITY_OPTIONS } from 'consts';
 import { getUTCTime, subtractDays } from 'utils';
 import { TxChart } from './Components';
@@ -35,6 +35,7 @@ const TxHistory = () => {
   const [filterError, setFilterError] = useState('');
 
   const { txHistoryLoading, getTxHistory } = useTxs();
+  const { getNetworkGasVolume } = useNetwork();
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
 
@@ -55,7 +56,13 @@ const TxHistory = () => {
       fromDate: defaultDayFrom,
       granularity: defaultGranularity,
     });
-  }, [getTxHistory, defaultDayTo, defaultDayFrom, defaultGranularity]);
+    // Get initial gasVolume
+    getNetworkGasVolume({
+      toDate: defaultDayTo,
+      fromDate: defaultDayFrom,
+      granularity: defaultGranularity,
+    });
+  }, [getTxHistory, getNetworkGasVolume, defaultDayTo, defaultDayFrom, defaultGranularity]);
 
   // Check for a valid filter before making api call
   const isFilterValid = () => {
@@ -84,6 +91,11 @@ const TxHistory = () => {
       const shortToUTC = getUTCTime(`${txHistoryTo}T00:00:00`, 'yyyy-MM-dd');
       const shortFromUTC = getUTCTime(`${txHistoryFrom}T00:00:00`, 'yyyy-MM-dd');
       getTxHistory({ toDate: shortToUTC, fromDate: shortFromUTC, granularity: txHistoryGran });
+      getNetworkGasVolume({
+        toDate: shortToUTC,
+        fromDate: shortFromUTC,
+        granularity: txHistoryGran,
+      });
     }
   };
 

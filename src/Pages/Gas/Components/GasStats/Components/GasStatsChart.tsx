@@ -30,15 +30,16 @@ const chartData = {
     right: '20%',
   },
   toolbox: {
+    right: "",
     feature: {
-      dataView: { show: true, readOnly: false },
-      restore: { show: true },
       saveAsImage: { show: true },
     },
   },
   legend: {
     data: [''],
     textStyle: {},
+    itemGap: 20,
+    padding: 0,
   },
   xAxis: [
     {
@@ -133,6 +134,7 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
   const chartElementRef = useRef(null);
   const theme = useTheme();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
+  const { matches: isLarge } = useMediaQuery(breakpoints.up('md'));
   const granIsDay = gasStatsGran === 'day';
 
   const gasStatsCount = data.length;
@@ -336,14 +338,13 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
       `);
       // Remove tools when small
       chartData.toolbox = {
+        right: isLarge ? "5%" : "7%",
         feature: {
-          dataView: { show: isSmall ? false : true, readOnly: false },
-          restore: { show: isSmall ? false : true },
           saveAsImage: { show: isSmall ? false : true },
         },
       };
     },
-    [theme, granIsDay, isSmall, msgType, plotType]
+    [theme, granIsDay, isSmall, isLarge, msgType, plotType]
   );
 
   // Build Chart with data

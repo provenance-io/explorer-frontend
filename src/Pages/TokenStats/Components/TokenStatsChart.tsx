@@ -16,21 +16,31 @@ const StyledMessage = styled.div`
 
 // Chart constants
 const chartData = {
+  color: [''],
   tooltip: {
     trigger: 'item',
+    // Needed format for TypeScript
+    // eslint-disable-next-line no-empty-pattern
+    formatter: ({}: Params) => '',
   },
   legend: {
     top: '5%',
     left: 'center',
+    itemGap: 20,
+    textStyle: {
+      color: '',
+    },
   },
   series: [
     {
       type: 'pie',
+      data: {},
       radius: ['40%', '70%'],
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
         borderWidth: 2,
+        borderColor: '',
       },
       label: {
         show: false,
@@ -50,8 +60,29 @@ const chartData = {
   ],
 };
 
+interface DataProps {
+  circulation: {
+    amount: string;
+  };
+  communityPool: {
+    amount: string;
+  };
+  bonded: {
+    amount: string;
+  };
+  currentSupply: {
+    amount: string;
+  };
+}
+
+interface Params {
+  name: string;
+  seriesName: string;
+  data: {value: string, name: string};
+}
+
 // Format token data to value:, name: array
-const getDataArray = data => [
+const getDataArray = (data: DataProps) => [
   {
     value: (parseFloat(data.circulation.amount) / 1e9).toFixed(0),
     name: 'Circulation',
@@ -97,10 +128,10 @@ const TokenStatsChart = () => {
       chartData.legend.textStyle = {
         color: theme.FONT_PRIMARY,
       };
-      chartData.tooltip.formatter = params => {
-        const percent = (params.data.value / totalHash) * 100;
+      chartData.tooltip.formatter = (params: Params) => {
+        const percent = (parseFloat(params.data.value) / totalHash) * 100;
         return `${params.data.name} Hash<br />
-              Amount: ${formatDenom(params.data.value, 'hash', { decimal: 0 })}<br />
+              Amount: ${formatDenom(parseFloat(params.data.value), 'hash', { decimal: 0 })}<br />
               Percent: ${percent < 0.01 ? percent.toFixed(5) : percent.toFixed(2)}%`;
       };
     },
@@ -114,15 +145,16 @@ const TokenStatsChart = () => {
 
   // Build Chart with data
   useEffect(() => {
+    let chart: echarts.ECharts | undefined;
     if (!isEmpty(networkTokenStats)) {
       // Calculate total Hash
-      const totalHash = parseFloat(networkTokenStats.currentSupply.amount) / (1e9).toFixed(0);
+      const totalHash = (parseFloat(networkTokenStats.currentSupply.amount) / (1e9)).toFixed(0);
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
-      let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
-      if (!echart) echart = echarts.init(chartElementRef.current);
-      setChart(echart);
+      if (chartElementRef.current) {
+        chart = echarts.getInstanceByDom(chartElementRef.current) || echarts.init(chartElementRef.current);
+      }
       // Update the chart with the data
       buildChartData(getDataArray(networkTokenStats), totalHash);
       chart && chart.setOption(chartData);

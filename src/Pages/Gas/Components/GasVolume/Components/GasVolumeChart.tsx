@@ -30,15 +30,16 @@ const chartData = {
     right: '20%',
   },
   toolbox: {
+    right: "",
     feature: {
-      dataView: { show: true, readOnly: false },
-      restore: { show: true },
       saveAsImage: { show: true },
     },
   },
   legend: {
     data: ['Gas Used', 'Gas Wanted', 'Fee'],
     textStyle: {},
+    itemGap: 20,
+    padding: 0,
   },
   xAxis: [
     {
@@ -132,7 +133,7 @@ interface GasVolumeProps {
 interface ParamsArray {
   name: string;
   seriesName: string;
-  data: {value: string};
+  data: {value: string, name: string};
 }
 
 const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
@@ -140,6 +141,7 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
   const chartElementRef = useRef(null);
   const theme = useTheme();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
+  const { matches: isLarge } = useMediaQuery(breakpoints.up('md'));
   const granIsDay = gasVolumeGran === 'day';
 
   const gasVolumeCount = data.length;
@@ -194,7 +196,7 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
             </div>`
             idx++;
         });
-        returnString = `<div>${day}</div> ${returnString}`;
+        returnString = `<div>${granIsDay ? day : params[0].data.name}</div> ${returnString}`;
         return returnString;
       }
       // Set chart data items
@@ -223,14 +225,13 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
       };
       // Tool view
       chartData.toolbox = {
+        right: isLarge ? "5%" : "7%",
         feature: {
-          dataView: { show: isSmall ? false : true, readOnly: false },
-          restore: { show: isSmall ? false : true },
           saveAsImage: { show: isSmall ? false : true },
         },
       };
     },
-    [theme, granIsDay, isSmall]
+    [theme, granIsDay, isSmall, isLarge]
   );
 
   // Build Chart with data

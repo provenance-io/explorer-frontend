@@ -7,13 +7,11 @@ import { useApp, useValidators, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 
 const StyledChart = styled.div`
-  height: 300px;
-  width: 80%;
-  margin: 0 auto;
-  @media ${breakpoints.down('lg')} {
-    height: 350px;
-    width: 100%;
-  }
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  height: 350px;
+  width: 100%;
 `;
 
 const TopValidators = () => {
@@ -23,9 +21,11 @@ const TopValidators = () => {
   const { topCount } = useApp();
   const { getTopValidators, topValidatorsLoading, topValidators } = useValidators();
   const theme = useTheme();
-  const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
+  const { matches: sizeSm } = useMediaQuery(breakpoints.down('md'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
   const { matches: sizeLg } = useMediaQuery(breakpoints.between('md', 'lg'));
+  const { matches: sizeXl } = useMediaQuery(breakpoints.up('lg'));
+  const { matches: sizeHuge } = useMediaQuery(breakpoints.up('xl'));
   const totalTopValidators = topValidators.length;
 
   useEffect(() => {
@@ -36,9 +36,6 @@ const TopValidators = () => {
     } else if (totalTopValidators > 0) {
       // Top validators loaded, render the chart
       // Change the size of the chart and where the center of it is based on screen size
-      const chartRadius = (sizeSm && '70%') || (sizeMd && '70%') || (sizeLg && '60%') || '90%';
-      const chartCenter = (sizeSm && ['50%', '65%']) ||
-        (sizeMd && ['50%', '50%']) || ['40%', '50%'];
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       let echart = echarts.getInstanceByDom(chartElementRef.current);
@@ -48,8 +45,6 @@ const TopValidators = () => {
       setChart(echart);
       // Function to return the full set of finalized chart data
       const buildChartData = () => {
-        // Legend data shows the validators, their name, and their color on the right
-        const legendData = [];
         // Series data, this is the information in the actual drawn-out chart
         const seriesData = [];
         // Track selected validators (able to toggle them on/off in the legend)
@@ -58,8 +53,6 @@ const TopValidators = () => {
         topValidators.forEach(({ votingPower, moniker, addressId }) => {
           const name = moniker ? maxLength(moniker, 20) : maxLength(addressId, 20);
           const value = votingPower?.count;
-          // Add to legendData
-          legendData.push(name);
           // Add to seriesData
           seriesData.push({ value, name });
           // Add to selectedData (default to true/visible)
@@ -95,20 +88,18 @@ const TopValidators = () => {
           },
           // The legend/key on the right side showing color/name
           legend: {
-            type: 'plain',
-            orient: 'vertical',
-            right: 5,
-            top: 0,
-            bottom: 0,
-            data: legendData,
-            selected: selectedData,
+            type: !sizeXl ? 'scroll' : 'plain',
+            orient: !sizeXl ? 'horizontal' : 'vertical',
+            right: !sizeXl ? '2%' : sizeHuge ? '15%' : '6%',
+            top: !sizeXl ? '2%' : '6%',
+            itemGap: !sizeXl ? 30 : 10,
             textStyle: { color: theme.FONT_PRIMARY },
           },
           // The data actually populating the pie chart
           series: [
             {
-              radius: chartRadius,
-              center: chartCenter,
+              center: !sizeXl ? ['50%', '60%'] : ['30%', '50%'],
+              radius: !sizeXl ? '70%' : sizeHuge ? '90%' : '60%',
               type: 'pie',
               data: seriesData,
               label: {
@@ -129,7 +120,12 @@ const TopValidators = () => {
       const chartData = buildChartData();
       // Update the chart with the data
       chart && chart.setOption(chartData);
+      chart && chart.setOption(chartData);
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [
     setChart,
     chart,
@@ -140,6 +136,8 @@ const TopValidators = () => {
     sizeSm,
     sizeMd,
     sizeLg,
+    sizeXl,
+    sizeHuge,
     theme,
     totalTopValidators,
   ]);
