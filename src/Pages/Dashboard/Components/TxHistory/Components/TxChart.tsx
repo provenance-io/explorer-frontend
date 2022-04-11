@@ -215,16 +215,6 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
       return format(parseISO(date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm');
     });
 
-    //let priceHistoryRange: ValueProps[] = [];
-    //if (priceHistory.length > 0) {
-    //  priceHistoryRange = xAxisShort.map(date => {
-    //    const found = priceHistory.find((price: PriceHistoryProps) => date === price.trade_timestamp.slice(0,10));
-    //    return({ 
-    //      value: found?.price || dailyPrice.last_price,
-    //      name: date,
-    //    })
-    //  });
-    //};
     const transactions = txHistory.map(({ numberTxs, date }: TxMapProps) => ({
       value: numberTxs,
       name: date,
