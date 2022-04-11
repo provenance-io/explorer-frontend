@@ -259,11 +259,12 @@ const reducer = handleActions(
       };
     },
     [`${GET_VALIDATORS_RECENT}_${SUCCESS}`](state, { payload }) {
-      const { pages: validatorsPages, results: validators } = payload;
+      const { pages: validatorsPages, results: validators, total: validatorsTotal } = payload;
       return {
         ...state,
         validators,
         validatorsPages,
+        validatorsTotal,
         validatorsRecentLoading: false,
       };
     },
