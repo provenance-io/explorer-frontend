@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { useTxs, useMediaQuery, useNetwork } from 'redux/hooks';
+import { useTxs, useMediaQuery, useNetwork, useOrderbook } from 'redux/hooks';
 import { breakpoints } from 'consts';
 
 const StyledChart = styled.div`
@@ -32,7 +32,7 @@ const chartData = {
     right: '20%',
   },
   legend: {
-    data: ['Transactions', 'Fees (hash)'],
+    data: ['Transactions', 'Fees (USD)'],
     textStyle: {},
     itemGap: 20,
     padding: 0,
@@ -76,7 +76,7 @@ const chartData = {
     },
     {
       type: 'value',
-      name: 'Fees (hash)',
+      name: 'Fees (USD)',
       axisTick: {
         inside: true,
         show: true,
@@ -124,7 +124,7 @@ const chartData = {
       },
     },
     {
-      name: 'Fees (hash)',
+      name: 'Fees (USD)',
       type: 'line',
       showSymbol: false,
       smooth: true,
@@ -136,6 +136,44 @@ const chartData = {
     },
   ],
 };
+
+// Checks value array against date array. If values are missing, add
+// previous day's values
+const fillGaps = (dateArray: string[], valueArray: ValueProps[]) => {
+  if (dateArray.length !== valueArray.length && valueArray.length > 0) {
+    let idx = 0;
+    dateArray.forEach(item => {
+      if (idx >= valueArray.length || item !== valueArray[idx].name) {
+        if (idx === 0) {
+          valueArray.unshift({
+            value: valueArray[idx].value,
+            name: item,
+          });
+        }
+        else if (idx >= valueArray.length) {
+          valueArray.push({
+            value: valueArray[idx-1].value,
+            name: item,
+          })
+        }
+        else {
+          valueArray.splice(idx,0,
+            {
+              value: valueArray[idx].value,
+              name: item,
+            })
+        }
+      }
+      idx++;
+    })
+  };
+  return valueArray;
+}
+
+interface ValueProps {
+  value: number;
+  name: string;
+}
 
 interface TxHistoryProps {
   txHistoryGran: string;
@@ -151,11 +189,16 @@ interface FeeMapProps {
   feeAmount: number;
 }
 
+interface PriceHistoryProps {
+  trade_timestamp: string;
+}
+
 const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const { txHistory } = useTxs();
   const { networkGasVolume } = useNetwork();
+  const { priceHistory, dailyPrice } = useOrderbook();
   const theme = useTheme();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
   const { matches: isLg } = useMediaQuery(breakpoints.down('lg'));
@@ -165,10 +208,23 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
 
   const buildChartData = useCallback(() => {
     const xAxisTicks: string[] = [];
+    const xAxisShort: string[] = [];
     const xAxisData = txHistory.map(({ date }: TxMapProps) => {
       xAxisTicks.push(date);
+      xAxisShort.push(date.slice(0,10));
       return format(parseISO(date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm');
     });
+
+    let priceHistoryRange: ValueProps[] = [];
+    if (priceHistory.length > 0) {
+      priceHistoryRange = xAxisShort.map(date => {
+        const found = priceHistory.find((price: PriceHistoryProps) => date === price.trade_timestamp.slice(0,10));
+        return({ 
+          value: found?.price || dailyPrice.last_price,
+          name: date,
+        })
+      });
+    };
     const transactions = txHistory.map(({ numberTxs, date }: TxMapProps) => ({
       value: numberTxs,
       name: date,
@@ -179,36 +235,11 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
     }));
 
     // Check against xAxisTicks if any fees are missing. If so, add in the previous day's fees
-    if (xAxisTicks.length !== fees.length && fees.length > 0) {
-      let idx = 0;
-      xAxisTicks.forEach(item => {
-        if (idx >= fees.length || item !== fees[idx].name) {
-          if (idx === 0) {
-            fees.unshift({
-              value: fees[idx].value,
-              name: item,
-            });
-          }
-          else if (idx >= fees.length) {
-            fees.push({
-              value: fees[idx-1].value,
-              name: item,
-            })
-          }
-          else {
-            fees.splice(idx,0,
-              {
-                value: fees[idx].value,
-                name: item,
-              })
-          }
-        }
-        idx++;
-      })
-    };
+    fillGaps(xAxisTicks, fees);
+    fillGaps(xAxisShort, priceHistoryRange);
 
     // Now set chart data dynamically
-    chartData.color = [theme.CHART_LINE_MAIN, theme.CHART_PIE_K];
+    chartData.color = [theme.CHART_LINE_MAIN, theme.CHART_PIE_YES];
     // X axis
     chartData.xAxis[0].data = xAxisData;
     chartData.xAxis[0].axisLabel.color = theme.FONT_PRIMARY;
@@ -230,15 +261,23 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
       ]);
     chartData.yAxis[0].splitLine.lineStyle.color = theme.FONT_PRIMARY;
     // Y axis: fees (right side)
-    chartData.yAxis[1].axisLine.lineStyle.color = theme.CHART_PIE_K;
+    chartData.yAxis[1].axisLine.lineStyle.color = theme.CHART_PIE_YES;
     chartData.yAxis[1].offset = isSmall ? -14 : 0;
     chartData.yAxis[1].axisLabel.color = theme.FONT_PRIMARY;
     chartData.yAxis[1].axisLabel.rotate = isLg ? -45 : 0;
-    chartData.series[1].data = fees;
-    chartData.yAxis[1].axisLabel.color = theme.CHART_PIE_K;
+    let count = 0;
+    chartData.series[1].data = fees.map(({ value, name }: ValueProps) => {
+      const conversion = (value*priceHistoryRange[count].value).toFixed(2);
+      count++;
+      return {
+        value: conversion,
+        name,
+      }
+    });
+    chartData.yAxis[1].axisLabel.color = theme.CHART_PIE_YES;
     // Tooltip
     chartData.tooltip.axisPointer.lineStyle.color = theme.CHART_LINE_MAIN;
-  }, [txHistory, networkGasVolume, granIsDay, isSmall, isLg, theme]);
+  }, [txHistory, networkGasVolume, granIsDay, isSmall, isLg, theme, priceHistory, dailyPrice.last_price]);
   // Legend
   chartData.legend.textStyle = {
     color: theme.FONT_PRIMARY,

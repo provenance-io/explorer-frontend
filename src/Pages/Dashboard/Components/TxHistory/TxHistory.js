@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import { Content, Loading, Filters } from 'Components';
-import { useTxs, useMediaQuery, useNetwork } from 'redux/hooks';
+import { useTxs, useMediaQuery, useNetwork, useOrderbook } from 'redux/hooks';
 import { breakpoints, TRANSACTION_HISTORY_GRANULARITY_OPTIONS } from 'consts';
 import { getUTCTime, subtractDays } from 'utils';
 import { TxChart } from './Components';
@@ -36,6 +36,7 @@ const TxHistory = () => {
 
   const { txHistoryLoading, getTxHistory } = useTxs();
   const { getNetworkGasVolume } = useNetwork();
+  const { priceHistory } = useOrderbook();
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
 
@@ -141,15 +142,21 @@ const TxHistory = () => {
       title={`${txHistoryDayRange}-Day ${sizeMd || sizeSm ? 'Tx' : 'Transaction'} History`}
       link={{ to: '/txs', title: 'View All' }}
     >
-      <FiltersWrapper>
-        {filterError && <FilterError>{filterError}</FilterError>}
-        <Filters
-          filterData={filterData}
-          mustApply={{ title: 'Apply', action: applyFilters }}
-          flush
-        />
-      </FiltersWrapper>
-      {txHistoryLoading ? <Loading /> : <TxChart txHistoryGran={txHistoryGran} />}
+      {priceHistory.length > 0 ? (
+        <>
+          <FiltersWrapper>
+            {filterError && <FilterError>{filterError}</FilterError>}
+            <Filters
+              filterData={filterData}
+              mustApply={{ title: 'Apply', action: applyFilters }}
+              flush
+            />
+          </FiltersWrapper>
+          {txHistoryLoading ? <Loading /> : <TxChart txHistoryGran={txHistoryGran} />}
+        </>
+      ) : (
+        <Loading />
+      )}
     </Content>
   );
 };
