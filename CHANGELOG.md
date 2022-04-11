@@ -9,6 +9,7 @@
 - Fix jailedUntil in Validator #292
 - Fix delegators pagination view #298
 - Fix account accordion dropdowns #303
+- Fix filter for transactions chart #313
 
 ### Features
 - Update asset price per unit calcs for new data object #296
