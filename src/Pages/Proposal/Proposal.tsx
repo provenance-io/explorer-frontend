@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 // @ts-ignore
 import { useParams } from 'react-router-dom';
 import { Wrapper, Header, Section, Loading } from 'Components';
-import { useGovernance, /*useAccounts, useApp*/ } from 'redux/hooks';
-//import { isEmpty } from 'utils';
+import { useGovernance, useAccounts, useApp } from 'redux/hooks';
+import { isEmpty } from 'utils';
 import {
   ProposalDeposits,
   ProposalInformation,
@@ -16,18 +16,17 @@ import {
 
 const Proposal = () => {
   const { proposalId } = useParams();
-  const { /*proposal,*/ proposalLoading, getProposal } = useGovernance();
-  //const { timings } = proposal;
-  //const { accountAssets } = useAccounts();
-  //const hashBalance: { amount: string, denom: string } = accountAssets?.find((b: { amount: string, denom: string }) => b.denom === 'nhash');
-  //const hasHash = !isEmpty(hashBalance) && parseFloat(hashBalance.amount) > 0;
-  //const { isLoggedIn } = useApp();
+  const { proposal, proposalLoading, getProposal } = useGovernance();
+  const { timings } = proposal;
+  const { accountAssets } = useAccounts();
+  const hashBalance: { amount: string, denom: string } = accountAssets?.find((b: { amount: string, denom: string }) => b.denom === 'nhash');
+  const hasHash = !isEmpty(hashBalance) && parseFloat(hashBalance.amount) > 0;
+  const { isLoggedIn } = useApp();
 
-  const canVote = false;
-                  //!isEmpty(timings)
-                  //&& (new Date().getTime()) > (new Date(timings.depositEndTime).getTime())
-                  //&& isLoggedIn
-                  //&& hasHash;
+  const canVote = !isEmpty(timings)
+                  && (new Date().getTime()) > (new Date(timings.depositEndTime).getTime())
+                  && isLoggedIn
+                  && hasHash;
 
   useEffect(() => {
     getProposal(proposalId);

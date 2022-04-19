@@ -19,6 +19,7 @@
 - Add fee stats to transactions chart on dashboard #301
 - Hide voting feature in production #309
 - Change fees to USD, correct number of validators #311
+- Add back in voting feature #317
 
 ## 2.6.0
 
