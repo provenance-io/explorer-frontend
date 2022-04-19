@@ -23,10 +23,10 @@ const Proposal = () => {
   const hasHash = !isEmpty(hashBalance) && parseFloat(hashBalance.amount) > 0;
   const { isLoggedIn } = useApp();
 
-  const canVote = true;//!isEmpty(timings)
-                  //&& (new Date().getTime()) > (new Date(timings.depositEndTime).getTime())
-                  //&& isLoggedIn
-                  //&& hasHash;
+  const canVote = !isEmpty(timings)
+                  && (new Date().getTime()) > (new Date(timings.depositEndTime).getTime())
+                  && isLoggedIn
+                  && hasHash;
 
   useEffect(() => {
     getProposal(proposalId);

@@ -215,6 +215,17 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        // Check that voting times are not the default time starting in 1901
+        case 'votingTime.endTime': //fallthrough
+        case 'votingTime.startTime': {
+          const value = serverValue
+            ? getUTCTime(serverValue).slice(0, 4) !== '1901'
+              ? `${getUTCTime(serverValue)}+UTC`
+              : '--'
+            : 'N/A';
+          finalObj[dataName] = { value, raw: serverValue };
+          break;
+        }
         // Convert given time to standard readable UTC string
         case 'depositEndTime': // fallthrough
         case 'lastUpdated': // fallthrough
@@ -224,9 +235,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': // fallthrough
         case 'txTimestamp': // fallthrough
-        case 'txTime': // fallthrough
-        case 'votingTime.endTime': //fallthrough
-        case 'votingTime.startTime': {
+        case 'txTime': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;

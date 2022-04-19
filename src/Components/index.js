@@ -28,4 +28,5 @@ export { default as Modal } from './Modal';
 export { default as Input } from './Input';
 export { default as InfiniteScroll } from './InfiniteScroll';
 export { default as Progress } from './Progress';
+export { default as Forms } from './Forms';
 export * from './Layout';

@@ -41,9 +41,11 @@ const Dialog = styled.div`
 `;
 
 const Content = styled.div`
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
+  max-height: 90vh;
+  overflow-y: auto;
   padding: 2.4rem;
   width: 100%;
   border-radius: 4px;

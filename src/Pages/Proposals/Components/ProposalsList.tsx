@@ -62,10 +62,8 @@ const ProposalsList = () => {
           modalOpen={modalFns.modalOpen}
           onClose={modalFns.deactivateModalOpen}
           onProposal={handleProposal}
-          proposalId={proposalMax}
-          description={"blah"}
-          voterId={address}
-          title={"blah"}
+          proposalId={`${proposalMax}`}
+          proposerId={address}
         />
       </Section>
     )}

@@ -5,6 +5,7 @@ import useEvent from 'react-tiny-hooks/use-event';
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useApp } from 'redux/hooks';
 import OgButton from 'Components/Button';
+import { ACCESS_TYPES, PROPOSAL_TYPES } from 'consts';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -13,7 +14,7 @@ const Button = styled(OgButton)`
 /**
  * @typedef {Object} Proposal
  * @property {function} handleProposal - The function to handle proposal submission
- * @property {function} ManageVotingBtn - React component connected to the modalFns
+ * @property {function} ManageProposalBtn - React component connected to the modalFns
  * @property {object} modalFns - The items to handle the modal
  * @property {boolean} modalFns.modalOpen - If modal should be open
  * @property {function} modalFns.toggleOpen - Function to toggle the modalOpen boolean
@@ -61,20 +62,89 @@ const useProposal = () => {
     return () => timeout && clearTimeout(timeout);
   }, [shouldPull]);
 
-  const handleProposal = (content, initialDeposit, proposalId) => {
+  const handleProposal = (content, initialDepositList, proposer, type) => {
     if (!isLoggedIn) return;
+    const proposalType = {
+      [PROPOSAL_TYPES.TEXT]: 'TextProposal',
+      [PROPOSAL_TYPES.SOFTWARE_UPGRADE]: 'SoftwareUpgradeProposal',
+      [PROPOSAL_TYPES.CANCEL_SOFTWARE_UPGRADE]: 'CancelSoftwareUpgradeProposal',
+      [PROPOSAL_TYPES.STORE_CODE]: 'StoreCodeProposal',
+      [PROPOSAL_TYPES.INSTANTIATE_CODE]: 'InstantiateCodeProposal',
+      [PROPOSAL_TYPES.PARAMS_CHANGE]: 'ParameterChangeProposal',
+    }[type];
     let msg;
-    if (content) {
-      msg = {
-        content,
-        initialDeposit,
-        proposalId,
-      };
-    } else {
-      console.warn(`A description of the proposal must be provided.`);
+
+    switch (type) {
+      case PROPOSAL_TYPES.TEXT: // fallthrough
+      case PROPOSAL_TYPES.CANCEL_SOFTWARE_UPGRADE: // fallthrough
+      case PROPOSAL_TYPES.INSTANTIATE_CODE: // fallthrough
+      case PROPOSAL_TYPES.PARAMS_CHANGE: // fallthrough
+        msg = {
+          content,
+          initialDepositList,
+          proposer,
+          proposalType,
+        };
+        break;
+      case PROPOSAL_TYPES.SOFTWARE_UPGRADE: {
+        const { title, description, name, height, info } = content;
+        const softwareUpgradeContent = {
+          title,
+          description,
+          plan: {
+            name,
+            height,
+            info,
+          },
+        };
+        msg = {
+          content: softwareUpgradeContent,
+          initialDepositList,
+          proposer,
+          proposalType,
+        };
+        break;
+      }
+      case PROPOSAL_TYPES.STORE_CODE: {
+        const { title, description, runAs, wasmByteCode, address, accessType } = content;
+        const access = {
+          [ACCESS_TYPES.NOBODY]: 1,
+          [ACCESS_TYPES.ONLY_ADDRESS]: 2,
+          [ACCESS_TYPES.EVERYBODY]: 3,
+        }[accessType];
+        switch (accessType) {
+          case ACCESS_TYPES.NOBODY: // fallthrough
+          case ACCESS_TYPES.ONLY_ADDRESS: // fallthrough
+          case ACCESS_TYPES.EVERYBODY:
+            break;
+          default:
+            console.warn(
+              `Invalid access type. You have selected "${access}", which is not supported`
+            );
+        }
+        const storeCodeContent = {
+          title,
+          description,
+          runAs,
+          wasmByteCode,
+          instantiatePermission: {
+            permission: access,
+            address,
+          },
+        };
+        msg = {
+          content: storeCodeContent,
+          initialDepositList,
+          proposer,
+          proposalType,
+        };
+        break;
+      }
+      default:
+        console.warn(`${type} is not supported.`);
     }
 
-    if (msg) {
+    if (proposalType) {
       const builtMsg = messageService.buildMessage('MsgSubmitProposal', msg);
       const msgAnyB64 = messageService.createAnyMessageBase64('MsgSubmitProposal', builtMsg);
       walletService.transaction({ msgAnyB64 });
