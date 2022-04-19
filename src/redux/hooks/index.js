@@ -9,6 +9,7 @@ export { default as useIbc } from './useIbc';
 export { default as useInterval } from './useInterval';
 export { default as useMediaQuery } from './useMediaQuery';
 export { default as useOrderbook } from './useOrderbook';
+export { default as useProposal } from './useProposal';
 export { default as useRedux } from './useRedux';
 export { default as useStaking } from './useStaking';
 export { default as useTxs } from './useTxs';

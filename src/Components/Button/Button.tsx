@@ -12,6 +12,7 @@ interface ButtonProps {
   onClick?: () => void;
   children: React.ReactNode;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -60,6 +61,7 @@ const Button = ({
   onClick = () => {},
   children,
   disabled = false,
+  type,
 }: ButtonProps) => (
   <StyledButton
     className={className}
@@ -71,6 +73,7 @@ const Button = ({
       }
     }}
     disabled={disabled}
+    type={type}
   >
     <ButtonContent>{children}</ButtonContent>
     {icon && (
