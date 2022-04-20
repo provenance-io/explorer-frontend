@@ -11,6 +11,7 @@
 - Fix account accordion dropdowns #303
 - Fix filter for transactions chart #313
 - Fix proposal denom to use nhash #320
+- Fix some FE formatting issues #319
 
 ### Features
 - Update asset price per unit calcs for new data object #296

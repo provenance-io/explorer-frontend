@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 // @ts-ignore
 import { useParams } from 'react-router-dom';
+import { useWallet } from '@provenanceio/wallet-lib';
 import { Wrapper, Header, Section, Loading } from 'Components';
 import { useGovernance, useAccounts, useApp } from 'redux/hooks';
 import { isEmpty } from 'utils';
@@ -18,15 +19,31 @@ const Proposal = () => {
   const { proposalId } = useParams();
   const { proposal, proposalLoading, getProposal } = useGovernance();
   const { timings } = proposal;
-  const { accountAssets } = useAccounts();
+  const { accountAssets, getAccountAssets } = useAccounts();
+  const { walletService } = useWallet();
+  const { isLoggedIn } = useApp();
   const hashBalance: { amount: string, denom: string } = accountAssets?.find((b: { amount: string, denom: string }) => b.denom === 'nhash');
   const hasHash = !isEmpty(hashBalance) && parseFloat(hashBalance.amount) > 0;
-  const { isLoggedIn } = useApp();
+  const {
+    state: { address },
+  } = walletService;
+
+  const votingIsOpen = !isEmpty(timings) 
+                       // Check to make sure voting time is valid
+                       && timings.votingTime.startTime.slice(0,4) !== '1901'
+                       // Check for if we are at a time after start time
+                       && (new Date().getTime()) > (new Date(timings.votingTime.startTime).getTime())
+                       // Check that we are before the end time
+                       && (new Date().getTime()) < (new Date(timings.votingTime.endTime).getTime());
 
   const canVote = !isEmpty(timings)
-                  && (new Date().getTime()) > (new Date(timings.depositEndTime).getTime())
+                  && votingIsOpen
                   && isLoggedIn
                   && hasHash;
+
+  useEffect(() => {
+    getAccountAssets({ address });
+  },[getAccountAssets, address]);
 
   useEffect(() => {
     getProposal(proposalId);

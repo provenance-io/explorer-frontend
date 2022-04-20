@@ -40,12 +40,12 @@ const Dialog = styled.div`
   }
 `;
 
-const Content = styled.div`
-  position: absolute;
+const Content = styled.div<{ largeModal: boolean }>`
+  position: ${({ largeModal }) => largeModal ? 'absolute' : 'relative'};
   display: flex;
   flex-direction: column;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: ${({ largeModal }) => largeModal && '90vh'};
+  overflow-y: ${({ largeModal }) => largeModal && 'auto'};
   padding: 2.4rem;
   width: 100%;
   border-radius: 4px;
@@ -69,9 +69,10 @@ interface ModalProps {
   children: React.ReactElement;
   isOpen?: boolean;
   onClose: () => void;
+  largeModal?: boolean;
 }
 
-const Modal = React.memo(({ children, isOpen = false, onClose }: ModalProps) => {
+const Modal = React.memo(({ children, isOpen = false, onClose, largeModal = false }: ModalProps) => {
   const theme = useTheme();
   useOnEscape(onClose);
 
@@ -79,7 +80,7 @@ const Modal = React.memo(({ children, isOpen = false, onClose }: ModalProps) => 
     <Wrapper isOpen={isOpen}>
       <Overlay />
       <Dialog>
-        <Content>
+        <Content largeModal={largeModal}>
           <Sprite icon="CLOSE" color={theme.FONT_PRIMARY} size="2rem" onClick={onClose} />
           <Body>{children}</Body>
         </Content>

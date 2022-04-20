@@ -122,7 +122,6 @@ const TxMsgs = () => {
         case 'granter': // fallthrough
         case 'grantee': //fallthrough
         case 'sender': //fallthrough
-        case 'contract': //fallthrough
         case 'account': //fallthrough
         case 'owner': //fallthrough
         case 'manager': //fallthrough
@@ -145,7 +144,8 @@ const TxMsgs = () => {
             value,
             link: `/asset/${value}`,
           };
-        case 'scopeUuid':
+        case 'scopeUuid': //fallthrough
+        case 'scopeId':
           return {
             title,
             value,
