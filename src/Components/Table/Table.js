@@ -51,8 +51,9 @@ const TableData = styled.td`
   display: ${({ copy }) => (copy ? 'flex' : '')};
   align-items: ${({ copy }) => (copy ? 'center' : '')};
   border: none;
-  text-decoration: ${({ skipped }) => skipped && 'line-through'};
-  font-style: ${({ skipped }) => skipped && 'italic'};
+  text-decoration: ${({ skipped, scheduled }) => skipped && !scheduled && 'line-through'};
+  font-style: ${({ skipped, scheduled }) => (skipped || scheduled) && 'italic'};
+  color: ${({ color }) => color && color};
 `;
 const Pagination = styled(BasePagination)`
   display: flex;
@@ -185,11 +186,14 @@ const Table = ({
 
         const {
           link = false,
+          externalLink = '',
           value = '--',
           hover = false,
           icon,
           skipped = false,
-          color = theme.FONT_LINK,
+          scheduled = false,
+          iconColor = theme.FONT_LINK,
+          color = '',
           size = '1.4rem',
           copy = false,
           blockImage = {},
@@ -207,9 +211,11 @@ const Table = ({
           <TableData
             title={hover || value}
             key={displayName}
-            skipped={skipped}
+            skipped={skipped && !scheduled}
+            scheduled={scheduled}
             copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
             center={center}
+            color={color}
             // Adjusts padding if an icon is added in to the table
             tablePadding={(!isEmpty(headerIcon) || !isEmpty(headerBlockImage)) && '10px 50px'}
           >
@@ -228,13 +234,18 @@ const Table = ({
             {link && !valueMissing && link !== pathname ? (
               <Link to={link}>
                 {finalValue}
-                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </Link>
             ) : (
               <>
-                {value}
-                {icon && <Sprite icon={icon} size={size} color={color} />}
+                {externalLink && (
+                  <a href={externalLink} target="_blank" rel="noreferrer">
+                    {value}
+                  </a>
+                )}
+                {!externalLink && value}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </>
             )}

@@ -1,11 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { isEmpty, formatDenom } from 'utils';
 import styled, { useTheme } from 'styled-components';
 import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
-import { useMediaQuery, useTxs } from 'redux/hooks';
+import { useTxs } from 'redux/hooks';
 import { breakpoints } from 'consts';
-import { useParams } from 'react-router-dom';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -29,16 +28,19 @@ const chartData = {
   },
   // The legend/key on the right side showing color/name
   legend: {
-    type: 'plain',
-    orient: 'vertical',
-    right: 5,
-    top: 0,
-    bottom: 0,
+    top: '0%',
+    left: 'center',
+    itemGap: 20,
+    textStyle: {
+      color: '',
+    },
   },
   // The data actually populating the pie chart
   series: [
     {
       type: 'pie',
+      radius: '70%',
+      avoidLabelOverlap: false,
       label: {
         show: false,
       },
@@ -89,25 +91,17 @@ const TxFees = () => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
-  const { txHash } = useParams();
-  const { getTxInfo, txInfo, txInfoLoading } = useTxs();
+  const { txInfo, txInfoLoading } = useTxs();
   const haveTxInfo = !isEmpty(txInfo);
-  const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
-  const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
-  const { matches: sizeLg } = useMediaQuery(breakpoints.between('md', 'lg'));
 
   // Break out/format fees
   const fees = haveTxInfo && txInfo.fee.map(fee => getFees(fee));
 
-  // Change the size of the chart and where the center of it is based on screen size
-  const chartRadius = useMemo(
-    () => (sizeSm && '70%') || (sizeMd && '70%') || (sizeLg && '60%') || '90%',
-    [sizeSm, sizeMd, sizeLg]
-  );
-  const chartCenter = useMemo(
-    () => (sizeSm && ['50%', '65%']) || (sizeMd && ['50%', '50%']) || ['40%', '50%'],
-    [sizeSm, sizeMd]
-  );
+  // Calculate total fees
+  let totalFees = 0;
+  if (fees) {
+    fees.forEach(item => (totalFees += parseFloat(item.amount)));
+  }
 
   // Function to build the variable chart elements
   const buildChartData = useCallback(
@@ -122,16 +116,11 @@ const TxFees = () => {
       chartData.legend.textStyle = { color: theme.FONT_PRIMARY };
       chartData.legend.selected = selectedData;
       chartData.series[0].data = seriesData;
-      chartData.series[0].radius = chartRadius;
-      chartData.series[0].center = chartCenter;
     },
-    [theme, chartRadius, chartCenter]
+    [theme]
   );
 
-  // Get the Transaction Info
-  useEffect(() => {
-    getTxInfo(txHash);
-  }, [getTxInfo, txHash]);
+  // Transaction info comes from main page
 
   useEffect(() => {
     // Only render if transaction info is available
@@ -141,19 +130,26 @@ const TxFees = () => {
       let echart = echarts.getInstanceByDom(chartElementRef.current);
       // if it isn't initialized then init
       if (!echart) echart = echarts.init(chartElementRef.current);
-      // Refresh on window resize
-      window.allCharts.push(echart);
       setChart(echart);
       // Build the dataset
       const data = addData(fees);
       // Update the chart with the data
       buildChartData(data.seriesData, data.legendData, data.selectedData);
       chart && chart.setOption(chartData);
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, buildChartData, chart, fees]);
 
   return (
-    <Content alignItems="flex-start" alignContent="flex-start" icon="PRICE" title="Fees">
+    <Content
+      alignItems="flex-start"
+      alignContent="flex-start"
+      icon="PRICE"
+      title={`Fees: ${formatDenom(totalFees, 'hash', { decimal: 4 })}`}
+    >
       {txInfoLoading ? (
         <Loading />
       ) : haveTxInfo ? (

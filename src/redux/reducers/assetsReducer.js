@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { formatDenom, setCookie, getCookie } from 'utils';
+import { formatDenom, setCookie } from 'utils';
 import {
   GET_ASSET_INFO,
   GET_ASSET_ADMIN_TRANSACTIONS,
@@ -7,6 +7,7 @@ import {
   GET_ASSET_HOLDERS,
   GET_ASSETS_LIST,
   GET_ASSET_METADATA,
+  GET_ASSETS_DIST,
 } from '../actions/assetsActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -30,9 +31,12 @@ export const initialState = {
   assets: [],
   assetsLoading: false,
   // Asset Metadata
-  assetMetadata: JSON.parse(getCookie('assetMetadata', true)) || [],
+  assetMetadata: [],
   assetMetadataLoading: false,
   assetMetadataFailed: false,
+  // Assets distribution
+  assetsDist: [],
+  assetsDistLoading: false,
 };
 
 const reducer = handleActions(
@@ -204,6 +208,7 @@ const reducer = handleActions(
       };
     },
     [`${GET_ASSET_METADATA}_${SUCCESS}`](state, { payload: assetMetadata }) {
+      // Used by currencyFormat
       setCookie('assetMetadata', JSON.stringify(assetMetadata), 5);
 
       return {
@@ -217,6 +222,36 @@ const reducer = handleActions(
         ...state,
         assetMetadataLoading: false,
         assetMetadataFailed: true,
+      };
+    },
+    /* -----------------
+    GET_ASSETS_DIST
+    -------------------*/
+    [`${GET_ASSETS_DIST}_${REQUEST}`](state) {
+      return {
+        ...state,
+        assetsDistLoading: true,
+      };
+    },
+    [`${GET_ASSETS_DIST}_${SUCCESS}`](state, { payload }) {
+      return {
+        ...state,
+        assetsDist: payload.map(a => {
+          a.amountHash = formatDenom(a.amount.amount, a.amount.denom, { decimal: 0 });
+          const percentTotal = parseFloat(a.percent) * 100;
+          a.percentTotal =
+            (percentTotal < 0.01 ? percentTotal.toFixed(5) : percentTotal.toFixed(2)) + '%';
+          // Replace last entry - with +
+          if (a.range === payload.slice(-1)[0].range) a.range = a.range.replace('-', '+');
+          return a;
+        }),
+        assetsDistLoading: false,
+      };
+    },
+    [`${GET_ASSETS_DIST}_${FAILURE}`](state) {
+      return {
+        ...state,
+        assetsDistLoading: false,
       };
     },
   },

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
+import { isEmpty } from 'utils';
 import Sprite from '../Sprite';
 
 const SelectInput = styled.div`
@@ -86,7 +86,9 @@ const findDefaultOption = (options = {}) => {
   // Normally would use forEach, but I want to break the chain/loop once we find a default (save resources)
   for (let i = 0; i < keys.length; i += 1) {
     const option = options[keys[i]];
-    if (option.isDefault) return keys[i];
+    if (option.isDefault) {
+      return keys[i];
+    }
   }
   return null;
 };
@@ -100,13 +102,15 @@ const findDefaultFolder = (defaultOption = {}) => {
   // Normally would use forEach, but I want to break the chain/loop once we find a default (save resources)
   for (let i = 0; i < optionKeys.length; i += 1) {
     const option = options[optionKeys[i]];
-    if (option.isDefault) return option;
+    if (option.isDefault) {
+      return option;
+    }
   }
   // If no option is selected as the default, just pick the first one in the folder...
   return options[optionKeys][0];
 };
 
-const SelectFolders = ({ allOptions, action, maxHeight }) => {
+const SelectFolders = ({ allOptions, action, maxHeight, setDefaults }) => {
   const defaultOption = findDefaultOption(allOptions);
   const defaultFolder = findDefaultFolder(allOptions[defaultOption]);
   const [activeFilter, setActiveFilter] = useState(defaultOption);
@@ -115,7 +119,23 @@ const SelectFolders = ({ allOptions, action, maxHeight }) => {
   const [activeFilterTitle, setActiveFilterTitle] = useState(allOptions[defaultOption].title);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = (e) => {
+  // Set defaults if provided
+  useEffect(() => {
+    if (!isEmpty(setDefaults)) {
+      if (setDefaults.Filter) {
+        setActiveFilter(setDefaults.Filter);
+      }
+      if (setDefaults.Folder) {
+        setActiveFolder(setDefaults.Folder);
+      }
+      if (setDefaults.FilterTitle) {
+        setActiveFilterTitle(setDefaults.FilterTitle);
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const toggleMenu = e => {
     // Don't let this event bubble
     e.stopPropagation();
     setMenuOpen(!menuOpen);
@@ -124,7 +144,7 @@ const SelectFolders = ({ allOptions, action, maxHeight }) => {
   const buildOptions = (options, isChild) => {
     const optionKeys = Object.keys(options);
     // Loop through all first layer of options
-    return optionKeys.map((optionItemKey) => {
+    return optionKeys.map(optionItemKey => {
       // Shape with up to 3 keys: title, options, and default
       const optionItem = options[optionItemKey];
       const { title, options: folderOptions } = optionItem;
@@ -134,15 +154,19 @@ const SelectFolders = ({ allOptions, action, maxHeight }) => {
         <OptionBlock key={`${optionItemKey}_${title}`}>
           {folderOptions ? (
             <OptionFolder onMouseEnter={() => setHoverFolder(optionItemKey)}>
-              <OptionFolderTitle active={activeFolder === optionItemKey}>{title} ></OptionFolderTitle>
-              <OptionFolderItems open={hoverFolder === optionItemKey}>{buildOptions(folderOptions, true)}</OptionFolderItems>
+              <OptionFolderTitle
+                active={activeFolder === optionItemKey}
+              >{`${title} >`}</OptionFolderTitle>
+              <OptionFolderItems open={hoverFolder === optionItemKey}>
+                {buildOptions(folderOptions, true)}
+              </OptionFolderItems>
             </OptionFolder>
           ) : (
             <OptionItem
               // If top-layer item (non-child), need to close already open folder
               onMouseEnter={() => (!isChild ? setHoverFolder(null) : null)}
               active={activeFilter === optionItemKey}
-              onClick={(e) => {
+              onClick={e => {
                 // Don't let this event bubble
                 e.stopPropagation();
                 // Close the menu since an option was selected
@@ -172,7 +196,13 @@ const SelectFolders = ({ allOptions, action, maxHeight }) => {
     <SelectInput onClick={() => setMenuOpen(true)} onBlur={() => setMenuOpen(false)} tabIndex="0">
       <SelectInputValueContainer>
         <SelectInputValue>{activeFilterTitle}</SelectInputValue>
-        <Sprite icon="CHEVRON" size="1.0rem" color="ICON_PRIMARY" spin={menuOpen ? '90' : '-90'} onClick={toggleMenu} />
+        <Sprite
+          icon="CHEVRON"
+          size="1.0rem"
+          color="ICON_PRIMARY"
+          spin={menuOpen ? '90' : '-90'}
+          onClick={toggleMenu}
+        />
       </SelectInputValueContainer>
       {menuOpen && (
         <SelectFoldersContainer>
@@ -188,10 +218,12 @@ SelectFolders.propTypes = {
   allOptions: PropTypes.object.isRequired,
   action: PropTypes.func.isRequired,
   maxHeight: PropTypes.string,
+  setDefaults: PropTypes.object,
 };
 
 SelectFolders.defaultProps = {
   maxHeight: null,
+  setDefaults: {},
 };
 
 export default SelectFolders;

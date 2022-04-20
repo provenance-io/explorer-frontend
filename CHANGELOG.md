@@ -3,24 +3,54 @@
 ## Unreleased
 
 ### Bug fixes
+- Fix issues with gas stats charts #286
+- Fix how message types are displayed #288
+- Fix validator display #290
+- Fix jailedUntil in Validator #292
+- Fix delegators pagination view #298
+- Fix account accordion dropdowns #303
+- Fix filter for transactions chart #313
+- Fix proposal denom to use nhash #320
+- Fix some FE formatting issues #319
 
-- Fix account button rendering issues #249
-- Fix listing truncations and new unbonding objects #251
-- Rerender echarts on page resize #241
+### Features
+- Update asset price per unit calcs for new data object #296
+- Add message type gas statistics #260
+- Add calls to getAssetMetadata where explicitly needed #283
+- Add buttons for governance voting #242
+- Add fee stats to transactions chart on dashboard #301
+- Hide voting feature in production #309
+- Change fees to USD, correct number of validators #311
+- Add back in voting feature #317
+- Add smart contract views #146
+
+## 2.6.0
+
+### Release Name: Estevanico
+
+### Bug fixes
+
+- Fix account button rendering issues [#249](https://github.com/provenance-io/explorer-frontend/issues/249)
+- Fix listing truncations and new unbonding objects [#251](https://github.com/provenance-io/explorer-frontend/issues/251)
+- Rerender echarts on page resize [#241](https://github.com/provenance-io/explorer-frontend/issues/241)
+- Minor fixes [#273](https://github.com/provenance-io/explorer-frontend/issues/273)
+- Fix params page after object change [#275](https://github.com/provenance-io/explorer-frontend/issues/275)
 
 ### Features
 
-- Add date-defined chart for dlob price history #189
-- Move 24-hr volume block to hash dashboard #236
-- Make y-axis dynamic based on zoom min/max values #238
-- Add account delegations/unbondings to account page #218
-- Add pagination to account assets #224
-- Add vote indicator for block validators #167
-- Add account attributes #244
-- Add validator icons #248
-- Add IBC UI #130
-- Migrate orderbook to gecko API #255
-- Add smart contract views #146
+- Add date-defined chart for dlob price history [#189](https://github.com/provenance-io/explorer-frontend/issues/189)
+- Move 24-hr volume block to hash dashboard [#236](https://github.com/provenance-io/explorer-frontend/issues/236)
+- Make y-axis dynamic based on zoom min/max values [#238](https://github.com/provenance-io/explorer-frontend/issues/238)
+- Add account delegations/unbondings to account page [#218](https://github.com/provenance-io/explorer-frontend/issues/218)
+- Add pagination to account assets [#224](https://github.com/provenance-io/explorer-frontend/issues/224)
+- Add vote indicator for block validators [#167](https://github.com/provenance-io/explorer-frontend/issues/167)
+- Add account attributes [#244](https://github.com/provenance-io/explorer-frontend/issues/244)
+- Add validator icons [#248](https://github.com/provenance-io/explorer-frontend/issues/248)
+- Add IBC UI [#130](https://github.com/provenance-io/explorer-frontend/issues/130)
+- Migrate orderbook to gecko API [#255](https://github.com/provenance-io/explorer-frontend/issues/255)
+- Add 24 hr changes to validator list view [#263](https://github.com/provenance-io/explorer-frontend/issues/263)
+- Add chain params to network dropdown [#144](https://github.com/provenance-io/explorer-frontend/issues/144)
+- Add token statistics to network dropdown [#258](https://github.com/provenance-io/explorer-frontend/issues/258)
 
 ## 2.5.0
 

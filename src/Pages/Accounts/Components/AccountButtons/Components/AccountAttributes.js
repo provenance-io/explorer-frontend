@@ -35,6 +35,7 @@ const AccountAttributes = () => {
         showChevron
         title={`Attributes (${tableData ? tableData.length : 0})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table isLoading={tableLoading} tableData={tableData} tableHeaders={tableHeaders} />
       </Accordion>

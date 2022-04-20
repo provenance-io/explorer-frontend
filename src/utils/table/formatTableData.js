@@ -215,6 +215,17 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        // Check that voting times are not the default time starting in 1901
+        case 'votingTime.endTime': //fallthrough
+        case 'votingTime.startTime': {
+          const value = serverValue
+            ? getUTCTime(serverValue).slice(0, 4) !== '1901'
+              ? `${getUTCTime(serverValue)}+UTC`
+              : '--'
+            : 'N/A';
+          finalObj[dataName] = { value, raw: serverValue };
+          break;
+        }
         // Convert given time to standard readable UTC string
         case 'depositEndTime': // fallthrough
         case 'lastUpdated': // fallthrough
@@ -224,15 +235,15 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'lastTxTimestamp': // fallthrough
         case 'timestamp': // fallthrough
         case 'txTimestamp': // fallthrough
-        case 'txTime': // fallthrough
-        case 'votingTime.endTime': //fallthrough
-        case 'votingTime.startTime': {
+        case 'txTime': {
           const value = serverValue ? `${getUTCTime(serverValue)}+UTC` : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;
         }
         case 'endTime': {
-          const value = serverValue ? `${getUTCTime(new Date(serverValue.millis))}+UTC` : 'N/A';
+          const value = serverValue
+            ? `${getUTCTime(new Date(serverValue.millis ? serverValue.millis : serverValue))}+UTC`
+            : 'N/A';
           finalObj[dataName] = { value, raw: serverValue };
           break;
         }
@@ -312,7 +323,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Version update events
         case 'events': {
           finalObj[dataName] = {
-            value: dataObj.skipped ? '* Skipped' : dataObj.scheduled ? 'Scheduled' : '',
+            value: dataObj.scheduled ? 'Scheduled' : dataObj.skipped ? '* Skipped' : '',
             hover: serverValue,
             raw: serverValue,
           };
@@ -325,7 +336,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = {
             value: '',
             icon: serverValue ? 'CHECK' : dataName === 'didVote' ? 'CLEAR' : '',
-            color: serverValue ? 'rgb(78, 210, 44)' : 'red',
+            iconColor: serverValue ? 'rgb(78, 210, 44)' : 'red',
             size: '2.0rem',
           };
           break;
@@ -335,11 +346,20 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Set text styles
         case 'upgradeHeight': // fallthrough
-        case 'upgradeName': // fallthrough
         case 'currentVersion':
           finalObj[dataName] = {
             value: serverValue,
             skipped: dataObj.skipped,
+            scheduled: dataObj.scheduled,
+          };
+          break;
+        // Add upgrade name url
+        case 'upgradeName':
+          finalObj[dataName] = {
+            value: serverValue,
+            externalLink: dataObj.releaseUrl,
+            skipped: dataObj.skipped,
+            scheduled: dataObj.scheduled,
           };
           break;
         // Attribute data
@@ -357,7 +377,43 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value: capitalize(state) };
           break;
         }
+        // Replace null with --
+        case 'hr24Change':
+          finalObj[dataName] = {
+            value: serverValue || '--',
+            color: serverValue > 0 ? 'rgb(78, 210, 44)' : serverValue < 0 ? 'red' : '',
+          };
+          break;
+        // Break up pricing object
+        case 'pricePerToken': // fallthrough
+        case 'supply.pricePerToken': {
+          const decimals = dataObj.displayDenom === 'hash' ? 3 : 2;
+          finalObj[dataName] = {
+            value: serverValue
+              ? `$${formatDenom(
+                  dataObj.exponent
+                    ? serverValue.amount * 10 ** dataObj.exponent
+                    : serverValue.amount,
+                  serverValue.denom,
+                  { decimal: decimals, minimumFractionDigits: decimals }
+                )}`
+              : dataName === 'pricePerToken'
+              ? '--'
+              : '-- --',
+          };
+          break;
+        }
+
+        case 'totalBalancePrice.amount':
+          finalObj[dataName] = {
+            value: formatDenom(serverValue, 'USD', { decimal: 2 }),
+          };
+          break;
+
         // Server value already correct
+        case 'percentTotal': // fallthrough
+        case 'amountHash': // fallthrough
+        case 'range': // fallthrough
         case 'chainId': // fallthrough
         case 'channelStats': // fallthrough
         case 'srcChannel': // fallthrough
@@ -368,8 +424,9 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'unbondingHeight': // fallthrough
         case 'currency': // fallthrough
         case 'delegators': // fallthrough
-        case 'pricePerToken': // fallthrough
         case 'totalBalancePrice': // fallthrough
+        case 'param_name': // fallthrough
+        case 'value': // fallthrough
         case 'proposerPriority':
           finalObj[dataName] = { value: serverValue };
           break;
@@ -385,9 +442,16 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         // Server value capitalized, remove VOTE_OPTION_
-        case 'answer':
-          finalObj[dataName] = { value: capitalize(serverValue.replace(/vote_option_/gi, '')) };
+        case 'answer': {
+          const voteString = Object.keys(serverValue).map(
+            vote =>
+              `${capitalize(vote.replace(/vote_option_/gi, ''))} (${
+                serverValue[vote] ? parseFloat(serverValue[vote]) * 100 : '--'
+              }%); `
+          );
+          finalObj[dataName] = { value: voteString.join(' ') };
           break;
+        }
         case 'proposalStatus': // fallthrough
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue.replace(/proposal_status/gi, '')) };

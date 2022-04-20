@@ -10,12 +10,14 @@ const AssetsList = () => {
     assetsLoading: tableLoading,
     assetsPages: tablePages,
     assetMetadata,
+    getAssetMetadata,
     getAssetsList: getTableData,
   } = useAssets();
 
   const tableData = assets.map(a => ({
     ...a,
     displayDenom: assetMetadata.find(md => md.base === a.marker)?.display,
+    exponent: assetMetadata.find(md => md.base === a.marker)?.denomUnits[1].exponent,
   }));
 
   useEffect(() => {
@@ -23,12 +25,13 @@ const AssetsList = () => {
       page: tableCurrentPage,
       count: tableCount,
     });
-  }, [getTableData, tableCount, tableCurrentPage]);
+    getAssetMetadata();
+  }, [getTableData, tableCount, tableCurrentPage, getAssetMetadata]);
 
   const tableHeaders = [
     { displayName: 'Name', dataName: 'marker' },
     { displayName: 'Total Supply', dataName: 'supply' },
-    { displayName: 'Price Per Unit', dataName: 'pricePerToken' },
+    { displayName: 'Price Per Unit', dataName: 'supply.pricePerToken' },
     { displayName: 'Total Value', dataName: 'totalBalancePrice' },
     { displayName: 'Holding Account', dataName: 'holdingAccount' },
     { displayName: 'Marker Type', dataName: 'markerType' },

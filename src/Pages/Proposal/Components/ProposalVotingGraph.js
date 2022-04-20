@@ -33,7 +33,7 @@ const ProposalVotingGraph = () => {
   const progressData = [
     // yes
     {
-      color: 'CHART_PIE_A',
+      color: 'CHART_PIE_G',
       content: () => (
         <div>
           <div>Yes</div>
@@ -45,7 +45,7 @@ const ProposalVotingGraph = () => {
     },
     // no
     {
-      color: 'CHART_PIE_H',
+      color: 'CHART_PIE_NO',
       content: () => (
         <div>
           <div>No</div>
@@ -58,7 +58,7 @@ const ProposalVotingGraph = () => {
     },
     // noWithVeto
     {
-      color: 'CHART_PIE_C',
+      color: 'CHART_PIE_NOWITHVETO',
       content: () => (
         <div>
           <div>NoWithVeto</div>
@@ -71,7 +71,7 @@ const ProposalVotingGraph = () => {
     },
     // abstain
     {
-      color: 'CHART_PIE_I',
+      color: 'CHART_PIE_ABSTAIN',
       content: () => (
         <div>
           <div>Abstain</div>

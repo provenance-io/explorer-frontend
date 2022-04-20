@@ -95,7 +95,20 @@ const getExternalLinkValue = (externalLink, children) => (
     {children}
   </a>
 );
-const getInternalLinkValue = (internalLink, children) => <Link to={internalLink}>{children}</Link>;
+const getInternalLinkValue = (internalLink, children, splitOnSpace) => {
+  let num = '';
+  if (splitOnSpace) {
+    const splitString = children.split(' ');
+    num = splitString[0] + ' ';
+    children = splitString[1];
+  }
+  return (
+    <Fragment>
+      {splitOnSpace && <SummaryValue>{num}&nbsp;</SummaryValue>}
+      <Link to={internalLink}>{children}</Link>
+    </Fragment>
+  );
+};
 const getCopyValue = (copyValue, title, children) => (
   <Fragment>
     {children} <CopyValue value={copyValue} title={`Copy ${title}`} />
@@ -103,7 +116,17 @@ const getCopyValue = (copyValue, title, children) => (
 );
 
 const buildSummaryValue = (rowData, theme) => {
-  const { value, link, change, externalLink, popupNote, copy, title, isJson } = rowData;
+  const {
+    value,
+    link,
+    change,
+    externalLink,
+    popupNote,
+    copy,
+    title,
+    isJson,
+    splitOnSpace = false,
+  } = rowData;
 
   let finalValue = value;
   if (change) {
@@ -113,7 +136,7 @@ const buildSummaryValue = (rowData, theme) => {
     finalValue = getExternalLinkValue(externalLink, finalValue);
   }
   if (link) {
-    finalValue = getInternalLinkValue(link, finalValue);
+    finalValue = getInternalLinkValue(link, finalValue, splitOnSpace);
   }
   if (copy) {
     finalValue = getCopyValue(copy, title, finalValue);
@@ -160,6 +183,7 @@ Summary.propTypes = {
       change: PropTypes.string,
       externalLink: PropTypes.string,
       copy: PropTypes.node,
+      splitOnSpace: PropTypes.bool,
       popupNote: PropTypes.shape({
         visibility: PropTypes.shape({
           visible: PropTypes.bool,

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { formatDenom } from 'utils';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
@@ -21,15 +22,19 @@ const AccountDelegationsOwner = () => {
     accountDelegationsLoading,
     accountDelegationsPages: tablePages,
     accountDelegationsTotal: { amount, denom },
+    getAccountDelegations,
   } = useAccounts();
+  const { addressId } = useParams();
   const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
   const { isLoggedIn } = useApp();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
+  const tableCount = 5;
 
   useEffect(() => {
     // pulling first 100 validators with status=all
     if (isLoggedIn) getAllValidators();
-  }, [isLoggedIn, getAllValidators]);
+    getAccountDelegations({ address: addressId, page: tableCurrentPage, count: tableCount });
+  }, [isLoggedIn, addressId, getAllValidators, getAccountDelegations, tableCurrentPage]);
 
   useEffect(() => {
     setTableData(
@@ -38,8 +43,6 @@ const AccountDelegationsOwner = () => {
         return { ...validator, ...d };
       })
     );
-
-    setTableCurrentPage(1);
   }, [allValidators, accountDelegations, setTableData]);
 
   const tableHeaders = [
@@ -56,6 +59,7 @@ const AccountDelegationsOwner = () => {
         showChevron
         title={`Delegations (${totalAmount})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table
           changePage={setTableCurrentPage}

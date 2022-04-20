@@ -14,7 +14,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const AccountUnbondings = () => {
-  const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const {
     accountRedelegations,
@@ -46,8 +45,6 @@ const AccountUnbondings = () => {
         })
         .sort((a, b) => a.endTime.millis - b.endTime.millis)
     );
-
-    setTableCurrentPage(1);
   }, [allValidators, accountRedelegations, accountUnbonding, setTableData]);
 
   const tableHeaders = [
@@ -56,7 +53,9 @@ const AccountUnbondings = () => {
     { displayName: 'End Time', dataName: 'endTime' },
   ];
 
-  const totalAmount = formatDenom(rAmount + uAmount, uDenom, { decimal: 2 });
+  const totalAmount = formatDenom(parseFloat(rAmount) + parseFloat(uAmount), uDenom, {
+    decimal: 2,
+  });
 
   return (
     <ButtonWrapper>
@@ -64,14 +63,12 @@ const AccountUnbondings = () => {
         showChevron
         title={`Unbondings/Redelegations (${totalAmount})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table
-          changePage={setTableCurrentPage}
-          currentPage={tableCurrentPage}
           isLoading={accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading}
           tableData={tableData}
           tableHeaders={tableHeaders}
-          totalPages={1}
         />
       </Accordion>
     </ButtonWrapper>

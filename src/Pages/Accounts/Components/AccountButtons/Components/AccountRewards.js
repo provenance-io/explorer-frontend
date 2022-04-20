@@ -14,7 +14,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const AccountRewards = () => {
-  const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
   const { accountRewards, accountRewardsLoading, getAccountRewards } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
@@ -42,8 +41,6 @@ const AccountRewards = () => {
         return { totalBalancePrice, ...validator, ...d };
       })
     );
-
-    setTableCurrentPage(1);
   }, [accountRewards, allValidators, setTableData]);
 
   const tableHeaders = [
@@ -66,14 +63,12 @@ const AccountRewards = () => {
         showChevron
         title={`Rewards (${totalRewards})`}
         titleFont={`font-weight: bold; font-size: 1.4rem`}
+        dontDrop
       >
         <Table
-          changePage={setTableCurrentPage}
-          currentPage={tableCurrentPage}
           isLoading={accountRewardsLoading || allValidatorsLoading}
           tableData={tableData.filter(element => element.totalBalancePrice)}
           tableHeaders={tableHeaders}
-          totalPages={1}
         />
       </Accordion>
     </ButtonWrapper>
