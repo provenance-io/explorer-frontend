@@ -50,6 +50,8 @@ const TxMsgs = () => {
   } = useTxs();
   const { txHash } = useParams();
 
+  console.log(txMsgs);
+
   // Get chaincode prefixes
   useEffect(() => {
     if (isEmpty(chaincodePrefixes)) {
@@ -82,6 +84,7 @@ const TxMsgs = () => {
 
   // Determine link prefix
   const getPrefix = value => {
+    console.log(value);
     const prefix = chaincodePrefixes
       // Sort the response of prefixes so longest are first
       .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
@@ -97,6 +100,7 @@ const TxMsgs = () => {
     { title: 'Tx Type', value: capitalize(msg.type) },
     ...Object.entries(msg?.msg).map(([key, value]) => {
       const title = camelToSentence(key);
+      console.log(key);
       switch (key) {
         case 'amount': {
           let amt = formatDenom(value.amount, value.denom);
@@ -122,7 +126,6 @@ const TxMsgs = () => {
         case 'granter': // fallthrough
         case 'grantee': //fallthrough
         case 'sender': //fallthrough
-        case 'contract': //fallthrough
         case 'account': //fallthrough
         case 'owner': //fallthrough
         case 'manager': //fallthrough
@@ -145,7 +148,8 @@ const TxMsgs = () => {
             value,
             link: `/asset/${value}`,
           };
-        case 'scopeUuid':
+        case 'scopeUuid': //fallthrough
+        case 'scopeId':
           return {
             title,
             value,

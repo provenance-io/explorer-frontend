@@ -145,7 +145,7 @@ const ManageProposalModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleModalClose}>
+    <Modal isOpen={isOpen} onClose={handleModalClose} largeModal={true}>
       <Formik
         enableReinitialize
         initialValues={{
