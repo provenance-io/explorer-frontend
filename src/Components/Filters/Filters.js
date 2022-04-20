@@ -32,11 +32,18 @@ const FilterTitle = styled.div`
 const Filters = ({ filterData, mustApply, flush }) => {
   const buildFilterItems = () =>
     filterData.map(filterItem => {
-      const { type, title, options, action, maxHeight } = filterItem;
+      const { type, title, options, action, maxHeight, setDefaults } = filterItem;
       const buildFilterType = () => {
         switch (type) {
           case 'dropdown':
-            return <SelectFolders allOptions={options} action={action} maxHeight={maxHeight} />;
+            return (
+              <SelectFolders
+                allOptions={options}
+                action={action}
+                maxHeight={maxHeight}
+                setDefaults={setDefaults}
+              />
+            );
           case 'datepicker':
             return <DatePicker {...options} />;
           default:
@@ -77,6 +84,7 @@ Filters.propTypes = {
       options: PropTypes.object,
       action: PropTypes.func,
       maxHeight: PropTypes.string,
+      setDefaults: PropTypes.object,
     })
   ).isRequired,
 };

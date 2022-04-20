@@ -387,6 +387,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Break up pricing object
         case 'pricePerToken': // fallthrough
         case 'supply.pricePerToken': {
+          const decimals = dataObj.displayDenom === 'hash' ? 3 : 2;
           finalObj[dataName] = {
             value: serverValue
               ? `$${formatDenom(
@@ -394,7 +395,7 @@ export const formatTableData = (data = [], tableHeaders) => {
                     ? serverValue.amount * 10 ** dataObj.exponent
                     : serverValue.amount,
                   serverValue.denom,
-                  { decimal: 2, minimumFractionDigits: 2 }
+                  { decimal: decimals, minimumFractionDigits: decimals }
                 )}`
               : dataName === 'pricePerToken'
               ? '--'

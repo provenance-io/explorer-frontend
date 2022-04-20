@@ -100,12 +100,16 @@ const TxMsgs = () => {
       switch (key) {
         case 'amount': {
           let amt = formatDenom(value.amount, value.denom);
+          let denom = value.denom;
           if (isArray(value)) {
+            denom = value[0].denom;
             amt = value.map(v => formatDenom(v.amount, v.denom)).join(', ');
           }
           return {
             title,
             value: amt,
+            link: `/asset/${denom}`,
+            splitOnSpace: true,
           };
         }
         case 'delegatorAddress': //fallthrough
@@ -115,6 +119,14 @@ const TxMsgs = () => {
         case 'toAddress': // fallthrough
         case 'voter': //fallthrough
         case 'validatorAddr': //fallthrough
+        case 'granter': // fallthrough
+        case 'grantee': //fallthrough
+        case 'sender': //fallthrough
+        case 'contract': //fallthrough
+        case 'account': //fallthrough
+        case 'owner': //fallthrough
+        case 'manager': //fallthrough
+        case 'administrator': //fallthrough
         case 'validatorAddress': {
           return {
             title,
@@ -127,7 +139,18 @@ const TxMsgs = () => {
             title,
             value: `${getUTCTime(value)}+UTC`,
           };
-
+        case 'denom':
+          return {
+            title,
+            value,
+            link: `/asset/${value}`,
+          };
+        case 'scopeUuid':
+          return {
+            title,
+            value,
+            link: `/nft/${value}`,
+          };
         default:
           if (isArray(value) || isObject(value)) {
             return { title, value: JSON.stringify(value), isJson: true };

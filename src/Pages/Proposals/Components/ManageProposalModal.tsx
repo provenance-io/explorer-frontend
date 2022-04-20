@@ -96,6 +96,7 @@ const ManageProposalModal = ({
   const { blocksHeight, getBlocksHeight } = useBlocks();
   const [proposalType, setProposalType] = useState('text');
 
+  // Get content for proposal message
   const getContent = (values: ProposalProps) => {
     const emptyObj: ItemProps = {};
     proposalData(values.dropdown).forEach((item) => {
@@ -154,7 +155,7 @@ const ManageProposalModal = ({
         validationSchema={proposalValidations(proposalType, blockNumber)}
         onSubmit={(values: ProposalProps, { resetForm }) => {
             // Submit proposal message
-            onProposal(getContent(values), [{amount: values.initialDeposit, denom: 'hash'}], proposerId, proposalType)
+            onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit)*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType)
             // Clear the form
             resetForm();
             // Close modal
@@ -172,7 +173,6 @@ const ManageProposalModal = ({
                 onChange={handleChange}
               >
                 {Object.keys(PROPOSAL_TYPES).map((key) => {
-                  //const proposal = PROPOSAL_TYPES[key as keyof typeof PROPOSAL_TYPES];
                   const proposal = PROPOSAL_TYPES[key];
                   return (
                     <Option key={proposal} value={proposal}>{capitalize(proposal)}</Option>

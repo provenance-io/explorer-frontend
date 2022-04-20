@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Content, Loading, Filters, Section } from 'Components';
 import { useNetwork, useMediaQuery, useTxs } from 'redux/hooks';
 import { breakpoints, GAS_GRANULARITY_OPTIONS } from 'consts';
-import { getUTCTime, subtractDays, capitalize } from 'utils';
+import { getUTCTime, subtractDays, capitalize, isEmpty } from 'utils';
 import { GasStatsChart } from './Components';
 
 const FiltersWrapper = styled.div`
@@ -31,7 +31,7 @@ const GasStats = () => {
   const defaultGranularity = 'day';
 
   const { networkGasStats, networkGasStatsLoading, getNetworkGasStats } = useNetwork();
-  const { txTypesNoFormat, txTypes, txTypesLoading, getTxTypes } = useTxs();
+  const { txTypes, txTypesLoading, getTxTypes } = useTxs();
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
 
@@ -54,30 +54,7 @@ const GasStats = () => {
   const endDate = new Date(cleanHistoryFrom);
 
   // Check if txTypes exist
-  const txTypesExist = Object.keys(txTypes).length > 0;
-
-  // Sort Tx types by type
-  const AllTxTypes = txTypesNoFormat.sort((a, b) => {
-    if (a.type < b.type) {
-      return -1;
-    }
-    if (a.type > b.type) {
-      return 1;
-    }
-    return 0;
-  });
-  // Get Tx types into Filter Format
-  const txTypesAll = {};
-  AllTxTypes.forEach(item => {
-    const isDefault = item.type === 'send';
-    txTypesAll[item.type] = {
-      title: capitalize(item.type.replaceAll('_', ' ')),
-      isDefault,
-    };
-  });
-
-  // Add all tx types to list
-  txTypesAll[''] = { title: 'Average All Tx Types' };
+  const txTypesExist = !isEmpty(txTypes);
 
   // On initial load get the gasStats for the default time period
   useEffect(() => {
@@ -145,6 +122,13 @@ const GasStats = () => {
     }
   };
 
+  // Set default to transfer
+  if (txTypesExist) {
+    txTypes.allTxTypes.isDefault = false;
+    txTypes.transfer.isDefault = true;
+    txTypes.transfer.options.send.isDefault = true;
+  }
+
   const filterData = [
     {
       title: 'From:',
@@ -180,7 +164,12 @@ const GasStats = () => {
       title: 'Message Type:',
       type: 'dropdown',
       maxHeight: '30rem',
-      options: txTypesAll,
+      options: txTypes, //txTypesAll,
+      setDefaults: {
+        Filter: 'Send',
+        Folder: 'Transfer',
+        FilterTitle: 'Send',
+      },
       action: updateFilterType,
     },
     {
