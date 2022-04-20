@@ -100,12 +100,16 @@ const TxMsgs = () => {
       switch (key) {
         case 'amount': {
           let amt = formatDenom(value.amount, value.denom);
+          let denom = value.denom;
           if (isArray(value)) {
+            denom = value[0].denom;
             amt = value.map(v => formatDenom(v.amount, v.denom)).join(', ');
           }
           return {
             title,
             value: amt,
+            link: `/asset/${denom}`,
+            splitOnSpace: true,
           };
         }
         case 'delegatorAddress': //fallthrough
