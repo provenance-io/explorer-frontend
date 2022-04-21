@@ -2,6 +2,7 @@ import accountsReducer from './accountsReducer';
 import appReducer from './appReducer';
 import assetsReducer from './assetsReducer';
 import blocksReducer from './blocksReducer';
+import contractReducer from './contractReducer';
 import faucetReducer from './faucetReducer';
 import governanceReducer from './governanceReducer';
 import ibcReducer from './ibcReducer';
@@ -16,6 +17,7 @@ const rootReducer = {
   appReducer,
   assetsReducer,
   blocksReducer,
+  contractReducer,
   faucetReducer,
   governanceReducer,
   ibcReducer,

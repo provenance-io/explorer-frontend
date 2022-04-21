@@ -3,6 +3,7 @@ export { default as useApp } from './useApp';
 export { default as useAssets } from './useAssets';
 export { default as useBlocks } from './useBlocks';
 export { default as useColorScheme } from './useColorScheme';
+export { default as useContracts } from './useContracts';
 export { default as useFaucet } from './useFaucet';
 export { default as useGovernance } from './useGovernance';
 export { default as useIbc } from './useIbc';

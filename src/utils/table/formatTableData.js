@@ -42,6 +42,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'ownerAddress': // fallthrough
         case 'holdingAccount': // fallthrough
         case 'delegatorAddr': // fallthrough
+        case 'creator': // fallthrough
+        case 'admin': // fallthrough
         case 'address':
           finalObj[dataName] = {
             value: maxLength(serverValue, 11, 3),
@@ -98,8 +100,25 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         }
+        // Address or hash leading to contract details page
+        case 'contractAddress':
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            link: `/contract/${serverValue}`,
+            hover: serverValue,
+          };
+          break;
+        // Address or hash leading to code details page
+        case 'codeId':
+          finalObj[dataName] = {
+            value: maxLength(serverValue, 11, 3),
+            link: `/code/${serverValue}`,
+            hover: serverValue,
+          };
+          break;
         // Address or hash without a link anywhere
         case 'consensusAddress':
+        case 'dataHash': // fallthrough
         case 'specAddr':
           finalObj[dataName] = { value: maxLength(serverValue, 11, 3), hover: serverValue };
           break;
@@ -411,6 +430,8 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
 
         // Server value already correct
+        case 'creationHeight': // fallthrough
+        case 'label': // fallthrough
         case 'percentTotal': // fallthrough
         case 'amountHash': // fallthrough
         case 'range': // fallthrough
@@ -453,6 +474,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         }
         case 'proposalStatus': // fallthrough
+        case 'txStatus': //fallthrough
         case 'status':
           finalObj[dataName] = { value: capitalize(serverValue.replace(/proposal_status/gi, '')) };
           break;
