@@ -19,6 +19,8 @@ const ContentSpacer = styled.div`
   ${({ alignContent }) => alignContent && `align-content: ${alignContent};`};
   background: ${({ theme }) => theme.BACKGROUND_CONTENT};
   border: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
+  border-bottom: ${({ borderBottom }) => borderBottom && borderBottom};
+  border-top: ${({ borderTop }) => borderTop && borderTop};
   flex-wrap: wrap;
   height: 100%;
   justify-content: ${({ justify }) => justify};
@@ -62,6 +64,8 @@ const Content = ({
   alignContent,
   headerContent,
   headerMargin,
+  borderTop,
+  borderBottom,
 }) => {
   const { to: linkTo, title: linkTitle } = link;
   const showHeader = title || icon || linkTo || linkTitle;
@@ -77,7 +81,13 @@ const Content = ({
 
   return (
     <ContentWrapper size={size} className={className} alignSelf={alignSelf}>
-      <ContentSpacer justify={justify} alignItems={alignItems} alignContent={alignContent}>
+      <ContentSpacer
+        justify={justify}
+        alignItems={alignItems}
+        alignContent={alignContent}
+        borderBottom={borderBottom}
+        borderTop={borderTop}
+      >
         {showHeader && buildHeader()}
         {children}
       </ContentSpacer>
@@ -98,6 +108,8 @@ Content.propTypes = {
   className: PropTypes.string,
   headerContent: PropTypes.node,
   headerMargin: PropTypes.string,
+  borderBottom: PropTypes.string,
+  borderTop: PropTypes.string,
 };
 
 Content.defaultProps = {
@@ -113,6 +125,8 @@ Content.defaultProps = {
   link: {},
   headerContent: '',
   headerMargin: null,
+  borderTop: '',
+  borderBottom: '',
 };
 
 export default Content;

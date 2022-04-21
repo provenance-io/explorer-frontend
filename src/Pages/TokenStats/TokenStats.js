@@ -3,10 +3,10 @@ import { Wrapper } from 'Components';
 import { TokenStatsChart, AssetsDist } from './Components';
 
 const TokenStats = () => (
-    <Wrapper>
-      <TokenStatsChart />
-      <AssetsDist />
-    </Wrapper>
-  );
+  <Wrapper>
+    <TokenStatsChart />
+    <AssetsDist />
+  </Wrapper>
+);
 
 export default TokenStats;

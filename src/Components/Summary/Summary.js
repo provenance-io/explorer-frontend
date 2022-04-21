@@ -158,13 +158,19 @@ const buildSummaryValue = (rowData, theme) => {
 };
 
 const buildSummaryRow = (rowData, theme) => {
-  const { isJson, nobreak = false, title, value } = rowData;
+  const { isJson, nobreak = false, title, value, hover = '' } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
     <SummaryRow key={title} isJson={isJson} nobreak={nobreak}>
       <SummaryTitle>{title}:</SummaryTitle>
-      <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData, theme)}</SummaryValue>
+      {hover ? (
+        <SummaryValue title={hover}>
+          {valueMissing ? '--' : buildSummaryValue(rowData, theme)}
+        </SummaryValue>
+      ) : (
+        <SummaryValue>{valueMissing ? '--' : buildSummaryValue(rowData, theme)}</SummaryValue>
+      )}
     </SummaryRow>
   );
 };
@@ -178,6 +184,7 @@ Summary.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string,
+      hover: PropTypes.string,
       value: PropTypes.node,
       link: PropTypes.string,
       change: PropTypes.string,

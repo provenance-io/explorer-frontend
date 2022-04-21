@@ -85,7 +85,7 @@ const Select = styled.select`
 // This is a basic redirect search bar.  Enter a term and end up on the page for it - not an actual search.  See SearchBarOld.js for real results when they exist
 const SearchBar = () => {
   const [searchTerms, setSearchTerms] = useState('');
-  const [searchType, setSearchType] = useState('block');
+  const [searchType, setSearchType] = useState('address');
   const history = useHistory();
 
   const enterSearchTerms = e => {
@@ -103,6 +103,10 @@ const SearchBar = () => {
       }
       case 'block': {
         history.push(`/block/${searchTerms}`);
+        break;
+      }
+      case 'contract': {
+        history.push(`/contract/${searchTerms}`);
         break;
       }
       case 'validator': {
@@ -148,12 +152,13 @@ const SearchBar = () => {
           label=""
           value={searchType}
         >
-          <option value="block">Block</option>
-          <option value="validator">Validator</option>
-          <option value="tx">Tx</option>
           <option value="address">Address</option>
           <option value="asset">Asset</option>
+          <option value="contract">Contract</option>
+          <option value="block">Block</option>
           <option value="nft">NFT</option>
+          <option value="tx">Tx</option>
+          <option value="validator">Validator</option>
         </Select>
         <SelectArrow>
           <Sprite icon="CARET" size="0.9rem" color="ICON_WHITE" />

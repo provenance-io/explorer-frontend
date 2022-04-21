@@ -2,6 +2,7 @@ import * as accountsActions from './accountsActions';
 import * as appActions from './appActions';
 import * as assetsActions from './assetsActions';
 import * as blocksActions from './blocksActions';
+import * as contractActions from './contractActions';
 import * as faucetActions from './faucetActions';
 import * as governanceActions from './governanceActions';
 import * as ibcActions from './ibcActions';
@@ -17,6 +18,7 @@ export {
   appActions,
   assetsActions,
   blocksActions,
+  contractActions,
   faucetActions,
   governanceActions,
   ibcActions,

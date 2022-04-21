@@ -25,6 +25,10 @@ export const Links = {
     url: Path.IBC_URL,
     title: 'IBC',
   },
+  contracts: {
+    url: Path.CONTRACTS_URL,
+    title: 'Contracts',
+  },
   // Dropdown menu
   network: {
     url: '',

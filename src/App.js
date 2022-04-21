@@ -13,6 +13,9 @@ import {
   Assets,
   Block,
   Blocks,
+  Code,
+  Contract,
+  Contracts,
   Dashboard,
   Faucet,
   Gas,
@@ -62,6 +65,9 @@ const App = () => {
               <Route path="/assets" component={Assets} />
               <Route path="/blocks" component={Blocks} />
               <Route path="/block/:blockHeight" component={Block} />
+              <Route path="/code/:codeId" component={Code} />
+              <Route path="/contract/:contractId" component={Contract} />
+              <Route path="/contracts" component={Contracts} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
               <Route path="/ibc" component={Ibc} />
