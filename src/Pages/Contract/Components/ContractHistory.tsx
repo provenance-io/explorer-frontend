@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 // @ts-ignore
-import { Content as BaseContent, Summary, Loading } from 'Components';
+import { Content as BaseContent, Summary, SummaryDataProps, Loading } from 'Components';
 import { useContracts, useMediaQuery } from 'redux/hooks';
-import { maxLength } from 'utils';
+import { maxLength, camelToSentence } from 'utils';
 import { breakpoints } from 'consts';
 
 const Content = styled(BaseContent)`
@@ -24,17 +24,7 @@ const ContractHistory = () => {
     msg,
   } = contractHistory[0];
 
-  const {
-    recovery_admin,
-    lp,
-    capital_denom,
-    min_commitment,
-    max_commitment,
-    capital_per_share,
-    min_days_of_notice,
-  } = msg;
-
-  const summaryDataOne = [
+  const summaryDataOne: SummaryDataProps = [
     {
       title: 'Operation',
       value: operation || '--',
@@ -42,67 +32,78 @@ const ContractHistory = () => {
     },
   ];
 
-  const summaryDataTwo = [
+  const summaryDataTwo: SummaryDataProps = [
     {
       title: 'Code ID',
       value: codeId ? maxLength(codeId, 14,'6') : '--',
       link: codeId ? `/code/${codeId}` : '',
       hover: codeId,
     },
-    {
-      title: 'Recovery Admin',
-      value: recovery_admin ? maxLength(recovery_admin,14,'6') : '--',
-      link: recovery_admin ? `/accounts/${recovery_admin}` : '',
-      hover: recovery_admin,
-      copy: recovery_admin,
-    },
-    {
-      title: 'LP',
-      value: lp ? maxLength(lp,14,'6') : '--',
-      link: `/accounts/${lp}` || '',
-      hover: lp,
-      copy: lp,
-    },
-    {
-      title: 'Capital Denom',
-      value: capital_denom ? maxLength(capital_denom, 14,'6') : '--',
-      link: capital_denom ? `/asset/${capital_denom}` : '',
-    },
-    {
-      title: 'Min Commitment',
-      value: min_commitment || '--',
-    },
-    {
-      title: 'Max Commitment',
-      value: max_commitment || '--',
-    },
-    {
-      title: 'Capital Per Share',
-      value: capital_per_share || '--',
-    },
-    {
-      title: 'Min Days of Notice',
-      value: min_days_of_notice || '--',
-    },
   ];
+
+  const getLinkList = (values: string[], prefix: string) => (
+    values.map(value => prefix + value)
+  );
+
+  const getMsgs: SummaryDataProps = Object.entries(msg)?.map(([key, value]) => {
+    const title = camelToSentence(key);
+    switch(key) {
+      case 'convertible_base_denoms': // fallthrough
+      case 'supported_quote_denoms': // fallthrough
+      case 'capital_denom': // fallthrough
+      case 'base_denom':
+        return {
+          title,
+          value: Array.isArray(value) ? value : maxLength(value, 14, '6'),
+          link: Array.isArray(value) ? null : `/asset/${value}`,
+          list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : null,
+          linkList: Array.isArray(value) ? getLinkList(value, '/asset/') : null,
+        };
+      case 'approvers': // fallthrough
+      case 'recovery_admin': // fallthrough
+      case 'lp': // fallthrough
+      case 'executors':
+        return {
+          title,
+          value: Array.isArray(value) ? value : maxLength(value, 14, '6'),
+          link: Array.isArray(value) ? null : `/accounts/${value}`,
+          list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : null,
+          linkList: Array.isArray(value) ? getLinkList(value, '/accounts/') : null,
+        };
+      default: 
+        return {
+          title,
+          value: Array.isArray(value) ? value : maxLength(value, 14, '6'),
+          list: Array.isArray(value) ? value.map(val => maxLength(val,20,'6')) : null,
+        };
+    };
+  });
 
   return (
     <>
-    <Content
-      title="Contract History"
-    >
-      {contractHistoryLoading ? <Loading /> : 
-          <Summary data={summaryDataOne} />
-      }
-    </Content>
-    <Content
-      borderTop='none'
-    >
-      {contractHistoryLoading ? <Loading /> : 
-        <Summary data={summaryDataTwo} />
-      }
-    </Content>
-  </>
+      <Content
+        title="Contract History"
+      >
+        {contractHistoryLoading ? <Loading /> : 
+            <Summary data={summaryDataOne} />
+        }
+      </Content>
+      <Content
+        borderTop='none'
+        borderBottom='none'
+      >
+        {contractHistoryLoading ? <Loading /> : 
+            <Summary data={summaryDataTwo} />
+        }
+      </Content>
+      <Content
+        borderTop='none'
+      >
+        {contractHistoryLoading ? <Loading /> : 
+          <Summary data={getMsgs} />
+        }
+      </Content>
+    </>
   );
 };
 

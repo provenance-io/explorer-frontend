@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+// @ts-ignore
 import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
 import { breakpoints } from 'consts';
@@ -10,16 +10,16 @@ import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
 import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '../DataRow';
 
-const SummaryRow = styled(DataRow)`
+const SummaryRow = styled(DataRow)<{ nobreak: boolean, isJson: boolean }>`
   word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
   @media ${breakpoints.up('md')} {
     flex-basis: ${({ isJson }) => (isJson ? 100 : 50)}%;
   }
 `;
-const SummaryChange = styled.div`
+const SummaryChange = styled.div<{ negative: boolean }>`
   color: ${({ negative, theme }) => (negative ? theme.RED_DARK : theme.GREEN_PRIMARY)};
 `;
-const NoteContainer = styled.div`
+const NoteContainer = styled.div<{ fontColor: string }>`
   position: relative;
   margin-left: 6px;
   ${({ fontColor }) => fontColor && `color: ${fontColor};`}
@@ -31,16 +31,44 @@ const NoteRow = styled.div`
   align-items: flex-start;
   word-break: normal;
 `;
-const NoteTitle = styled.div`
+const NoteTitle = styled.div<{ titleMinWidth: string }>`
   min-width: ${({ titleMinWidth }) => (titleMinWidth ? titleMinWidth : '100px')};
 `;
-const NoteValue = styled.div`
+const NoteValue = styled.div<{ noteMinWidth: string }>`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   display: flex;
   min-width: ${({ noteMinWidth }) => (noteMinWidth ? noteMinWidth : '100px')};
 `;
+const UL = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0px;
+  line-height: 0px;
+`;
+const List = styled.li`
+  line-height: 17px;
+  margin-bottom: 5px;
+`;
 
-const buildPopupNote = popupData => {
+interface PopupDataProps {
+  visibility: {
+    visible: boolean;
+    setVisible: (arg: boolean) => MouseEventHandler<HTMLDivElement>;
+  };
+  icon: {
+    name: string;
+    size: string;
+  };
+  method: string[];
+  fontColor: string;
+  data: [];
+  position: string;
+  titleMinWidth: string;
+  noteMinWidth: string;
+}
+
+const buildPopupNote = (popupData: PopupDataProps) => {
   const {
     visibility = { visible: false, setVisible: () => {} },
     icon = { name: 'HELP_OUTLINE', size: '1.7rem' },
@@ -55,7 +83,13 @@ const buildPopupNote = popupData => {
   const showOnClick = method.includes('click');
   const { visible, setVisible } = visibility;
 
-  const buildPopupRow = ({ title, value, hideTitle = false }) => (
+  interface BuildPopupRowProps {
+    title: string;
+    value: string;
+    hideTitle?: boolean;
+  }
+
+  const buildPopupRow = ({ title, value, hideTitle = false }: BuildPopupRowProps) => (
     <NoteRow key={title}>
       {!hideTitle && <NoteTitle titleMinWidth={titleMinWidth}>{title}</NoteTitle>}
       <NoteValue noteMinWidth={noteMinWidth}>{value}</NoteValue>
@@ -64,8 +98,8 @@ const buildPopupNote = popupData => {
 
   return (
     <NoteContainer
-      onMouseEnter={showOnHover ? () => setVisible(true) : null}
-      onMouseLeave={showOnHover ? () => setVisible(false) : null}
+      onMouseEnter={showOnHover ? () => setVisible(true) : undefined}
+      onMouseLeave={showOnHover ? () => setVisible(false) : undefined}
       fontColor={fontColor}
     >
       <PopupNote show={visible} position={position}>
@@ -74,30 +108,30 @@ const buildPopupNote = popupData => {
       <Sprite
         icon={icon.name}
         size={icon.size}
-        onClick={showOnClick ? () => setVisible(!visible) : null}
+        onClick={showOnClick ? () => setVisible(!visible) : undefined}
       />
     </NoteContainer>
   );
 };
 
-const getChangeValue = (change, children) => (
+const getChangeValue = (change: string, children: React.ReactNode) => (
   <Fragment>
     {children} (<SummaryChange negative={change[0] === '-'}>{change}</SummaryChange>)
   </Fragment>
 );
-const getPopupValue = (popupNote, children) => (
+const getPopupValue = (popupNote: PopupDataProps, children: React.ReactNode) => (
   <Fragment>
     {children} {buildPopupNote(popupNote)}
   </Fragment>
 );
-const getExternalLinkValue = (externalLink, children) => (
+const getExternalLinkValue = (externalLink: string, children: React.ReactNode) => (
   <a href={externalLink} target="_blank" rel="noreferrer">
     {children}
   </a>
 );
-const getInternalLinkValue = (internalLink, children, splitOnSpace) => {
+const getInternalLinkValue = (internalLink: string, children: React.ReactNode | string, splitOnSpace: boolean) => {
   let num = '';
-  if (splitOnSpace) {
+  if (splitOnSpace && children && typeof children === 'string') {
     const splitString = children.split(' ');
     num = splitString[0] + ' ';
     children = splitString[1];
@@ -109,13 +143,49 @@ const getInternalLinkValue = (internalLink, children, splitOnSpace) => {
     </Fragment>
   );
 };
-const getCopyValue = (copyValue, title, children) => (
+const getCopyValue = (copyValue: string, title: string, children: React.ReactNode) => (
   <Fragment>
     {children} <CopyValue value={copyValue} title={`Copy ${title}`} />
   </Fragment>
 );
 
-const buildSummaryValue = (rowData, theme) => {
+const getList = (list: string[], linkList?: string[]) => {
+  let index = -1;
+  const myList = list.map(element => {
+    index++;
+    if (linkList) {
+      return (
+        <Link to={linkList[index]} key={element}>
+          <List>{element}</List>
+        </Link>
+      );
+    }
+    else {
+      return (
+        <List key={element}>{element}</List>
+      );
+    };
+  });
+  return myList;
+};
+
+interface RowDataProps {
+  isJson: boolean;
+  nobreak?: boolean;
+  title: string;
+  value: React.ReactNode | string;
+  hover?: string;
+  link?: string;
+  change?: string;
+  externalLink?: string;
+  popupNote?: PopupDataProps;
+  copy?: string;
+  splitOnSpace?: boolean;
+  list?: string[];
+  linkList?: string[];
+}
+
+const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
   const {
     value,
     link,
@@ -126,6 +196,8 @@ const buildSummaryValue = (rowData, theme) => {
     title,
     isJson,
     splitOnSpace = false,
+    list,
+    linkList,
   } = rowData;
 
   let finalValue = value;
@@ -144,7 +216,10 @@ const buildSummaryValue = (rowData, theme) => {
   if (popupNote) {
     finalValue = getPopupValue(popupNote, finalValue);
   }
-  if (isJson) {
+  if (list) {
+    finalValue = (<UL>{getList(list, linkList)}</UL>);
+  }
+  if (isJson && typeof finalValue === 'string') {
     finalValue = (
       <ReactJson
         src={JSON.parse(finalValue)}
@@ -157,7 +232,7 @@ const buildSummaryValue = (rowData, theme) => {
   return finalValue;
 };
 
-const buildSummaryRow = (rowData, theme) => {
+const buildSummaryRow = (rowData: RowDataProps, theme: string) => {
   const { isJson, nobreak = false, title, value, hover = '' } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
@@ -175,42 +250,30 @@ const buildSummaryRow = (rowData, theme) => {
   );
 };
 
-const Summary = ({ data }) => {
-  const { themeName } = useColorScheme();
-  return data.map(rowData => buildSummaryRow(rowData, themeName));
+export interface SummaryDataProps {
+  data: [
+    {
+      title: string;
+      isJson: boolean;
+      hover: string;
+      value: React.ReactNode | string;
+      link: string;
+      change: string;
+      externalLink: string;
+      copy?: string;
+      splitOnSpace: boolean;
+      popupNote: PopupDataProps;
+    },
+  ];
 };
 
-Summary.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      hover: PropTypes.string,
-      value: PropTypes.node,
-      link: PropTypes.string,
-      change: PropTypes.string,
-      externalLink: PropTypes.string,
-      copy: PropTypes.node,
-      splitOnSpace: PropTypes.bool,
-      popupNote: PropTypes.shape({
-        visibility: PropTypes.shape({
-          visible: PropTypes.bool,
-          setVisible: PropTypes.func,
-        }),
-        icon: PropTypes.shape({
-          name: PropTypes.string,
-          size: PropTypes.string,
-        }),
-        method: PropTypes.arrayOf(PropTypes.string),
-        fontColor: PropTypes.string,
-        data: PropTypes.arrayOf(
-          PropTypes.shape({
-            title: PropTypes.string,
-            value: PropTypes.node,
-          })
-        ),
-      }),
-    })
-  ).isRequired,
+const Summary = ({ data }: SummaryDataProps) => {
+  const { themeName } = useColorScheme();
+  return (
+    <>
+      {data.map(rowData => buildSummaryRow(rowData, themeName))}
+    </>
+  );
 };
 
 export default Summary;

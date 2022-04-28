@@ -25,6 +25,7 @@ const chartData = {
   },
   tooltip: {
     trigger: 'item',
+    position: 'inside',
     // Needed format for TypeScript
     // eslint-disable-next-line no-empty-pattern
     formatter: ({}: Params) => '',
@@ -33,6 +34,7 @@ const chartData = {
     left: 'center',
     itemGap: 20,
     padding: 0,
+    top: '-5%',
     textStyle: {
       color: '',
     }

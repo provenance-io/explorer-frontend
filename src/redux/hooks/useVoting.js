@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useWallet, WINDOW_MESSAGES } from '@provenanceio/wallet-lib';
@@ -16,6 +16,7 @@ const Button = styled(OgButton)`
  * @typedef {Object} Voting
  * @property {function} handleVoting - The function to handle voting
  * @property {function} ManageVotingBtn - React component connected to the modalFns
+ * @property {boolean} voted - Whether the user successfully voted or not
  * @property {object} modalFns - The items to handle the modal
  * @property {boolean} modalFns.modalOpen - If modal should be open
  * @property {function} modalFns.toggleOpen - Function to toggle the modalOpen boolean
@@ -33,6 +34,7 @@ const useVoting = () => {
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page
   const { isLoggedIn, setIsLoggedIn } = useApp();
+  const [voted, setVoted] = useState(false);
 
   // Yep we need the wallet
   useEffect(() => {
@@ -42,12 +44,15 @@ const useVoting = () => {
   useEvent('message', evt => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
+        setVoted(true);
+      } else if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_FAILED) {
         deactivateModalOpen();
       }
     }
   });
 
   const getOptionType = option => {
+    if (option === 'noWithVeto') option = 'no with veto';
     const optionType = {
       [VOTING_TYPES.YES]: 1, // 1 "OptionYes"
       [VOTING_TYPES.ABSTAIN]: 2, // 2 "OptionAbstain"
@@ -72,14 +77,14 @@ const useVoting = () => {
     const optionsList = [];
     if (!isLoggedIn) return;
     if (weighted) {
-      option.forEach(k => {
-        if (k.weight > 0) {
-          optionsList.push(k);
+      Object.keys(option).forEach(k => {
+        if (option[k] > 0) {
+          optionsList.push({ option: getOptionType(k), weight: (option[k] * 1e16).toString() });
         }
         return;
       });
     } else {
-      option = getOptionType(option);
+      option = getOptionType(option.vote);
     }
 
     let msgType;
@@ -114,6 +119,7 @@ const useVoting = () => {
   return {
     handleVoting,
     ManageVotingBtn,
+    voted,
     modalFns: {
       modalOpen,
       toggleModalOpen,

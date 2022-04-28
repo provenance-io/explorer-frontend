@@ -36,20 +36,18 @@ const SubSection = styled.div`
   border-radius: 5px;
 `;
 
-interface ProposalProps {
-  dropdown: string;
-}
-
 interface FormProps {
   config: MyFieldsProps[];
-  formik: FormikProps<ProposalProps>;
+  formik: FormikProps<any>;
   issub?: boolean;
+  grid?: boolean;
 }
 
 const Forms = ({ 
   config,
   formik,
   issub = false,
+  grid = false,
 }: FormProps) => {
 
   const builder = (individualConfig: MyFieldsProps) => {
@@ -64,6 +62,7 @@ const Forms = ({
             label={individualConfig.label}
             type={individualConfig.type}
             formik={formik}
+            grid={grid}
           />
           );
       case 'dropdown':
@@ -75,9 +74,9 @@ const Forms = ({
             type={individualConfig.type}
             dropdown={individualConfig.dropdown}
             formik={formik}
+            grid={grid}
           />
         );
-      // So repeating isn't working correctly. Need to make sure each field is it's own thing.
       case 'repeating':
         return (
           <Fragment key={individualConfig.field}>
@@ -103,6 +102,7 @@ const Forms = ({
                               dropdown={dropdown}
                               formik={formik}
                               issub
+                              grid={grid}
                             />)}
                           <RemoveButton
                             type="button"

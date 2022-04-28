@@ -109,6 +109,10 @@ const SearchBar = () => {
         history.push(`/contract/${searchTerms}`);
         break;
       }
+      case 'code': {
+        history.push(`/code/${searchTerms}`);
+        break;
+      }
       case 'validator': {
         history.push(`/validator/${searchTerms}`);
         break;
@@ -154,6 +158,7 @@ const SearchBar = () => {
         >
           <option value="address">Address</option>
           <option value="asset">Asset</option>
+          <option value="code">Code</option>
           <option value="contract">Contract</option>
           <option value="block">Block</option>
           <option value="nft">NFT</option>

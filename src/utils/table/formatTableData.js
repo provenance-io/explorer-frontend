@@ -46,9 +46,11 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'admin': // fallthrough
         case 'address':
           finalObj[dataName] = {
-            value: maxLength(serverValue, 11, 3),
-            link: `/accounts/${serverValue}`,
-            hover: serverValue,
+            value: serverValue ? maxLength(serverValue, 11, 3) : '--',
+            link: serverValue && `/accounts/${serverValue}`,
+            hover: serverValue || '--',
+            copy: dataName === 'creator' || dataName === 'admin',
+            raw: serverValue,
           };
           break;
         // Address or hash leading to the account's page (multiple)
@@ -430,6 +432,7 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
 
         // Server value already correct
+        case 'contractCount': //fallthrough
         case 'creationHeight': // fallthrough
         case 'label': // fallthrough
         case 'percentTotal': // fallthrough
