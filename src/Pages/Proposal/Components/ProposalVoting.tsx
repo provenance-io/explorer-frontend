@@ -5,7 +5,7 @@ import { Loading } from 'Components';
 import ManageVotingModal from "./ManageVotingModal";
 
 const ProposalVoting = () => {
-  const { handleVoting, ManageVotingBtn, modalFns, voted } = useVoting();
+  const { handleVoting, ManageVotingBtn, modalFns, voted, setVoted } = useVoting();
   const { proposal, proposalVotesLoading } = useGovernance();
   const { isLoggedIn } = useApp();
   const { walletService } = useWallet();
@@ -37,6 +37,7 @@ const ProposalVoting = () => {
           voterId={address}
           title={title}
           voted={voted}
+          setVoted={setVoted}
         />
       }
     </>

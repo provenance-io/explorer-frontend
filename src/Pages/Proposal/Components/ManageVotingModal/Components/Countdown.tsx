@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button } from 'Components';
 
 const Section = styled.div`
   display: flex;
@@ -21,10 +20,6 @@ const Label = styled.label`
   font-size: 1.6rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
-`;
-const ButtonGroup = styled.div`
-  align-self: center;
-  margin-top: 10px;
 `;
 const Timer = styled.div`
   color: ${({ theme }) => theme.NEGATIVE_CHANGE};
@@ -58,6 +53,7 @@ const Countdown = ({
     if (over) return;
     if (h === 0 && m === 0 && s === 0) {
       setOver(true);
+      window.location.reload();
       onClick();
     }
     else if (m === 0 && s === 0) {
@@ -87,9 +83,6 @@ const Countdown = ({
           ${m.toString().padStart(2, '0')}:
           ${s.toString().padStart(2, '0')}`}
         </Timer>
-        <ButtonGroup>
-          <Button onClick={onClick}>Close</Button>
-        </ButtonGroup>
       </Section>
   );
 }

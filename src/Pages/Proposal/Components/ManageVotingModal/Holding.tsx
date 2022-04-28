@@ -117,7 +117,6 @@ const ManageVotingModal = ({
   voterId,
   title,
   voted,
-  setVoted,
 }: ManageVotingProps) => {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -160,7 +159,7 @@ const ManageVotingModal = ({
   const handleModalClose = () => {
     setVoteAnyway(false);
     setVoteType('');
-    setVoted(false);
+    voted = false;
     onClose();
   };
 
@@ -224,6 +223,7 @@ const ManageVotingModal = ({
   );
 
   return (
+    !voted ? (
     <Modal isOpen={isOpen} onClose={handleModalClose} largeModal={true}>
       <Formik
         enableReinitialize
@@ -233,11 +233,11 @@ const ManageVotingModal = ({
         validationSchema={validations(voteType)}
         onSubmit={(values: VotingProps, { resetForm }) => {
             // Submit proposal message
-            if (!voted) {
-              onVoting(proposalId, voterId, getContent(values), voteType === 'weighted');
-            }
+            onVoting(proposalId, voterId, getContent(values), voteType === 'weighted');
             // Clear the form
             resetForm();
+            // Close the modal
+            handleModalClose();
         }}
       >
         {formik => (
@@ -300,19 +300,21 @@ const ManageVotingModal = ({
                   </ButtonGroup>
                 </MenuEnd>
               </>
-            }  
-            {voted &&
-              <Countdown 
-                onClick={handleModalClose}
-                seconds={30}
-                title='Vote Submitted'
-                message={votingMessage}
-              />
             }         
           </form>
         )}
       </Formik>
     </Modal>
+  ) : (
+    <Modal isOpen={isOpen} onClose={handleModalClose} largeModal={true}>
+      <Countdown 
+        onClick={handleModalClose}
+        seconds={30}
+        title='Vote Submitted'
+        message={votingMessage}
+      />
+    </Modal>
+  )
   );
 };
 

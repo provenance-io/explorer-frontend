@@ -46,6 +46,7 @@ const useVoting = () => {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setVoted(true);
       } else if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_FAILED) {
+        setVoted(false);
         deactivateModalOpen();
       }
     }
@@ -120,6 +121,7 @@ const useVoting = () => {
     handleVoting,
     ManageVotingBtn,
     voted,
+    setVoted,
     modalFns: {
       modalOpen,
       toggleModalOpen,
