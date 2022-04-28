@@ -101,6 +101,7 @@ interface ManageVotingProps {
   voterId: string;
   title: string;
   voted: boolean;
+  setVoted: (arg: boolean) => void;
 }
 
 interface VotingProps {
