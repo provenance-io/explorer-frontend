@@ -47,6 +47,7 @@ export const CODES_URL = `${BASE_URL}/smart_contract/codes/all`;
 export const CONTRACT_DETAILS_URL = `${BASE_URL}/smart_contract/contract`;
 export const CONTRACTS_ALL_URL = `${BASE_URL}/smart_contract/contract/all`;
 export const CONTRACT_TRANSACTIONS_URL = `${BASE_URL}/txs/module/smart_contract?`;
+export const CONTRACT_LABELS_URL = `${BASE_URL}/smart_contract/contract/labels`;
 // -- Governance
 export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;

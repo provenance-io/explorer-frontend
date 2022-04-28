@@ -126,6 +126,7 @@ const TxMsgs = () => {
         case 'owner': //fallthrough
         case 'manager': //fallthrough
         case 'administrator': //fallthrough
+        case 'admin': //fallthrough
         case 'validatorAddress': {
           return {
             title,
@@ -148,8 +149,20 @@ const TxMsgs = () => {
         case 'scopeId':
           return {
             title,
-            value,
+            value: maxLength(value, 24, 10),
             link: `/nft/${value}`,
+          };
+        case 'contract': //fallthrough
+          return {
+            title,
+            value: maxLength(value, 24, 10),
+            link: `/contract/${value}`,
+          };
+        case 'codeId': //fallthrough
+          return {
+            title,
+            value,
+            link: `/code/${value}`,
           };
         default:
           if (isArray(value) || isObject(value)) {

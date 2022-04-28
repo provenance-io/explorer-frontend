@@ -3,11 +3,11 @@
     type: Type of field for UI. Options are text, 
 */
 
-import { ACCESS_TYPES } from "consts";
+import { ACCESS_TYPES, VOTING_TYPES } from "consts";
 
 export interface MyFieldsProps {
   type: string;
-  dropdown?: typeof ACCESS_TYPES,
+  dropdown?: typeof ACCESS_TYPES | typeof VOTING_TYPES,
   initialValue?: string,
   label: string;
   field: string;

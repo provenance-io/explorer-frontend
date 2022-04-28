@@ -2,10 +2,10 @@ import React from 'react';
 import { useWallet } from '@provenanceio/wallet-lib';
 import { useVoting, useGovernance, useApp } from 'redux/hooks';
 import { Loading } from 'Components'; 
-import { ManageVotingModal } from ".";
+import ManageVotingModal from "./ManageVotingModal";
 
 const ProposalVoting = () => {
-  const { handleVoting, ManageVotingBtn, modalFns } = useVoting();
+  const { handleVoting, ManageVotingBtn, modalFns, voted, setVoted } = useVoting();
   const { proposal, proposalVotesLoading } = useGovernance();
   const { isLoggedIn } = useApp();
   const { walletService } = useWallet();
@@ -36,6 +36,8 @@ const ProposalVoting = () => {
           description={description}
           voterId={address}
           title={title}
+          voted={voted}
+          setVoted={setVoted}
         />
       }
     </>

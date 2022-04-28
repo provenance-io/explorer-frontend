@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-// @ts-ignore
 import { useParams } from 'react-router-dom';
 import { useWallet } from '@provenanceio/wallet-lib';
 import { Wrapper, Header, Section, Loading } from 'Components';
@@ -15,8 +14,12 @@ import {
   ProposalVoting,
 } from './Components';
 
+interface ParamsProps {
+  proposalId: string;
+}
+
 const Proposal = () => {
-  const { proposalId } = useParams();
+  const { proposalId } = useParams<ParamsProps>();
   const { proposal, proposalLoading, getProposal } = useGovernance();
   const { timings } = proposal;
   const { accountAssets, getAccountAssets } = useAccounts();

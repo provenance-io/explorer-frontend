@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-ignore
 import { Content, Summary, Loading } from 'Components';
 import { useContracts } from 'redux/hooks';
 import { maxLength } from 'utils';

@@ -1,8 +1,23 @@
 import React from 'react';
-// @ts-ignore
 import { Content, Summary, Loading } from 'Components';
 import { useContracts } from 'redux/hooks';
 import { maxLength } from 'utils';
+
+export interface SummaryDataProps {
+  data: [
+    {
+      title: string;
+      isJson?: boolean;
+      hover?: string;
+      value: React.ReactNode | string;
+      link?: string;
+      change?: string;
+      externalLink?: string;
+      copy?: string;
+      splitOnSpace?: boolean;
+    },
+  ];
+};
 
 const CodeDetails = () => {
   const { 

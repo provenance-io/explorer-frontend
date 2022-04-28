@@ -26,10 +26,10 @@ const FilterError = styled.div`
 `;
 
 interface ParamsProps {
-  contractId: string;
+  codeId: string;
 }
 
-const ContractTxs = () => {
+const CodeTxs = () => {
   const defaultDateFormat = 'yyyy-MM-dd';
 
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -39,12 +39,13 @@ const ContractTxs = () => {
   const [filterError, setFilterError] = useState('');
 
   const {
-    contractTxs: tableData,
-    contractTxsPages: tablePages,
-    contractTxsLoading: tableLoading,
-    getContractTxs: getTableData,
+    codeTxs: tableData,
+    codeTxsPages: tablePages,
+    codeTxsLoading: tableLoading,
+    getCodeTxs: getTableData,
   } = useContracts();
-  const { contractId } = useParams<ParamsProps>();
+  const { codeId } = useParams<ParamsProps>();
+
 
   const filterToDateClean = filterTo.replace(/-/g, '/');
   const filterFromDateClean = filterFrom.replace(/-/g, '/');
@@ -55,7 +56,7 @@ const ContractTxs = () => {
   const changePage = (newPage: number) => {
     setTableCurrentPage(newPage);
     getTableData({
-      id: contractId,
+      id: codeId,
       page: newPage,
       count: 30,
       status: filterStatus,
@@ -94,7 +95,7 @@ const ContractTxs = () => {
       const filterFromUTC = filterFrom ? getUTCTime(`${filterFrom}T00:00:00`, 'yyyy-MM-dd') : '';
       // Fetch new results
       getTableData({
-        id: contractId,
+        id: codeId,
         toDate: filterToUTC,
         fromDate: filterFromUTC,
         page: 1,
@@ -165,10 +166,10 @@ const ContractTxs = () => {
         changePage={changePage}
         totalPages={tablePages}
         isLoading={tableLoading}
-        title="Contract Transactions List"
+        title="Code Transactions List"
       />
     </TxListContainer>
   );
 };
 
-export default ContractTxs;
+export default CodeTxs;

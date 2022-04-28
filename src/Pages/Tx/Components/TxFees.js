@@ -29,6 +29,8 @@ const chartData = {
   // The legend/key on the right side showing color/name
   legend: {
     top: '0%',
+    width: '65%',
+    type: 'scroll',
     left: 'center',
     itemGap: 20,
     textStyle: {

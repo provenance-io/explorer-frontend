@@ -1,4 +1,4 @@
-export const VOTING_TYPES = {
+export const VOTING_TYPES: { [key: string]: string } = {
   UNSPECIFIED: '--',
   YES: 'yes',
   ABSTAIN: 'abstain',

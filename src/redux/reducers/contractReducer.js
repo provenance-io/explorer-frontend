@@ -7,6 +7,8 @@ import {
   GET_CONTRACT_HISTORY,
   GET_CONTRACTS,
   GET_CONTRACT_TXS,
+  GET_CODE_TXS,
+  GET_CONTRACT_LABELS,
 } from '../actions/contractActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -40,6 +42,14 @@ export const initialState = {
   contractTxsLoading: false,
   contractTxsPages: 0,
   contractTxsTotal: 0,
+  // Code Transactions
+  codeTxs: [],
+  codeTxsLoading: false,
+  codeTxsPages: 0,
+  codeTxsTotal: 0,
+  // Contract Labels
+  contractLabels: [],
+  contractLabelsLoading: false,
 };
 
 const reducer = handleActions(
@@ -225,6 +235,55 @@ const reducer = handleActions(
       return {
         ...state,
         contractTxsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_CODE_TXS
+    -------------------*/
+    [`${GET_CODE_TXS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        codeTxsLoading: true,
+      };
+    },
+    [`${GET_CODE_TXS}_${SUCCESS}`](state, { payload }) {
+      const { results: codeTxs = [], pages: codeTxsPages, total: codeTxsTotal } = payload;
+      return {
+        ...state,
+        codeTxs,
+        codeTxsPages,
+        codeTxsTotal,
+        codeTxsLoading: false,
+      };
+    },
+    [`${GET_CODE_TXS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        codeTxsLoading: false,
+      };
+    },
+    /* -----------------
+    GET_CONTRACT_LABELS
+    -------------------*/
+    [`${GET_CONTRACT_LABELS}_${REQUEST}`](state) {
+      return {
+        ...state,
+        contractLabelsLoading: true,
+        contractLabelsFailed: false,
+      };
+    },
+    [`${GET_CONTRACT_LABELS}_${SUCCESS}`](state, { payload: contractLabels }) {
+      return {
+        ...state,
+        contractLabels,
+        contractLabelsLoading: false,
+      };
+    },
+    [`${GET_CONTRACT_LABELS}_${FAILURE}`](state) {
+      return {
+        ...state,
+        contractLabelsLoading: false,
+        contractLabelsFailed: true,
       };
     },
   },

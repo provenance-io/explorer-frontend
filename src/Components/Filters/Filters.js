@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { SelectFolders, DatePicker, Button } from 'Components';
+import { TextInput } from './Components';
 
 const FilterContainer = styled.div`
   margin-bottom: ${({ flush }) => (flush ? '0' : '20px')};
@@ -12,6 +13,7 @@ const FilterContainer = styled.div`
 `;
 const FilterItem = styled.div`
   margin-bottom: 10px;
+  min-width: ${({ minWidth }) => minWidth && minWidth};
   margin-right: 10px;
   align-items: center;
   input {
@@ -32,7 +34,8 @@ const FilterTitle = styled.div`
 const Filters = ({ filterData, mustApply, flush }) => {
   const buildFilterItems = () =>
     filterData.map(filterItem => {
-      const { type, title, options, action, maxHeight, setDefaults } = filterItem;
+      const { type, title, options, action, maxHeight, setDefaults, list, value, minWidth } =
+        filterItem;
       const buildFilterType = () => {
         switch (type) {
           case 'dropdown':
@@ -46,13 +49,15 @@ const Filters = ({ filterData, mustApply, flush }) => {
             );
           case 'datepicker':
             return <DatePicker {...options} />;
+          case 'text':
+            return <TextInput title={title} action={action} list={list} value={value} />;
           default:
             return '';
         }
       };
 
       return (
-        <FilterItem key={title}>
+        <FilterItem key={title} minWidth={minWidth}>
           <FilterTitle>{title}</FilterTitle>
           {buildFilterType()}
         </FilterItem>

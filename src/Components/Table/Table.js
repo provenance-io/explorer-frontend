@@ -93,6 +93,7 @@ const Table = ({
   tableHeaders,
   totalPages,
   title,
+  headerContent,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const theme = useTheme();
@@ -232,11 +233,13 @@ const Table = ({
               />
             )}
             {link && !valueMissing && link !== pathname ? (
-              <Link to={link}>
-                {finalValue}
-                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
+              <>
+                <Link to={link}>
+                  {finalValue}
+                  {icon && <Sprite icon={icon} size={size} color={iconColor} />}
+                </Link>
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
-              </Link>
+              </>
             ) : (
               <>
                 {externalLink && (
@@ -258,7 +261,7 @@ const Table = ({
     tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
-    <Content className={className} size={size} title={title}>
+    <Content className={className} size={size} title={title} headerContent={headerContent}>
       {notes && (
         <Notes>
           {`* ${capitalize(notes)}:`}
@@ -312,6 +315,7 @@ Table.propTypes = {
   tableHeaders: PropTypes.array.isRequired,
   totalPages: PropTypes.number,
   title: PropTypes.string,
+  headerContent: PropTypes.element,
 };
 Table.defaultProps = {
   changePage: null,
@@ -327,6 +331,7 @@ Table.defaultProps = {
   size: '100%',
   tableData: [],
   title: '',
+  headerContent: null,
   totalPages: 0,
 };
 

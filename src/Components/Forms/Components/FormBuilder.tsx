@@ -61,14 +61,19 @@ const TextArea = styled.textarea<{ $issub: boolean }>`
   text-align: top;
 `;
 
-const ThisField = styled.div`
-  padding-top: 1.6rem;
+const ThisField = styled.div<{ grid: boolean }>`
+  padding: 1.6rem 0 1.6rem 0;
+  display: ${({ grid }) => grid && 'grid'};
+  grid-template-columns: ${({ grid }) => grid && ' 3fr 0.75fr'};
+  border-bottom: ${({ grid, theme }) => grid && `1px solid ${theme.INPUT_BG_LIGHT}`};
 `;
 
-const Label = styled.label<{ $issub: boolean }>`
+const Label = styled.label<{ $issub: boolean, grid: boolean }>`
+  margin-top: ${({ grid }) => grid && '10px'};
   font-size: ${({ $issub }) => $issub ? '1.4rem' : '1.6rem'};
   font-weight: ${({ theme, $issub }) => !$issub && theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
+  align-self: center;
 `;
 
 interface ProposalProps {
@@ -82,6 +87,7 @@ interface FormProps {
   dropdown?: { [key: string]: string};
   formik: FormikProps<ProposalProps>;
   issub?: boolean;
+  grid?: boolean;
 }
 
 const FormBuilder = ({ 
@@ -91,6 +97,7 @@ const FormBuilder = ({
   dropdown,
   formik,
   issub = false,
+  grid = false,
 }: FormProps) => {
 
   const builder = (
@@ -102,8 +109,8 @@ const FormBuilder = ({
       case 'text':
         return (
           <Fragment key={name}>
-            <ThisField>
-              <Label htmlFor={name} $issub={issub}>{capitalize(label)}</Label>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
               <Field
                 $issub={issub}
                 name={name}
@@ -118,8 +125,8 @@ const FormBuilder = ({
       case 'textarea':
         return (
           <Fragment key={name}>
-            <ThisField>
-              <Label htmlFor={name} $issub={issub}>{capitalize(label)}</Label>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
               <TextArea
                 $issub={issub}
                 id={name}
@@ -133,8 +140,8 @@ const FormBuilder = ({
       case 'number':
         return (
           <Fragment key={name}>
-            <ThisField>
-              <Label htmlFor={name} $issub={issub}>{capitalize(label)}</Label>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
               <Field
                 $issub={issub}
                 name={name}
@@ -149,8 +156,8 @@ const FormBuilder = ({
       case 'dropdown':
         return (
           <Fragment key={name}>
-            <ThisField>
-              <Label htmlFor={name} $issub={issub}>{capitalize(label)}</Label>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
               <Field 
                 $issub={issub}
                 as="select"
@@ -167,7 +174,7 @@ const FormBuilder = ({
           </Fragment>
         );
       default:
-        return <ThisField>Unsupported field</ThisField>
+        return <ThisField grid={grid}>Unsupported field</ThisField>
     }
   }
 

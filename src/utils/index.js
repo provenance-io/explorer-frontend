@@ -5,3 +5,4 @@ export * from './number';
 export * from './string';
 export * from './table';
 export * from './proposals';
+export * from './voting';
