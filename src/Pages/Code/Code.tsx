@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Wrapper, Header, Section, MultiTable } from 'Components';
 import { useContracts } from 'redux/hooks';
-// @ts-ignore
 import { useParams } from 'react-router-dom';
 import { CodeDetails, CodeContracts, CodeTxs } from './Components';
+
+interface ParamsProps {
+  codeId: string;
+}
 
 const Code = () => {
   const { 
@@ -13,7 +16,7 @@ const Code = () => {
     codeTxsTotal,
     getCodeTxs,
   } = useContracts();
-  const { codeId } = useParams();
+  const { codeId } = useParams<ParamsProps>();
 
   const [activeTableTab, setActiveTableTab] = useState(0);
 

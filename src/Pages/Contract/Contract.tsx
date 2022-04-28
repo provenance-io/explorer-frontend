@@ -3,13 +3,16 @@ import { Wrapper, Header, Section, MultiTable } from 'Components';
 import { useMediaQuery, useContracts } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { maxLength } from 'utils';
-// @ts-ignore
 import { useParams } from 'react-router-dom';
 import { ContractDetails, ContractHistory, ContractTxs } from './Components';
 
+interface ParamsProps {
+  contractId: string;
+}
+
 const Contract = () => {
   const { matches: isMed } = useMediaQuery(breakpoints.down('lg'));
-  const { contractId } = useParams();
+  const { contractId } = useParams<ParamsProps>();
   const { 
     contractTxsTotal, 
     getContractDetails, 

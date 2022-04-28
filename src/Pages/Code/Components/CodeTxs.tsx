@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { format } from 'date-fns';
-// @ts-ignore
 import { useParams } from 'react-router-dom';
 import { TRANSACTION_STATUS_OPTIONS, breakpoints } from 'consts';
 import { useContracts } from 'redux/hooks';
@@ -26,6 +25,10 @@ const FilterError = styled.div`
   }
 `;
 
+interface ParamsProps {
+  codeId: string;
+}
+
 const CodeTxs = () => {
   const defaultDateFormat = 'yyyy-MM-dd';
 
@@ -41,7 +44,7 @@ const CodeTxs = () => {
     codeTxsLoading: tableLoading,
     getCodeTxs: getTableData,
   } = useContracts();
-  const { codeId } = useParams();
+  const { codeId } = useParams<ParamsProps>();
 
 
   const filterToDateClean = filterTo.replace(/-/g, '/');

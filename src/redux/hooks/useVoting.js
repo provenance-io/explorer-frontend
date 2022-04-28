@@ -17,6 +17,7 @@ const Button = styled(OgButton)`
  * @property {function} handleVoting - The function to handle voting
  * @property {function} ManageVotingBtn - React component connected to the modalFns
  * @property {boolean} voted - Whether the user successfully voted or not
+ * @property {() => void} setVoted - controls voting state
  * @property {object} modalFns - The items to handle the modal
  * @property {boolean} modalFns.modalOpen - If modal should be open
  * @property {function} modalFns.toggleOpen - Function to toggle the modalOpen boolean

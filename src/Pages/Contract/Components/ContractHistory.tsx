@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-// @ts-ignore
-import { Content as BaseContent, Summary, SummaryDataProps, Loading } from 'Components';
+import { Content as BaseContent, Summary, Loading } from 'Components';
 import { useContracts, useMediaQuery } from 'redux/hooks';
 import { maxLength, camelToSentence } from 'utils';
 import { breakpoints } from 'consts';
@@ -24,7 +23,7 @@ const ContractHistory = () => {
     msg,
   } = contractHistory[0];
 
-  const summaryDataOne: SummaryDataProps = [
+  const summaryDataOne = [
     {
       title: 'Operation',
       value: operation || '--',
@@ -32,7 +31,7 @@ const ContractHistory = () => {
     },
   ];
 
-  const summaryDataTwo: SummaryDataProps = [
+  const summaryDataTwo = [
     {
       title: 'Code ID',
       value: codeId ? maxLength(codeId, 14,'6') : '--',
@@ -45,7 +44,7 @@ const ContractHistory = () => {
     values.map(value => prefix + value)
   );
 
-  const getMsgs: SummaryDataProps = Object.entries(msg)?.map(([key, value]) => {
+  const getMsgs = Object.entries(msg)?.map(([key, value]) => {
     const title = camelToSentence(key);
     switch(key) {
       case 'convertible_base_denoms': // fallthrough
@@ -55,9 +54,9 @@ const ContractHistory = () => {
         return {
           title,
           value: Array.isArray(value) ? value : maxLength(value, 14, '6'),
-          link: Array.isArray(value) ? null : `/asset/${value}`,
-          list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : null,
-          linkList: Array.isArray(value) ? getLinkList(value, '/asset/') : null,
+          link: Array.isArray(value) ? undefined : `/asset/${value}`,
+          list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : undefined,
+          linkList: Array.isArray(value) ? getLinkList(value, '/asset/') : undefined,
         };
       case 'approvers': // fallthrough
       case 'recovery_admin': // fallthrough
@@ -66,15 +65,15 @@ const ContractHistory = () => {
         return {
           title,
           value: Array.isArray(value) ? value : maxLength(value, 14, '6'),
-          link: Array.isArray(value) ? null : `/accounts/${value}`,
-          list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : null,
-          linkList: Array.isArray(value) ? getLinkList(value, '/accounts/') : null,
+          link: Array.isArray(value) ? undefined : `/accounts/${value}`,
+          list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : undefined,
+          linkList: Array.isArray(value) ? getLinkList(value, '/accounts/') : undefined,
         };
       default: 
         return {
           title,
           value: Array.isArray(value) ? value : maxLength(value, 14, '6'),
-          list: Array.isArray(value) ? value.map(val => maxLength(val,20,'6')) : null,
+          list: Array.isArray(value) ? value.map(val => maxLength(val,20,'6')) : undefined,
         };
     };
   });

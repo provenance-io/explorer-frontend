@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// @ts-ignore
 import { useParams } from 'react-router-dom';
 import { Table } from 'Components';
 import { useContracts } from 'redux/hooks';
@@ -9,9 +8,13 @@ const ContractsByCodeListContainer = styled.div`
   width: 100%;
 `;
 
+interface ParamsProps {
+  codeId: string;
+}
+
 const ContractsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const { codeId } = useParams();
+  const { codeId } = useParams<ParamsProps>();
 
   const {
     contractsByCode: tableData,

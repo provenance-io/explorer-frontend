@@ -1,6 +1,5 @@
 import React, { Fragment, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-// @ts-ignore
 import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
 import { breakpoints } from 'consts';
@@ -170,7 +169,7 @@ const getList = (list: string[], linkList?: string[]) => {
 };
 
 interface RowDataProps {
-  isJson: boolean;
+  isJson?: boolean;
   nobreak?: boolean;
   title: string;
   value: React.ReactNode | string;
@@ -237,7 +236,7 @@ const buildSummaryRow = (rowData: RowDataProps, theme: string) => {
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
-    <SummaryRow key={title} isJson={isJson} nobreak={nobreak}>
+    <SummaryRow key={title} isJson={isJson || false} nobreak={nobreak}>
       <SummaryTitle>{title}:</SummaryTitle>
       {hover ? (
         <SummaryValue title={hover}>
@@ -250,21 +249,21 @@ const buildSummaryRow = (rowData: RowDataProps, theme: string) => {
   );
 };
 
+interface DataProps {
+  title: string;
+  isJson?: boolean;
+  hover?: string;
+  value: React.ReactNode | string;
+  link?: string;
+  change?: string;
+  externalLink?: string;
+  copy?: string;
+  splitOnSpace?: boolean;
+  popupNote?: PopupDataProps;
+}
+
 export interface SummaryDataProps {
-  data: [
-    {
-      title: string;
-      isJson: boolean;
-      hover: string;
-      value: React.ReactNode | string;
-      link: string;
-      change: string;
-      externalLink: string;
-      copy?: string;
-      splitOnSpace: boolean;
-      popupNote: PopupDataProps;
-    },
-  ];
+  data: DataProps[];
 };
 
 const Summary = ({ data }: SummaryDataProps) => {
