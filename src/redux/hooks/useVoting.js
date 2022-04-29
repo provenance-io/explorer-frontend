@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useWallet, WINDOW_MESSAGES } from '@provenanceio/wallet-lib';
 import useEvent from 'react-tiny-hooks/use-event';
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { useApp } from 'redux/hooks';
+import { useApp, useAccounts } from 'redux/hooks';
 import { VOTING_TYPES } from 'consts';
 import OgButton from 'Components/Button';
 
@@ -35,7 +35,13 @@ const useVoting = () => {
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page
   const { isLoggedIn, setIsLoggedIn } = useApp();
+  const { getAccountDelegations } = useAccounts();
   const [voted, setVoted] = useState(false);
+
+  // Get the address
+  const {
+    state: { address },
+  } = walletService;
 
   // Yep we need the wallet
   useEffect(() => {
@@ -108,6 +114,7 @@ const useVoting = () => {
   };
 
   const handleManageVotingClick = () => {
+    getAccountDelegations({ address });
     activateModalOpen();
   };
 
