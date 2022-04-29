@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useWallet } from '@provenanceio/wallet-lib';
 import { Formik, FormikProps } from "formik";
 import styled, { useTheme } from 'styled-components';
 import { Button, Modal, Forms } from 'Components';
@@ -124,16 +123,11 @@ const ManageVotingModal = ({
   const [isOpen, setIsOpen] = useState(false);
   const [voteType, setVoteType] = useState('');
   const { proposalVotes } = useGovernance();
-  const { accountDelegationsTotal, getAccountDelegations } = useAccounts();
-  const { walletService } = useWallet();
+  const { accountDelegationsTotal } = useAccounts();
   const { tally } = proposalVotes;
-  const [hasDelegations, setHasDelegations] = useState(false);
+  // Delegations are pulled when the vote button is clicked
+  const hasDelegations = parseInt(accountDelegationsTotal.amount) > 0;
   const [voteAnyway, setVoteAnyway] = useState(false);
-
-  // Get user address
-  const {
-    state: { address },
-  } = walletService;
 
   // Get content for voting message
   const getContent = (values: VotingProps) => {
@@ -147,16 +141,6 @@ const ManageVotingModal = ({
   useEffect(() => {
     setIsOpen(isLoggedIn && modalOpen);
   }, [isLoggedIn, modalOpen]);
-
-  // Pull account delegations (required for vote to count)
-  useEffect(() => {
-    getAccountDelegations({
-      address,
-    });
-    setHasDelegations(accountDelegationsTotal > 0);
-    setVoteAnyway(accountDelegationsTotal > 0);
-    // eslint-disable-next-line
-  },[]);
 
   const handleModalClose = () => {
     setVoteAnyway(false);

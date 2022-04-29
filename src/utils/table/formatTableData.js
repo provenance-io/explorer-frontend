@@ -49,7 +49,7 @@ export const formatTableData = (data = [], tableHeaders) => {
             value: serverValue ? maxLength(serverValue, 11, 3) : '--',
             link: serverValue && `/accounts/${serverValue}`,
             hover: serverValue || '--',
-            copy: dataName === 'creator' || dataName === 'admin',
+            copy: serverValue && (dataName === 'creator' || dataName === 'admin'),
             raw: serverValue,
           };
           break;
