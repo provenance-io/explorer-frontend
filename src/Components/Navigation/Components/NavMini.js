@@ -6,6 +6,7 @@ import { Links, Path } from 'consts';
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
 import UserAccount from '../../UserAccount';
+import AnnouncementMenu from '../../AnnouncementMenu';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -63,6 +64,9 @@ const DropSprite = styled(Sprite)`
 const LogoLink = styled(BaseLink)`
   display: flex;
   align-items: center;
+`;
+const Hamburger = styled.div`
+  cursor: pointer;
 `;
 const DropdownContainer = styled.div`
   display: ${({ show }) => (show ? 'block' : 'none')}; ;
@@ -145,12 +149,14 @@ const NavMini = () => {
   return (
     <NavigationWrapper>
       <InnerWrapper>
-        <Sprite
-          icon="MENU"
-          onClick={toggleMenu}
-          size="3.0rem"
-          color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-        />
+        <Hamburger>
+          <Sprite
+            icon="MENU"
+            onClick={toggleMenu}
+            size="3.0rem"
+            color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+          />
+        </Hamburger>
         <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </LogoLink>
@@ -172,6 +178,7 @@ const NavMini = () => {
           color="ICON_WHITE"
         />
         {buildLinks()}
+        <AnnouncementMenu onClick={() => setShowMenu(false)} />
         <UserAccount isMobile />
       </DropdownContainer>
 

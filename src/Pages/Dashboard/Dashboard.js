@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
-import { Section, Wrapper } from 'Components';
+import { Section, Wrapper, Notification } from 'Components';
 import {
   BlockSpotlight,
   TopValidators,
@@ -39,6 +39,9 @@ const Dashboard = () => {
       <Helmet>
         <title>Provenance Blockchain Explorer - Dashboard</title>
       </Helmet>
+      <Section>
+        <Notification />
+      </Section>
       <Section>
         <BlockSpotlight />
       </Section>

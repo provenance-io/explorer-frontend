@@ -60,10 +60,6 @@ const AccountBtn = styled(Button)`
   animation-duration: 1s;
   animation-delay: 2s;
   animation-iteration-count: ${({ isLoggedIn }) => (isLoggedIn ? 0 : 2)};
-
-  @media ${breakpoints.up('md')} {
-    margin-left: 10px;
-  }
 `;
 
 const LogoutButton = styled(Button)`

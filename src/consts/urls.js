@@ -62,11 +62,17 @@ export const IBC_DENOMS_ALL_URL = `${BASE_URL}/ibc/denoms/all`;
 export const ORDER_BOOK_URL = 'https://www.dlob.io/gecko/external/api/v1/exchange';
 // -- NFT
 export const NFT_URL = `${BASE_URL}/nft/scope`;
+// -- Notification
+export const PROPOSAL_NOTIFICATIONS_URL = `${BASE_URL}/notifications/proposals`;
+export const UPGRADE_NOTIFICATIONS_URL = `${BASE_URL}/notifications/upgrades`;
+export const ANNOUNCEMENT_NOTIFICATIONS_URL = `${BASE_URL}/notifications/announcement/all`;
+export const ANNOUNCEMENT_URL = `${BASE_URL}/notifications/announcement`;
 // -- Social Media/Contact Information
 export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-frontend';
 export const SOCIAL_SLACK_URL =
   'https://join.slack.com/t/provenanceio/shared_invite/zt-vysymaqb-VqgW3frXoNNXNlyOiP7mog';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
+export const SOCIAL_DISCORD_URL = 'https://discord.com/invite/kNZC8nwCFP';
 // --Stats
 export const NETWORK_ID_URL = `${BASE_URL}/chain/id`;
 export const NETWORK_UPGRADES_URL = `${BASE_URL}/chain/upgrades`;

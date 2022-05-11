@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -47,7 +46,23 @@ const Value = styled.div`
   user-select: none;
 `;
 
-const Header = ({ title, copyValue, copyTitle, value, valueLink, children }) => {
+interface HeaderProps {
+  title: string;
+  copyValue?: string;
+  copyTitle?: string;
+  value?: string | number;
+  valueLink?: string;
+  children?: any;
+}
+
+const Header = ({ 
+  title, 
+  copyValue, 
+  copyTitle, 
+  value, 
+  valueLink, 
+  children 
+}: HeaderProps) => {
   const showLine = value || children;
 
   const renderValueContainer = () => (
@@ -74,23 +89,6 @@ const Header = ({ title, copyValue, copyTitle, value, valueLink, children }) => 
       {value ? renderValueContainer() : null}
     </HeaderContainer>
   );
-};
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.any,
-  value: PropTypes.node,
-  copyValue: PropTypes.node,
-  copyTitle: PropTypes.string,
-  valueLink: PropTypes.string,
-};
-
-Header.defaultProps = {
-  children: null,
-  value: null,
-  copyValue: null,
-  copyTitle: '',
-  valueLink: null,
 };
 
 export default Header;

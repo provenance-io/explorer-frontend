@@ -25,10 +25,10 @@ const Sprite = styled(BaseSprite)`
 
 const TitleRow = styled.div`
   display: flex;
-  margin: 0 0 30px 0;
+  margin: ${({ titleMargin }) => (titleMargin ? titleMargin : '0 0 30px 0')};
 `;
 const Title = styled.div`
-  font-size: 1.4rem;
+  font-size: ${({ titleSize }) => (titleSize ? titleSize : '1.4rem')};
 `;
 const DataContainer = styled.div`
   display: flex;
@@ -45,12 +45,32 @@ const DataItem = styled.div`
     margin-bottom: 0;
   }
 `;
+const CloseIcon = styled(Sprite)`
+  margin-left: auto;
+  :hover {
+    cursor: pointer;
+  }
+`;
 
-const DataCard = ({ className, icon, title, children, width }) => (
+const DataCard = ({
+  className,
+  icon,
+  title,
+  children,
+  width,
+  handleClose,
+  iconColor,
+  titleMargin,
+  titleSize,
+}) => (
   <DataCardContainer className={className} width={width}>
     <DataContent>
-      <TitleRow>
-        {icon && <Sprite icon={icon} size="1.8rem" />} <Title>{title}</Title>
+      <TitleRow titleMargin={titleMargin}>
+        {icon && <Sprite icon={icon} size="1.8rem" color={iconColor} />}
+        <Title titleSize={titleSize}>{title}</Title>
+        {handleClose && (
+          <CloseIcon icon="CLOSE" onClick={handleClose} size="1.4rem" color="ICON_WHITE" />
+        )}
       </TitleRow>
       <DataContainer>
         {Array.isArray(children) ? (
@@ -66,14 +86,22 @@ const DataCard = ({ className, icon, title, children, width }) => (
 DataCard.propTypes = {
   className: PropTypes.string,
   icon: PropTypes.string,
+  iconColor: PropTypes.string,
   title: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
   width: PropTypes.string,
+  handleClose: PropTypes.func,
+  titleMargin: PropTypes.string,
+  titleSize: PropTypes.string,
 };
 DataCard.defaultProps = {
   className: '',
   icon: '',
+  iconColor: '',
   width: '',
+  handleClose: null,
+  titleMargin: '',
+  titleSize: '',
 };
 
 export default DataCard;

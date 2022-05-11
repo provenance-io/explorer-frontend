@@ -37,8 +37,8 @@ const ContractsList = () => {
   const tableHeaders = [
     { displayName: 'Contract', dataName: 'contractAddress' },
     { displayName: 'Creation Height', dataName: 'creationHeight' },
-    { displayName: 'Code ID', dataName: 'codeId' },
     { displayName: 'Creator', dataName: 'creator' },
+    { displayName: 'Code ID', dataName: 'codeId' },
     { displayName: 'Admin', dataName: 'admin'},
     { displayName: 'Description', dataName: 'label' },
   ];

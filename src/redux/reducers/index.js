@@ -11,6 +11,7 @@ import validatorsReducer from './validatorsReducer';
 import orderbookReducer from './orderbookReducer';
 import nftReducer from './nftReducer';
 import networkReducer from './networkReducer';
+import notificationsReducer from './notificationsReducer';
 
 const rootReducer = {
   accountsReducer,
@@ -26,6 +27,7 @@ const rootReducer = {
   orderbookReducer,
   nftReducer,
   networkReducer,
+  notificationsReducer,
 };
 
 export default rootReducer;

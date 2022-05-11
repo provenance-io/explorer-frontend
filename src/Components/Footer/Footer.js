@@ -7,6 +7,7 @@ import {
   SOCIAL_GITHUB_URL,
   // SOCIAL_SLACK_URL,
   SOCIAL_PROVENANCE_URL,
+  SOCIAL_DISCORD_URL,
   isProd,
 } from 'consts';
 import Sprite from '../Sprite';
@@ -109,6 +110,14 @@ const Footer = () => {
         >
           <Sprite icon="SLACK" size="1.8rem" color="WHITE" />
         </SocialLink> */}
+        <SocialLink
+          href={SOCIAL_DISCORD_URL}
+          target="_blank"
+          rel="noreferrer"
+          title="Provenance Blockchain Explorer Discord"
+        >
+          <Sprite icon="DISCORD" size="2.2rem" color="WHITE" />
+        </SocialLink>
         <FooterVersion>v{version ? version : '?.?.?'}</FooterVersion>
       </FooterSocial>
     </FooterContainer>

@@ -6,6 +6,9 @@ import {
   SET_THEME,
   SET_WALLET_URL,
   SET_IS_LOGGED_IN,
+  SET_ANNOUNCEMENT_NOTIFICATIONS,
+  SET_PROPOSAL_NOTIFICATIONS,
+  SET_UPGRADE_NOTIFICATIONS,
 } from '../actions/appActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
@@ -22,6 +25,11 @@ export const initialState = {
   chaincodePrefixesLoading: false,
   walletUrl: getCookie('walletUrl', true) || '',
   isLoggedIn: false,
+  // Notification states
+  proposalNotifications: localStorage.getItem('proposalNotificationsOn') === 'true' || false,
+  upgradeNotifications: localStorage.getItem('upgradeNotificationsOn') === 'true' || false,
+  announcementNotifications:
+    localStorage.getItem('announcementNotificationsOn') === 'true' || false,
 };
 
 const reducer = handleActions(
@@ -46,6 +54,27 @@ const reducer = handleActions(
       return {
         ...state,
         isLoggedIn,
+      };
+    },
+    [SET_PROPOSAL_NOTIFICATIONS](state, { payload: proposalNotifications }) {
+      localStorage.setItem('proposalNotificationsOn', proposalNotifications);
+      return {
+        ...state,
+        proposalNotifications,
+      };
+    },
+    [SET_UPGRADE_NOTIFICATIONS](state, { payload: upgradeNotifications }) {
+      localStorage.setItem('upgradeNotificationsOn', upgradeNotifications);
+      return {
+        ...state,
+        upgradeNotifications,
+      };
+    },
+    [SET_ANNOUNCEMENT_NOTIFICATIONS](state, { payload: announcementNotifications }) {
+      localStorage.setItem('announcementNotificationsOn', announcementNotifications);
+      return {
+        ...state,
+        announcementNotifications,
       };
     },
     /* -----------------

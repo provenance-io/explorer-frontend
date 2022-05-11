@@ -25,6 +25,7 @@
 - Change fees to USD, correct number of validators #311
 - Add back in voting feature #317
 - Add smart contract views #146
+- Add notifications and announcements #333
 
 ## 2.6.0
 

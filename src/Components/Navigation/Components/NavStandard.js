@@ -2,12 +2,13 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
 import { Links, Path, breakpoints } from 'consts';
-import { useApp, useColorScheme } from 'redux/hooks';
+import { useApp, useColorScheme, useMediaQuery } from 'redux/hooks';
 // Direct import to prevent import order issues
 import Sprite from '../../Sprite';
 import SearchBar from '../../SearchBar';
 import Toggle from '../../Toggle';
 import UserAccount from '../../UserAccount';
+import AnnouncementMenu from '../../AnnouncementMenu';
 
 const NavigationWrapper = styled.div`
   position: fixed;
@@ -46,7 +47,7 @@ const NavSectionUL = styled.ul`
 
 const NavSectionLI = styled.li`
   position: relative;
-  margin-right: 10px;
+  margin-right: ${({ isLg }) => isLg && '10px'};
   width: 100%;
   text-align: left;
   margin-left: ${({ $subDrop }) => ($subDrop ? '0px' : '10px')};
@@ -61,7 +62,7 @@ const DropdownUL = styled.ul`
   flex-direction: column;
   list-style: none;
   margin-left: -5px;
-  padding: 20px 0 0 0;
+  padding: 19px 0 0 0;
   @media ${breakpoints.down('lg')} {
     padding: 14px 0 0 0;
   }
@@ -75,11 +76,8 @@ const Link = styled(BaseLink)`
   display: flex;
   background: ${({ theme }) => theme.BACKGROUND_NAV};
   font-size: 1.4rem;
-  opacity: 0.9;
+  opacity: 1;
   border-bottom: ${({ theme }) => `2px solid ${theme.BACKGROUND_NAV};`};
-  :hover {
-    opacity: 1;
-  }
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
@@ -94,7 +92,7 @@ const Link = styled(BaseLink)`
     margin: 0 10px 0 0;
   }
   :last-child {
-    margin: 0 0 0 0px;
+    margin: 0;
   }
   &&& {
     color: ${({ theme }) => theme.FONT_NAV};
@@ -132,12 +130,13 @@ const NavStandard = () => {
   const { themeName } = useColorScheme();
   const { pathname } = useLocation();
   const theme = useTheme();
+  const { matches: isLg } = useMediaQuery(breakpoints.up('lg'));
 
   const buildLink = (linkName, { url, title, subMenu = {} }, subDrop) => {
     const active = pathname === url;
     const isSubMenu = Links[linkName]?.subMenu || undefined;
     return (
-      <NavSectionLI key={url} $subDrop={subDrop}>
+      <NavSectionLI key={url} $subDrop={subDrop} isLg={isLg}>
         <Link
           key={url}
           to={isSubMenu ? '#' : url}
@@ -174,6 +173,7 @@ const NavStandard = () => {
         <NavSectionUL>{buildLinks()}</NavSectionUL>
       </NavSection>
       <SearchBar />
+      <AnnouncementMenu />
       <UserAccount />
       <Toggle
         active={themeName === 'night'}
