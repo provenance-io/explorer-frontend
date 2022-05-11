@@ -1,4 +1,6 @@
 export { default as Accounts } from './Accounts';
+export { default as Announcement } from './Announcement';
+export { default as Announcements } from './Announcements';
 export { default as Asset } from './Asset';
 export { default as Assets } from './Assets';
 export { default as Block } from './Block';

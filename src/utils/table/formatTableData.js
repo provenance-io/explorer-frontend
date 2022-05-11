@@ -308,7 +308,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'commission': // fallthrough
         case 'percentage': {
           const percentValue = serverValue * 100;
-          const percent = percentValue < 0.0001 ? '>0.0001' : numberFormat(percentValue, 4);
+          const percent = percentValue < 0.0001 ? '<0.0001' : numberFormat(percentValue, 4);
           finalObj[dataName] = { value: `${percent} %` };
           break;
         }

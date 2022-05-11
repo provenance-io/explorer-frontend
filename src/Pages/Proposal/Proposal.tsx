@@ -45,7 +45,9 @@ const Proposal = () => {
                   && hasHash;
 
   useEffect(() => {
-    getAccountAssets({ address });
+    if (address) {
+      getAccountAssets({ address });
+    };
   },[getAccountAssets, address]);
 
   useEffect(() => {

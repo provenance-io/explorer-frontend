@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { breakpoints } from 'consts';
 
-const PageWrapper = styled.div`
+const PageWrapper = styled.div<{ noHeader: boolean }>`
   padding: 106px 10%;
   position: relative;
   background-color: transparent;
@@ -16,18 +15,13 @@ const PageWrapper = styled.div`
   }
 `;
 
-const Wrapper = ({ children, noHeader }) => (
+interface WrapperProps {
+  children?: React.ReactNode | null;
+  noHeader?: boolean;
+}
+
+const Wrapper = ({ children = null, noHeader = false }: WrapperProps) => (
   <PageWrapper noHeader={noHeader}>{children}</PageWrapper>
 );
-
-Wrapper.propTypes = {
-  children: PropTypes.node,
-  noHeader: PropTypes.bool,
-};
-
-Wrapper.defaultProps = {
-  children: null,
-  noHeader: false,
-};
 
 export default Wrapper;

@@ -37,5 +37,6 @@ export const ICON_NAMES = {
   SHARED_POOLS: 'SHARED_POOLS',
   SLACK: 'SLACK',
   SUN: 'SUN',
+  UPGRADE: 'UPGRADE',
   WARNING: 'WARNING',
 };

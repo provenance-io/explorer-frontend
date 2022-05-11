@@ -12,6 +12,7 @@ import * as xhrActions from './xhrActions';
 import * as orderbookActions from './orderbookActions';
 import * as nftActions from './nftActions';
 import * as networkActions from './networkActions';
+import * as notificationsActions from './notificationsActions';
 
 export {
   accountsActions,
@@ -28,4 +29,5 @@ export {
   orderbookActions,
   networkActions,
   nftActions,
+  notificationsActions,
 };

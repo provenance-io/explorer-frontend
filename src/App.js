@@ -9,6 +9,8 @@ import { isProd } from 'consts';
 import { isEmpty } from 'utils';
 import {
   Accounts,
+  Announcement,
+  Announcements,
   Asset,
   Assets,
   Block,
@@ -61,6 +63,8 @@ const App = () => {
                 <Redirect to="/dashboard" />
               </Route>
               <Route path="/accounts/:addressId" component={Accounts} />
+              <Route path="/announcement/:announcementId" component={Announcement} />
+              <Route path="/announcements" component={Announcements} />
               <Route path="/asset/:assetId" component={Asset} />
               <Route path="/assets" component={Assets} />
               <Route path="/blocks" component={Blocks} />
