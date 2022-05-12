@@ -14,6 +14,7 @@
 - Fix some FE formatting issues #319
 - Fix some smart contracts issues seen in test #325
 - Fix delegations logic in voting #329
+- Fix announcements and 24-hr volume data #338
 
 ### Features
 - Update asset price per unit calcs for new data object #296
