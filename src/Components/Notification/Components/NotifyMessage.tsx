@@ -52,13 +52,11 @@ interface DataProps {
 export type NotifyMessageProps = {
   data: DataProps[];
   type: string;
-  onClick: () => void;
 }
 
 export const NotifyMessage = ({
   data,
   type,
-  onClick,
 }: NotifyMessageProps) => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
   let link = "";
@@ -83,7 +81,7 @@ export const NotifyMessage = ({
       break;
   };
 
-  const getMessage = (data: DataProps[], type: string, onClick: () => void) => (
+  const getMessage = (data: DataProps[], type: string) => (
     data.map(item => {
       const title = item.title;
       const id = item.id;
@@ -91,7 +89,6 @@ export const NotifyMessage = ({
         <List key={id}>
           <Link 
             to={type === 'upgrade' ? link : `${link}${id}`} 
-            onClick={onClick}
           >
             {isSmall ? title : `${capitalize(type)} ${id}: ${title}`}
           </Link>
@@ -108,7 +105,7 @@ export const NotifyMessage = ({
       </Message>
     }
     <UList>
-      {getMessage(data, type, onClick)}
+      {getMessage(data, type)}
     </UList>
     </>
   );

@@ -1,9 +1,26 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { Content, Loading } from 'Components';
+import { Content, Loading, Wrapper, Section, Sprite } from 'Components';
 import { useNotifications, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
+
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 100px 0;
+`;
+
+const InfoText = styled.div`
+  font-size: 4rem;
+  color: ${({ theme }) => theme.FONT_PRIMARY};
+  margin: 40px 0;
+  flex-basis: 100%;
+  text-align: center;
+`;
 
 const Button = styled.button`
   width: 100%;
@@ -82,7 +99,7 @@ const AnnouncementsList = () => {
     }
     else {
       return (
-        openAnnouncements.reverse().map((item: ItemProps) => {
+        openAnnouncements.map((item: ItemProps) => {
           const title = item.title;
           const id = item.id;
           const time = item.timestamp.slice(0,10);
@@ -104,9 +121,34 @@ const AnnouncementsList = () => {
   };
 
   return (
-    <Content>
-      {getAnnouncementsList()}
-    </Content>
+    <>
+      {!openAnnouncementsLoading && openAnnouncements.length > 0 ? (
+        <Content>
+          {getAnnouncementsList()}
+        </Content>
+      ) : (
+        openAnnouncementsLoading ? (
+          <Loading />
+         ) : (
+          <Wrapper>
+            <Section>
+              <Content>
+                <TextWrapper>
+                  <Sprite icon="PROVENANCE" size="25rem" />
+                  <InfoText>
+                    {`
+                      There aren't any announcements yet, but check back soon!
+                    `}
+                  </InfoText>
+                </TextWrapper>
+              </Content>
+            </Section>
+          </Wrapper>
+         )
+      )
+
+      }
+    </>
   );
 };
 

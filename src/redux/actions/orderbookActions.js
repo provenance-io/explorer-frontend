@@ -1,10 +1,11 @@
-import { ORDER_BOOK_URL } from 'consts';
+import { ORDER_BOOK_URL, ORDER_BOOK_VOLUME_URL } from 'consts';
 import { ajaxGet } from './xhrActions';
 
 // Vars
 // - API
 export const GET_DAILY_PRICE = 'ORDERBOOK::GET_DAILY_PRICE';
 export const GET_PRICE_HISTORY = 'ORDERBOOK::GET_PRICE_HISTORY';
+export const GET_DAILY_VOLUME = 'ORDERBOOK::GET_DAILY_VOLUME';
 
 // Actions
 // - API Calls
@@ -22,3 +23,6 @@ export const getPriceHistory =
         start_time && `&start_time=${start_time}`
       }${end_time && `&end_time=${end_time}`}`
     );
+
+export const getDailyVolume = () => async dispatch =>
+  ajaxGet(GET_DAILY_VOLUME, dispatch, ORDER_BOOK_VOLUME_URL);

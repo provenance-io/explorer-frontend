@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { GET_DAILY_PRICE, GET_PRICE_HISTORY } from '../actions/orderbookActions';
+import { GET_DAILY_PRICE, GET_PRICE_HISTORY, GET_DAILY_VOLUME } from '../actions/orderbookActions';
 import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 
 export const initialState = {
@@ -9,6 +9,8 @@ export const initialState = {
   priceHistory: [],
   priceHistoryFailed: false,
   priceHistoryLoading: false,
+  dailyVolume: 0,
+  dailyVolumeLoading: false,
 };
 
 const reducer = handleActions(
@@ -66,6 +68,29 @@ const reducer = handleActions(
         ...state,
         priceHistoryFailed: true,
         priceHistoryLoading: false,
+      };
+    },
+    /* -----------------
+    GET_DAILY_VOLUME
+    -------------------*/
+    [`${GET_DAILY_VOLUME}_${REQUEST}`](state) {
+      return {
+        ...state,
+        dailyVolume: 0,
+        dailyVolumeLoading: true,
+      };
+    },
+    [`${GET_DAILY_VOLUME}_${SUCCESS}`](state, { payload }) {
+      return {
+        ...state,
+        dailyVolume: payload.displayVolumeTraded,
+        dailyVolumeLoading: false,
+      };
+    },
+    [`${GET_DAILY_VOLUME}_${FAILURE}`](state) {
+      return {
+        ...state,
+        dailyVolumeLoading: false,
       };
     },
   },

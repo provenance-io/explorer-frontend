@@ -138,10 +138,10 @@ const Notification = () => {
     onClick: () => void,
     ) => (
     <Banner 
+      onClick={onClick}
       NotifyProps={{
         data, 
         type,
-        onClick,
       }}
     />
   );

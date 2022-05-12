@@ -10,16 +10,18 @@ const DataCard = styled(BaseDataCard)<{ show: boolean }>`
 
 interface BannerProps {
   NotifyProps: NotifyMessageProps;
+  onClick: () => void;
 }
 
 const Banner = ({
   NotifyProps,
+  onClick,
 }: BannerProps) => {
   const [showNotify, setShowNotify] = useState(true);
 
   const handleClose = () => {
     setShowNotify(!showNotify);
-    NotifyProps.onClick();
+    onClick();
   }
 
   return (
