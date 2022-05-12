@@ -21,6 +21,7 @@ const PercentChange = styled.span`
 
 const HashDashboard = () => {
   const {
+    dailyVolume,
     dailyPrice,
     dailyPriceLoading,
     dailyPriceFailed,
@@ -29,6 +30,7 @@ const HashDashboard = () => {
     priceHistoryFailed,
     getDailyPrice,
     getPriceHistory,
+    getDailyVolume,
   } = useOrderbook();
 
   const theme = useTheme();
@@ -81,10 +83,11 @@ const HashDashboard = () => {
   useEffect(() => {
     getDailyPrice();
     getPriceHistory(weekAgo, today);
-  }, [getDailyPrice, getPriceHistory, today, weekAgo]);
+    getDailyVolume();
+  }, [getDailyPrice, getPriceHistory, today, weekAgo, getDailyVolume]);
 
   const latestPrice = new Big(dailyPrice.last_price || 0);
-  const twentyFourHourVolume = latestPrice.times(dailyPrice.base_volume || 0);
+  const twentyFourHourVolume = latestPrice.times(dailyVolume || 0);
   const marketCap = latestPrice.times(100000000000);
 
   return (
