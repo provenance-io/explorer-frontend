@@ -64,7 +64,7 @@ const reducer = handleActions(
         ...state,
         scheduledUpgrades: payload.reverse().map(upgrade => {
           const upgradeInfo = {
-            id: upgrade.UpgradeVersion,
+            id: upgrade.upgradeVersion,
             timestamp: upgrade.approximateTime,
             title: upgrade.upgradeName,
             body: upgrade.upgradePlan,
