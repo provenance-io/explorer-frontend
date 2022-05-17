@@ -1,4 +1,4 @@
-import { Colors } from './Colors';
+import { Colors, COLORS_VALUE } from './Colors';
 import { allColors } from './Colors/allColors';
 import { Font } from './Font';
 
@@ -6,6 +6,8 @@ const defaultTheme = {
   ...Colors,
   ...Font,
 };
+
+export type DefaultThemeKeys = keyof typeof defaultTheme;
 
 const night = {
   ...defaultTheme,

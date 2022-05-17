@@ -111,4 +111,7 @@ export const Colors = {
   NEGATIVE_CHANGE: allColors.RED_NEGATIVE_PRIMARY,
   // All other colors
   ...allColors,
-};
+} as const;
+
+export type COLORS_TYPE = typeof Colors;
+export type COLORS_VALUE = COLORS_TYPE[keyof COLORS_TYPE];

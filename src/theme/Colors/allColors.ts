@@ -77,4 +77,7 @@ export const allColors = {
   // RED/GREEN
   RED_NEGATIVE_PRIMARY: '#FF0000',
   GREEN_POSITIVE_PRIMARY: '#4ED22C',
-};
+} as const;
+
+export type ALL_COLORS_TYPE = typeof allColors;
+export type ALL_COLORS_VALUE = ALL_COLORS_TYPE[keyof ALL_COLORS_TYPE];

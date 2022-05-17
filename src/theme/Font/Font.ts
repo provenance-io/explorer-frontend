@@ -9,4 +9,7 @@ export const Font = {
   FONT_WEIGHT_NORMAL: '500',
   FONT_WEIGHT_BOLD: '700',
   FONT_WEIGHT_BOLDEST: '900',
-};
+} as const;
+
+export type FONT_TYPE = typeof Font;
+export type FONT_VALUE = FONT_TYPE[keyof FONT_TYPE];
