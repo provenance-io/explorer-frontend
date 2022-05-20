@@ -167,7 +167,7 @@ export const notificationSlice = createSlice({
     })
     .addCase(getAnnouncementNotifications.fulfilled, (state, { payload }) => {
       state.openAnnouncementsLoading = false;
-      state.openAnnouncements = payload.data.reverse();
+      state.openAnnouncements = payload.data;
     })
     .addCase(getAnnouncementNotifications.rejected, (state) => {
       state.openAnnouncementsLoading = false;

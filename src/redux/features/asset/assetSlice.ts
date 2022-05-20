@@ -476,8 +476,6 @@ export const assetSlice = createSlice({
           const percentTotal = parseFloat(a.percent) * 100;
           a.percentTotal =
             (percentTotal < 0.01 ? percentTotal.toFixed(5) : percentTotal.toFixed(2)) + '%';
-          // Replace last entry - with +
-          if (a.range === payload.data.slice(-1)[0].range) a.range = a.range.replace('-', '+');
           return a;
         });
       })

@@ -4,7 +4,7 @@ import { useAssets } from 'redux/hooks';
 
 const AssetsDist = () => {
   const {
-    assetsDist: tableData,
+    assetsDist,
     assetsDistLoading: tableLoading,
     getAssetsDist: getTableData,
   } = useAssets();
@@ -13,16 +13,24 @@ const AssetsDist = () => {
     getTableData();
   }, [getTableData]);
 
+  const tableData = JSON.parse(JSON.stringify(assetsDist));
+
   const tableHeaders = [
     { displayName: 'Range', dataName: 'range' },
     { displayName: 'Amount', dataName: 'amountHash' },
     { displayName: 'Percent', dataName: 'percentTotal' },
   ];
 
+  interface RangeProps {
+    range: string;
+  }
+
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={tableData}
+      tableData={tableData.sort((a: RangeProps, b: RangeProps) =>
+        Number(a.range.match(/(?:\d+\.)?\d+/g)![0] || 0) - Number(b.range.match(/(?:\d+\.)?\d+/g)![0])
+      )}
       isLoading={tableLoading}
       title="Asset Distribution"
     />

@@ -78,8 +78,9 @@ const ContractHistory = () => {
       case 'shares':
           return {
             title,
-            value: formatDenom(Number((value as Value).amount), (value as Value).denom),
+            value: formatDenom(Number((value as Value).amount), (value as Value).denom, { shorthand: true }),
             link: `/asset/${(value as Value).denom}`,
+            splitOnSpace: true,
           };
       default: 
         return {

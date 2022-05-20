@@ -62,7 +62,12 @@ const ValidatorList = () => {
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    if (isLoggedIn) getAllValidators();
+    if (isLoggedIn)
+      getAllValidators({
+        page: 1,
+        count: 100,
+        status: 'all',
+      });
   }, [isLoggedIn, getAllValidators]);
 
   useEffect(() => {
@@ -71,9 +76,11 @@ const ValidatorList = () => {
 
   useEffect(() => {
     setMyValTableData(
-      currentVals.map(d => {
-        const validator = allValidators.find(v => v.addressId === d.validatorSrcAddr);
-        const rewards = accountRewards.rewards.find(r => r.validatorAddress === d.validatorSrcAddr);
+      currentVals.map((d) => {
+        const validator = allValidators.find((v) => v.addressId === d.validatorSrcAddr);
+        const rewards = accountRewards.rewards.find(
+          (r) => r.validatorAddress === d.validatorSrcAddr
+        );
         const totalBalancePrice =
           rewards?.reward.length > 0
             ? `$${formatDenom(
@@ -98,7 +105,7 @@ const ValidatorList = () => {
     isDelegateFilter && { displayName: 'Total Value', dataName: 'totalBalancePrice' },
     !isDelegateFilter && { displayName: 'End Time', dataName: 'endTime' },
   ] // Remove the nulls
-    .filter(th => th);
+    .filter((th) => th);
 
   // Table header values in order
   const tableHeaders = [
@@ -112,7 +119,7 @@ const ValidatorList = () => {
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
   ] // Remove the nulls
-    .filter(th => th);
+    .filter((th) => th);
 
   const myValFilterData = [
     {

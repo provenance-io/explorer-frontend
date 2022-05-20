@@ -218,14 +218,18 @@ export const getChannelRelayers = createAsyncThunk(
     })
 );
 
-type StatusProps = "STATE_CLOSED" | "STATE_INIT" | "STATE_OPEN" | "STATE_TRYOPEN" |
-                   "STATE_UNINITIALIZED_UNSPECIFIED" | "UNRECOGNIZED";
+interface StatusProps {
+  status: "STATE_CLOSED" | "STATE_INIT" | "STATE_OPEN" | "STATE_TRYOPEN" |
+                   "STATE_UNINITIALIZED_UNSPECIFIED" | "UNRECOGNIZED" | "";
+};
 
 export const getChannelStatus = createAsyncThunk(
   GET_CHANNEL_STATUS,
-  (status: StatusProps) =>
+  ({
+    status = "" 
+  } : StatusProps) =>
     ajax({
-      url: `${IBC_CHANNEL_STATUS_URL}/${status && `?status=${status}`}`,
+      url: `${IBC_CHANNEL_STATUS_URL}${status && `/?status=${status}`}`,
     })
 );
 
@@ -332,7 +336,7 @@ export const ibcSlice = createSlice({
       state.channelStatusFailed = false;
     })
     .addCase(getChannelStatus.fulfilled, (state, { payload }) => {
-      state.channelStatusLoading = true;
+      state.channelStatusLoading = false;
       state.channelStatus = payload.data;
       state.channelStatusFailed = false;
     })
@@ -348,7 +352,7 @@ export const ibcSlice = createSlice({
       state.denomsAllFailed = false;
     })
     .addCase(getDenomsAll.fulfilled, (state, { payload }) => {
-      state.denomsAllLoading = true;
+      state.denomsAllLoading = false;
       state.denomsAll = payload.data.results;
       state.denomsPages = payload.data.pages;
       state.denomsTotal = payload.data.total;

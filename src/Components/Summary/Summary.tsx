@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
 import { breakpoints } from 'consts';
 import { useColorScheme } from 'redux/hooks';
+import { maxLength } from 'utils';
 import PopupNote from '../PopupNote';
 import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
@@ -138,7 +139,7 @@ const getInternalLinkValue = (internalLink: string, children: React.ReactNode | 
   return (
     <Fragment>
       {splitOnSpace && <SummaryValue>{num}&nbsp;</SummaryValue>}
-      <Link to={internalLink}>{children}</Link>
+      <Link to={internalLink}>{maxLength(children, 12, "6")}</Link>
     </Fragment>
   );
 };

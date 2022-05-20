@@ -114,7 +114,8 @@ interface TxTypes {
     title: string;
     options?: { 
       [key: string]: { 
-        title: string 
+        title: string,
+        isDefault?: boolean;
       };
     };
   };
@@ -359,7 +360,7 @@ export const getTxHistory = createAsyncThunk(
     })
 );
 
-export const getTxFullJson = createAsyncThunk(
+export const getTxFullJSON = createAsyncThunk(
   GET_TX_FULL_JSON,
   (txHash: string) =>
     ajax({
@@ -490,14 +491,14 @@ export const txSlice = createSlice({
     /* -----------------
     GET_TX_FULL_JSON
     -------------------*/
-    .addCase(getTxFullJson.pending, (state) => {
+    .addCase(getTxFullJSON.pending, (state) => {
       state.txFullJSONLoading = true;
     })
-    .addCase(getTxFullJson.fulfilled, (state, { payload }) => {
+    .addCase(getTxFullJSON.fulfilled, (state, { payload }) => {
       state.txFullJSONLoading = false;
       state.txFullJSON = payload.data;
     })
-    .addCase(getTxFullJson.rejected, (state) => {
+    .addCase(getTxFullJSON.rejected, (state) => {
       state.txFullJSONLoading = false;
     })
     /* -----------------
@@ -652,7 +653,7 @@ export const txActions = {
   getTxsByBlock,
   getTxInfo,
   getTxHistory,
-  getTxFullJson,
+  getTxFullJSON,
   getTxTypes,
   getTxMsgs,
   getTxMsgTypes,

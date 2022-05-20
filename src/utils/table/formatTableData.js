@@ -27,15 +27,15 @@ export const formatTableData = (data = [], tableHeaders) => {
   const reqData = tableHeaders.map(({ dataName }) => dataName);
   // Return the data formatted as needed
   // Each data item is a row in the table, so we will loop through each
-  return data.map(dataObj => {
+  return data.map((dataObj) => {
     // Final formatted row data to add into array
     const finalObj = {};
     // Loop through each required type of data and gather it into the final Obj
-    reqData.forEach(dataName => {
+    reqData.forEach((dataName) => {
       // serverValue is the default value of the key from the server response
       // Example: dataName = 'hash', dataObj has 'hash' with the value we need, so we'll use it (no modification needed)
       let serverValue = dataObj;
-      dataName.split('.').forEach(key => (serverValue = serverValue?.[key]));
+      dataName.split('.').forEach((key) => (serverValue = serverValue?.[key]));
 
       switch (dataName) {
         // Address or hash leading to the account's page
@@ -431,13 +431,19 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
 
+        // TokenStats Range Data
+        case 'range':
+          finalObj[dataName] = {
+            value: serverValue === '1001-' ? '1000+' : serverValue,
+          };
+          break;
+
         // Server value already correct
         case 'contractCount': //fallthrough
         case 'creationHeight': // fallthrough
         case 'label': // fallthrough
         case 'percentTotal': // fallthrough
         case 'amountHash': // fallthrough
-        case 'range': // fallthrough
         case 'chainId': // fallthrough
         case 'channelStats': // fallthrough
         case 'srcChannel': // fallthrough
@@ -468,7 +474,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Server value capitalized, remove VOTE_OPTION_
         case 'answer': {
           const voteString = Object.keys(serverValue).map(
-            vote =>
+            (vote) =>
               `${capitalize(vote.replace(/vote_option_/gi, ''))} (${
                 serverValue[vote] ? parseFloat(serverValue[vote]) * 100 : '--'
               }%); `

@@ -115,7 +115,7 @@ const Table = ({
   const notesList = () => {
     switch (notes) {
       case 'skipped': {
-        return Object.keys(Skips).map(version => (
+        return Object.keys(Skips).map((version) => (
           <List key={version}>{`${version}:  ${Skips[version]}`}</List>
         ));
       }
@@ -203,7 +203,7 @@ const Table = ({
 
         // Note: if the value is an array, split all values out
         // Eg: value: [1456.43, 'vspn'] => {value[0]} {value[1]} (but use .map, since the array can vary in length)
-        const finalValue = Array.isArray(value) ? value.map(singleValue => singleValue) : value;
+        const finalValue = Array.isArray(value) ? value.map((singleValue) => singleValue) : value;
         const valueMissing = value === '--' || value === '' || value === '--';
         // If only displaying an icon, center it
         const center = icon && value === '' ? 'center' : 'left';
@@ -226,7 +226,7 @@ const Table = ({
                 moniker={blockImage.moniker}
                 address={blockImage.address}
                 sizeText={17}
-                marginRight="20px"
+                marginRight="10px"
                 colorBackground={theme.IRIS_PRIMARY}
                 colorFont={theme.FONT_WHITE}
                 fontWeight={theme.FONT_WEIGHT_THIN}
@@ -292,7 +292,7 @@ const Table = ({
           pageNumber={currentPage}
           secondary
           totalPages={totalPages}
-          onChange={page => changePage(page)}
+          onChange={(page) => changePage(page)}
         />
       ) : null}
     </Content>

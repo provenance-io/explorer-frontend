@@ -48,12 +48,12 @@ const IbcList = () => {
   let totalIbcRelayers = 0;
 
   // Create foundation from channelBalances
-  const channelBalanceData = channelBalances.map(item => {
-    const channelList = item.channels.map(channel => {
+  const channelBalanceData = channelBalances.map((item) => {
+    const channelList = item.channels.map((channel) => {
       const srcChannel = channel.srcChannel.channel;
       const dstChannel = channel.dstChannel.channel;
       const lastTx = channel.lastTx;
-      const balances = channel.balances.map(balance => {
+      const balances = channel.balances.map((balance) => {
         const balanceInAmount = balance.balanceIn?.amount;
         const balanceInDenom = balance.balanceIn?.denom;
         const balanceOutAmount = balance.balanceOut?.amount;
@@ -73,13 +73,13 @@ const IbcList = () => {
   });
 
   // Determine channel status and stats
-  const channelStatusData = channelStatus.map(item => {
+  const channelStatusData = channelStatus.map((item) => {
     totalIbcRelayers++;
     const chainId = item.dstChainId;
     const numChannels = item.channels.length;
     let activeChannels = 0;
     const channelList = item.channels
-      .map(channel => {
+      .map((channel) => {
         if (channel.status === 'STATE_OPEN') {
           activeChannels++;
         }
@@ -99,12 +99,12 @@ const IbcList = () => {
   });
 
   // Now construct the final array from the two API calls
-  const ibcData = channelStatusData.map(status => {
-    channelBalanceData.forEach(balance => {
+  const ibcData = channelStatusData.map((status) => {
+    channelBalanceData.forEach((balance) => {
       if (balance.chainId === status.chainId) {
         status.chainLastTx = balance.chainLastTx;
-        status.channelList.forEach(statChan => {
-          balance.channelList.forEach(balChan => {
+        status.channelList.forEach((statChan) => {
+          balance.channelList.forEach((balChan) => {
             if (
               balChan.dstChannel === statChan.dstChannel &&
               balChan.srcChannel === statChan.srcChannel
@@ -120,11 +120,11 @@ const IbcList = () => {
   });
 
   useEffect(() => {
-    getChannelStatus();
+    getChannelStatus({ status: '' });
     getChannelBalances();
   }, [getChannelStatus, getChannelBalances]);
 
-  const getIbcLists = ibcData.map(chain => {
+  const getIbcLists = ibcData.map((chain) => {
     const tableHeaders = [
       {
         displayName: 'Provenance',

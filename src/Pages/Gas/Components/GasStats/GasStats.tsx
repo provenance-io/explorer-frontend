@@ -47,7 +47,7 @@ const GasStats = () => {
   // Determine/Set Date range in days based on last api search/response
   // 'dayFrom' - 'dayTo' = diff in ms, then 1000ms * 60s * 60min * 24hours = days diff
   const gasStatsDayRange =
-    (new Date(gasStatsTo) - new Date(gasStatsFrom)) / (1000 * 60 * 60 * 24) + 1;
+    (Number(new Date(gasStatsTo)) - Number(new Date(gasStatsFrom))) / (1000 * 60 * 60 * 24) + 1;
   const cleanHistoryTo = gasStatsTo.replace(/-/g, '/');
   const cleanHistoryFrom = gasStatsFrom.replace(/-/g, '/');
   const startDate = new Date(cleanHistoryTo);
@@ -75,12 +75,12 @@ const GasStats = () => {
   }, [getTxTypes, txTypesExist]);
 
   // Use this to check for a reset to 'all' where we will pass '' as the type
-  const updateFilterType = newType => {
+  const updateFilterType = (newType: string) => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterTypeTo(finalType);
   };
 
-  const updatePlotType = newType => {
+  const updatePlotType = (newType: string) => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setPlotTypeTo(finalType);
   };
@@ -96,7 +96,7 @@ const GasStats = () => {
     }
     // Maximum difference between days is 15
     // day - day = diff in ms, (1000ms * 60s * 60min * 24hours = days diff)
-    if ((gasStatsToDay - gasStatsFromDay) / (1000 * 60 * 60 * 24) > 30) {
+    if ((Number(gasStatsToDay) - Number(gasStatsFromDay)) / (1000 * 60 * 60 * 24) > 30) {
       setFilterError('Filter Error: Maximum date range is 15 days.');
       return false;
     }
@@ -123,11 +123,14 @@ const GasStats = () => {
   };
 
   // Set default to transfer
+  const gasTxTypes = JSON.parse(JSON.stringify(txTypes)); // create a mutable copy
   if (txTypesExist) {
-    txTypes.allTxTypes.isDefault = false;
-    txTypes.transfer.isDefault = true;
-    txTypes.transfer.options.send.isDefault = true;
-  }
+    gasTxTypes.allTxTypes.isDefault = false;
+    gasTxTypes.transfer.isDefault = true;
+    if (gasTxTypes.transfer.options) {
+      gasTxTypes.transfer.options.send.isDefault = true;
+    };
+  };
 
   const filterData = [
     {
@@ -135,7 +138,7 @@ const GasStats = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select From Date',
-        onChange: date => date && setGasStatsFrom(format(date, defaultDateFormat)),
+        onChange: (date: Date) => date && setGasStatsFrom(format(date, defaultDateFormat)),
         selected: endDate,
         dateFormat: defaultDateFormat,
         maxDate: subtractDays(startDate, 1), // 15 Days from the start day is the max length of time
@@ -147,7 +150,7 @@ const GasStats = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select To Date',
-        onChange: date => date && setGasStatsTo(format(date, defaultDateFormat)),
+        onChange: (date: Date) => date && setGasStatsTo(format(date, defaultDateFormat)),
         selected: startDate,
         dateFormat: defaultDateFormat,
         maxDate: today,
@@ -164,7 +167,7 @@ const GasStats = () => {
       title: 'Message Type:',
       type: 'dropdown',
       maxHeight: '30rem',
-      options: txTypes, //txTypesAll,
+      options: gasTxTypes, //txTypesAll,
       setDefaults: {
         Filter: 'Send',
         Folder: 'Transfer',
