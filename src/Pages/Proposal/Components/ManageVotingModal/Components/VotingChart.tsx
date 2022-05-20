@@ -84,10 +84,9 @@ interface VotingChartProps {
       count: number;
     };
   };
-  proposalId: string;
 }
 
-const VotingChart = ({voteData, proposalId}: VotingChartProps) => {
+const VotingChart = ({voteData}: VotingChartProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
@@ -116,7 +115,7 @@ const VotingChart = ({voteData, proposalId}: VotingChartProps) => {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current) || echarts.init(chartElementRef.current);
+        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
       }
       // Build the dataset
       const data = addData(voteData);

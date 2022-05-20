@@ -5,7 +5,7 @@ import useOnEscape from 'react-tiny-hooks/use-on-escape';
 import { breakpoints } from 'consts';
 import OgSprite from 'Components/Sprite';
 
-const Wrapper = styled.div<{ isOpen: boolean }>`
+const Wrapper = styled.div<{ isOpen: boolean}>`
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   position: fixed;
   top: 0;
@@ -41,7 +41,7 @@ const Dialog = styled.div`
 `;
 
 const Content = styled.div<{ largeModal: boolean }>`
-  position: ${({ largeModal }) => (largeModal ? 'absolute' : 'relative')};
+  position: ${({ largeModal }) => largeModal ? 'absolute' : 'relative'};
   display: flex;
   flex-direction: column;
   max-height: ${({ largeModal }) => largeModal && '90vh'};
@@ -72,23 +72,21 @@ interface ModalProps {
   largeModal?: boolean;
 }
 
-const Modal = React.memo(
-  ({ children, isOpen = false, onClose, largeModal = false }: ModalProps) => {
-    const theme = useTheme();
-    useOnEscape(onClose);
+const Modal = React.memo(({ children, isOpen = false, onClose, largeModal = false }: ModalProps) => {
+  const theme = useTheme();
+  useOnEscape(onClose);
 
-    return (
-      <Wrapper isOpen={isOpen}>
-        <Overlay />
-        <Dialog>
-          <Content largeModal={largeModal}>
-            <Sprite icon="CLOSE" color={theme.FONT_PRIMARY} size="2rem" onClick={onClose} />
-            <Body>{children}</Body>
-          </Content>
-        </Dialog>
-      </Wrapper>
-    );
-  }
-);
+  return (
+    <Wrapper isOpen={isOpen}>
+      <Overlay />
+      <Dialog>
+        <Content largeModal={largeModal}>
+          <Sprite icon="CLOSE" color={theme.FONT_PRIMARY} size="2rem" onClick={onClose} />
+          <Body>{children}</Body>
+        </Content>
+      </Dialog>
+    </Wrapper>
+  );
+});
 
 export default Modal;

@@ -4,8 +4,7 @@ import { format } from 'date-fns';
 import styled, { useTheme } from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';
 import { formatDenom, subtractDays } from 'utils';
-import { useMediaQuery } from 'redux/hooks';
-import useOrderbook from 'redux/hooks/useOrderbook';
+import { useMediaQuery, useOrderbook } from 'redux/hooks';
 import isYesterday from 'date-fns/isYesterday';
 import { breakpoints } from 'consts';
 
@@ -38,7 +37,7 @@ const HashDashboard = () => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
 
   // Find all the prev day's prices and get the average price for the previous day
-  const prevDayPrices = priceHistory.filter(i => isYesterday(new Date(i.trade_timestamp)));
+  const prevDayPrices = priceHistory.filter((i) => isYesterday(new Date(i.trade_timestamp)));
 
   // It's possible the previous day has no data, which results in an error.
   if (prevDayPrices.length === 0) {

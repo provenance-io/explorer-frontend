@@ -53,7 +53,7 @@ interface AssetInfo {
   txnCount?: number;
 };
 
-interface AdminOrTransferTransactions {
+export interface TransactionsModule {
   pages: number;
   results: {
     txHash?: string;
@@ -169,13 +169,13 @@ interface AssetState {
   totalBalancePrice: string;
   assetInfoLoading: boolean;
   // Asset Transactions (Admin)
-  assetAdminTransactions: AdminOrTransferTransactions["results"];
+  assetAdminTransactions: TransactionsModule["results"];
   assetAdminTransactionsLoading: boolean;
-  assetAdminTransactionsPages: AdminOrTransferTransactions["pages"];
+  assetAdminTransactionsPages: TransactionsModule["pages"];
   // Asset Transactions (Transfer)
-  assetTransferTransactions: AdminOrTransferTransactions["results"];
+  assetTransferTransactions: TransactionsModule["results"];
   assetTransferTransactionsLoading: boolean;
-  assetTransferTransactionsPages: AdminOrTransferTransactions["pages"];
+  assetTransferTransactionsPages: TransactionsModule["pages"];
   // Asset Holders
   assetHolders: AssetHolders["results"];
   assetHoldersLoading: boolean;

@@ -1,8 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useMediaQuery } from 'redux/hooks';
-import { useAccounts } from 'redux/new_hooks';
+import { useMediaQuery, useAccounts } from 'redux/hooks';
 import { Summary, Sprite, Loading } from 'Components';
 import { breakpoints } from 'consts';
 import { maxLength, formatDenom } from 'utils';

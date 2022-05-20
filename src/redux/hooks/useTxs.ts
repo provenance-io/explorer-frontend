@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
 import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
 import {
-  selectNotification as selector,
-  notificationActions as actionsList,
-} from 'redux/features/notification/notificationSlice';
+  selectTx as selector,
+  txActions as actionsList,
+} from 'redux/features/tx/txSlice';
 
-export const useNotifications = () => {
+export const useTxs = () => {
   const dispatch = useAppDispatch();
   const state = useAppSelector(selector);
   const actions = useMemo(

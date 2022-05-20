@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useWallet } from '@provenanceio/wallet-lib';
 import { Wrapper, Header, Section, Loading } from 'Components';
-import { useGovernance, useAccounts, useApp } from 'redux/hooks';
 import { isEmpty } from 'utils';
+import { useGovernance, useAccounts, useApp } from '../../redux/hooks';
 import {
   ProposalDeposits,
   ProposalInformation,
@@ -25,7 +25,7 @@ const Proposal = () => {
   const { accountAssets, getAccountAssets } = useAccounts();
   const { walletService } = useWallet();
   const { isLoggedIn } = useApp();
-  const hashBalance: { amount: string, denom: string } = accountAssets?.find((b: { amount: string, denom: string }) => b.denom === 'nhash');
+  const hashBalance: { amount: string, denom: string } = (accountAssets?.find((b: { amount: string, denom: string }) => b.denom === 'nhash') as { amount: string, denom: string });
   const hasHash = !isEmpty(hashBalance) && parseFloat(hashBalance.amount) > 0;
   const {
     state: { address },
@@ -33,11 +33,11 @@ const Proposal = () => {
 
   const votingIsOpen = !isEmpty(timings) 
                        // Check to make sure voting time is valid
-                       && timings.votingTime.startTime.slice(0,4) !== '1901'
+                       && timings?.votingTime.startTime.slice(0,4) !== '1901'
                        // Check for if we are at a time after start time
-                       && (new Date().getTime()) > (new Date(timings.votingTime.startTime).getTime())
+                       && (new Date().getTime()) > (new Date(timings?.votingTime?.startTime as string).getTime())
                        // Check that we are before the end time
-                       && (new Date().getTime()) < (new Date(timings.votingTime.endTime).getTime());
+                       && (new Date().getTime()) < (new Date(timings?.votingTime.endTime as string).getTime());
 
   const canVote = !isEmpty(timings)
                   && votingIsOpen

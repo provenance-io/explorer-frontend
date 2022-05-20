@@ -56,6 +56,7 @@ export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
 export const IBC_CHAIN_URL = `${BASE_URL}/ibc/balances/chain`;
 export const IBC_CHANNEL_URL = `${BASE_URL}/ibc/balances/channel`;
 export const IBC_BALANCES_DENOM_URL = `${BASE_URL}/ibc/balances/denom`;
+export const IBC_RELAYERS_URL = `${BASE_URL}/ibc/channels/src_port/`;
 export const IBC_CHANNEL_STATUS_URL = `${BASE_URL}/ibc/channels/status`;
 export const IBC_DENOMS_ALL_URL = `${BASE_URL}/ibc/denoms/all`;
 // -- Order book

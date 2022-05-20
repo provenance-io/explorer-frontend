@@ -166,7 +166,7 @@ interface AccountState {
   accountAssetsTotal: AccountAssets["total"];
   // Account Delegations
   accountDelegationsLoading: boolean;
-  accountDelegations: AccountDelegations["results"],
+  accountDelegations: AccountDelegations["results"];
   accountDelegationsPages: AccountDelegations["pages"];
   accountDelegationsCount: AccountDelegations["total"];
   accountDelegationsTotal: AccountDelegations["rollupTotals"]["bondedTotal"];
@@ -179,7 +179,7 @@ interface AccountState {
   accountRewards: AccountRewards;
   // Account Unbonding
   accountUnbondingLoading: boolean;
-  accountUnbonding: AccountUnbonding["records"],
+  accountUnbonding: AccountUnbonding["records"];
   accountUnbondingTotal: AccountUnbonding["rollupTotals"]["unbondingTotal"];
 }
 

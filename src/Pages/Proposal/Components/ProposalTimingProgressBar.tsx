@@ -8,9 +8,9 @@ const ProposalTiming = () => {
   const { proposal, proposalLoading } = useGovernance();
 
   const { timings } = proposal;
-  const current = timings?.deposit?.current;
-  const initial = timings?.deposit?.initial;
-  const needed = timings?.deposit?.needed;
+  const current = Number(timings?.deposit?.current);
+  const initial = Number(timings?.deposit?.initial);
+  const needed = Number(timings?.deposit?.needed) || 1; // 1 if 0 to avoid div by 0
   const denom = timings?.deposit?.denom;
 
   const getPercentage = (num = 0, den = 1) => new Big(num).div(den).times(100).toNumber();
@@ -18,19 +18,19 @@ const ProposalTiming = () => {
   const progressData = [
     {
       color: 'CHART_PIE_C',
-      content: () => <span>Current - {formatDenom(current, denom)}</span>,
+      content: () => <span>Current - {formatDenom(current, denom as string)}</span>,
       value: getPercentage(current, needed),
     },
     {
       color: 'CHART_PIE_F',
-      content: () => <span>Initial - {formatDenom(initial, denom)}</span>,
+      content: () => <span>Initial - {formatDenom(initial, denom as string)}</span>,
       height: 50,
       value: getPercentage(initial, needed),
     },
   ];
 
   return (
-    <Content title={`Needed - ${formatDenom(needed, denom)}`}>
+    <Content title={`Needed - ${formatDenom(needed, denom as string)}`}>
       {proposalLoading && <Loading />}
 
       {!proposalLoading && <Progress data={progressData} />}

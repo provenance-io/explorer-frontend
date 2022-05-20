@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Table, Section as BaseSection, Loading } from 'Components';
 import { useWallet } from '@provenanceio/wallet-lib';
-import { useApp, useGovernance, useProposal } from 'redux/hooks';
 import { isEmpty } from 'utils';
 import { ManageProposalModal } from ".";
+import { useApp, useGovernance, useProposal } from '../../../redux/hooks';
 
 const Section = styled(BaseSection)`
   display: flex;

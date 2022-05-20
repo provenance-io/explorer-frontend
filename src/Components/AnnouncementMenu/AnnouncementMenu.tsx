@@ -40,7 +40,7 @@ const AnnouncementMenu = ({
       <AnnouncementBtn onClick={routeChange}>
         <Sprite
           icon={ICON_NAMES.HELP}
-          color={'white'}
+          color={theme.FONT_NAV}
           size="20px"
         />
       </AnnouncementBtn>

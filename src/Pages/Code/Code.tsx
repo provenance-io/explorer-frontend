@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Wrapper, Header, Section, MultiTable } from 'Components';
-import { useContracts } from 'redux/hooks';
 import { useParams } from 'react-router-dom';
+import { Wrapper, Header, Section, MultiTable } from 'Components';
+import { useContracts } from '../../redux/hooks';
 import { CodeDetails, CodeContracts, CodeTxs } from './Components';
 
 interface ParamsProps {
@@ -28,6 +28,8 @@ const Code = () => {
       page: 1,
       count: 30,
       status: '',
+      fromDate: '',
+      toDate: '',
     });
   }, [codeId, getContractCode, getContractsByCode, getCodeTxs]);
 

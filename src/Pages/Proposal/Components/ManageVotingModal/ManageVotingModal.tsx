@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Formik, FormikProps } from "formik";
 import styled, { useTheme } from 'styled-components';
 import { Button, Modal, Forms } from 'Components';
-import { useGovernance, useAccounts } from 'redux/hooks';
 import { isEmpty, votingData as data, votingValidations as validations } from 'utils';
 import { VotingChart, Countdown } from "./Components";
+import { useGovernance, useAccounts } from '../../../../redux/hooks';
 
 const Title = styled.div`
   text-align: center;
@@ -95,7 +95,7 @@ interface ManageVotingProps {
   modalOpen: boolean;
   onClose: Function;
   onVoting: Function;
-  proposalId: string;
+  proposalId: number;
   description: string;
   voterId: string;
   title: string;
@@ -253,7 +253,7 @@ const ManageVotingModal = ({
                 <PairTitle>Description</PairTitle>
                 <Description>{description}</Description>
                 <PairTitle>Vote Tally</PairTitle>
-                {!isEmpty(tally) && <VotingChart voteData={tally} proposalId={proposalId} />}
+                {!isEmpty(tally) && <VotingChart voteData={tally} />}
                 <Forms config={data(voteType)} formik={formik} grid={voteType === 'weighted'}/>
                 {voteType === 'weighted' && 
                   <Total>

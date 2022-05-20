@@ -1,13 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Content as BaseContent, Summary, Loading } from 'Components';
-import { useContracts, useMediaQuery } from 'redux/hooks';
-import { maxLength, camelToSentence } from 'utils';
+import { maxLength, camelToSentence, formatDenom } from 'utils';
 import { breakpoints } from 'consts';
+import { useContracts, useMediaQuery } from '../../../redux/hooks';
 
 const Content = styled(BaseContent)`
   margin-bottom: -33px;
 `;
+
+interface Value {
+  amount: string;
+  denom: string;
+}
 
 const ContractHistory = () => {
   const { 
@@ -44,7 +49,7 @@ const ContractHistory = () => {
     values.map(value => prefix + value)
   );
 
-  const getMsgs = Object.entries(msg)?.map(([key, value]) => {
+  const getMsgs = Object.entries(msg as {})?.map(([key, value]) => {
     const title = camelToSentence(key);
     switch(key) {
       case 'convertible_base_denoms': // fallthrough
@@ -69,6 +74,13 @@ const ContractHistory = () => {
           list: Array.isArray(value) ? value.map(val => maxLength(val,14,'6')) : undefined,
           linkList: Array.isArray(value) ? getLinkList(value, '/accounts/') : undefined,
         };
+      case 'capital': // fallthrough
+      case 'shares':
+          return {
+            title,
+            value: formatDenom(Number((value as Value).amount), (value as Value).denom),
+            link: `/asset/${(value as Value).denom}`,
+          };
       default: 
         return {
           title,

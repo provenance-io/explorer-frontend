@@ -25,6 +25,10 @@ const FilterError = styled.div`
   }
 `;
 
+interface ParamsProps {
+  blockHeight: string;
+}
+
 const TxList = () => {
   const defaultDateFormat = 'yyyy-MM-dd';
 
@@ -45,7 +49,7 @@ const TxList = () => {
     txTypesLoading,
   } = useTxs();
   const { tableCount } = useApp();
-  const { blockHeight: pageBlockHeight } = useParams();
+  const { blockHeight: pageBlockHeight } = useParams<ParamsProps>();
 
   const filterToDateClean = filterTo.replace(/-/g, '/');
   const filterFromDateClean = filterFrom.replace(/-/g, '/');
@@ -68,11 +72,13 @@ const TxList = () => {
       count: tableCount,
       type: '',
       status: '',
+      toDate: '',
+      fromDate: '',
     });
   }, [getTableData, pageBlockHeight, tableCount]);
 
   // Fetch on page change
-  const changePage = (newPage) => {
+  const changePage = (newPage: number) => {
     setTableCurrentPage(newPage);
     getTableData({
       page: newPage,
@@ -85,12 +91,12 @@ const TxList = () => {
   };
 
   // Use this to check for a reset to 'all' where we will pass '' as the type
-  const updateFilterType = (newType) => {
+  const updateFilterType = (newType: string) => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterType(finalType);
   };
   // Use this to check for a reset to 'all' where we will pass '' as the status
-  const updateFilterStatus = (newStatus) => {
+  const updateFilterStatus = (newStatus: string) => {
     const finalStatus = newStatus === 'all' ? '' : newStatus;
     setFilterStatus(finalStatus);
   };
@@ -106,7 +112,7 @@ const TxList = () => {
     }
     // Maximum difference between days is 15
     // day - day = diff in ms, (1000ms * 60s * 60min * 24hours = days diff)
-    if ((filterToDay - filterFromDay) / (1000 * 60 * 60 * 24) > 15) {
+    if ((Number(filterToDay) - Number(filterFromDay)) / (1000 * 60 * 60 * 24) > 15) {
       setFilterError('Filter Error: Maximum date range is 15 days.');
       return false;
     }
@@ -164,7 +170,7 @@ const TxList = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Pick From Date',
-        onChange: (date) => setFilterFrom(date ? format(date, defaultDateFormat) : ''),
+        onChange: (date: Date) => setFilterFrom(date ? format(date, defaultDateFormat) : ''),
         selected: endDate,
         dateFormat: defaultDateFormat,
       },
@@ -175,7 +181,7 @@ const TxList = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Pick To Date',
-        onChange: (date) => setFilterTo(date ? format(date, defaultDateFormat) : ''),
+        onChange: (date: Date) => setFilterTo(date ? format(date, defaultDateFormat) : ''),
         selected: startDate,
         dateFormat: defaultDateFormat,
       },
@@ -185,7 +191,7 @@ const TxList = () => {
 
   return (
     <TxListContainer>
-      {!txTypesLoading && txTypesExist && (
+      {!txTypesLoading && Object.keys(txTypes).length > 0 && (
         <FiltersWrapper>
           {filterError && <FilterError>{filterError}</FilterError>}
           <Filters

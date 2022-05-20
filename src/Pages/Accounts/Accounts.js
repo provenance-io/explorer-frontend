@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import { Section, Wrapper, Header, Content } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useMediaQuery } from 'redux/hooks';
-import { useAccounts } from 'redux/new_hooks';
+import { useMediaQuery, useAccounts } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { maxLength } from 'utils';
 import { AccountSpotlight, AccountTxs, AccountButtons } from './Components';

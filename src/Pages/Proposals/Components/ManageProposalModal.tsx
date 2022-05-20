@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Field as BaseField } from "formik";
 import styled from 'styled-components';
 import { Button, Modal, Forms } from 'Components';
-import { useBlocks } from 'redux/hooks';
 import { capitalize, proposalData, proposalValidations } from 'utils';
 import { PROPOSAL_TYPES } from 'consts';
+import { useBlocks } from '../../../redux/hooks';
 
 const Title = styled.div`
   text-align: center;
@@ -113,7 +113,7 @@ const ManageProposalModal = ({
 
   useEffect(() => {
     getBlocksHeight();
-    setBlockNumber(blocksHeight);
+    setBlockNumber(blocksHeight as number);
     // eslint-disable-next-line
   },[]);
 

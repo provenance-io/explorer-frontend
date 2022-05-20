@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { useTxs, useMediaQuery, useNetwork, useOrderbook } from 'redux/hooks';
 import { breakpoints } from 'consts';
+import { TxHistory } from 'redux/features/tx/txSlice';
+import { NetworkVolumeStats } from 'redux/features/network/networkSlice';
+import { PriceHistory } from 'redux/features/orderbook/orderbookSlice';
+import { useTxs, useMediaQuery, useNetwork, useOrderbook } from '../../../../../redux/hooks';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -179,20 +182,6 @@ interface TxHistoryProps {
   txHistoryGran: string;
 }
 
-interface TxMapProps {
-  date: string;
-  numberTxs?: string;
-}
-
-interface FeeMapProps {
-  date: string;
-  feeAmount: number;
-}
-
-interface PriceHistoryProps {
-  trade_timestamp: string;
-}
-
 const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
@@ -209,17 +198,17 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
   const buildChartData = useCallback(() => {
     const xAxisTicks: string[] = [];
     const xAxisShort: string[] = [];
-    const xAxisData = txHistory.map(({ date }: TxMapProps) => {
+    const xAxisData = txHistory.map(({ date }: TxHistory) => {
       xAxisTicks.push(date);
       xAxisShort.push(date.slice(0,10));
       return format(parseISO(date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm');
     });
 
-    const transactions = txHistory.map(({ numberTxs, date }: TxMapProps) => ({
+    const transactions = txHistory.map(({ numberTxs, date }: TxHistory) => ({
       value: numberTxs,
       name: date,
     }));
-    const fees = networkGasVolume.map(({ feeAmount, date }: FeeMapProps) => ({
+    const fees = networkGasVolume.map(({ feeAmount, date }: NetworkVolumeStats) => ({
       value: parseInt((feeAmount/1e9).toFixed(0)),
       name: date,
     }));
@@ -227,7 +216,7 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
     let priceHistoryRange: ValueProps[] = [];
     if (priceHistory.length > 0) {
       priceHistoryRange = fees.map(({ name }: ValueProps) => {
-        const found = priceHistory.find((price: PriceHistoryProps) => name.slice(0,10) === price.trade_timestamp.slice(0,10));
+        const found = priceHistory.find((price: PriceHistory) => name.slice(0,10) === (price.trade_timestamp as string).slice(0,10));
         return({ 
           value: found?.price || dailyPrice.last_price,
           name,
@@ -289,8 +278,8 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
     let chart: echarts.ECharts | undefined;
     if (txHistoryCount > 0) {
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current) || echarts.init(chartElementRef.current);
-      }
+        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
+      };
       // Update chart with the data
       buildChartData();
       chart?.setOption(chartData);

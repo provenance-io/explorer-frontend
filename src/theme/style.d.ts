@@ -170,5 +170,6 @@ declare module 'styled-components' {
     FONT_WEIGHT_NORMAL: string;
     FONT_WEIGHT_BOLD: string;
     FONT_WEIGHT_BOLDEST: string;
+    [key: string]: string;
   }
 }

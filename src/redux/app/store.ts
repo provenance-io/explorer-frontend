@@ -1,12 +1,35 @@
 import { configureStore } from '@reduxjs/toolkit';
-// import { rootReducer } from 'redux/reducers';
 import accountReducer from '../features/account/accountSlice';
 import assetReducer from '../features/asset/assetSlice';
+import appReducer from '../features/app/appSlice';
+import blockReducer from '../features/block/blockSlice';
+import contractReducer from '../features/contract/contractSlice';
+import faucetReducer from '../features/faucet/faucetSlice';
+import governanceReducer from '../features/governance/governanceSlice';
+import ibcReducer from '../features/ibc/ibcSlice';
+import networkReducer from '../features/network/networkSlice';
+import nftReducer from '../features/nft/nftSlice';
+import notificationReducer from '../features/notification/notificationSlice';
+import orderbookReducer from '../features/orderbook/orderbookSlice';
+import txReducer from '../features/tx/txSlice';
+import validatorReducer from '../features/validator/validatorSlice';
 
 export const store = configureStore({
   reducer: {
     account: accountReducer,
     asset: assetReducer,
+    app: appReducer,
+    block: blockReducer,
+    contract: contractReducer,
+    faucet: faucetReducer,
+    governance: governanceReducer,
+    ibc: ibcReducer,
+    network: networkReducer,
+    nft: nftReducer,
+    notification: notificationReducer,
+    orderbook: orderbookReducer,
+    tx: txReducer,
+    validator: validatorReducer,
   },
 });
 
