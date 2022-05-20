@@ -91,14 +91,14 @@ export const getDailyPrice = createAsyncThunk(GET_DAILY_PRICE, () =>
 
 export const getPriceHistory = createAsyncThunk(
   GET_PRICE_HISTORY,
-  ({ start_time = '', end_time = '' }: { start_time: string; end_time: string }) =>
+  ({ startTime = '', endTime = '' }: { startTime: string; endTime: string }) =>
     ajax({
       config: {
         withCredentials: false,
       },
       url: `${ORDER_BOOK_URL}/historical_trades?ticker_id=HASH_USD&type=buy${
-        start_time && `&start_time=${start_time}`
-      }${end_time && `&end_time=${end_time}`}`,
+        startTime && `&start_time=${startTime}`
+      }${endTime && `&end_time=${endTime}`}`,
     })
 );
 

@@ -44,12 +44,12 @@ const HashDashboard = () => {
     const today = format(new Date(), 'yyyy-MM-dd');
     // Starting from the end of priceHistory, find the next date with data
     for (let i = priceHistory.length - 1; i >= 0; i--) {
-      const recentDate = priceHistory[i].trade_timestamp.slice(0, 10);
+      const recentDate = (priceHistory[i].trade_timestamp as string).slice(0, 10);
       // Once the date is not equal to today
       if (recentDate !== today) {
         // For each of the previous date with data, add to prevDayPrices,
         // then exit the loop.
-        while (priceHistory[i].trade_timestamp.slice(0, 10) === recentDate) {
+        while ((priceHistory[i].trade_timestamp as string).slice(0, 10) === recentDate) {
           prevDayPrices.push(priceHistory[i]);
           i--;
         }
@@ -81,7 +81,7 @@ const HashDashboard = () => {
   // Initial load, get most recent blocks
   useEffect(() => {
     getDailyPrice();
-    getPriceHistory(weekAgo, today);
+    getPriceHistory({ startTime: weekAgo, endTime: today });
     getDailyVolume();
   }, [getDailyPrice, getPriceHistory, today, weekAgo, getDailyVolume]);
 
@@ -103,7 +103,7 @@ const HashDashboard = () => {
       )}
       {!dailyPriceLoading && !dailyPriceFailed && (
         <>
-          <DataCard icon="PRICE" title="Latest Price" width="100%" fontWeight="true">
+          <DataCard icon="PRICE" title="Latest Price" width="100%">
             <>
               {`$${formatDenom(dailyPrice.last_price, 'USD', {
                 minimumFractionDigits: 3,
@@ -120,13 +120,13 @@ const HashDashboard = () => {
             </>
           </DataCard>
           <DataCard icon="LINE_CHART" title="Hash Market Cap" width="100%">
-            {`$${formatDenom(marketCap, 'USD', {
+            {`$${formatDenom(Number(marketCap), 'USD', {
               shorthand: true,
               decimal: 2,
             })}`}
           </DataCard>
           <DataCard icon="CALENDAR" title="24hr Volume" width="100%">
-            {`$${formatDenom(twentyFourHourVolume, 'USD', {
+            {`$${formatDenom(Number(twentyFourHourVolume), 'USD', {
               shorthand: true,
               decimal: 2,
             })}`}

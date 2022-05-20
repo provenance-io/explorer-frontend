@@ -33,7 +33,7 @@ const PriceHistory = () => {
   const defaultDayFrom = format(subtractDays(today, 29), defaultDateFormat);
   const defaultDayTo = format(today, defaultDateFormat);
   const oldestDate =
-    havePriceHistory && new Date(priceHistory[0].trade_timestamp.slice(0, 10).replace(/-/, '/'));
+    havePriceHistory && new Date((priceHistory[0].trade_timestamp as string).slice(0, 10).replace(/-/, '/'));
 
   // There may be cases where there is no priceHistory returned for the current day.
   // If so, use the most recent price as a current value until a new price is
@@ -44,7 +44,7 @@ const PriceHistory = () => {
     havePriceHistory &&
     // Check if the current date is the last available date in the
     // priceHistory array.
-    defaultDayTo !== priceHistory[priceHistory.length - 1].trade_timestamp.slice(0, 10)
+    defaultDayTo !== (priceHistory[priceHistory.length - 1].trade_timestamp as string).slice(0, 10)
   ) {
     const tempData = priceHistory[priceHistory.length - 1];
     // Ensure we get the latest daily price
@@ -64,7 +64,7 @@ const PriceHistory = () => {
   // Determine/Set Date range in days based on last api search/response
   // 'dayFrom' - 'dayTo' = diff in ms, then 1000ms * 60s * 60min * 24hours = days diff
   const priceHistoryDayRange =
-    (new Date(priceHistoryToGo) - new Date(priceHistoryFromGo)) / (1000 * 60 * 60 * 24) + 1;
+    (Number(new Date(priceHistoryToGo)) - Number(new Date(priceHistoryFromGo))) / (1000 * 60 * 60 * 24) + 1;
   const cleanHistoryTo = priceHistoryToGo.replace(/-/g, '/');
   const cleanHistoryFrom = priceHistoryFromGo.replace(/-/g, '/');
   const startDate = new Date(cleanHistoryTo);
@@ -72,7 +72,10 @@ const PriceHistory = () => {
 
   // On initial load get all the priceHistory
   useEffect(() => {
-    getPriceHistory();
+    getPriceHistory({
+      startTime: '',
+      endTime: '',
+    });
   }, [getPriceHistory]);
 
   // Check for a valid filter before making api call
@@ -105,7 +108,7 @@ const PriceHistory = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select From Date',
-        onChange: date => date && setPriceHistoryFromGo(format(date, defaultDateFormat)),
+        onChange: (date: Date) => date && setPriceHistoryFromGo(format(date, defaultDateFormat)),
         selected: endDate,
         dateFormat: defaultDateFormat,
         minDate: havePriceHistory ? oldestDate : endDate,
@@ -118,7 +121,7 @@ const PriceHistory = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select To Date',
-        onChange: date => date && setPriceHistoryToGo(format(date, defaultDateFormat)),
+        onChange: (date: Date) => date && setPriceHistoryToGo(format(date, defaultDateFormat)),
         selected: startDate,
         dateFormat: defaultDateFormat,
         minDate: havePriceHistory ? subtractDays(oldestDate, -1) : endDate,
