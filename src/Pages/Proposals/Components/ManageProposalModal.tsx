@@ -155,7 +155,7 @@ const ManageProposalModal = ({
         validationSchema={proposalValidations(proposalType, blockNumber)}
         onSubmit={(values: ProposalProps, { resetForm }) => {
             // Submit proposal message
-            onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit)*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType)
+            onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit ? values.initialDeposit : '0')*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType);
             // Clear the form
             resetForm();
             // Close modal

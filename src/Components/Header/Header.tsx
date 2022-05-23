@@ -12,14 +12,14 @@ const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   align-items: center;
-  padding: 14px 200px;
+  padding: 14px 10%;
   background: ${({ theme }) => theme.BACKGROUND_HEADER};
   color: ${({ theme }) => theme.FONT_PRIMARY};
   box-shadow: 0 1px 10px 0 ${({ theme }) => theme.BOX_SHADOW};
   z-index: 100;
 
   @media ${breakpoints.down('lg')} {
-    padding: 14px 125px;
+    padding: 14px 4%;
     top: 113px;
   }
   @media ${breakpoints.down('md')} {
