@@ -3,7 +3,7 @@ import { Section, Wrapper } from 'Components';
 import { CosmosParamsList, ProvParamsList } from './Components';
 
 const Params = () => (
-  <Wrapper>
+  <Wrapper noHeader>
     <Section>
       <CosmosParamsList />
     </Section>

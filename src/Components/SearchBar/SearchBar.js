@@ -18,7 +18,11 @@ const TextInputContainer = styled.div`
   width: 100%;
 
   @media ${breakpoints.up('lg')} {
-    min-width: 375px;
+    min-width: 500px;
+  }
+
+  @media ${breakpoints.down('lg')} {
+    min-width: 370px;
   }
 `;
 const TextInput = styled.input`

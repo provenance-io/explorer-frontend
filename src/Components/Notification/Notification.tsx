@@ -156,7 +156,21 @@ const Notification = () => {
   ;
 
   return (
-    <NotificationWrapper show={showNotifications}>
+    <NotificationWrapper show={
+      showNotifications &&
+      (
+        (
+          openProposals.length > 0 ||
+          scheduledUpgrades.length > 0 ||
+          openAnnouncements.length > 0
+        ) &&
+        (
+          proposalNotifications ||
+          upgradeNotifications ||
+          announcementNotifications
+        )
+      )
+      }>
       <Content
         icon="HELP"
         iconColor={theme.FONT_NAV}

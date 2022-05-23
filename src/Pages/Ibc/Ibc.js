@@ -3,7 +3,7 @@ import { Section, Wrapper } from 'Components';
 import { IbcList } from './Components';
 
 const Ibc = () => (
-  <Wrapper>
+  <Wrapper noHeader>
     <Section>
       <IbcList />
     </Section>

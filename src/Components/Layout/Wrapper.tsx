@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { breakpoints } from 'consts';
 
 const PageWrapper = styled.div<{ noHeader: boolean }>`
-  padding: 106px 10%;
+  padding: ${({ noHeader }) => (noHeader ? '111px 10%' : '131px 10%')};
   position: relative;
   background-color: transparent;
   font-size: 1.4rem;
   @media ${breakpoints.down('lg')} {
-    padding: ${({ noHeader }) => (noHeader ? '68px 10%' : '96px 10%')};
+    padding: ${({ noHeader }) => (noHeader ? '126px 4%' : '110px 4%')};
   }
   @media ${breakpoints.down('md')} {
     padding: ${({ noHeader }) => (noHeader ? '96px 4%' : '110px 4%')};

@@ -5,7 +5,7 @@ import { UpgradesList } from './Components';
 const Upgrades = () => (
   <Wrapper>
     <Header title="Provenance Upgrade History" />
-    <Section>
+    <Section header>
       <UpgradesList />
     </Section>
   </Wrapper>
