@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { breakpoints } from 'consts';
 
 const PageWrapper = styled.div<{ noHeader: boolean }>`
-  padding: ${({ noHeader }) => (noHeader ? '111px 10%' : '131px 10%')};
+  padding: 131px 10%;
   position: relative;
   background-color: transparent;
   font-size: 1.4rem;

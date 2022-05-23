@@ -15,7 +15,7 @@ const NavigationWrapper = styled.div`
   padding: 0 10% 0 9%;
   background: ${({ theme }) => theme.BACKGROUND_NAV};
   @media ${breakpoints.down('lg')} {
-    padding: 0 4% 0 3%;
+    padding: 0 4% 0 2%;
   }
 `;
 

@@ -126,7 +126,7 @@ const UserAccount = ({ isMobile }) => {
       </AccountBtn>
 
       {isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0}>
+        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
           <PopupTxt>You are currently logged in as</PopupTxt>
           <PopupTxt>
             <Link to={`/accounts/${walletService.state.address}`}>
@@ -142,7 +142,7 @@ const UserAccount = ({ isMobile }) => {
       )}
 
       {!isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0}>
+        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
           <PopupTxt>Select a wallet provider to connect</PopupTxt>
           <ButtonGroup>
             <WalletBtn

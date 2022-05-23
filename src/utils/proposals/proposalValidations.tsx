@@ -8,7 +8,7 @@ import { ACCESS_TYPES } from 'consts';
 export const proposalValidations = (proposalType: string, blocksHeight: number) => {
   const title = yup.string().required('Title is required');
   const description = yup.string().required('Description is required');
-  const initialDeposit = yup.number().min(0, 'Min deposit is 0');
+  const initialDeposit = yup.number().integer().default(0).min(0, 'Min deposit is 0');
   switch (proposalType) {
     case 'cancel software upgrade': // fallthrough
     case 'text':

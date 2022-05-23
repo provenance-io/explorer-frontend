@@ -147,7 +147,6 @@ const FormBuilder = ({
                 name={name}
                 type="number"
                 placeholder={'0'}
-                value={formik.getFieldProps(name).value || ''}
               />
               <ErrorMessage name={name}>{msg => <Error>{msg}</Error>}</ErrorMessage>
             </ThisField>
