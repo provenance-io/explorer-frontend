@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Sprite } from 'Components';
+import { Content, Button as BaseButton } from 'Components';
 import { useNotifications, useInterval, useApp } from 'redux/hooks';
 import { polling } from 'consts';
 import { subtractDays } from 'utils';
@@ -12,8 +12,9 @@ const NotificationWrapper = styled.div<{ show: boolean }>`
   width: 100%;
 `;
 
-const CloseIcon = styled(Sprite)`
+const Button = styled(BaseButton)`
   margin-left: auto;
+  border: 1px solid white;
   :hover {
     cursor: pointer;
   }
@@ -147,32 +148,34 @@ const Notification = () => {
   );
 
   const closeAnnouncements =
-    <CloseIcon
-      icon="CLOSE"
+    <Button
       onClick={handleCloseAll}
-      size="1.4rem"
-      color="ICON_WHITE"
-    />
+      color="PRIMARY"
+    >
+      Close All
+    </Button>
   ;
 
   return (
-    <NotificationWrapper show={
-      showNotifications &&
-      (
+    <NotificationWrapper 
+      show={
+        showNotifications &&
         (
-          openProposals.length > 0 ||
-          scheduledUpgrades.length > 0 ||
-          openAnnouncements.length > 0
-        ) &&
-        (
-          proposalNotifications ||
-          upgradeNotifications ||
-          announcementNotifications
+          (
+            openProposals.length > 0 ||
+            scheduledUpgrades.length > 0 ||
+            openAnnouncements.length > 0
+          ) &&
+          (
+            proposalNotifications ||
+            upgradeNotifications ||
+            announcementNotifications
+          )
         )
-      )
-      }>
+      }
+    >
       <Content
-        icon="HELP"
+        icon="MEGAPHONE"
         iconColor={theme.FONT_NAV}
         title="News and Announcements"
         titleSize="2.0rem"

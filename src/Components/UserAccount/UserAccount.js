@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
@@ -88,6 +88,7 @@ const UserAccount = ({ isMobile }) => {
   const containerRef = useOnClickOutside(deactivateShowPopup);
   const theme = useTheme();
   const position = isMobile ? 'below' : 'left';
+  const [visible, setVisible] = useState(false);
 
   useOnEscape(deactivateShowPopup);
 
@@ -108,7 +109,14 @@ const UserAccount = ({ isMobile }) => {
   };
 
   return (
-    <Container ref={containerRef}>
+    <Container
+      ref={containerRef}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      <PopupNote show={visible} position="left">
+        Login
+      </PopupNote>
       <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>
         <Sprite
           icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY}

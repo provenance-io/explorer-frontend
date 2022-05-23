@@ -5,6 +5,7 @@ import {
   GET_UPGRADE_NOTIFICATIONS,
   GET_ANNOUNCEMENT_NOTIFICATIONS,
   GET_ANNOUNCEMENT,
+  GET_ANNOUNCEMENTS_ALL,
 } from '../actions/notificationsActions';
 
 export const initialState = {
@@ -20,6 +21,11 @@ export const initialState = {
   // Announcement
   announcementInfo: {},
   announcementInfoLoading: false,
+  // All Announcements
+  allAnnouncementsLoading: false,
+  allAnnouncements: [],
+  allAnnouncementsPages: 0,
+  allAnnouncementsTotal: 0,
 };
 
 const reducer = handleActions(
@@ -64,7 +70,7 @@ const reducer = handleActions(
         ...state,
         scheduledUpgrades: payload.reverse().map(upgrade => {
           const upgradeInfo = {
-            id: upgrade.UpgradeVersion,
+            id: upgrade.upgradeVersion,
             timestamp: upgrade.approximateTime,
             title: upgrade.upgradeName,
             body: upgrade.upgradePlan,
@@ -92,9 +98,10 @@ const reducer = handleActions(
     },
 
     [`${GET_ANNOUNCEMENT_NOTIFICATIONS}_${SUCCESS}`](state, { payload }) {
+      const { results } = payload;
       return {
         ...state,
-        openAnnouncements: payload.reverse(),
+        openAnnouncements: results,
         openAnnouncementsLoading: false,
       };
     },
@@ -127,6 +134,33 @@ const reducer = handleActions(
       return {
         ...state,
         announcementInfoLoading: false,
+      };
+    },
+    /* -----------------
+    GET_ANNOUNCEMENTS_ALL
+    -------------------*/
+    [`${GET_ANNOUNCEMENTS_ALL}_${REQUEST}`](state) {
+      return {
+        ...state,
+        allAnnouncementsLoading: true,
+      };
+    },
+
+    [`${GET_ANNOUNCEMENTS_ALL}_${SUCCESS}`](state, { payload }) {
+      const { pages, total, results } = payload;
+      return {
+        ...state,
+        allAnnouncements: results,
+        allAnnouncementsPages: pages,
+        allAnnouncementsTotal: total,
+        allAnnouncementsLoading: false,
+      };
+    },
+
+    [`${GET_ANNOUNCEMENTS_ALL}_${FAILURE}`](state) {
+      return {
+        ...state,
+        allAnnouncementsLoading: false,
       };
     },
   },
