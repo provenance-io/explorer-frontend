@@ -98,9 +98,10 @@ const reducer = handleActions(
     },
 
     [`${GET_ANNOUNCEMENT_NOTIFICATIONS}_${SUCCESS}`](state, { payload }) {
+      const { results } = payload;
       return {
         ...state,
-        openAnnouncements: payload,
+        openAnnouncements: results,
         openAnnouncementsLoading: false,
       };
     },
@@ -149,7 +150,7 @@ const reducer = handleActions(
       const { pages, total, results } = payload;
       return {
         ...state,
-        allAnnouncements: payload,
+        allAnnouncements: results,
         allAnnouncementsPages: pages,
         allAnnouncementsTotal: total,
         allAnnouncementsLoading: false,

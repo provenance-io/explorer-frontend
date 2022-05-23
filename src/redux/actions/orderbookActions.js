@@ -21,7 +21,8 @@ export const getPriceHistory =
       dispatch,
       `${ORDER_BOOK_URL}/historical_trades?ticker_id=HASH_USD&type=buy${
         start_time && `&start_time=${start_time}`
-      }${end_time && `&end_time=${end_time}`}`
+      }${end_time && `&end_time=${end_time}`}`,
+      { withCredentials: false }
     );
 
 export const getDailyVolume = () => async dispatch =>

@@ -22,23 +22,23 @@ interface ParamsProps {
 };
 
 interface AnnouncementProps {
-  prev: string;
-  post: string;
+  prevId: string;
+  nextId: string;
 }
 
 export const AnnouncementPagination = ({
-  prev,
-  post,
+  prevId,
+  nextId,
 }: AnnouncementProps) => {
   const { announcementId: pageAnnounceNum } = useParams<ParamsProps>();
 
   const history = useHistory();
-  const forwardAllowed = post;
-  const backAllowed = prev;
+  const forwardAllowed = nextId && nextId !== "";
+  const backAllowed = prevId && prevId !== "";
 
   const handleClick = (direction: string) => {
-    const nextAnnouncement = direction === 'back' ? prev : post;
-    history.push(`/block/${nextAnnouncement}`);
+    const nextAnnouncement = direction === 'back' ? prevId : nextId;
+    history.push(`/announcement/${nextAnnouncement}`);
   };
 
   return (

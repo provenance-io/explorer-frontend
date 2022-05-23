@@ -29,14 +29,14 @@ const Announcement = () => {
     getAnnouncementInfo({id: announcementId});
   }, [getAnnouncementInfo, announcementId]);
 
-  const { title, id, timestamp, body, prev, post } = announcementInfo;
+  const { title, id, timestamp, body, nextId, prevId } = announcementInfo;
 
   return (
     <Wrapper>
       <Header
         title={`Announcement ${id}`}
       >
-        <AnnouncementPagination prev={prev} post={post}/>
+        <AnnouncementPagination nextId={nextId} prevId={prevId}/>
       </Header>
       {announcementInfoLoading || isEmpty(announcementInfo) ? <Loading /> :
       <>

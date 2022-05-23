@@ -90,14 +90,12 @@ const AnnouncementsList = () => {
     getAnnouncementsAll,
   } = useNotifications();
 
-  console.log(allAnnouncements);
-
   const loadAnnouncements = useCallback(
     page => {
       getAnnouncementsAll({ 
         fromDate: '',
         page,
-        count: 10, });
+        count: 30, });
       },
     [getAnnouncementsAll]
   );
