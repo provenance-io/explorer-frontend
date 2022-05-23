@@ -15,6 +15,7 @@
 - Fix some smart contracts issues seen in test #325
 - Fix delegations logic in voting #329
 - Fix announcements and 24-hr volume data #338
+- Fix proposal submission to allow 0 #346
 
 ### Features
 - Update asset price per unit calcs for new data object #296
@@ -28,6 +29,7 @@
 - Add smart contract views #146
 - Add notifications and announcements #333
 - Improve Navigation Bar #343
+- Minor improvements to announcements #340
 
 ## 2.6.0
 
