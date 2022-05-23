@@ -12,7 +12,15 @@ const SectionWrapper = styled.div`
   gap: 20px;
   width: 100%;
   margin-bottom: 20px;
-  ${({ header }) => header && 'margin-top: 20px;'}
+  ${({ header }) => header && 'margin-top: 50px;'}
+
+  @media ${breakpoints.down('lg')} {
+    ${({ header }) => header && 'margin-top: 60px;'}
+  }
+
+  @media ${breakpoints.down('md')} {
+    ${({ header }) => header && 'margin-top: 0px;'}
+  }
 
   @media ${breakpoints.up('sm')} {
     flex-direction: row;

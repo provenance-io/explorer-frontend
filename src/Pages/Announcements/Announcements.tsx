@@ -5,7 +5,7 @@ import { AnnouncementsList } from './Components';
 const Announcements = () => (
   <Wrapper>
     <Header title="All Announcements" />
-    <Section>
+    <Section header>
       <AnnouncementsList />
     </Section>
   </Wrapper>

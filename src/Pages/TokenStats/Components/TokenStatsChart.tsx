@@ -2,16 +2,17 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { useNetwork } from 'redux/hooks';
-import { Content, Header } from 'Components';
+import { Header } from 'Components';
 import { isEmpty, formatDenom } from 'utils';
 
 const StyledChart = styled.div`
   height: 600px;
   width: 100%;
+  margin-top: 35px;
 `;
 const StyledMessage = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin: 20px;
 `;
 
 // Chart constants
@@ -177,9 +178,7 @@ const TokenStatsChart = () => {
       <StyledChart ref={chartElementRef} />
     </>
   ) : (
-    <Content>
-      <StyledMessage>No token statistics available. Refresh to retry</StyledMessage>
-    </Content>
+    <StyledMessage>Token statistics chart unavailable. Refresh to retry</StyledMessage>
   );
 };
 

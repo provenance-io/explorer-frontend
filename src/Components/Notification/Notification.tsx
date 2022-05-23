@@ -10,6 +10,7 @@ import { Banner } from './Components';
 const NotificationWrapper = styled.div<{ show: boolean }>`
   display: ${({ show }) => show ? '' : 'none'};
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const Button = styled(BaseButton)`
@@ -159,18 +160,21 @@ const Notification = () => {
   return (
     <NotificationWrapper 
       show={
-        showNotifications && 
-        ((
-          proposalNotifications ||
-          upgradeNotifications ||
-          announcementNotifications
-        ) &&
+        showNotifications &&
         (
-          openProposals.length > 0 || 
-          scheduledUpgrades.length > 0 || 
-          openAnnouncements.length > 0
-        ))}
-      >
+          (
+            openProposals.length > 0 ||
+            scheduledUpgrades.length > 0 ||
+            openAnnouncements.length > 0
+          ) &&
+          (
+            proposalNotifications ||
+            upgradeNotifications ||
+            announcementNotifications
+          )
+        )
+      }
+    >
       <Content
         icon="MEGAPHONE"
         iconColor={theme.FONT_NAV}

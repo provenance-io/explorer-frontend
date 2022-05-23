@@ -27,6 +27,7 @@
 - Add back in voting feature #317
 - Add smart contract views #146
 - Add notifications and announcements #333
+- Improve Navigation Bar #343
 
 ## 2.6.0
 

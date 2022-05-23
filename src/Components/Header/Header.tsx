@@ -7,12 +7,12 @@ import CopyValue from '../CopyValue';
 
 const HeaderContainer = styled.div`
   position: absolute;
-  top: 66px;
+  top: 113px;
   left: 0;
   display: flex;
   width: 100%;
   align-items: center;
-  padding: 14px 220px;
+  padding: 14px 200px;
   background: ${({ theme }) => theme.BACKGROUND_HEADER};
   color: ${({ theme }) => theme.FONT_PRIMARY};
   box-shadow: 0 1px 10px 0 ${({ theme }) => theme.BOX_SHADOW};
@@ -20,7 +20,7 @@ const HeaderContainer = styled.div`
 
   @media ${breakpoints.down('lg')} {
     padding: 14px 125px;
-    top: 56px;
+    top: 113px;
   }
   @media ${breakpoints.down('md')} {
     padding: 10px;

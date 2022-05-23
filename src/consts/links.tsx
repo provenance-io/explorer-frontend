@@ -1,6 +1,19 @@
 import { Path } from './paths';
 
-export const Links = {
+interface LinksProps {
+  [key: string]: {
+    url: string;
+    title: string;
+    subMenu?: {
+      [key: string]: {
+        url: string;
+        title: string;
+      };
+    };
+  };
+};
+
+export const Links: LinksProps = {
   dashboard: {
     url: Path.DASHBOARD_URL,
     title: 'Dashboard',
