@@ -114,7 +114,7 @@ const UserAccount = ({ isMobile }) => {
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
-      <PopupNote show={visible} position="left">
+      <PopupNote show={visible} position="left" zIndex="201">
         Login
       </PopupNote>
       <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>

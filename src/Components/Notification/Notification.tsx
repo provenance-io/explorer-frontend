@@ -10,6 +10,7 @@ import { Banner } from './Components';
 const NotificationWrapper = styled.div<{ show: boolean }>`
   display: ${({ show }) => show ? '' : 'none'};
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const Button = styled(BaseButton)`

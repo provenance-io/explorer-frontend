@@ -35,6 +35,7 @@ const PopupContainer = styled.div`
   &.hide {
     opacity: 0;
   }
+  ${({ zIndex }) => zIndex && `z-index: ${zIndex}`};
 `;
 const Caret = styled(Sprite)`
   position: absolute;
@@ -69,7 +70,7 @@ const Caret = styled(Sprite)`
   }}
 `;
 
-const PopupNote = ({ show, children, position, carat, delay, className, minWidth }) => {
+const PopupNote = ({ show, children, position, carat, delay, className, minWidth, zIndex }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [fadingIn, setFadingIn] = useState(false);
   const [fadingOut, setFadingOut] = useState(false);
@@ -110,6 +111,7 @@ const PopupNote = ({ show, children, position, carat, delay, className, minWidth
       position={position}
       className={`${className} ${show ? 'show' : 'hide'}`}
       minWidth={minWidth}
+      zIndex={zIndex}
     >
       {carat ? <Caret icon="CARET" size="1.8rem" position={position} /> : null}
       {children}
@@ -125,6 +127,7 @@ PopupNote.propTypes = {
   delay: PropTypes.number,
   className: PropTypes.string,
   minWidth: PropTypes.string,
+  zIndex: PropTypes.string,
 };
 
 PopupNote.defaultProps = {
@@ -135,6 +138,7 @@ PopupNote.defaultProps = {
   delay: 250,
   className: '',
   minWidth: '',
+  zIndex: '',
 };
 
 export default PopupNote;

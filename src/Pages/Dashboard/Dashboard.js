@@ -39,9 +39,7 @@ const Dashboard = () => {
       <Helmet>
         <title>Provenance Blockchain Explorer - Dashboard</title>
       </Helmet>
-      <Section>
-        <Notification />
-      </Section>
+      <Notification />
       <Section>
         <BlockSpotlight />
       </Section>
