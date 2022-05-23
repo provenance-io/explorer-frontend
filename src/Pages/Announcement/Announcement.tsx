@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { useNotifications } from 'redux/hooks';
 import { isEmpty } from 'utils';
+import { AnnouncementPagination } from './Components';
 
 const Title = styled.div`
   padding-top: 20px;
@@ -28,13 +29,15 @@ const Announcement = () => {
     getAnnouncementInfo({id: announcementId});
   }, [getAnnouncementInfo, announcementId]);
 
-  const { title, id, timestamp, body } = announcementInfo;
+  const { title, id, timestamp, body, prev, post } = announcementInfo;
 
   return (
     <Wrapper>
       <Header
         title={`Announcement ${id}`}
-      />
+      >
+        <AnnouncementPagination prev={prev} post={post}/>
+      </Header>
       {announcementInfoLoading || isEmpty(announcementInfo) ? <Loading /> :
       <>
         <Section>

@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { Content, Loading, Wrapper, Section, Sprite } from 'Components';
+import { Content, Loading, Wrapper, Section, Sprite, InfiniteScroll } from 'Components';
 import { useNotifications, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 
@@ -84,22 +84,35 @@ const AnnouncementsList = () => {
   };
 
   const {
-    openAnnouncements,
-    openAnnouncementsLoading,
-    getAnnouncementNotifications,
+    allAnnouncements,
+    allAnnouncementsLoading,
+    allAnnouncementsPages,
+    getAnnouncementsAll,
   } = useNotifications();
 
+  console.log(allAnnouncements);
+
+  const loadAnnouncements = useCallback(
+    page => {
+      getAnnouncementsAll({ 
+        fromDate: '',
+        page,
+        count: 10, });
+      },
+    [getAnnouncementsAll]
+  );
+
   useEffect(() => {
-    getAnnouncementNotifications({ fromDate: '' });
-  }, [getAnnouncementNotifications]);
+    loadAnnouncements(1);
+  }, [loadAnnouncements]);
 
   const getAnnouncementsList = () => {
-    if (openAnnouncementsLoading) {
+    if (allAnnouncementsLoading) {
       return <Loading />
     }
     else {
       return (
-        openAnnouncements.map((item: ItemProps) => {
+        allAnnouncements.map((item: ItemProps) => {
           const title = item.title;
           const id = item.id;
           const time = item.timestamp.slice(0,10);
@@ -122,12 +135,23 @@ const AnnouncementsList = () => {
 
   return (
     <>
-      {!openAnnouncementsLoading && openAnnouncements.length > 0 ? (
+      {!allAnnouncementsLoading && allAnnouncements.length > 0 ? (
         <Content>
-          {getAnnouncementsList()}
+          <InfiniteScroll 
+            loading={allAnnouncementsLoading} 
+            onLoadMore={loadAnnouncements} 
+            totalPages={allAnnouncementsPages}
+          >
+            {({ sentryRef, hasNextPage }) => (
+              <>
+                {getAnnouncementsList()}
+                {(hasNextPage || allAnnouncementsLoading) && <Loading ref={sentryRef} />}
+              </>
+            )}
+          </InfiniteScroll>
         </Content>
       ) : (
-        openAnnouncementsLoading ? (
+        allAnnouncementsLoading ? (
           <Loading />
          ) : (
           <Wrapper>
