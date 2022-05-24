@@ -28,6 +28,7 @@ export const Colors = {
   BACKGROUND_LIGHT: allColors.GRAY_LIGHTEST,
   BACKGROUND_NAV: allColors.BLUE_DARKEST,
   BACKGROUND_HEADER: allColors.WHITE,
+  BACKGROUND_SUBHEADER: allColors.BLUE_GRAY,
   // Box Shadow
   BOX_SHADOW: allColors.BLACK30,
   // Button

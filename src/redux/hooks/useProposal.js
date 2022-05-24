@@ -15,6 +15,8 @@ const Button = styled(OgButton)`
  * @typedef {Object} Proposal
  * @property {function} handleProposal - The function to handle proposal submission
  * @property {function} ManageProposalBtn - React component connected to the modalFns
+ * @property {boolean} submitted - whether user successfully submitted a proposal
+ * @property {() => void} setSubmitted - controls submitted state
  * @property {object} modalFns - The items to handle the modal
  * @property {boolean} modalFns.modalOpen - If modal should be open
  * @property {function} modalFns.toggleOpen - Function to toggle the modalOpen boolean
@@ -33,6 +35,7 @@ export const useProposal = () => {
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page
   const { isLoggedIn, setIsLoggedIn } = useApp();
+  const [submitted, setSubmitted] = useState(false);
 
   // Yep we need the wallet
   useEffect(() => {
@@ -43,6 +46,10 @@ export const useProposal = () => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setShouldPull(true);
+        setSubmitted(true);
+        //deactivateModalOpen();
+      } else if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_FAILED) {
+        setSubmitted(false);
         deactivateModalOpen();
       }
     }
@@ -163,6 +170,8 @@ export const useProposal = () => {
   return {
     handleProposal,
     ManageProposalBtn,
+    submitted,
+    setSubmitted,
     modalFns: {
       modalOpen,
       toggleModalOpen,

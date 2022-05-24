@@ -40,6 +40,7 @@ export const allColors = {
   BLUE_DARK: '#5273ad',
   BLUE_DARKER: '#4b5f81',
   BLUE_DARKEST: '#404959',
+  BLUE_GRAY: '#BFD7ED',
   // Teal
   TEAL_LIGHTEST: '#B9D7DC',
   TEAL_LIGHTER: '#7EB4BE',

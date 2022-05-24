@@ -13,7 +13,8 @@ const NavigationWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 0 10% 0 9%;
-  background: ${({ theme }) => theme.BACKGROUND_NAV};
+  background: ${({ theme }) => theme.BACKGROUND_SUBHEADER};
+  border: ${({ theme }) => theme.BACKGROUND_NAV};
   @media ${breakpoints.down('lg')} {
     padding: 0 4% 0 2%;
   }
@@ -48,10 +49,9 @@ const DropdownUL = styled.ul`
 
 const Link = styled(BaseLink)`
   display: flex;
-  background: ${({ theme }) => theme.BACKGROUND_NAV};
+  background: ${({ theme }) => theme.BACKGROUND_SUBHEADER};
   font-size: 1.4rem;
   opacity: 1;
-  border-bottom: ${({ theme }) => `2px solid ${theme.BACKGROUND_NAV};`};
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};
   }
@@ -66,7 +66,7 @@ const Link = styled(BaseLink)`
     margin: 0 10px 0 0;
   }
   &&& {
-    color: ${({ theme }) => theme.FONT_NAV};
+    color: ${({ theme }) => theme.FONT_PRIMARY};
     ${({ $subDrop, theme }) =>
       $subDrop &&
       `

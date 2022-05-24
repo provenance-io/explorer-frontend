@@ -87,7 +87,7 @@ const UserAccount = ({ isMobile }) => {
   const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
   const theme = useTheme();
-  const position = isMobile ? 'below' : 'left';
+  const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
 
   useOnEscape(deactivateShowPopup);
@@ -114,7 +114,7 @@ const UserAccount = ({ isMobile }) => {
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
-      <PopupNote show={visible} position="left" zIndex="201">
+      <PopupNote show={visible} position={position} zIndex="201">
         Login
       </PopupNote>
       <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>

@@ -21,7 +21,7 @@ const ProposalsList = () => {
   } = useGovernance();
   const { walletService } = useWallet();
   const { isLoggedIn } = useApp();
-  const { handleProposal, ManageProposalBtn, modalFns } = useProposal();
+  const { handleProposal, ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
   const [proposalMax, setProposalMax] = useState(1);
 
   // Calculate the current max proposal ID
@@ -64,6 +64,8 @@ const ProposalsList = () => {
           onProposal={handleProposal}
           proposalId={`${proposalMax}`}
           proposerId={address}
+          submitted={submitted}
+          setSubmitted={setSubmitted}
         />
       </Section>
     )}
