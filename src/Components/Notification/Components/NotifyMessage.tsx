@@ -25,9 +25,13 @@ const UList = styled.ul`
   }
 `;
 
+const Bold = styled.span`
+  font-weight: bold;
+  color: ${({ theme }) => theme.YELLOW_LIGHTEST};
+`;
+
 const Link = styled(BaseLink)`
   color: ${({ theme }) => theme.FONT_PRIMARY}; 
-  text-decoration: underline;
   font-size: 1.4rem;
   &&& {
     :hover {
@@ -47,6 +51,7 @@ interface DataProps {
   timestamp?: string;
   id: number;
   title: string;
+  isUpgrade?: boolean;
 }
 
 export type NotifyMessageProps = {
@@ -85,12 +90,16 @@ export const NotifyMessage = ({
     data.map(item => {
       const title = item.title;
       const id = item.id;
+      const softwareUpgrade = item.isUpgrade ? 'SOFTWARE UPGRADE - ' : '';
       return (
         <List key={id}>
           <Link 
             to={type === 'upgrade' ? link : `${link}${id}`} 
           >
-            {isSmall ? title : `${capitalize(type)} ${id}: ${title}`}
+            {softwareUpgrade ?
+              <Bold>{`${softwareUpgrade} PROPOSAL ${id}: ${title}`}</Bold> :
+              isSmall ? title : `${capitalize(type)} ${id}: ${title}`
+            }
           </Link>
         </List>
       );

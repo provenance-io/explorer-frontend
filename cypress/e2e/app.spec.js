@@ -73,7 +73,7 @@ describe('App e2e', () => {
     cy.findByTestId('dashboard-navlink').click();
     cy.location('pathname').should('equal', '/dashboard');
 
-    cy.findByTestId('staking-navlink').click();
+    cy.findByTestId('validators-navlink').click();
     cy.location('pathname').should('equal', '/validators');
 
     cy.findByTestId('transactions-navlink').click();
@@ -84,5 +84,11 @@ describe('App e2e', () => {
 
     cy.findByTestId('gov-navlink').click();
     cy.location('pathname').should('equal', '/proposals');
+
+    cy.findByTestId('ibc-navlink').click();
+    cy.location('pathname').should('equal', '/ibc');
+
+    cy.findByTestId('contracts-navlink').click();
+    cy.location('pathname').should('equal', '/contracts');
   });
 });

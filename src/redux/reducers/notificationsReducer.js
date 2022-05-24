@@ -41,10 +41,14 @@ const reducer = handleActions(
     },
 
     [`${GET_PROPOSAL_NOTIFICATIONS}_${SUCCESS}`](state, { payload }) {
-      const { nonUpgradeOpenList } = payload;
+      const { nonUpgradeOpenList, upgradeOpenList } = payload;
+      const isUpgradeList = upgradeOpenList.map(item => {
+        const addedItem = { isUpgrade: true, ...item };
+        return addedItem;
+      });
       return {
         ...state,
-        openProposals: nonUpgradeOpenList.reverse(),
+        openProposals: nonUpgradeOpenList.concat(isUpgradeList).reverse(),
         openProposalsLoading: false,
       };
     },
