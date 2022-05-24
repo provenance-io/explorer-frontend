@@ -20,7 +20,7 @@ export const Links: LinksProps = {
   },
   staking: {
     url: Path.STAKING_URL,
-    title: 'Staking',
+    title: 'Validators',
   },
   transfer: {
     url: Path.TRANSFER_URL,

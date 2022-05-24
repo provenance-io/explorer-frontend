@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { useNetwork } from 'redux/hooks';
-import { Header } from 'Components';
+import { Header, Loading } from 'Components';
 import { isEmpty, formatDenom } from 'utils';
 
 const StyledChart = styled.div`
@@ -112,7 +112,7 @@ const TokenStatsChart = () => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
-  const { networkTokenStats, getNetworkTokenStats } = useNetwork();
+  const { networkTokenStats, getNetworkTokenStats, networkTokenStatsLoading } = useNetwork();
 
   // Build dynamic chart data
   const buildChartData = useCallback(
@@ -172,13 +172,16 @@ const TokenStatsChart = () => {
       decimal: 0,
     });
 
-  return !isEmpty(networkTokenStats) ? (
-    <>
-      <Header title="Token Statistics" value={`Total: ${totalHash}`} />
-      <StyledChart ref={chartElementRef} />
-    </>
-  ) : (
-    <StyledMessage>Token statistics chart unavailable. Refresh to retry</StyledMessage>
+  return (
+    networkTokenStatsLoading ? <Loading /> :
+    !isEmpty(networkTokenStats) ? (
+      <>
+        <Header title="Token Statistics" value={`Total: ${totalHash}`} />
+        <StyledChart ref={chartElementRef} />
+      </>
+      ) : (
+      <StyledMessage>Token statistics chart unavailable. Refresh to retry</StyledMessage>
+      )
   );
 };
 
