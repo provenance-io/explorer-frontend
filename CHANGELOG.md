@@ -16,6 +16,7 @@
 - Fix delegations logic in voting #329
 - Fix announcements and 24-hr volume data #338
 - Fix proposal submission to allow 0 #346
+- Fix announcement formatting top margin #348
 
 ### Features
 - Update asset price per unit calcs for new data object #296

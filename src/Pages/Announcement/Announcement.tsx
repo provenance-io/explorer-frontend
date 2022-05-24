@@ -9,7 +9,7 @@ import { AnnouncementPagination } from './Components';
 
 const Title = styled.div`
   padding-top: 20px;
-  font-size: 2.4rem;
+  font-size: 3.0rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   align-self: center;
 `;
@@ -40,7 +40,7 @@ const Announcement = () => {
       </Header>
       {announcementInfoLoading || isEmpty(announcementInfo) ? <Loading /> :
       <>
-        <Section>
+        <Section header>
           <Title>{title}</Title>
         </Section>
         <Date>{`Posted on ${timestamp.slice(0,10)}`}</Date>
