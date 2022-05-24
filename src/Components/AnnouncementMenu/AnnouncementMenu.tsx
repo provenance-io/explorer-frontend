@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
 import { breakpoints, ICON_NAMES } from 'consts';
-import { useApp } from 'redux/hooks';
+import { useApp, useMediaQuery } from 'redux/hooks';
 import PopupNote from 'Components/PopupNote';
 import Button from '../Button';
 import Sprite from '../Sprite';
@@ -30,6 +30,8 @@ const AnnouncementMenu = ({
   const { announcementNotifications } = useApp();
   const [notify, setNotify] = useState(false);
   const theme = useTheme();
+  const { matches: isSmall } = useMediaQuery(breakpoints.down('md'));
+
   // Logic for onClick
   const history = useHistory();
   const routeChange = () => {
@@ -49,13 +51,15 @@ const AnnouncementMenu = ({
       };
   }, [setNotify, announcementNotifications]);
 
+  const position = isSmall ? "above" : "left";
+
   return (
     <Container
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
-      <PopupNote show={visible} position="left" zIndex="201">
-        Announcements
+      <PopupNote show={visible} position={position} zIndex="202">
+       Announcements
       </PopupNote>
       <AnnouncementBtn 
         onClick={routeChange}

@@ -31,6 +31,7 @@
 - Add notifications and announcements #333
 - Improve Navigation Bar #343
 - Minor improvements to announcements #340
+- Add countdown box to proposal submission #352
 
 ## 2.6.0
 
