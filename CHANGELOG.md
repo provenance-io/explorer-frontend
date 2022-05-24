@@ -2,36 +2,40 @@
 
 ## Unreleased
 
+## 3.0.0
+
+### Release Name: Antonio de Abreu
+
 ### Bug fixes
-- Fix issues with gas stats charts #286
-- Fix how message types are displayed #288
-- Fix validator display #290
-- Fix jailedUntil in Validator #292
-- Fix delegators pagination view #298
-- Fix account accordion dropdowns #303
-- Fix filter for transactions chart #313
-- Fix proposal denom to use nhash #320
-- Fix some FE formatting issues #319
-- Fix some smart contracts issues seen in test #325
-- Fix delegations logic in voting #329
-- Fix announcements and 24-hr volume data #338
-- Fix proposal submission to allow 0 #346
-- Fix announcement formatting top margin #348
+- Fix issues with gas stats charts [#286](https://github.com/provenance-io/explorer-frontend/issues/286)
+- Fix how message types are displayed [#288](https://github.com/provenance-io/explorer-frontend/issues/288)
+- Fix validator display [#290](https://github.com/provenance-io/explorer-frontend/issues/290)
+- Fix jailedUntil in Validator [#292](https://github.com/provenance-io/explorer-frontend/issues/292)
+- Fix delegators pagination view [#298](https://github.com/provenance-io/explorer-frontend/issues/298)
+- Fix account accordion dropdowns [#303](https://github.com/provenance-io/explorer-frontend/issues/303)
+- Fix filter for transactions chart [#313](https://github.com/provenance-io/explorer-frontend/issues/313)
+- Fix proposal denom to use nhash [#320](https://github.com/provenance-io/explorer-frontend/issues/320)
+- Fix some FE formatting issues [#319](https://github.com/provenance-io/explorer-frontend/issues/319)
+- Fix some smart contracts issues seen in test [#325](https://github.com/provenance-io/explorer-frontend/issues/325)
+- Fix delegations logic in voting [#329](https://github.com/provenance-io/explorer-frontend/issues/329)
+- Fix announcements and 24-hr volume data [#338](https://github.com/provenance-io/explorer-frontend/issues/338)
+- Fix proposal submission to allow 0 [#346](https://github.com/provenance-io/explorer-frontend/issues/346)
+- Fix announcement formatting top margin [#348](https://github.com/provenance-io/explorer-frontend/issues/348)
 
 ### Features
-- Update asset price per unit calcs for new data object #296
-- Add message type gas statistics #260
-- Add calls to getAssetMetadata where explicitly needed #283
-- Add buttons for governance voting #242
-- Add fee stats to transactions chart on dashboard #301
-- Hide voting feature in production #309
-- Change fees to USD, correct number of validators #311
-- Add back in voting feature #317
-- Add smart contract views #146
-- Add notifications and announcements #333
-- Improve Navigation Bar #343
-- Minor improvements to announcements #340
-- Add countdown box to proposal submission #352
+- Update asset price per unit calcs for new data object [#296](https://github.com/provenance-io/explorer-frontend/issues/296)
+- Add message type gas statistics [#260](https://github.com/provenance-io/explorer-frontend/issues/260)
+- Add calls to getAssetMetadata where explicitly needed [#283](https://github.com/provenance-io/explorer-frontend/issues/283)
+- Add buttons for governance voting [#242](https://github.com/provenance-io/explorer-frontend/issues/242)
+- Add fee stats to transactions chart on dashboard [#301](https://github.com/provenance-io/explorer-frontend/issues/301)
+- Hide voting feature in production [#309](https://github.com/provenance-io/explorer-frontend/issues/309)
+- Change fees to USD, correct number of validators [#311](https://github.com/provenance-io/explorer-frontend/issues/311)
+- Add back in voting feature [#317](https://github.com/provenance-io/explorer-frontend/issues/317)
+- Add smart contract views [#146](https://github.com/provenance-io/explorer-frontend/issues/146)
+- Add notifications and announcements [#333](https://github.com/provenance-io/explorer-frontend/issues/333)
+- Improve Navigation Bar [#343](https://github.com/provenance-io/explorer-frontend/issues/343)
+- Minor improvements to announcements [#340](https://github.com/provenance-io/explorer-frontend/issues/340)
+- Add countdown box to proposal submission [#352](https://github.com/provenance-io/explorer-frontend/issues/352)
 
 ## 2.6.0
 
