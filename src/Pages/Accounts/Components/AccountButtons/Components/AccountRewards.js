@@ -28,7 +28,7 @@ const AccountRewards = () => {
 
   useEffect(() => {
     setTableData(
-      accountRewards.rewards.map(d => {
+      accountRewards.rewards?.map(d => {
         const validator = allValidators.find(v => v.addressId === d.validatorAddress);
         const totalBalancePrice =
           d.reward.length > 0
@@ -67,7 +67,7 @@ const AccountRewards = () => {
       >
         <Table
           isLoading={accountRewardsLoading || allValidatorsLoading}
-          tableData={tableData.filter(element => element.totalBalancePrice)}
+          tableData={tableData?.filter(element => element.totalBalancePrice)}
           tableHeaders={tableHeaders}
         />
       </Accordion>

@@ -22,6 +22,7 @@ const night = {
   BACKGROUND_NAV: allColors.BLACK,
   BACKGROUND_HEADER: allColors.GRAY_DARK,
   BACKGROUND_THEME: allColors.BLUE_DARK,
+  BACKGROUND_SUBHEADER: allColors.GRAY_DARKER,
   // Border
   BORDER_PRIMARY: allColors.GRAY_DARK,
   // Button
