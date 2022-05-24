@@ -21,7 +21,6 @@ const NavigationWrapper = styled.div`
   width: 100%;
   padding: 15px;
   background: ${({ theme }) => theme.BACKGROUND_NAV};
-  border-bottom: 1px solid ${({ theme }) => theme.BACKGROUND_HEADER};
 `;
 
 const NavStandard = () => {
