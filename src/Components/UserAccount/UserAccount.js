@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
@@ -88,6 +88,7 @@ const UserAccount = ({ isMobile }) => {
   const containerRef = useOnClickOutside(deactivateShowPopup);
   const theme = useTheme();
   const position = isMobile ? 'below' : 'left';
+  const [visible, setVisible] = useState(false);
 
   useOnEscape(deactivateShowPopup);
 
@@ -101,14 +102,21 @@ const UserAccount = ({ isMobile }) => {
     walletService.updateState();
   };
 
-  const handleConnect = url => {
+  const handleConnect = (url) => {
     setWalletUrl(url);
     walletService.setWalletUrl(url);
     walletService.connect();
   };
 
   return (
-    <Container ref={containerRef}>
+    <Container
+      ref={containerRef}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
+    >
+      <PopupNote show={visible} position="left" zIndex="201">
+        Login
+      </PopupNote>
       <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>
         <Sprite
           icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY}
@@ -118,7 +126,7 @@ const UserAccount = ({ isMobile }) => {
       </AccountBtn>
 
       {isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0}>
+        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
           <PopupTxt>You are currently logged in as</PopupTxt>
           <PopupTxt>
             <Link to={`/accounts/${walletService.state.address}`}>
@@ -134,7 +142,7 @@ const UserAccount = ({ isMobile }) => {
       )}
 
       {!isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0}>
+        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
           <PopupTxt>Select a wallet provider to connect</PopupTxt>
           <ButtonGroup>
             <WalletBtn

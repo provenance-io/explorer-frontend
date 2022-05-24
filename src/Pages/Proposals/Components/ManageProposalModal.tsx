@@ -155,8 +155,8 @@ const ManageProposalModal = ({
         validationSchema={proposalValidations(proposalType, blockNumber)}
         onSubmit={(values: ProposalProps, { resetForm }) => {
           // Submit proposal message
-          // If initial deposit is blank, assume it's 0
-          onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit ? values.initialDeposit : '0')*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType)
+          // If initial deposit is blank, set to 0
+          onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit ? values.initialDeposit : '0')*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType);
           // Clear the form
           resetForm();
           // Close modal

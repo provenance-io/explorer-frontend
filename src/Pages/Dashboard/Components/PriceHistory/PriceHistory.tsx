@@ -46,7 +46,7 @@ const PriceHistory = () => {
     // priceHistory array.
     defaultDayTo !== (priceHistory[priceHistory.length - 1].trade_timestamp as string).slice(0, 10)
   ) {
-    const tempData = priceHistory[priceHistory.length - 1];
+    const tempData = JSON.parse(JSON.stringify(priceHistory[priceHistory.length - 1]));
     // Ensure we get the latest daily price
     tempData.price = dailyPrice.last_price;
     tempData.trade_timestamp = new Date(defaultDayTo).toISOString();

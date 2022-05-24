@@ -11,8 +11,8 @@ import {
   HashDashboard,
 } from './Components';
 
-const handleResize = chartArray => {
-  chartArray.forEach(chart => {
+const handleResize = (chartArray) => {
+  chartArray.forEach((chart) => {
     chart.resize();
   });
 };
@@ -39,9 +39,7 @@ const Dashboard = () => {
       <Helmet>
         <title>Provenance Blockchain Explorer - Dashboard</title>
       </Helmet>
-      <Section>
-        <Notification />
-      </Section>
+      <Notification />
       <Section>
         <BlockSpotlight />
       </Section>

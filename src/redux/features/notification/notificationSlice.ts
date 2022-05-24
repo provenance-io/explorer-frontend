@@ -15,6 +15,11 @@ interface Notification {
   title: string;
 };
 
+interface AnnouncementNotification extends Notification {
+  prevId: string;
+  nextId: string;
+};
+
 interface UpgradeNotification {
   approximateTime: string;
   proposalId: number;
@@ -35,8 +40,13 @@ interface NotificationState {
   openAnnouncements: Notification[];
   openAnnouncementsLoading: boolean;
   // Announcement
-  announcementInfo: Notification;
+  announcementInfo: AnnouncementNotification;
   announcementInfoLoading: boolean;
+  // All Announcements
+  allAnnouncementsLoading: boolean;
+  allAnnouncements: AnnouncementNotification[];
+  allAnnouncementsPages: number;
+  allAnnouncementsTotal: number;
 };
 
 export const initialState: NotificationState = {
@@ -55,8 +65,15 @@ export const initialState: NotificationState = {
     id: 0,
     timestamp: "",
     title: "",
+    prevId: "",
+    nextId: "",
   },
   announcementInfoLoading: false,
+  // All Announcements
+  allAnnouncementsLoading: false,
+  allAnnouncements: [],
+  allAnnouncementsPages: 0,
+  allAnnouncementsTotal: 0,
 };
 
 /* -----------------
@@ -66,6 +83,7 @@ export const GET_PROPOSAL_NOTIFICATIONS = 'GET_PROPOSAL_NOTIFICATIONS';
 export const GET_UPGRADE_NOTIFICATIONS = 'GET_UPGRADE_NOTIFICATIONS';
 export const GET_ANNOUNCEMENT_NOTIFICATIONS = 'GET_ANNOUNCEMENT_NOTIFICATIONS';
 export const GET_ANNOUNCEMENT_INFO = 'GET_ANNOUNCEMENT_INFO';
+export const GET_ANNOUNCEMENTS_ALL = 'GET_ANNOUNCEMENTS_ALL';
 
 /* -----------------
 ** ACTIONS
@@ -109,11 +127,29 @@ export const getAnnouncementInfo = createAsyncThunk(
       url: `${ANNOUNCEMENT_URL}/${id}`,
     })
 );
+
+export const getAnnouncementsAll = createAsyncThunk(
+  GET_ANNOUNCEMENTS_ALL,
+  ({
+    fromDate = '',
+    count = 10,
+    page = 1,
+  } : {
+    fromDate: string,
+    count: number,
+    page: number,
+  }) =>
+    ajax({
+      url: `${ANNOUNCEMENT_NOTIFICATIONS_URL}?page=${page}&count=${count}${fromDate ? `?fromDate=${fromDate}` : ''}`,
+    })
+);
+
 export const notificationActions = {
   getProposalNotifications,
   getUpgradeNotifications,
   getAnnouncementNotifications,
   getAnnouncementInfo,
+  getAnnouncementsAll,
 };
 
 /* -----------------
@@ -167,7 +203,7 @@ export const notificationSlice = createSlice({
     })
     .addCase(getAnnouncementNotifications.fulfilled, (state, { payload }) => {
       state.openAnnouncementsLoading = false;
-      state.openAnnouncements = payload.data;
+      state.openAnnouncements = payload.data.results;
     })
     .addCase(getAnnouncementNotifications.rejected, (state) => {
       state.openAnnouncementsLoading = false;
@@ -184,6 +220,21 @@ export const notificationSlice = createSlice({
     })
     .addCase(getAnnouncementInfo.rejected, (state) => {
       state.announcementInfoLoading = false;
+    })
+    /* -----------------
+    GET_ANNOUNCEMENTS_ALL
+    -------------------*/
+    .addCase(getAnnouncementsAll.pending, (state) => {
+      state.allAnnouncementsLoading = true;
+    })
+    .addCase(getAnnouncementsAll.fulfilled, (state, { payload }) => {
+      state.allAnnouncementsLoading = false;
+      state.allAnnouncements = payload.data.results;
+      state.allAnnouncementsPages = payload.data.pages;
+      state.allAnnouncementsTotal = payload.data.total;
+    })
+    .addCase(getAnnouncementsAll.rejected, (state) => {
+      state.allAnnouncementsLoading = false;
     });
   },
 });

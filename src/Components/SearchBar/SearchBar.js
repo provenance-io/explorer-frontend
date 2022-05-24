@@ -18,7 +18,11 @@ const TextInputContainer = styled.div`
   width: 100%;
 
   @media ${breakpoints.up('lg')} {
-    min-width: 375px;
+    min-width: 500px;
+  }
+
+  @media ${breakpoints.down('lg')} {
+    min-width: 370px;
   }
 `;
 const TextInput = styled.input`
@@ -88,7 +92,7 @@ const SearchBar = () => {
   const [searchType, setSearchType] = useState('address');
   const history = useHistory();
 
-  const enterSearchTerms = e => {
+  const enterSearchTerms = (e) => {
     const term = e?.target?.value;
     setSearchTerms(term);
   };
@@ -140,7 +144,7 @@ const SearchBar = () => {
         <TextInput
           id="SearchBar"
           onChange={enterSearchTerms}
-          onKeyPress={e => {
+          onKeyPress={(e) => {
             if (e.key === 'Enter') {
               runSearch();
             }
