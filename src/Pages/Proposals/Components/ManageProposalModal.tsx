@@ -5,6 +5,7 @@ import { Button, Modal, Forms } from 'Components';
 import { useBlocks } from 'redux/hooks';
 import { capitalize, proposalData, proposalValidations } from 'utils';
 import { PROPOSAL_TYPES } from 'consts';
+import { Countdown } from '../../Proposal/Components/ManageVotingModal/Components';
 
 const Title = styled.div`
   text-align: center;
@@ -64,8 +65,10 @@ interface NewModalProps {
   modalOpen: boolean;
   onClose: Function;
   onProposal: Function;
-  proposalId: string,
-  proposerId: string,
+  proposalId: string;
+  proposerId: string;
+  submitted: boolean;
+  setSubmitted: (arg: boolean) => void;
 }
 
 interface ProposalProps {
@@ -90,6 +93,8 @@ const ManageProposalModal = ({
   onProposal,
   proposalId,
   proposerId,
+  submitted,
+  setSubmitted,
 }: NewModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [blockNumber, setBlockNumber] = useState(0);
@@ -118,6 +123,7 @@ const ManageProposalModal = ({
   },[]);
 
   const handleModalClose = () => {
+    setSubmitted(false);
     onClose();
   };
 
@@ -144,6 +150,19 @@ const ManageProposalModal = ({
     return initialValues;
   };
 
+  const proposalMessage = (
+    <>
+      Your proposal has been submitted.
+      <br />
+      <br />
+      Results may take up to 30 seconds to post to Explorer. Please be patient.
+      <br/>
+      <br/>
+      To continue, either wait for the timer to time out, at which point the page will
+      refresh. Otherwise, exit this popup and refresh the page to view your proposal.
+    </>
+  );
+
   return (
     <Modal isOpen={isOpen} onClose={handleModalClose} largeModal={true}>
       <Formik
@@ -155,42 +174,54 @@ const ManageProposalModal = ({
         validationSchema={proposalValidations(proposalType, blockNumber)}
         onSubmit={(values: ProposalProps, { resetForm }) => {
           // Submit proposal message
-          if (values.initialDeposit) {
-            onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit)*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType);
-          }
-          else {
-            onProposal(getContent(values), [], proposerId, proposalType);
-          }
+          if (!submitted) {
+            if (values.initialDeposit) {
+              onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit)*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType);
+            }
+            else {
+              onProposal(getContent(values), [], proposerId, proposalType);
+            };
+          };
           // Clear the form
           resetForm();
-          // Close modal
-          handleModalClose();
         }}
       >
         {formik => (
           <form onSubmit={formik.handleSubmit}>
-            <Title>{`Proposal ${proposalId}`}</Title>
-            <ThisField>
-              <Label htmlFor="dropdown">Proposal Type</Label>
-              <Field 
-                as="select"
-                name="dropdown"
-                onChange={handleChange}
-              >
-                {Object.keys(PROPOSAL_TYPES).map((key) => {
-                  const proposal = PROPOSAL_TYPES[key];
-                  return (
-                    <Option key={proposal} value={proposal}>{capitalize(proposal)}</Option>
-                  )
-                })}
-              </Field>
-            </ThisField>
-            <Forms config={proposalData(proposalType)} formik={formik} />
-            <ButtonGroup>
-              <Button type="submit">Submit</Button>
-            </ButtonGroup>
+            {!submitted &&
+              <>
+                <Title>{`Proposal ${proposalId}`}</Title>
+                <ThisField>
+                  <Label htmlFor="dropdown">Proposal Type</Label>
+                  <Field 
+                    as="select"
+                    name="dropdown"
+                    onChange={handleChange}
+                  >
+                    {Object.keys(PROPOSAL_TYPES).map((key) => {
+                      const proposal = PROPOSAL_TYPES[key];
+                      return (
+                        <Option key={proposal} value={proposal}>{capitalize(proposal)}</Option>
+                      )
+                    })}
+                  </Field>
+                </ThisField>
+                <Forms config={proposalData(proposalType)} formik={formik} />
+                <ButtonGroup>
+                  <Button type="submit">Submit</Button>
+                </ButtonGroup>
+              </>
+            }
+            {submitted &&
+              <Countdown 
+                onClick={handleModalClose}
+                seconds={30}
+                title='Proposal Submitted'
+                message={proposalMessage}
+              />
+            } 
           </form>
-        )}
+        )}  
       </Formik>
     </Modal>
   );
