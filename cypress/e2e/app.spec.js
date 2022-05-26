@@ -27,7 +27,7 @@ describe('App e2e', () => {
     let initialColor = themes.default.BACKGROUND_LIGHT;
     let oppositeColor = themes.night.BACKGROUND_LIGHT;
 
-    cy.findByTestId('theme-switcher').then(el => {
+    cy.findByTestId('theme-switcher').then((el) => {
       if (el.css('background-color') !== Color(themes.default.INPUT_BG_DARK).string()) {
         initialColor = themes.night.BACKGROUND_LIGHT;
         oppositeColor = themes.default.BACKGROUND_LIGHT;
@@ -73,7 +73,7 @@ describe('App e2e', () => {
     cy.findByTestId('dashboard-navlink').click();
     cy.location('pathname').should('equal', '/dashboard');
 
-    cy.findByTestId('staking-navlink').click();
+    cy.findByTestId('validators-navlink').click();
     cy.location('pathname').should('equal', '/validators');
 
     cy.findByTestId('transactions-navlink').click();
@@ -84,5 +84,11 @@ describe('App e2e', () => {
 
     cy.findByTestId('gov-navlink').click();
     cy.location('pathname').should('equal', '/proposals');
+
+    cy.findByTestId('ibc-navlink').click();
+    cy.location('pathname').should('equal', '/ibc');
+
+    cy.findByTestId('contracts-navlink').click();
+    cy.location('pathname').should('equal', '/contracts');
   });
 });

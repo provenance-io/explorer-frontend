@@ -4,6 +4,8 @@
 
 ### Bug fixes
 
+- Fix issues with proposals to show software upgrade proposals #355
+
 ### Features
 
 - Migrate FE redux to RTK #341

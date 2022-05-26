@@ -169,7 +169,12 @@ export const notificationSlice = createSlice({
     })
     .addCase(getProposalNotifications.fulfilled, (state, { payload }) => {
       state.openProposalsLoading = false;
-      state.openProposals = payload.data.nonUpgradeOpenList.reverse();
+      const { nonUpgradeOpenList, upgradeOpenList } = payload.data;
+      const isUpgradeList = upgradeOpenList.map((item: Notification) => {
+        const addedItem = { isUpgrade: true, ...item };
+        return addedItem;
+      });
+      state.openProposals = nonUpgradeOpenList.concat(isUpgradeList).reverse();
     })
     .addCase(getProposalNotifications.rejected, (state) => {
       state.openProposalsLoading = false;
