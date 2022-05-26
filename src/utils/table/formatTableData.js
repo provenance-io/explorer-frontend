@@ -211,7 +211,7 @@ export const formatTableData = (data = [], tableHeaders) => {
             dataObj?.holdingAccount ||
             '';
           finalObj[dataName] = {
-            value: maxLength(serverValue, 16, 3),
+            value: serverValue,
             link: `/validator/${linkAddress}`,
             hover: serverValue,
             blockImage: dataObj && {

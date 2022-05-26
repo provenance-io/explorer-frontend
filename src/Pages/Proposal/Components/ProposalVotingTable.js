@@ -23,6 +23,8 @@ const ProposalTiming = () => {
     { displayName: 'Timestamp', dataName: 'txTimestamp' },
   ];
 
+  console.log(proposalVotes);
+
   return (
     <Table
       tableHeaders={tableHeaders}

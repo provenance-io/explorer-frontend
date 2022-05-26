@@ -6,3 +6,4 @@ export { default as ProposalVotingGraph } from './ProposalVotingGraph';
 export { default as ProposalVotingTable } from './ProposalVotingTable';
 export { default as ProposalVoting } from './ProposalVoting';
 export { default as ManageVotingModal } from './ManageVotingModal';
+export * from './QuorumChart';

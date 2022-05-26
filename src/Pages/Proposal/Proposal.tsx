@@ -12,6 +12,7 @@ import {
   ProposalVotingGraph,
   ProposalVotingTable,
   ProposalVoting,
+  QuorumChart,
 } from './Components';
 
 interface ParamsProps {
@@ -92,6 +93,7 @@ const Proposal = () => {
         <Section>
           <ProposalVotingTable />
         </Section>
+          <QuorumChart />
       </Wrapper>
       : <Loading />
   );
