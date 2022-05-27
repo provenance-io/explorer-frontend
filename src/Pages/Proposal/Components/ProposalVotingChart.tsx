@@ -2,11 +2,14 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router';
 import styled, { useTheme } from 'styled-components';
 import { useGovernance } from 'redux/hooks';
+import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
 import { formatDenom, isEmpty } from 'utils';
 
 const StyledChart = styled.div`
   height: 200px;
+  width: 100%;
+  margin-bottom: -50px;
 `;
 
 interface ParamsArray {
@@ -27,6 +30,12 @@ const chartData = {
     // eslint-disable-next-line no-empty-pattern
     formatter: ([]: ParamsArray[]) => '',
   },
+  legend: {
+    data: ['Yes', 'No', 'Abstain', 'No With Veto'],
+    textStyle: {},
+    itemGap: 20,
+    padding: 0,
+  },
   xAxis: {
       type: 'value',
       show: false,
@@ -43,9 +52,21 @@ const chartData = {
       name: 'Yes',
       type: 'bar',
       data: [{ value: 50, rawValue: 0 }],
+      showBackground: true,
       stack: 'total',
       itemStyle: {
-        barBorderRadius: [5,0,0,5],
+        borderRadius: [5,0,0,5],
+      },
+      backgroundStyle: {
+        color: '',
+        borderColor: 'rgba(180, 180, 180, 0.3)',
+        borderWidth: 1,
+        borderDashOffset: 5,
+        shadowBlur: 3,
+        shadowColor: 'black',
+        shadowOffsetX: -1,
+        shadowOffsetY: 1,
+        borderRadius: [5,0,0,5],
       },
       emphasis: {
         focus: 'series',
@@ -97,13 +118,54 @@ const chartData = {
       type: 'bar',
       stack: 'total',
       itemStyle: {
-        barBorderRadius: [0,0,0,0],
+        borderRadius: [0,0,0,0],
+      },
+      backgroundStyle: {
+        borderRadius: [0,0,0,0],
       },
       emphasis: {
         focus: 'series',
       },
       markLine: {
-        data: [],
+        silent: true,
+        data: [
+          {
+            name: 'Pass Threshold',
+            xAxis: 0,
+            label: {
+              show: true,
+              formatter: 'Pass Threshold',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+          {
+            name: 'Veto Threshold',
+            xAxis: 0,
+            label: {
+              show: true,
+              formatter: 'Veto Threshold',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+              position: 'start',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+        ],
+        symbol: 'line',
+        lineStyle: {
+          color: 'black',
+          width: 2,
+        },
       },
     },
     {
@@ -111,13 +173,54 @@ const chartData = {
       type: 'bar',
       stack: 'total',
       itemStyle: {
-        barBorderRadius: [0,0,0,0],
+        borderRadius: [0,0,0,0],
+      },
+      backgroundStyle: {
+        borderRadius: [0,0,0,0],
       },
       emphasis: {
         focus: 'series',
       },
       markLine: {
-        data: [],
+        silent: true,
+        data: [
+          {
+            name: 'Pass Threshold',
+            xAxis: 0,
+            label: {
+              show: true,
+              formatter: 'Pass Threshold',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+          {
+            name: 'Veto Threshold',
+            xAxis: 0,
+            label: {
+              show: true,
+              formatter: 'Veto Threshold',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+              position: 'start',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+        ],
+        symbol: 'line',
+        lineStyle: {
+          color: 'black',
+          width: 2,
+        },
       },
     },
     {
@@ -125,13 +228,54 @@ const chartData = {
       type: 'bar',
       stack: 'total',
       itemStyle: {
-        barBorderRadius: [0,5,5,0],
+        borderRadius: [0,5,5,0],
+      },
+      backgroundStyle: {
+        borderRadius: [0,5,5,0],
       },
       emphasis: {
         focus: 'series',
       },
       markLine: {
-        data: [],
+        silent: true,
+        data: [
+          {
+            name: 'Pass Threshold',
+            xAxis: 0,
+            label: {
+              show: true,
+              formatter: 'Pass Threshold',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+          {
+            name: 'Veto Threshold',
+            xAxis: 0,
+            label: {
+              show: true,
+              formatter: 'Veto Threshold',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+              position: 'start',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+        ],
+        symbol: 'line',
+        lineStyle: {
+          color: 'black',
+          width: 2,
+        },
       },
     },
   ]
@@ -146,9 +290,9 @@ const getNumberInHash = (({ amount, denom, total }:{ amount: string, denom: stri
   return response;
 });
 
-export const QuorumChart = () => {
+export const ProposalVotingChart = () => {
   const { proposalId } = useParams<ParamsProps>();
-  const { proposalVotes, getProposalVotes } = useGovernance();
+  const { proposalVotes, getProposalVotes, proposalVotesLoading } = useGovernance();
   const { tally: voteData } = proposalVotes;
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
@@ -161,8 +305,14 @@ export const QuorumChart = () => {
   }, [getProposalVotes, voteData, proposalId]);
 
   let total = "0";
+  let denom = "";
+  let passThreshold = "0";
+  let vetoThreshold = "0";
   if (!isEmpty(voteData)) {
     total = voteData.total.amount.amount;
+    denom = voteData.total.amount.denom;
+    passThreshold = proposalVotes.params.passThreshold;
+    vetoThreshold = proposalVotes.params.vetoThreshold;
   }
 
   const buildChartData = useCallback(
@@ -177,27 +327,41 @@ export const QuorumChart = () => {
       // Color chart pallete
       chartData.color = [
         theme.CHART_PIE_G, // yes
-        theme.CHART_PIE_NO, // no - red
+        theme.CHART_PIE_NO, // no - light blue
         theme.CHART_PIE_ABSTAIN, // abstain should be grey
-        theme.CHART_PIE_NOWITHVETO, // noWithVeto - light blue
+        theme.CHART_PIE_NOWITHVETO, // noWithVeto - red
       ];
+      // Legend font colo
+      chartData.legend.textStyle = {
+        color: theme.FONT_PRIMARY,
+      };
+      // Voting
       chartData.series[0].data = [yesVotes];
       chartData.series[1].data = [noVotes];
       chartData.series[2].data = [abstainVotes];
       chartData.series[3].data = [noWithVetoVotes];
       if (noWithVetoVotes.value === 0) {
-        chartData.series[0].itemStyle.barBorderRadius = [5,5,5,5];
+        chartData.series[0].itemStyle.borderRadius = [5,5,5,5];
+        chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
       };
+      // Set background style
+      if (chartData.series[0].backgroundStyle) {
+        chartData.series[0].backgroundStyle.color = theme.BACKGROUND_LIGHT;
+        chartData.series[0].backgroundStyle.shadowColor = theme.BACKGROUND_BLACK;
+      }
       // Set pass threshold marker line data
-      chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold (${Number(proposalVotes.params.passThreshold)*100}%)`;
-      chartData.series[0].markLine.data[0].xAxis = Number(proposalVotes.params.passThreshold) * 100;
-      chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
-      chartData.series[0].markLine.data[0].lineStyle.color = theme.GREEN_POSITIVE_PRIMARY;
-      // Set veto threshold marker line data
-      chartData.series[0].markLine.data[1].label.formatter = `Veto Threshold (${Number(proposalVotes.params.vetoThreshold)*100}%)`;
-      chartData.series[0].markLine.data[1].xAxis = 100 - Number(proposalVotes.params.vetoThreshold) * 100;
-      chartData.series[0].markLine.data[1].label.color = theme.FONT_PRIMARY;
-      chartData.series[0].markLine.data[1].lineStyle.color = theme.RED_NEGATIVE_PRIMARY;
+      for (let i = 0; i < chartData.series.length; i++) {
+        chartData.series[i].markLine.data[0].label.formatter = `Pass Threshold (${Number(passThreshold)*100}%)`;
+        chartData.series[i].markLine.data[0].xAxis = Number(passThreshold) * 100;
+        chartData.series[i].markLine.data[0].label.color = theme.FONT_PRIMARY;
+        chartData.series[i].markLine.data[0].lineStyle.color = theme.GREEN_POSITIVE_PRIMARY;
+
+        // Set veto threshold marker line data
+        chartData.series[i].markLine.data[1].label.formatter = `Veto Threshold (${Number(vetoThreshold)*100}%)`;
+        chartData.series[i].markLine.data[1].xAxis = 100 - Number(vetoThreshold) * 100;
+        chartData.series[i].markLine.data[1].label.color = theme.FONT_PRIMARY;
+        chartData.series[i].markLine.data[1].lineStyle.color = theme.RED_NEGATIVE_PRIMARY;
+      }
 
       chartData.tooltip.formatter = (params: ParamsArray[]) => {
         let returnString = "";
@@ -224,7 +388,7 @@ export const QuorumChart = () => {
         });
         return returnString;
       };
-  }, [theme, total]);
+  }, [theme, total, vetoThreshold, passThreshold]);
 
   // Render chart
   useEffect(() => {
@@ -246,6 +410,10 @@ export const QuorumChart = () => {
   }, [setChart, chart, buildChartData, voteData]);
 
   return (
-    <StyledChart ref={chartElementRef}/>
+    <Content title={proposalVotesLoading ? '' : `Total Votes: ${formatDenom(Number(total), denom)}`}>
+      {proposalVotesLoading ? <Loading /> :
+        <StyledChart ref={chartElementRef}/>
+      }
+    </Content>
   );
 };

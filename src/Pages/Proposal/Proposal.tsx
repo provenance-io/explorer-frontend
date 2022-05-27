@@ -9,10 +9,10 @@ import {
   ProposalInformation,
   ProposalTimingProgressBar,
   ProposalTimingTable,
-  ProposalVotingGraph,
+  ProposalVotingChart,
   ProposalVotingTable,
   ProposalVoting,
-  QuorumChart,
+  ProposalQuorumChart,
 } from './Components';
 
 interface ParamsProps {
@@ -88,12 +88,14 @@ const Proposal = () => {
           <ProposalDeposits />
         </Section>
         <Section>
-          <ProposalVotingGraph />
+          <ProposalQuorumChart />
+        </Section>
+        <Section>
+          <ProposalVotingChart />
         </Section>
         <Section>
           <ProposalVotingTable />
         </Section>
-          <QuorumChart />
       </Wrapper>
       : <Loading />
   );
