@@ -9,6 +9,7 @@ import {
   Sprite,
   TimeTicker,
   CopyValue,
+  PercentBar,
 } from 'Components';
 import OgBlockImage from 'Components/BlockImage';
 import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
@@ -173,6 +174,15 @@ const Table = ({
                 delegate={dataName === 'delegate'}
                 validator={rawTableData[index]}
               />
+            </TableData>
+          );
+        }
+
+        // For voting data chart
+        if (dataName === 'answer') {
+          return (
+            <TableData key={displayName} title={rowData[dataName].hover}>
+              <PercentBar data={rowData[dataName].value} />
             </TableData>
           );
         }

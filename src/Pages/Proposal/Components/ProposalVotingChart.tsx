@@ -9,7 +9,8 @@ import { formatDenom, isEmpty } from 'utils';
 const StyledChart = styled.div`
   height: 200px;
   width: 100%;
-  margin-bottom: -50px;
+  margin-top: -20px;
+  margin-bottom: -55px;
 `;
 
 interface ParamsArray {
@@ -34,7 +35,7 @@ const chartData = {
     data: ['Yes', 'No', 'Abstain', 'No With Veto'],
     textStyle: {},
     itemGap: 20,
-    padding: 0,
+    padding: 10,
   },
   xAxis: {
       type: 'value',
@@ -340,10 +341,18 @@ export const ProposalVotingChart = () => {
       chartData.series[1].data = [noVotes];
       chartData.series[2].data = [abstainVotes];
       chartData.series[3].data = [noWithVetoVotes];
-      if (noWithVetoVotes.value === 0) {
+      if (noWithVetoVotes.value === 0 && abstainVotes.value !== 0) {
+        chartData.series[2].itemStyle.borderRadius = [0,5,5,0];
+        chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
+      }
+      else if (abstainVotes.value === 0 && noWithVetoVotes.value === 0 && noVotes.value !== 0) {
+        chartData.series[1].itemStyle.borderRadius = [0,5,5,0];
+        chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
+      }
+      else {
         chartData.series[0].itemStyle.borderRadius = [5,5,5,5];
         chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
-      };
+      }
       // Set background style
       if (chartData.series[0].backgroundStyle) {
         chartData.series[0].backgroundStyle.color = theme.BACKGROUND_LIGHT;
@@ -381,7 +390,8 @@ export const ProposalVotingChart = () => {
               >
               </div>
               <div style="text-align:center;">
-                ${param.seriesName}: ${formatDenom(parseFloat(param.data.rawValue), param.data.denom)} (${param.data.value}%)
+                ${param.seriesName}: ${formatDenom(parseFloat(param.data.rawValue), param.data.denom)}
+                (${param.data.value ? param.data.value : '--'}%)
               </div>
             </div>`;
             idx++;
@@ -412,7 +422,7 @@ export const ProposalVotingChart = () => {
   return (
     <Content title={proposalVotesLoading ? '' : `Total Votes: ${formatDenom(Number(total), denom)}`}>
       {proposalVotesLoading ? <Loading /> :
-        <StyledChart ref={chartElementRef}/>
+        Number(total) > 0 ? <StyledChart ref={chartElementRef}/> : ''
       }
     </Content>
   );

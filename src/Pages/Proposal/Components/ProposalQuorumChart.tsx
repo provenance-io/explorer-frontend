@@ -9,8 +9,8 @@ import { formatDenom, isEmpty } from 'utils';
 const StyledChart = styled.div`
   height: 200px;
   width: 100%;
-  margin-top: -30px;
-  margin-bottom: -50px;
+  margin-top: -50px;
+  margin-bottom: -70px;
 `;
 
 interface ParamsArray {
@@ -40,9 +40,7 @@ const chartData = {
   xAxis: {
       type: 'value',
       show: false,
-      axisLabel: {
-        formatter: '{value} %',
-      },
+      max: 100,
   },
   yAxis: {
     type: 'category',
@@ -158,7 +156,9 @@ export const ProposalQuorumChart = () => {
     totalEligibleDenom = proposalVotes.params.totalEligibleAmount.denom;
     totalDenom = voteData.total.amount.denom;
     quorumThreshold = proposalVotes.params.quorumThreshold;
-  }
+  };
+
+  const percentVoted = 100*Number(total)/Number(totalEligible);
 
   const buildChartData = useCallback(
     (data) => {
@@ -200,7 +200,7 @@ export const ProposalQuorumChart = () => {
           <br />
           Eligible Votes: ${formatDenom(parseFloat(params[0].data.totalEligible), params[0].data.totalEligibleDenom, { decimal: 0, minimumFractionDigits: 0 })}
           <br />
-          Outstanding Votes: ${formatDenom(parseFloat(params[0].data.totalEligible) - parseFloat(params[0].data.rawValue), params[0].data.totalEligibleDenom, { decimal: 0, minimumFractionDigits: 0 })}
+          Outstanding: ${formatDenom(parseFloat(params[0].data.totalEligible) - parseFloat(params[0].data.rawValue), params[0].data.totalEligibleDenom, { decimal: 0, minimumFractionDigits: 0 })}
         </div>`
       );
   }, [theme, total, quorumThreshold, totalDenom, totalEligible, totalEligibleDenom]);
@@ -225,9 +225,11 @@ export const ProposalQuorumChart = () => {
   }, [setChart, chart, buildChartData, voteData]);
 
   return (
-    <Content title={proposalVotesLoading ? '' : `Percent Voted: ${(100*Number(total)/Number(totalEligible)).toFixed(2)}%`}>
+    <Content 
+      title={proposalVotesLoading ? '' : `Percent Voted: ${percentVoted === 0 || !percentVoted ? '0' : percentVoted < 0.0001 ? '< 0.01' : percentVoted.toFixed(2)}%`}
+    >
       {proposalVotesLoading ? <Loading /> :
-        <StyledChart ref={chartElementRef}/>
+         percentVoted > 0 ? <StyledChart ref={chartElementRef}/> : ''
       }
     </Content>
   );

@@ -467,13 +467,27 @@ export const formatTableData = (data = [], tableHeaders) => {
         }
         // Server value capitalized, remove VOTE_OPTION_
         case 'answer': {
-          const voteString = Object.keys(serverValue).map(
-            vote =>
-              `${capitalize(vote.replace(/vote_option_/gi, ''))} (${
-                serverValue[vote] ? parseFloat(serverValue[vote]) * 100 : '--'
-              }%); `
-          );
-          finalObj[dataName] = { value: voteString.join(' ') };
+          const colors = {
+            VOTE_OPTION_YES: 'CHART_PIE_G', // yes
+            VOTE_OPTION_NO: 'CHART_PIE_NO', // no - light blue
+            VOTE_OPTION_ABSTAIN: 'CHART_PIE_ABSTAIN', // abstain should be grey
+            VOTE_OPTION_NO_WITH_VETO: 'CHART_PIE_NOWITHVETO', // noWithVeto - red
+          };
+          let voteString = '';
+          const progressData = [];
+          Object.keys(serverValue).forEach(vote => {
+            voteString += `${capitalize(vote.replace(/vote_option_/gi, ''))} (${
+              serverValue[vote] ? parseFloat(serverValue[vote]) * 100 : '0'
+            }%); `;
+            progressData.push({
+              color: colors[vote],
+              value: serverValue[vote] * 100,
+            });
+          });
+          finalObj[dataName] = {
+            value: progressData,
+            hover: voteString,
+          };
           break;
         }
         case 'proposalStatus': // fallthrough

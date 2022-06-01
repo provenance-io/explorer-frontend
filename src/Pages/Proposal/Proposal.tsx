@@ -7,12 +7,12 @@ import { isEmpty } from 'utils';
 import {
   ProposalDeposits,
   ProposalInformation,
-  ProposalTimingProgressBar,
   ProposalTimingTable,
   ProposalVotingChart,
   ProposalVotingTable,
   ProposalVoting,
   ProposalQuorumChart,
+  ProposalDepositsChart,
 } from './Components';
 
 interface ParamsProps {
@@ -82,7 +82,7 @@ const Proposal = () => {
           <ProposalTimingTable />
         </Section>
         <Section>
-          <ProposalTimingProgressBar />
+          <ProposalDepositsChart />
         </Section>
         <Section>
           <ProposalDeposits />
