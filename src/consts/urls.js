@@ -7,15 +7,19 @@ const isTest = reactAppEnv === 'test' || window.location.href.includes('test.');
 export const isProd = reactAppEnv === 'production';
 // Base URL for all calls to use
 let BASE_URL = '';
+let BASE_URL_V3 = '';
 export let FAUCET_URL = '';
 if (isLocal) {
   BASE_URL = `http://${process.env.REACT_APP_LOCAL_HOSTNAME}/api/v2`;
+  BASE_URL_V3 = `http://${process.env.REACT_APP_LOCAL_HOSTNAME}/api/v3`;
   FAUCET_URL = process.env.REACT_APP_LOCAL_FAUCET_HOSTNAME;
 } else if (isTest) {
   BASE_URL = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v2`;
+  BASE_URL_V3 = `http://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v3`;
   FAUCET_URL = process.env.REACT_APP_TEST_FAUCET_HOSTNAME;
 } else if (isProd) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v2`;
+  BASE_URL_V3 = `http://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v3`;
 }
 
 export const FIGURE_WALLET_URL = isProd
@@ -52,6 +56,7 @@ export const CONTRACT_LABELS_URL = `${BASE_URL}/smart_contract/contract/labels`;
 export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
 export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
+export const GOVERNANCE_VOTES_URL = `${BASE_URL_V3}/gov/proposals`;
 // -- IBC
 export const IBC_CHAIN_URL = `${BASE_URL}/ibc/balances/chain`;
 export const IBC_CHANNEL_URL = `${BASE_URL}/ibc/balances/channel`;

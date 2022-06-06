@@ -122,9 +122,8 @@ const ManageVotingModal = ({
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [voteType, setVoteType] = useState('');
-  const { proposalVotes } = useGovernance();
+  const { tally } = useGovernance();
   const { accountDelegationsTotal } = useAccounts();
-  const { tally } = proposalVotes;
   // Delegations are pulled when the vote button is clicked
   const hasDelegations = parseInt(accountDelegationsTotal.amount) > 0;
   const [voteAnyway, setVoteAnyway] = useState(false);

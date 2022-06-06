@@ -6,5 +6,4 @@ export { default as ProposalVoting } from './ProposalVoting';
 export { default as ManageVotingModal } from './ManageVotingModal';
 export * from './ProposalVotingChart';
 export * from './ProposalQuorumChart';
-export * from './IndividualVotingCharts';
 export * from './ProposalDepositsChart';

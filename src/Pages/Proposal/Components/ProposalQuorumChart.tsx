@@ -133,17 +133,18 @@ const getNumberInHash = (
 
 export const ProposalQuorumChart = () => {
   const { proposalId } = useParams<ParamsProps>();
-  const { proposalVotes, getProposalVotes, proposalVotesLoading } = useGovernance();
-  const { tally: voteData } = proposalVotes;
+  const { tally: voteData, params, getProposal, proposalLoading } = useGovernance();
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
 
+  //console.log(tally);
+
   useEffect(() => {
     if (isEmpty(voteData)) {
-      getProposalVotes(proposalId);
+      getProposal(proposalId);
     }
-  }, [getProposalVotes, voteData, proposalId]);
+  }, [getProposal, voteData, proposalId]);
 
   let total = "0";
   let totalEligible = "0";
@@ -152,10 +153,10 @@ export const ProposalQuorumChart = () => {
   let quorumThreshold = "0";
   if (!isEmpty(voteData)) {
     total = voteData.total.amount.amount;
-    totalEligible = proposalVotes.params.totalEligibleAmount.amount;
-    totalEligibleDenom = proposalVotes.params.totalEligibleAmount.denom;
+    totalEligible = params.totalEligibleAmount.amount;
+    totalEligibleDenom = params.totalEligibleAmount.denom;
     totalDenom = voteData.total.amount.denom;
-    quorumThreshold = proposalVotes.params.quorumThreshold;
+    quorumThreshold = params.quorumThreshold;
   };
 
   const percentVoted = 100*Number(total)/Number(totalEligible);
@@ -208,7 +209,7 @@ export const ProposalQuorumChart = () => {
   // Render chart
   useEffect(() => {
     let chart: echarts.ECharts | undefined;
-    if (voteData) {
+    if (!isEmpty(voteData)) {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
@@ -226,9 +227,9 @@ export const ProposalQuorumChart = () => {
 
   return (
     <Content 
-      title={proposalVotesLoading ? '' : `Percent Voted: ${percentVoted === 0 || !percentVoted ? '0' : percentVoted < 0.0001 ? '< 0.01' : percentVoted.toFixed(2)}%`}
+      title={proposalLoading ? '' : `Percent Voted: ${percentVoted === 0 || !percentVoted ? '0' : percentVoted < 0.0001 ? '< 0.01' : percentVoted.toFixed(2)}%`}
     >
-      {proposalVotesLoading ? <Loading /> :
+      {proposalLoading ? <Loading /> :
          percentVoted > 0 ? <StyledChart ref={chartElementRef}/> : ''
       }
     </Content>

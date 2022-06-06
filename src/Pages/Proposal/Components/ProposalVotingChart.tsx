@@ -293,17 +293,16 @@ const getNumberInHash = (({ amount, denom, total }:{ amount: string, denom: stri
 
 export const ProposalVotingChart = () => {
   const { proposalId } = useParams<ParamsProps>();
-  const { proposalVotes, getProposalVotes, proposalVotesLoading } = useGovernance();
-  const { tally: voteData } = proposalVotes;
+  const { tally: voteData, params, getProposal, proposalLoading } = useGovernance();
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
 
   useEffect(() => {
     if (isEmpty(voteData)) {
-      getProposalVotes(proposalId);
+      getProposal(proposalId);
     }
-  }, [getProposalVotes, voteData, proposalId]);
+  }, [getProposal, voteData, proposalId]);
 
   let total = "0";
   let denom = "";
@@ -312,8 +311,8 @@ export const ProposalVotingChart = () => {
   if (!isEmpty(voteData)) {
     total = voteData.total.amount.amount;
     denom = voteData.total.amount.denom;
-    passThreshold = proposalVotes.params.passThreshold;
-    vetoThreshold = proposalVotes.params.vetoThreshold;
+    passThreshold = params.passThreshold;
+    vetoThreshold = params.vetoThreshold;
   }
 
   const buildChartData = useCallback(
@@ -403,7 +402,7 @@ export const ProposalVotingChart = () => {
   // Render chart
   useEffect(() => {
     let chart: echarts.ECharts | undefined;
-    if (voteData) {
+    if (!isEmpty(voteData)) {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
@@ -420,8 +419,8 @@ export const ProposalVotingChart = () => {
   }, [setChart, chart, buildChartData, voteData]);
 
   return (
-    <Content title={proposalVotesLoading ? '' : `Total Votes: ${formatDenom(Number(total), denom)}`}>
-      {proposalVotesLoading ? <Loading /> :
+    <Content title={proposalLoading ? '' : `Total Votes: ${formatDenom(Number(total), denom)}`}>
+      {proposalLoading ? <Loading /> :
         Number(total) > 0 ? <StyledChart ref={chartElementRef}/> : ''
       }
     </Content>
