@@ -4,6 +4,7 @@
 
 ### Bug fixes
 - Fix issues with proposals to show software upgrade proposals #355
+- Update endpoint to https #360
 
 ### Features
 - FE updates to proposal view #332

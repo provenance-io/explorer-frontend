@@ -15,11 +15,11 @@ if (isLocal) {
   FAUCET_URL = process.env.REACT_APP_LOCAL_FAUCET_HOSTNAME;
 } else if (isTest) {
   BASE_URL = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v2`;
-  BASE_URL_V3 = `http://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v3`;
+  BASE_URL_V3 = `https://${process.env.REACT_APP_TEST_SERVER_HOSTNAME}/api/v3`;
   FAUCET_URL = process.env.REACT_APP_TEST_FAUCET_HOSTNAME;
 } else if (isProd) {
   BASE_URL = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v2`;
-  BASE_URL_V3 = `http://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v3`;
+  BASE_URL_V3 = `https://${process.env.REACT_APP_PROD_SERVER_HOSTNAME}/api/v3`;
 }
 
 export const FIGURE_WALLET_URL = isProd
