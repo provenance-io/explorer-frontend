@@ -9,7 +9,7 @@ import { formatDenom, isEmpty } from 'utils';
 const StyledChart = styled.div`
   height: 200px;
   width: 100%;
-  margin-top: -50px;
+  margin-top: -40px;
   margin-bottom: -70px;
 `;
 
@@ -137,8 +137,6 @@ export const ProposalQuorumChart = () => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
-
-  //console.log(tally);
 
   useEffect(() => {
     if (isEmpty(voteData)) {

@@ -9,7 +9,6 @@ import { formatDenom, isEmpty } from 'utils';
 const StyledChart = styled.div`
   height: 200px;
   width: 100%;
-  margin-top: -20px;
   margin-bottom: -55px;
 `;
 
