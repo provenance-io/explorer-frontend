@@ -7,11 +7,12 @@ import { useGovernance, useAccounts, useApp } from '../../redux/hooks';
 import {
   ProposalDeposits,
   ProposalInformation,
-  ProposalTimingProgressBar,
   ProposalTimingTable,
-  ProposalVotingGraph,
+  ProposalVotingChart,
   ProposalVotingTable,
   ProposalVoting,
+  ProposalQuorumChart,
+  ProposalDepositsChart,
 } from './Components';
 
 interface ParamsProps {
@@ -81,13 +82,16 @@ const Proposal = () => {
           <ProposalTimingTable />
         </Section>
         <Section>
-          <ProposalTimingProgressBar />
+          <ProposalDepositsChart />
         </Section>
         <Section>
           <ProposalDeposits />
         </Section>
         <Section>
-          <ProposalVotingGraph />
+          <ProposalQuorumChart />
+        </Section>
+        <Section>
+          <ProposalVotingChart />
         </Section>
         <Section>
           <ProposalVotingTable />

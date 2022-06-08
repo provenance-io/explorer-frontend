@@ -1,19 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Table } from 'Components';
-import { useGovernance } from 'redux/hooks';
+import { useGovernance, useApp } from 'redux/hooks';
 
 const ProposalTiming = () => {
   const { proposalId } = useParams();
-  const { getProposalVotes, proposalVotes, proposalVotesLoading: tableLoading } = useGovernance();
+  const { tableCount } = useApp();
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    getVotesByProposal,
+    proposalVotes: tableData,
+    proposalVotesPages: tablePages,
+    proposalVotesTotal,
+    proposalVotesLoading: tableLoading,
+  } = useGovernance();
 
   useEffect(() => {
     if (proposalId) {
-      getProposalVotes(proposalId);
+      getVotesByProposal({
+        proposalId,
+        count: tableCount,
+        page: currentPage,
+      });
     }
-  }, [getProposalVotes, proposalId]);
-
-  const { votes: tableData } = proposalVotes;
+  }, [getVotesByProposal, proposalId, tableCount, currentPage]);
 
   const tableHeaders = [
     { displayName: 'Voter', dataName: 'voter' },
@@ -27,8 +37,11 @@ const ProposalTiming = () => {
     <Table
       tableHeaders={tableHeaders}
       tableData={tableData}
+      currentPage={currentPage}
+      changePage={setCurrentPage}
+      totalPages={tablePages}
       isLoading={tableLoading}
-      title="Proposal Votes"
+      title={`Proposal Votes (${proposalVotesTotal})`}
     />
   );
 };

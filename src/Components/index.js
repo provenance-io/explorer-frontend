@@ -32,3 +32,4 @@ export { default as Progress } from './Progress';
 export { default as Forms } from './Forms';
 export { default as Notification } from './Notification';
 export * from './Layout';
+export * from './PercentBar';

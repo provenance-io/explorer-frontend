@@ -52,10 +52,10 @@ const KeySquare = styled.span`
   background-color: ${({ color, theme }) => theme[color]};
 `;
 
-const Progress = ({ data, keySquareHeight }) => (
+const Progress = ({ data, keySquareHeight, showKey }) => (
   <Fragment>
     <ProgressBar>
-      {data.map(p => (
+      {data.map((p) => (
         <ProgressValue
           key={p.color}
           color={p.color}
@@ -66,14 +66,16 @@ const Progress = ({ data, keySquareHeight }) => (
       ))}
     </ProgressBar>
 
-    <KeyContainer>
-      {data.map(p => (
-        <Key key={p.color}>
-          <KeySquare color={p.color} minHeight={keySquareHeight} />
-          {typeof p.content === 'function' && p.content()}
-        </Key>
-      ))}
-    </KeyContainer>
+    {showKey && (
+      <KeyContainer>
+        {data.map((p) => (
+          <Key key={p.color}>
+            <KeySquare color={p.color} minHeight={keySquareHeight} />
+            {typeof p.content === 'function' && p.content()}
+          </Key>
+        ))}
+      </KeyContainer>
+    )}
   </Fragment>
 );
 
@@ -88,10 +90,12 @@ Progress.propTypes = {
     })
   ).isRequired,
   keySquareHeight: PropTypes.number,
+  showKey: PropTypes.bool,
 };
 
 Progress.defaultProps = {
   keySquareHeight: 30,
+  showKey: true,
 };
 
 export default Progress;

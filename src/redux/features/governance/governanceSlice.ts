@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import qs from 'query-string';
 import { RootState } from "redux/app/store";
-import { GOVERNANCE_ADDRESS_URL, GOVERNANCE_PROPOSALS_URL } from 'consts';
+import { 
+  GOVERNANCE_ADDRESS_URL, 
+  GOVERNANCE_PROPOSALS_URL,
+  GOVERNANCE_VOTES_URL, 
+} from 'consts';
 import { ajax } from "../api";
 
 interface AddressVotes {
@@ -56,6 +60,54 @@ interface Proposal {
     };
     depositEndTime: string;
     submitTime: string;
+    voting: {
+      params: {
+        passThreshold: string;
+        quorumThreshold: string;
+        totalEligibleAmount: {
+          amount: string;
+          denom: string;
+        };
+        vetoThreshold: string;
+      };
+      tally: {
+        abstain: {
+          amount: {
+            amount: string;
+            denom: string;
+          };
+          count: number;
+        };
+        no: {
+          amount: {
+            amount: string;
+            denom: string;
+          };
+          count: number;
+        };
+        noWithVeto: {
+          amount: {
+            amount: string;
+            denom: string;
+          };
+          count: number;
+        };
+        total: {
+          amount: {
+            amount: string;
+            denom: string;
+          };
+          count: number;
+        };
+        yes: {
+          amount: {
+            amount: string;
+            denom: string;
+          };
+          count: number;
+        };
+      };
+    };
     votingTime: {
       endTime: string;
       startTime: string;
@@ -90,53 +142,8 @@ interface ProposalDeposits {
 };
 
 export interface ProposalVotes {
-  params: {
-    passThreshold: string;
-    quorumThreshold: string;
-    totalEligibleAmount: {
-      amount: string;
-      denom: string;
-    };
-    vetoThreshold: string;
-  };
-  tally: {
-    abstain: {
-      amount: {
-        amount: string;
-        denom: string;
-      };
-      count: number;
-    };
-    no: {
-      amount: {
-        amount: string;
-        denom: string;
-      };
-      count: number;
-    };
-    noWithVeto: {
-      amount: {
-        amount: string;
-        denom: string;
-      };
-      count: number;
-    };
-    total: {
-      amount: {
-        amount: string;
-        denom: string;
-      };
-      count: number;
-    };
-    yes: {
-      amount: {
-        amount: string;
-        denom: string;
-      };
-      count: number;
-    };
-  };
-  votes: {
+  pages: number;
+  results: {
     answer: {
       [key: string]: number;
     };
@@ -152,6 +159,7 @@ export interface ProposalVotes {
       validatorAddr: string;
     };
   }[];
+  total: number;
 };
 
 interface ProposalAll {
@@ -174,17 +182,21 @@ interface GovernanceState {
   // proposal
   proposal: Proposal;
   proposalLoading: boolean;
-  // prposalDeposits
+  tally: Proposal["timings"]["voting"]["tally"];
+  params: Proposal["timings"]["voting"]["params"];
+  // proposalDeposits
   proposalDeposits: ProposalDeposits["results"]
   proposalDepositsLoading: boolean;
   proposalDepositsPages: ProposalDeposits["pages"];
-  // proposalVotes
-  proposalVotes: ProposalVotes;
-  proposalVotesLoading: boolean;
   // proposals
   proposals: ProposalAll["results"];
   proposalsLoading: boolean;
   proposalsPages: ProposalAll["pages"];
+  // proposalVotes
+  proposalVotes: [],
+  proposalVotesLoading: boolean;
+  proposalVotesPages: number;
+  proposalVotesTotal: number;
 };
 
 export const initialState: GovernanceState = {
@@ -220,68 +232,116 @@ export const initialState: GovernanceState = {
         endTime: "",
         startTime: "",
       },
+      voting: {
+        params: {
+          passThreshold: "",
+          quorumThreshold: "",
+          totalEligibleAmount: {
+            amount: "",
+            denom: "",
+          },
+          vetoThreshold: "",
+        },
+        tally: {
+          abstain: {
+            amount: {
+              amount: "",
+              denom: "",
+            },
+            count: 0,
+          },
+          no: {
+            amount: {
+              amount: "",
+              denom: "",
+            },
+            count: 0,
+          },
+          noWithVeto: {
+            amount: {
+              amount: "",
+              denom: "",
+            },
+            count: 0,
+          },
+          total: {
+            amount: {
+              amount: "",
+              denom: "",
+            },
+            count: 0,
+          },
+          yes: {
+            amount: {
+              amount: "",
+              denom: "",
+            },
+            count: 0,
+          },
+        },
+      }
     },
   },
-  proposalLoading: false,
-  // prposalDeposits
-  proposalDeposits: [],
-  proposalDepositsLoading: false,
-  proposalDepositsPages: 0,
-  // proposalVotes
-  proposalVotes: {
-    params: {
-      passThreshold: "",
-      quorumThreshold: "",
-      totalEligibleAmount: {
+  tally: {
+    abstain: {
+      amount: {
         amount: "",
         denom: "",
       },
-      vetoThreshold: "",
+      count: 0,
     },
-    tally: {
-      abstain: {
-        amount: {
-          amount: "",
-          denom: "",
-        },
-        count: 0,
+    no: {
+      amount: {
+        amount: "",
+        denom: "",
       },
-      no: {
-        amount: {
-          amount: "",
-          denom: "",
-        },
-        count: 0,
-      },
-      noWithVeto: {
-        amount: {
-          amount: "",
-          denom: "",
-        },
-        count: 0,
-      },
-      total: {
-        amount: {
-          amount: "",
-          denom: "",
-        },
-        count: 0,
-      },
-      yes: {
-        amount: {
-          amount: "",
-          denom: "",
-        },
-        count: 0,
-      },
+      count: 0,
     },
-    votes: [],
+    noWithVeto: {
+      amount: {
+        amount: "",
+        denom: "",
+      },
+      count: 0,
+    },
+    total: {
+      amount: {
+        amount: "",
+        denom: "",
+      },
+      count: 0,
+    },
+    yes: {
+      amount: {
+        amount: "",
+        denom: "",
+      },
+      count: 0,
+    },
   },
-  proposalVotesLoading: false,
+  params: {
+    passThreshold: "",
+    quorumThreshold: "",
+    totalEligibleAmount: {
+      amount: "",
+      denom: "",
+    },
+    vetoThreshold: "",
+  },
+  proposalLoading: false,
+  // proposalDeposits
+  proposalDeposits: [],
+  proposalDepositsLoading: false,
+  proposalDepositsPages: 0,
   // proposals
   proposals: [],
   proposalsLoading: false,
   proposalsPages: 0,
+  // proposalVotes
+  proposalVotes: [],
+  proposalVotesLoading: false,
+  proposalVotesPages: 0,
+  proposalVotesTotal: 0,
 };
 
 /* -----------------
@@ -290,9 +350,9 @@ export const initialState: GovernanceState = {
 const NS = 'GOV';
 export const GET_PROPOSAL = `${NS}::GET_PROPOSAL`;
 export const GET_PROPOSAL_DEPOSITS = `${NS}::GET_PROPOSAL_DEPOSITS`;
-export const GET_PROPOSAL_VOTES = `${NS}::GET_PROPOSAL_VOTES`;
 export const GET_PROPOSALS = `${NS}::GET_PROPOSALS`;
 export const GET_VOTES_BY_ADDRESS = `${NS}::GET_VOTES_BY_ADDRESS`;
+export const GET_VOTES_BY_PROPOSAL = `${NS}::GET_VOTES_BY_PROPOSAL`;
 
 /* -----------------
 ** ACTIONS
@@ -318,14 +378,6 @@ export const getProposalDeposits = createAsyncThunk(
   }) => 
     ajax({
       url: `${GOVERNANCE_PROPOSALS_URL}/${proposalId}/deposits?${qs.stringify({ count, page })}`,
-    })
-);
-
-export const getProposalVotes = createAsyncThunk(
-  GET_PROPOSAL_VOTES,
-  (proposalId: string) =>
-    ajax({
-      url: `${GOVERNANCE_PROPOSALS_URL}/${proposalId}/votes`,
     })
 );
 
@@ -359,13 +411,29 @@ export const getVotesByAddress = createAsyncThunk(
     })
 );
 
+export const getVotesByProposal = createAsyncThunk(
+  GET_VOTES_BY_PROPOSAL,
+  ({
+    proposalId,
+    count = 10,
+    page = 1
+  } : {
+    proposalId: string;
+    count: number;
+    page: number;
+  }) =>
+    ajax({
+      url: `${GOVERNANCE_VOTES_URL}/${proposalId}/votes?${qs.stringify({ count, page })}`,
+    })
+);
+
 export const governanceActions = {
   getProposal,
   getProposalDeposits,
-  getProposalVotes,
   getAllProposals,
   getVotesByAddress,
-}
+  getVotesByProposal,
+};
 /* -----------------
 ** SLICE
 -------------------*/
@@ -384,6 +452,8 @@ export const governanceSlice = createSlice({
     .addCase(getProposal.fulfilled, (state, { payload }) => {
       state.proposalLoading = false;
       state.proposal = payload.data;
+      state.tally = payload.data.timings.voting.tally;
+      state.params = payload.data.timings.voting.params;
     })
     .addCase(getProposal.rejected, (state) => {
       state.proposalLoading = false;
@@ -401,19 +471,6 @@ export const governanceSlice = createSlice({
     })
     .addCase(getProposalDeposits.rejected, (state) => {
       state.proposalDepositsLoading = false;
-    })
-    /* -----------------
-    GET_PROPOSAL_VOTES
-    -------------------*/
-    .addCase(getProposalVotes.pending, (state) => {
-      state.proposalVotesLoading = true;
-    })
-    .addCase(getProposalVotes.fulfilled, (state, { payload }) => {
-      state.proposalVotesLoading = false;
-      state.proposalVotes = payload.data;
-    })
-    .addCase(getProposalVotes.rejected, (state) => {
-      state.proposalVotesLoading = false;
     })
     /* -----------------
     GET_PROPOSALS
@@ -442,6 +499,21 @@ export const governanceSlice = createSlice({
     })
     .addCase(getVotesByAddress.rejected, (state) => {
       state.addressVotesLoading = false;
+    })
+    /* -----------------
+    GET_VOTES_BY_PROPOSAL
+    -------------------*/
+    .addCase(getVotesByProposal.pending, (state) => {
+      state.proposalVotesLoading = true;
+    })
+    .addCase(getVotesByProposal.fulfilled, (state, { payload }) => {
+      state.proposalVotesLoading = false;
+      state.proposalVotes = payload.data.results;
+      state.proposalVotesPages = payload.data.pages;
+      state.proposalVotesTotal = payload.data.total;
+    })
+    .addCase(getVotesByProposal.rejected, (state) => {
+      state.proposalVotesLoading = false;
     });
   },
 });
