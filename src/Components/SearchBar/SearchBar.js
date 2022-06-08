@@ -92,7 +92,7 @@ const SearchBar = () => {
   const [searchType, setSearchType] = useState('address');
   const history = useHistory();
 
-  const enterSearchTerms = e => {
+  const enterSearchTerms = (e) => {
     const term = e?.target?.value;
     setSearchTerms(term);
   };
@@ -144,7 +144,7 @@ const SearchBar = () => {
         <TextInput
           id="SearchBar"
           onChange={enterSearchTerms}
-          onKeyPress={e => {
+          onKeyPress={(e) => {
             if (e.key === 'Enter') {
               runSearch();
             }

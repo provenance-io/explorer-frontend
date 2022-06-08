@@ -11,8 +11,8 @@ import {
   HashDashboard,
 } from './Components';
 
-const handleResize = chartArray => {
-  chartArray.forEach(chart => {
+const handleResize = (chartArray) => {
+  chartArray.forEach((chart) => {
     chart.resize();
   });
 };

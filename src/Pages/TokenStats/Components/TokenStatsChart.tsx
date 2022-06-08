@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useNetwork } from 'redux/hooks';
 import { Header, Loading } from 'Components';
 import { isEmpty, formatDenom } from 'utils';
+import { useNetwork } from '../../../redux/hooks';
 
 const StyledChart = styled.div`
   height: 600px;
@@ -154,7 +154,7 @@ const TokenStatsChart = () => {
       // first try to get the initialized instance
       // if it isn't initialized then init
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current) || echarts.init(chartElementRef.current);
+        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
       }
       // Update the chart with the data
       buildChartData(getDataArray(networkTokenStats), totalHash);
@@ -168,7 +168,7 @@ const TokenStatsChart = () => {
 
   const totalHash =
     !isEmpty(networkTokenStats) &&
-    formatDenom(networkTokenStats.currentSupply.amount, networkTokenStats.currentSupply.denom, {
+    formatDenom(Number(networkTokenStats.currentSupply.amount), networkTokenStats.currentSupply.denom, {
       decimal: 0,
     });
 

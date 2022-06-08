@@ -102,7 +102,7 @@ const UserAccount = ({ isMobile }) => {
     walletService.updateState();
   };
 
-  const handleConnect = url => {
+  const handleConnect = (url) => {
     setWalletUrl(url);
     walletService.setWalletUrl(url);
     walletService.connect();

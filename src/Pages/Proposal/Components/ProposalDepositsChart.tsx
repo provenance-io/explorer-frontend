@@ -76,10 +76,10 @@ const getPercentage = (num = 0, den = 1) => new Big(num).div(den).times(100).toN
 export const ProposalDepositsChart = () => {
   const { proposal, proposalLoading } = useGovernance();
   const { timings } = proposal;
-  const current = timings?.deposit?.current;
-  const initial = timings?.deposit?.initial;
-  const needed = timings?.deposit?.needed;
-  const denom = timings?.deposit?.denom;
+  const current = Number(timings.deposit.current);
+  const initial = Number(timings.deposit.initial);
+  const needed = Number(timings.deposit.needed) || 1;
+  const denom = timings.deposit.denom;
 
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
@@ -131,7 +131,7 @@ export const ProposalDepositsChart = () => {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current) || echarts.init(chartElementRef.current);
+        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
       };
       // Build the dataset
       buildChartData();

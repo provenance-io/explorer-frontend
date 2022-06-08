@@ -1,6 +1,18 @@
-import useRedux from './useRedux';
-import { notificationsActions } from '../actions';
+import { useMemo } from 'react';
+import { bindActionCreators } from 'redux';
+import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import {
+  selectNotification as selector,
+  notificationActions as actionsList,
+} from 'redux/features/notification/notificationSlice';
 
-const useNotifications = () => useRedux('notificationsReducer', notificationsActions);
+export const useNotifications = () => {
+  const dispatch = useAppDispatch();
+  const state = useAppSelector(selector);
+  const actions = useMemo(
+    () => bindActionCreators(actionsList, dispatch),
+    [dispatch]
+  );
 
-export default useNotifications;
+  return { ...state, ...actions };
+}

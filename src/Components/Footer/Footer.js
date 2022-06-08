@@ -62,13 +62,13 @@ const FooterVersion = styled.div`
 `;
 
 const Footer = () => {
-  const { getChaincodeID, chaincodeId } = useApp();
+  const { getChaincodeId, chaincodeId } = useApp();
 
   useEffect(() => {
     if (!chaincodeId) {
-      getChaincodeID();
+      getChaincodeId();
     }
-  }, [chaincodeId, getChaincodeID]);
+  }, [chaincodeId, getChaincodeId]);
 
   return (
     <FooterContainer>

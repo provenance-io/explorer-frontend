@@ -55,7 +55,7 @@ const KeySquare = styled.span`
 const Progress = ({ data, keySquareHeight, showKey }) => (
   <Fragment>
     <ProgressBar>
-      {data.map(p => (
+      {data.map((p) => (
         <ProgressValue
           key={p.color}
           color={p.color}
@@ -68,7 +68,7 @@ const Progress = ({ data, keySquareHeight, showKey }) => (
 
     {showKey && (
       <KeyContainer>
-        {data.map(p => (
+        {data.map((p) => (
           <Key key={p.color}>
             <KeySquare color={p.color} minHeight={keySquareHeight} />
             {typeof p.content === 'function' && p.content()}

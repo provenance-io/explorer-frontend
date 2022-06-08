@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
-import { useContracts } from 'redux/hooks';
+import { useContracts } from '../../../redux/hooks';
 
 const ContractsListContainer = styled.div`
   width: 100%;

@@ -38,16 +38,16 @@ const TextInput = ({
   if (list.length > 0) {
     return (
       <>
-      <Input
-        name={title}
-        type="text"
-        onChange={(e) => action(e.target.value)}
-        list="mylist"
-        value={value}
-      />
-      <datalist id="mylist">
-        {list.map(item => <option key={item} value={item} />)}
-      </datalist>
+        <Input
+          name={title}
+          type="text"
+          onChange={(e) => action(e.target.value)}
+          list="mylist"
+          value={value}
+        />
+        <datalist id="mylist">
+          {list.map(item => <option key={item} value={item} />)}
+        </datalist>
       </>
     )
   }

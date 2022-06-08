@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
 
-const useTimeout = (callback: () => void, delay: number) => {
+export const useTimeout = (callback: () => void, delay: number) => {
   const savedCallback = useRef(callback);
 
   // Remember the latest callback if it changes.
@@ -21,5 +21,3 @@ const useTimeout = (callback: () => void, delay: number) => {
     return () => clearTimeout(id);
   }, [delay]);
 };
-
-export default useTimeout;

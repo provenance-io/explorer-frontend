@@ -29,7 +29,7 @@ const Button = styled(OgButton)`
  * Hook that provides components and state for voting
  * @return {Voting}
  */
-const useVoting = () => {
+export const useVoting = () => {
   const { walletService, messageService } = useWallet();
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
@@ -48,7 +48,7 @@ const useVoting = () => {
     setIsLoggedIn(!!walletService.state.address);
   }, [walletService.state.address, setIsLoggedIn]);
 
-  useEvent('message', evt => {
+  useEvent('message', (evt) => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setVoted(true);
@@ -59,7 +59,7 @@ const useVoting = () => {
     }
   });
 
-  const getOptionType = option => {
+  const getOptionType = (option) => {
     if (option === 'noWithVeto') option = 'no with veto';
     const optionType = {
       [VOTING_TYPES.YES]: 1, // 1 "OptionYes"
@@ -85,7 +85,7 @@ const useVoting = () => {
     const optionsList = [];
     if (!isLoggedIn) return;
     if (weighted) {
-      Object.keys(option).forEach(k => {
+      Object.keys(option).forEach((k) => {
         if (option[k] > 0) {
           optionsList.push({ option: getOptionType(k), weight: (option[k] * 1e16).toString() });
         }
@@ -138,5 +138,3 @@ const useVoting = () => {
     },
   };
 };
-
-export default useVoting;

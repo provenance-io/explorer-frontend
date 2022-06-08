@@ -46,7 +46,7 @@ const TxMsgs = () => {
     txMsgsTotal,
     getTxMsgTypes,
     txMsgTypes,
-    txMsgLoading,
+    txMsgTypesLoading,
   } = useTxs();
   const { txHash } = useParams();
 
@@ -58,7 +58,7 @@ const TxMsgs = () => {
   }, [getChaincodePrefixes, chaincodePrefixes]);
 
   const loadMsgs = useCallback(
-    page => {
+    (page) => {
       getTxMsgs({ txHash, count: tableCount, page, msgType: filterMsgType });
     },
     [getTxMsgs, txHash, filterMsgType, tableCount]
@@ -75,25 +75,25 @@ const TxMsgs = () => {
   }, [loadMsgs, resetTxMsgs, txHash, filterMsgType]);
 
   // Use this to check for a reset to 'all' where we will pass '' as the type
-  const updateMsgFilterType = newType => {
+  const updateMsgFilterType = (newType) => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterMsgType(finalType);
   };
 
   // Determine link prefix
-  const getPrefix = value => {
+  const getPrefix = (value) => {
     const prefix = chaincodePrefixes
       // Sort the response of prefixes so longest are first
       .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
       // Find the matching prefix in the account hash
-      .find(pre => value.match(pre.prefix))
+      .find((pre) => value.match(pre.prefix))
       // Lowercase the prefix
       ?.type?.toLowerCase();
     // If account, add an s for a valid link
     return prefix === 'account' ? `${prefix}s` : prefix;
   };
 
-  const msgs = txMsgs?.[txHash]?.map(msg => [
+  const msgs = txMsgs?.[txHash]?.map((msg) => [
     { title: 'Tx Type', value: capitalize(msg.type) },
     ...Object.entries(msg?.msg).map(([key, value]) => {
       const title = camelToSentence(key);
@@ -103,7 +103,7 @@ const TxMsgs = () => {
           let denom = value.denom;
           if (isArray(value)) {
             denom = value[0].denom;
-            amt = value.map(v => formatDenom(v.amount, v.denom)).join(', ');
+            amt = value.map((v) => formatDenom(v.amount, v.denom)).join(', ');
           }
           return {
             title,
@@ -195,7 +195,7 @@ const TxMsgs = () => {
       title={`Messages (${txMsgsTotal})`}
       icon="REPORTS"
       headerContent={
-        !txMsgLoading &&
+        !txMsgTypesLoading &&
         msgTypesExist && (
           <FiltersWrapper>
             <Filters filterData={filterData} flush />
@@ -208,7 +208,7 @@ const TxMsgs = () => {
         <InfiniteScroll loading={txMsgsLoading} onLoadMore={loadMsgs} totalPages={txMsgsPages}>
           {({ sentryRef, hasNextPage }) => (
             <Fragment>
-              {msgs?.map(tx => (
+              {msgs?.map((tx) => (
                 <MsgContainer key={JSON.stringify(tx)}>
                   <Summary data={tx} />
                 </MsgContainer>

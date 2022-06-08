@@ -28,7 +28,7 @@ const Button = styled(OgButton)`
  * Hook that provides components and state for voting
  * @return {Proposal}
  */
-const useProposal = () => {
+export const useProposal = () => {
   const [shouldPull, setShouldPull] = useState(true);
   const { walletService, messageService } = useWallet();
   // We are opening a modal, so need this
@@ -42,7 +42,7 @@ const useProposal = () => {
     setIsLoggedIn(!!walletService.state.address);
   }, [walletService.state.address, setIsLoggedIn]);
 
-  useEvent('message', evt => {
+  useEvent('message', (evt) => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setShouldPull(true);
@@ -180,5 +180,3 @@ const useProposal = () => {
     },
   };
 };
-
-export default useProposal;

@@ -114,7 +114,7 @@ const NavHeaders = () => {
             <>
               <DropSprite icon="CHEVRON" height="10px" spin={270} />
               <DropdownUL>
-                {Object.keys(subMenu).map(subName =>
+                {Object.keys(subMenu).map((subName) =>
                   buildLink(subName, Links[linkName].subMenu[subName], true)
                 )}
               </DropdownUL>
@@ -126,7 +126,7 @@ const NavHeaders = () => {
   };
 
   const buildLinks = () =>
-    Object.keys(Links).map(linkName => buildLink(linkName, Links[linkName], false));
+    Object.keys(Links).map((linkName) => buildLink(linkName, Links[linkName], false));
 
   return <NavigationWrapper>{buildLinks()}</NavigationWrapper>;
 };

@@ -27,7 +27,7 @@ describe('App e2e', () => {
     let initialColor = themes.default.BACKGROUND_LIGHT;
     let oppositeColor = themes.night.BACKGROUND_LIGHT;
 
-    cy.findByTestId('theme-switcher').then(el => {
+    cy.findByTestId('theme-switcher').then((el) => {
       if (el.css('background-color') !== Color(themes.default.INPUT_BG_DARK).string()) {
         initialColor = themes.night.BACKGROUND_LIGHT;
         oppositeColor = themes.default.BACKGROUND_LIGHT;

@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { Content, Loading, Wrapper, Section, Sprite, InfiniteScroll } from 'Components';
+import { Content, Loading, InfiniteScroll } from 'Components';
 import { useNotifications, useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
 
@@ -11,11 +11,10 @@ const TextWrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
-  padding: 100px 0;
 `;
 
 const InfoText = styled.div`
-  font-size: 4rem;
+  font-size: 2rem;
   color: ${({ theme }) => theme.FONT_PRIMARY};
   margin: 40px 0;
   flex-basis: 100%;
@@ -152,20 +151,13 @@ const AnnouncementsList = () => {
         allAnnouncementsLoading ? (
           <Loading />
          ) : (
-          <Wrapper>
-            <Section>
-              <Content>
-                <TextWrapper>
-                  <Sprite icon="PROVENANCE" size="25rem" />
-                  <InfoText>
-                    {`
-                      There aren't any announcements yet, but check back soon!
-                    `}
-                  </InfoText>
-                </TextWrapper>
-              </Content>
-            </Section>
-          </Wrapper>
+          <TextWrapper>
+            <InfoText>
+              {`
+                There aren't any announcements yet, but check back soon!
+              `}
+            </InfoText>
+          </TextWrapper>
          )
       )
 

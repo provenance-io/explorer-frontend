@@ -1,6 +1,5 @@
 module.exports = {
   extends: ['eslint:recommended', 'react-app', 'prettier'],
-  parser: 'babel-eslint',
   rules: {
     'arrow-body-style': ['warn', 'as-needed'],
     'consistent-return': 'warn',
@@ -18,10 +17,10 @@ module.exports = {
     'react/default-props-match-prop-types': 'warn',
     'react/no-unused-prop-types': 'warn',
     'react/prefer-stateless-function': 'warn',
-    'react/prop-types': 'warn',
-    'react/require-default-props': 'warn',
+    'react/prop-types': 0,
+    'react/require-default-props': 0,
   },
-  plugins: ['prettier', 'react-hooks'],
+  plugins: ['prettier', 'react-hooks', '@typescript-eslint'],
   env: {
     browser: true,
     jest: true,
@@ -32,4 +31,12 @@ module.exports = {
       version: 'detect',
     },
   },
+  overrides: [
+    {
+      files: ['*.js', '*.jsx'],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+      },
+    },
+  ],
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAccounts, useAssets } from 'redux/hooks';
+import { useAssets, useAccounts } from 'redux/hooks';
 import { Accordion, Table } from 'Components';
 
 const ButtonWrapper = styled.div`
@@ -35,10 +35,10 @@ const AccountAssets = () => {
   }, [getTableData, tableCurrentPage, addressId, getAssetMetadata]);
 
   // Build table data
-  const tableData = accountAssets.map(a => ({
+  const tableData = accountAssets.map((a) => ({
     ...a,
-    displayDenom: assetMetadata.find(md => md.base === a.denom)?.display,
-    exponent: assetMetadata.find(md => md.base === a.denom)?.denomUnits[1].exponent,
+    displayDenom: assetMetadata.find((md) => md.base === a.denom)?.display,
+    exponent: assetMetadata.find((md) => md.base === a.denom)?.denomUnits[1].exponent,
   }));
 
   // Table header values in order

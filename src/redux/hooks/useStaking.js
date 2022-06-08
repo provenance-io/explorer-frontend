@@ -4,11 +4,10 @@ import styled from 'styled-components';
 import { useWallet, WINDOW_MESSAGES } from '@provenanceio/wallet-lib';
 import useEvent from 'react-tiny-hooks/use-event';
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { useApp } from 'redux/hooks';
+import { useApp, useAccounts } from 'redux/hooks';
 import { STAKING_TYPES } from 'consts';
 import { currencyFormat } from 'utils';
 import OgButton from 'Components/Button';
-import useAccounts from './useAccounts';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -31,7 +30,7 @@ const Button = styled(OgButton)`
  * Hook that provides components and state for staking
  * @return {Staking}
  */
-const useStaking = () => {
+export const useStaking = () => {
   const [shouldPull, setShouldPull] = useState(true);
   const [isDelegate, setIsDelegate] = useState(false);
   const [validator, setValidator] = useState(null);
@@ -50,7 +49,7 @@ const useStaking = () => {
     setIsLoggedIn(!!walletService.state.address);
   }, [walletService.state.address, setIsLoggedIn]);
 
-  useEvent('message', evt => {
+  useEvent('message', (evt) => {
     if (walletService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setShouldPull(true);
@@ -182,5 +181,3 @@ const useStaking = () => {
     validator,
   };
 };
-
-export default useStaking;

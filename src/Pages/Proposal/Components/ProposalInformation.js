@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useGovernance } from 'redux/hooks';
 import { Content, DataMissing, Loading, Summary } from 'Components';
-import { camelToSentence, capitalize, formatDenom } from 'utils';
+import { camelToSentence, capitalize, formatDenom, maxLength } from 'utils';
 
 const ProposalInformation = () => {
   const { proposalId: linkId } = useParams();
@@ -20,7 +20,7 @@ const ProposalInformation = () => {
     },
   } = proposal;
 
-  const getDetails = details => {
+  const getDetails = (details) => {
     let subDetails = [];
     const detailsArray = Object.entries(details).map(([key, value]) => {
       const title = camelToSentence(key);
@@ -46,7 +46,7 @@ const ProposalInformation = () => {
           default:
             return {
               title,
-              value,
+              value: maxLength(value, 24, '6'),
               externalLink: isLink ? value : '',
             };
         }
@@ -59,10 +59,10 @@ const ProposalInformation = () => {
     { title: 'ID', value: proposalId },
     { title: 'Title', value: title, nobreak: true },
     { title: 'Status', value: capitalize(status?.replace(/proposal_status/gi, '')) },
-    { title: 'Proposer', value: moniker || address },
+    { title: 'Proposer', value: moniker || address, link: `/accounts/${address}` },
     { title: 'Type', value: type },
     { title: 'Description', value: description, nobreak: true },
-  ].filter(sd => sd);
+  ].filter((sd) => sd);
 
   return (
     <Content title="Proposal Information">
@@ -71,7 +71,7 @@ const ProposalInformation = () => {
       ) : proposalId ? (
         <Summary
           data={summaryData.concat(
-            getDetails(details).filter(sd => sd) /*detailsObj.filter(sd => sd)*/
+            getDetails(details).filter((sd) => sd) /*detailsObj.filter(sd => sd)*/
           )}
         />
       ) : (

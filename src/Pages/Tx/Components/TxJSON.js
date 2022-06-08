@@ -63,7 +63,7 @@ const TxJSON = () => {
           {!txFullJSONLoading &&
             (txFullJSON ? (
               <FullJSON>
-                <ReactJson src={txFullJSON} theme="ocean" />}
+                <ReactJson src={txFullJSON} theme="ocean" />
               </FullJSON>
             ) : (
               <FullJSON>
