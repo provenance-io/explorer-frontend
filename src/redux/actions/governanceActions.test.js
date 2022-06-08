@@ -1,6 +1,7 @@
 import configureMockStore from 'redux-mock-store';
+import qs from 'query-string';
 import thunk from 'redux-thunk';
-import { GOVERNANCE_ADDRESS_URL, GOVERNANCE_PROPOSALS_URL } from 'consts';
+import { GOVERNANCE_ADDRESS_URL, GOVERNANCE_PROPOSALS_URL, GOVERNANCE_VOTES_URL } from 'consts';
 import * as actions from './governanceActions';
 import { ajaxGet } from './xhrActions';
 
@@ -45,13 +46,15 @@ describe('actions: governance', () => {
     );
   });
 
-  it('should handle getProposalVotes', async () => {
+  it('should handle getVotesByProposal', async () => {
     const proposalId = 123;
-    await dispatch(actions.getProposalVotes(proposalId));
+    const count = 20;
+    const page = 10;
+    await dispatch(actions.getVotesByProposal({ proposalId, count, page }));
     expect(ajaxGet).toHaveBeenCalledWith(
-      actions.GET_PROPOSAL_VOTES,
+      actions.GET_VOTES_BY_PROPOSAL,
       expect.any(Function),
-      `${GOVERNANCE_PROPOSALS_URL}/${proposalId}/votes`
+      `${GOVERNANCE_VOTES_URL}/${proposalId}/votes?${qs.stringify({ count, page })}`
     );
   });
 

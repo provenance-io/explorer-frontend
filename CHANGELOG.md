@@ -5,6 +5,9 @@
 ### Bug fixes
 - Fix issues with proposals to show software upgrade proposals #355
 
+### Features
+- FE updates to proposal view #332
+
 ## 3.0.0
 
 ### Release Name: Antonio de Abreu

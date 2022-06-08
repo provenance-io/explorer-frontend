@@ -3,9 +3,9 @@ import { SUCCESS, REQUEST, FAILURE } from '../actions/xhrActions';
 import {
   GET_PROPOSAL,
   GET_PROPOSAL_DEPOSITS,
-  GET_PROPOSAL_VOTES,
   GET_PROPOSALS,
   GET_VOTES_BY_ADDRESS,
+  GET_VOTES_BY_PROPOSAL,
 } from '../actions/governanceActions';
 
 export const initialState = {
@@ -17,18 +17,22 @@ export const initialState = {
   proposal: {
     header: { proposer: {} },
   },
+  tally: {},
+  params: {},
   proposalLoading: false,
-  // prposalDeposits
+  // proposalDeposits
   proposalDeposits: [],
   proposalDepositsLoading: false,
   proposalDepositsPages: 0,
-  // proposalVotes
-  proposalVotes: [],
-  proposalVotesLoading: false,
   // proposals
   proposals: [],
   proposalsLoading: false,
   proposalsPages: 0,
+  // proposalVotes
+  proposalVotes: [],
+  proposalVotesLoading: false,
+  proposalVotesPages: 0,
+  proposalVotesTotal: 0,
 };
 
 const governanceReducer = handleActions(
@@ -47,6 +51,8 @@ const governanceReducer = handleActions(
       return {
         ...state,
         proposal,
+        tally: proposal?.timings?.voting?.tally,
+        params: proposal?.timings?.voting?.params,
         proposalLoading: false,
       };
     },
@@ -84,31 +90,6 @@ const governanceReducer = handleActions(
       return {
         ...state,
         proposalDepositsLoading: false,
-      };
-    },
-
-    /* -----------------
-    GET_PROPOSAL_VOTES
-    -------------------*/
-    [`${GET_PROPOSAL_VOTES}_${REQUEST}`](state) {
-      return {
-        ...state,
-        proposalVotesLoading: true,
-      };
-    },
-
-    [`${GET_PROPOSAL_VOTES}_${SUCCESS}`](state, { payload: proposalVotes }) {
-      return {
-        ...state,
-        proposalVotes,
-        proposalVotesLoading: false,
-      };
-    },
-
-    [`${GET_PROPOSAL_VOTES}_${FAILURE}`](state) {
-      return {
-        ...state,
-        proposalVotesLoading: false,
       };
     },
 
@@ -167,6 +148,35 @@ const governanceReducer = handleActions(
       return {
         ...state,
         addressVotesLoading: false,
+      };
+    },
+    /* -----------------
+    GET_VOTES_BY_PROPOSAL
+    -------------------*/
+    [`${GET_VOTES_BY_PROPOSAL}_${REQUEST}`](state) {
+      return {
+        ...state,
+        proposalVotesLoading: true,
+      };
+    },
+
+    [`${GET_VOTES_BY_PROPOSAL}_${SUCCESS}`](
+      state,
+      { payload: { pages: proposalVotesPages, results: proposalVotes, total: proposalVotesTotal } }
+    ) {
+      return {
+        ...state,
+        proposalVotes,
+        proposalVotesLoading: false,
+        proposalVotesPages,
+        proposalVotesTotal,
+      };
+    },
+
+    [`${GET_VOTES_BY_PROPOSAL}_${FAILURE}`](state) {
+      return {
+        ...state,
+        proposalVotesLoading: false,
       };
     },
   },

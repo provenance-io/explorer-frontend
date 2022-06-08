@@ -53,7 +53,6 @@ const CodeDetails = () => {
       title: 'Data Hash',
       value: maxLength(dataHash, 14, '6'),
       hover: dataHash,
-      link: `/accounts/${dataHash}`,
       copy: dataHash,
     },
   ];

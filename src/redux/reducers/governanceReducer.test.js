@@ -3,7 +3,7 @@ import { REQUEST, SUCCESS, FAILURE } from '../actions/xhrActions';
 import {
   GET_PROPOSAL,
   GET_PROPOSAL_DEPOSITS,
-  GET_PROPOSAL_VOTES,
+  GET_VOTES_BY_PROPOSAL,
   GET_PROPOSALS,
   GET_VOTES_BY_ADDRESS,
 } from '../actions/governanceActions';
@@ -24,7 +24,12 @@ describe('reducer: governance', () => {
   it(`should handle ${GET_PROPOSAL}_${SUCCESS}`, () => {
     const payload = { id: 123, proposalStuff: 'exists' };
     const action = { type: `${GET_PROPOSAL}_${SUCCESS}`, payload };
-    expect(reducer(undefined, action)).toEqual({ ...initialState, proposal: payload });
+    expect(reducer(undefined, action)).toEqual({
+      ...initialState,
+      proposal: payload,
+      tally: payload?.timings?.voting?.tally,
+      params: payload?.timings?.voting?.params,
+    });
   });
 
   it(`should handle ${GET_PROPOSAL}_${FAILURE}`, () => {
@@ -56,21 +61,26 @@ describe('reducer: governance', () => {
   });
 
   /* -----------------
-    GET_PROPOSAL_VOTES
+    GET_VOTES_BY_PROPOSAL
   -------------------*/
-  it(`should handle ${GET_PROPOSAL_VOTES}_${REQUEST}`, () => {
-    const action = { type: `${GET_PROPOSAL_VOTES}_${REQUEST}` };
+  it(`should handle ${GET_VOTES_BY_PROPOSAL}_${REQUEST}`, () => {
+    const action = { type: `${GET_VOTES_BY_PROPOSAL}_${REQUEST}` };
     expect(reducer(undefined, action)).toEqual({ ...initialState, proposalVotesLoading: true });
   });
 
-  it(`should handle ${GET_PROPOSAL_VOTES}_${SUCCESS}`, () => {
-    const payload = { id: 123, proposalStuff: 'exists' };
-    const action = { type: `${GET_PROPOSAL_VOTES}_${SUCCESS}`, payload };
-    expect(reducer(undefined, action)).toEqual({ ...initialState, proposalVotes: payload });
+  it(`should handle ${GET_VOTES_BY_PROPOSAL}_${SUCCESS}`, () => {
+    const payload = { pages: 25, results: [{ id: 123, proposalStuff: 'exists' }], total: 3 };
+    const action = { type: `${GET_VOTES_BY_PROPOSAL}_${SUCCESS}`, payload };
+    expect(reducer(undefined, action)).toEqual({
+      ...initialState,
+      proposalVotes: payload.results,
+      proposalVotesPages: payload.pages,
+      proposalVotesTotal: payload.total,
+    });
   });
 
-  it(`should handle ${GET_PROPOSAL_VOTES}_${FAILURE}`, () => {
-    const action = { type: `${GET_PROPOSAL_VOTES}_${FAILURE}` };
+  it(`should handle ${GET_VOTES_BY_PROPOSAL}_${FAILURE}`, () => {
+    const action = { type: `${GET_VOTES_BY_PROPOSAL}_${FAILURE}` };
     expect(reducer(undefined, action)).toEqual(initialState);
   });
 

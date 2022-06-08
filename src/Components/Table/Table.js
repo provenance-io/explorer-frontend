@@ -9,6 +9,7 @@ import {
   Sprite,
   TimeTicker,
   CopyValue,
+  PercentBar,
 } from 'Components';
 import OgBlockImage from 'Components/BlockImage';
 import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
@@ -177,6 +178,15 @@ const Table = ({
           );
         }
 
+        // For voting data chart
+        if (dataName === 'answer') {
+          return (
+            <TableData key={displayName} title={rowData[dataName].hover}>
+              <PercentBar data={rowData[dataName].value} />
+            </TableData>
+          );
+        }
+
         if (!rowData[dataName]) {
           console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
             rowData,
@@ -214,13 +224,16 @@ const Table = ({
             key={displayName}
             skipped={skipped && !scheduled}
             scheduled={scheduled}
-            copy={copy || (!isEmpty(blockImage) && displayName === 'Moniker')}
+            copy={
+              copy ||
+              (!isEmpty(blockImage) && (displayName === 'Moniker' || displayName === 'Proposer'))
+            }
             center={center}
             color={color}
             // Adjusts padding if an icon is added in to the table
             tablePadding={(!isEmpty(headerIcon) || !isEmpty(headerBlockImage)) && '10px 50px'}
           >
-            {blockImage && displayName === 'Moniker' && (
+            {blockImage && (displayName === 'Moniker' || displayName === 'Proposer') && (
               <OgBlockImage
                 icon={blockImage.icon}
                 moniker={blockImage.moniker}
