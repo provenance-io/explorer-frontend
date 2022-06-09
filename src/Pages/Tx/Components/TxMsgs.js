@@ -80,9 +80,11 @@ const TxMsgs = () => {
     setFilterMsgType(finalType);
   };
 
+  const chaincodePrefixCopy = JSON.parse(JSON.stringify(chaincodePrefixes));
+
   // Determine link prefix
   const getPrefix = (value) => {
-    const prefix = chaincodePrefixes
+    const prefix = chaincodePrefixCopy
       // Sort the response of prefixes so longest are first
       .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
       // Find the matching prefix in the account hash
