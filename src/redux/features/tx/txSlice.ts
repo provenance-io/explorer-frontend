@@ -583,6 +583,7 @@ export const txSlice = createSlice({
         [txHash]: [...prevMsgs, ...payload.data.results],
       };
       state.txMsgsLoading = false;
+      state.txMsgsTotal = payload.data.total;
     })
     .addCase(getTxMsgs.rejected, (state) => {
       state.txMsgsLoading = false;
