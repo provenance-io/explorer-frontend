@@ -24,7 +24,7 @@ export const initialState: FaucetRequestStatus = {
 export const sendFaucetAddress = (data: SendFaucetAddressData) =>
   ajax({ url: FAUCET_URL, method: 'POST', data });
 
-  export const faucetActions = {};
+export const faucetActions = {};
 export const noDispatchActions = { sendFaucetAddress };
 /* -----------------
 ** SLICE
