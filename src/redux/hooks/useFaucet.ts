@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
 import {
   selectFaucet as selector,
   faucetActions as actionsList,
+  noDispatchActions,
 } from 'redux/features/faucet/faucetSlice';
 
 export const useFaucet = () => {
@@ -14,5 +15,5 @@ export const useFaucet = () => {
     [dispatch]
   );
 
-  return { ...state, ...actions };
+  return { ...state, ...actions, ...noDispatchActions };
 }

@@ -7,6 +7,7 @@
 - Fix issues with proposals to show software upgrade proposals #355
 - Update endpoint to https #360
 - Fix transactions page #362
+- Fix the faucet #364
 
 ### Features
 - FE updates to proposal view #332
