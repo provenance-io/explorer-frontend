@@ -77,7 +77,7 @@ const chartData = {
             xAxis: -1,
             label: {
               show: true,
-              formatter: 'Pass Threshold (50,000 hash)',
+              formatter: '',
               fontStyle: 'normal',
               fontFamily: 'Montserrat',
               textBorderColor: 'none',
@@ -147,6 +147,7 @@ export const ProposalDepositsChart = () => {
         chartData.series[0].markLine.data[0].xAxis = 100;
         chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
       }
+      chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold ${formatDenom(needed, 'nhash')}`;
 
       chartData.tooltip.formatter = (params: ParamsArray[]) => (
         `<div style="padding:2px;">
