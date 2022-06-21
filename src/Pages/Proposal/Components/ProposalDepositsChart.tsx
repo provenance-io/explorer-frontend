@@ -9,7 +9,7 @@ import Big from 'big.js';
 const StyledChart = styled.div`
   height: 200px;
   width: 100%;
-  margin-top: -60px;
+  margin-top: -45px;
   margin-bottom: -70px;
 `;
 
@@ -20,6 +20,8 @@ interface ParamsArray {
     value: string;
     initialDeposit: string;
     currentDeposit: string;
+    neededDeposit: string;
+    denom: string;
   };
 }
 
@@ -67,6 +69,31 @@ const chartData = {
         shadowOffsetY: 1,
         borderRadius: [5,5,5,5],
       },
+      markLine: {
+        silent: true,
+        data: [
+          {
+            name: 'Deposit Threshold',
+            xAxis: -1,
+            label: {
+              show: true,
+              formatter: '',
+              fontStyle: 'normal',
+              fontFamily: 'Montserrat',
+              textBorderColor: 'none',
+              color: '',
+            },
+            lineStyle: {
+              color: 'red',
+            },
+          },
+        ],
+        symbol: 'line',
+        lineStyle: {
+          color: 'black',
+          width: 2,
+        },
+      },
     },
   ]
 };
@@ -89,9 +116,11 @@ export const ProposalDepositsChart = () => {
     () => {
       // Build data
       const deposits = {
-        value: getPercentage(current, needed) > 100 ? 100 : getPercentage(current, needed),
+        value: getPercentage(current, needed),
         initialDeposit: initial,
         currentDeposit: current,
+        neededDeposit: needed,
+        denom,
       };
 
       // Set Chart Data items
@@ -110,15 +139,24 @@ export const ProposalDepositsChart = () => {
       chartData.series[0].data = [deposits];
       chartData.series[0].backgroundStyle.color = theme.BACKGROUND_LIGHT;
       chartData.series[0].backgroundStyle.shadowColor = theme.BACKGROUND_BLACK;
+      if (getPercentage(current, needed) >= 100) {
+        chartData.series[0].markLine.data[0].xAxis = getPercentage(needed, current);
+        chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
+      }
+      else {
+        chartData.series[0].markLine.data[0].xAxis = 100;
+        chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
+      }
+      chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold ${formatDenom(needed, 'nhash')}`;
 
       chartData.tooltip.formatter = (params: ParamsArray[]) => (
         `<div style="padding:2px;">
           Current Deposits: ${formatDenom(Number(params[0].data.currentDeposit), denom)} (${params[0].data.value}%)
           <br />
           Initial Deposit: ${formatDenom(Number(params[0].data.initialDeposit), denom)}
-          ${Number(params[0].data.currentDeposit)/1e9 < 50000 ?
+          ${Number(params[0].data.currentDeposit) < Number(params[0].data.neededDeposit) ?
             `<br />
-            Outstanding: ${50000 - Number(params[0].data.initialDeposit) / 1e9} hash` : ''
+            Outstanding: ${formatDenom(Number(params[0].data.neededDeposit) - Number(params[0].data.initialDeposit), params[0].data.denom)}` : ''
           }
         </div>`
       );
