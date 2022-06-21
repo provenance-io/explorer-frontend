@@ -63,6 +63,10 @@ export const Links: LinksProps = {
         url: Path.TOKEN_STATS_URL,
         title: 'Token Statistics',
       },
+      name_tree: {
+        url: Path.NAME_TREE_URL,
+        title: 'Name Tree',
+      },
     },
   },
 };

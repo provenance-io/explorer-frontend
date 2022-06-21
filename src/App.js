@@ -23,6 +23,7 @@ import {
   Gas,
   Ibc,
   Icons,
+  NameTree,
   Nft,
   Nfts,
   NoMatch404,
@@ -76,6 +77,7 @@ const App = () => {
               <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
               <Route path="/ibc" component={Ibc} />
               <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
+              <Route path="/network/name-tree" component={NameTree}></Route>
               <Route path="/nft/:addr" component={Nft} />
               <Route path="/nfts/:addr" component={Nfts} />
               <Route path="/proposal/:proposalId" component={Proposal} />

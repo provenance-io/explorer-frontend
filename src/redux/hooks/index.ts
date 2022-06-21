@@ -9,6 +9,7 @@ export * from './useGovernance';
 export * from './useIbc';
 export * from './useInterval';
 export * from './useMediaQuery';
+export * from './useName';
 export * from './useNetwork';
 export * from './useNft';
 export * from './useNotifications';
