@@ -20,6 +20,8 @@ interface ParamsArray {
     value: string;
     initialDeposit: string;
     currentDeposit: string;
+    neededDeposit: string;
+    denom: string;
   };
 }
 
@@ -117,6 +119,8 @@ export const ProposalDepositsChart = () => {
         value: getPercentage(current, needed),
         initialDeposit: initial,
         currentDeposit: current,
+        neededDeposit: needed,
+        denom,
       };
 
       // Set Chart Data items
@@ -149,9 +153,9 @@ export const ProposalDepositsChart = () => {
           Current Deposits: ${formatDenom(Number(params[0].data.currentDeposit), denom)} (${params[0].data.value}%)
           <br />
           Initial Deposit: ${formatDenom(Number(params[0].data.initialDeposit), denom)}
-          ${Number(params[0].data.currentDeposit)/1e9 < 50000 ?
+          ${Number(params[0].data.currentDeposit) < Number(params[0].data.neededDeposit) ?
             `<br />
-            Outstanding: ${50000 - Number(params[0].data.initialDeposit) / 1e9} hash` : ''
+            Outstanding: ${formatDenom(Number(params[0].data.neededDeposit) - Number(params[0].data.initialDeposit), params[0].data.denom)}` : ''
           }
         </div>`
       );
