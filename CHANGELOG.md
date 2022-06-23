@@ -4,19 +4,23 @@
 
 ### Bug fixes
 
-- Fix issues with proposals to show software upgrade proposals #355
-- Update endpoint to https #360
-- Fix transactions page #362
-- Fix the faucet #364
-
-### Features
-- FE updates to proposal view #332
-- Add markline to proposal deposits chart #366
-- Add in proposal charts for all cases #368
-
 ### Features
 
-- Migrate FE redux to RTK #341
+## 3.1.0
+
+### Release Name: Thomas Wyndham
+
+### Bug fixes
+- Fix issues with proposals to show software upgrade proposals [#355](https://github.com/provenance-io/explorer-frontend/issues/355)
+- Update endpoint to https [#360](https://github.com/provenance-io/explorer-frontend/issues/360)
+- Fix transactions page [#362](https://github.com/provenance-io/explorer-frontend/issues/362)
+- Fix the faucet [#364](https://github.com/provenance-io/explorer-frontend/issues/364)
+
+### Features
+- FE updates to proposal view [#332](https://github.com/provenance-io/explorer-frontend/issues/332)
+- Add markline to proposal deposits chart [#366](https://github.com/provenance-io/explorer-frontend/issues/366)
+- Add in proposal charts for all cases [#368](https://github.com/provenance-io/explorer-frontend/issues/368)
+- Migrate FE redux to RTK [#341](https://github.com/provenance-io/explorer-frontend/issues/341)
 
 ## 3.0.0
 
