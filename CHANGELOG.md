@@ -12,6 +12,7 @@
 ### Features
 - FE updates to proposal view #332
 - Add markline to proposal deposits chart #366
+- Add in proposal charts for all cases #368
 
 ### Features
 
