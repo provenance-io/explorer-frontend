@@ -227,8 +227,10 @@ export const ProposalQuorumChart = () => {
     <Content 
       title={proposalLoading ? '' : `Percent Voted: ${percentVoted === 0 || !percentVoted ? '0' : percentVoted < 0.0001 ? '< 0.01' : percentVoted.toFixed(2)}%`}
     >
-      {proposalLoading ? <Loading /> :
-         percentVoted > 0 ? <StyledChart ref={chartElementRef}/> : ''
+      {proposalLoading ? 
+        <Loading /> 
+        :
+        <StyledChart ref={chartElementRef}/>
       }
     </Content>
   );

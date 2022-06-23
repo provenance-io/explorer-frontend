@@ -183,8 +183,10 @@ export const ProposalDepositsChart = () => {
 
   return (
     <Content title={proposalLoading ? '' : `Deposits: ${formatDenom(current, denom)} (${getPercentage(current, needed)}%)`}>
-      {proposalLoading ? <Loading /> :
-        current > 0 ? <StyledChart ref={chartElementRef}/> : ''
+      {proposalLoading ? 
+        <Loading /> 
+        :
+        <StyledChart ref={chartElementRef}/>
       }
     </Content>
   );
