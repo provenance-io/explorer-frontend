@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useGovernance } from 'redux/hooks';
 import { Content, DataMissing, Loading, Summary } from 'Components';
-import { camelToSentence, capitalize, formatDenom, maxLength } from 'utils';
+import { camelToSentence, capitalize, maxLength } from 'utils';
 
 const ProposalInformation = () => {
   const { proposalId: linkId } = useParams();
@@ -24,24 +24,33 @@ const ProposalInformation = () => {
     let subDetails = [];
     const detailsArray = Object.entries(details).map(([key, value]) => {
       const title = camelToSentence(key);
-      if (typeof value === 'object') {
+      // Remove Type since we take care of it below
+      if (title === 'Type') return undefined;
+      if (typeof value === 'object' && !Array.isArray(value)) {
         subDetails = getDetails(value);
         return undefined;
       } else {
-        const isLink = value.slice(0, 4) === 'http';
+        const isLink = value.toString().slice(0, 4) === 'http';
         switch (key) {
           case '@type':
             return undefined;
-          case 'amount':
+          case 'status':
             return {
-              title,
-              value: formatDenom(value[0].amount, value[0].denom),
+              title: 'Marker Status',
+              value,
             };
           case 'recipient':
+          case 'manager':
             return {
               title,
               value,
               link: `/account/${value}`,
+            };
+          case 'accessList':
+            return {
+              title,
+              value: JSON.stringify(value),
+              isJson: true,
             };
           default:
             return {
@@ -58,7 +67,7 @@ const ProposalInformation = () => {
   const summaryData = [
     { title: 'ID', value: proposalId },
     { title: 'Title', value: title, nobreak: true },
-    { title: 'Status', value: capitalize(status?.replace(/proposal_status/gi, '')) },
+    { title: 'Proposal Status', value: capitalize(status?.replace(/proposal_status/gi, '')) },
     { title: 'Proposer', value: moniker || address, link: `/accounts/${address}` },
     { title: 'Type', value: type },
     { title: 'Description', value: description, nobreak: true },

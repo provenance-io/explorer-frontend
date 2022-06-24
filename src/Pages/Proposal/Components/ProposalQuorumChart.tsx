@@ -163,8 +163,8 @@ export const ProposalQuorumChart = () => {
     (data) => {
       // Build data
       const votes = getNumberInHash({ 
-        amount: data.yes.amount.amount, 
-        denom: data.yes.amount.denom, 
+        amount: data.total.amount.amount, 
+        denom: data.total.amount.denom, 
         total, 
         totalDenom,
         totalEligible,
