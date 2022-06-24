@@ -286,7 +286,7 @@ interface ParamsProps {
 }
 
 const getNumberInHash = (({ amount, denom, total }:{ amount: string, denom: string, total: string }) => {
-  const response = { value: 100 * (Number(amount) / Number(total)), denom, rawValue: Number(amount) };
+  const response = { value: (Number(amount) / Number(total)), denom, rawValue: Number(amount) };
   return response;
 });
 
@@ -339,6 +339,20 @@ export const ProposalVotingChart = () => {
       chartData.series[1].data = [noVotes];
       chartData.series[2].data = [abstainVotes];
       chartData.series[3].data = [noWithVetoVotes];
+
+      // Markline for pass threshold
+      if (chartData.series[0].markLine) {
+        chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold (${Number(passThreshold)*100}%)`;
+        chartData.series[0].markLine.data[0].xAxis = Number(passThreshold);
+        chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
+        chartData.series[0].markLine.data[0].lineStyle.color = theme.GREEN_POSITIVE_PRIMARY;
+        // Markline for veto threshold
+        chartData.series[0].markLine.data[1].label.formatter = `Veto Threshold (${Number(vetoThreshold)*100}%)`;
+        chartData.series[0].markLine.data[1].xAxis = 1 -  Number(vetoThreshold);
+        chartData.series[0].markLine.data[1].label.color = theme.FONT_PRIMARY;
+        chartData.series[0].markLine.data[1].lineStyle.color = theme.RED_NEGATIVE_PRIMARY;
+      };
+      // Border radius
       if (noWithVetoVotes.value === 0 && abstainVotes.value !== 0) {
         chartData.series[2].itemStyle.borderRadius = [0,5,5,0];
         chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
@@ -355,19 +369,6 @@ export const ProposalVotingChart = () => {
       if (chartData.series[0].backgroundStyle) {
         chartData.series[0].backgroundStyle.color = theme.BACKGROUND_LIGHT;
         chartData.series[0].backgroundStyle.shadowColor = theme.BACKGROUND_BLACK;
-      }
-      // Set pass threshold marker line data
-      for (let i = 0; i < chartData.series.length; i++) {
-        chartData.series[i].markLine.data[0].label.formatter = `Pass Threshold (${Number(passThreshold)*100}%)`;
-        chartData.series[i].markLine.data[0].xAxis = Number(passThreshold) * 100;
-        chartData.series[i].markLine.data[0].label.color = theme.FONT_PRIMARY;
-        chartData.series[i].markLine.data[0].lineStyle.color = theme.GREEN_POSITIVE_PRIMARY;
-
-        // Set veto threshold marker line data
-        chartData.series[i].markLine.data[1].label.formatter = `Veto Threshold (${Number(vetoThreshold)*100}%)`;
-        chartData.series[i].markLine.data[1].xAxis = 100 - Number(vetoThreshold) * 100;
-        chartData.series[i].markLine.data[1].label.color = theme.FONT_PRIMARY;
-        chartData.series[i].markLine.data[1].lineStyle.color = theme.RED_NEGATIVE_PRIMARY;
       }
 
       chartData.tooltip.formatter = (params: ParamsArray[]) => {
@@ -389,7 +390,7 @@ export const ProposalVotingChart = () => {
               </div>
               <div style="text-align:center;">
                 ${param.seriesName}: ${formatDenom(parseFloat(param.data.rawValue), param.data.denom)}
-                (${param.data.value ? param.data.value : '--'}%)
+                (${param.data.value ? (Number(param.data.value) * 100).toFixed(2) : '--'}%)
               </div>
             </div>`;
             idx++;
