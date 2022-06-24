@@ -126,47 +126,6 @@ const chartData = {
       emphasis: {
         focus: 'series',
       },
-      markLine: {
-        silent: true,
-        data: [
-          {
-            name: 'Pass Threshold',
-            xAxis: 0,
-            label: {
-              show: true,
-              formatter: 'Pass Threshold',
-              fontStyle: 'normal',
-              fontFamily: 'Montserrat',
-              textBorderColor: 'none',
-              color: '',
-            },
-            lineStyle: {
-              color: 'red',
-            },
-          },
-          {
-            name: 'Veto Threshold',
-            xAxis: 0,
-            label: {
-              show: true,
-              formatter: 'Veto Threshold',
-              fontStyle: 'normal',
-              fontFamily: 'Montserrat',
-              textBorderColor: 'none',
-              color: '',
-              position: 'start',
-            },
-            lineStyle: {
-              color: 'red',
-            },
-          },
-        ],
-        symbol: 'line',
-        lineStyle: {
-          color: 'black',
-          width: 2,
-        },
-      },
     },
     {
       name: 'Abstain',
@@ -181,47 +140,6 @@ const chartData = {
       emphasis: {
         focus: 'series',
       },
-      markLine: {
-        silent: true,
-        data: [
-          {
-            name: 'Pass Threshold',
-            xAxis: 0,
-            label: {
-              show: true,
-              formatter: 'Pass Threshold',
-              fontStyle: 'normal',
-              fontFamily: 'Montserrat',
-              textBorderColor: 'none',
-              color: '',
-            },
-            lineStyle: {
-              color: 'red',
-            },
-          },
-          {
-            name: 'Veto Threshold',
-            xAxis: 0,
-            label: {
-              show: true,
-              formatter: 'Veto Threshold',
-              fontStyle: 'normal',
-              fontFamily: 'Montserrat',
-              textBorderColor: 'none',
-              color: '',
-              position: 'start',
-            },
-            lineStyle: {
-              color: 'red',
-            },
-          },
-        ],
-        symbol: 'line',
-        lineStyle: {
-          color: 'black',
-          width: 2,
-        },
-      },
     },
     {
       name: 'No With Veto',
@@ -235,47 +153,6 @@ const chartData = {
       },
       emphasis: {
         focus: 'series',
-      },
-      markLine: {
-        silent: true,
-        data: [
-          {
-            name: 'Pass Threshold',
-            xAxis: 0,
-            label: {
-              show: true,
-              formatter: 'Pass Threshold',
-              fontStyle: 'normal',
-              fontFamily: 'Montserrat',
-              textBorderColor: 'none',
-              color: '',
-            },
-            lineStyle: {
-              color: 'red',
-            },
-          },
-          {
-            name: 'Veto Threshold',
-            xAxis: 0,
-            label: {
-              show: true,
-              formatter: 'Veto Threshold',
-              fontStyle: 'normal',
-              fontFamily: 'Montserrat',
-              textBorderColor: 'none',
-              color: '',
-              position: 'start',
-            },
-            lineStyle: {
-              color: 'red',
-            },
-          },
-        ],
-        symbol: 'line',
-        lineStyle: {
-          color: 'black',
-          width: 2,
-        },
       },
     },
   ]
@@ -369,8 +246,8 @@ export const ProposalVotingChart = () => {
       if (chartData.series[0].backgroundStyle) {
         chartData.series[0].backgroundStyle.color = theme.BACKGROUND_LIGHT;
         chartData.series[0].backgroundStyle.shadowColor = theme.BACKGROUND_BLACK;
-      }
-
+      };
+      // Tooltip formatting
       chartData.tooltip.formatter = (params: ParamsArray[]) => {
         let returnString = "";
         let idx = 0;
@@ -420,8 +297,10 @@ export const ProposalVotingChart = () => {
 
   return (
     <Content title={proposalLoading ? '' : `Total Votes: ${formatDenom(Number(total), denom)}`}>
-      {proposalLoading ? <Loading /> :
-        Number(total) > 0 ? <StyledChart ref={chartElementRef}/> : ''
+      {proposalLoading ? 
+        <Loading /> 
+        :
+        <StyledChart ref={chartElementRef}/>
       }
     </Content>
   );

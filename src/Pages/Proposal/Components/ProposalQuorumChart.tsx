@@ -163,8 +163,8 @@ export const ProposalQuorumChart = () => {
     (data) => {
       // Build data
       const votes = getNumberInHash({ 
-        amount: data.yes.amount.amount, 
-        denom: data.yes.amount.denom, 
+        amount: data.total.amount.amount, 
+        denom: data.total.amount.denom, 
         total, 
         totalDenom,
         totalEligible,
@@ -227,8 +227,10 @@ export const ProposalQuorumChart = () => {
     <Content 
       title={proposalLoading ? '' : `Percent Voted: ${percentVoted === 0 || !percentVoted ? '0' : percentVoted < 0.0001 ? '< 0.01' : percentVoted.toFixed(2)}%`}
     >
-      {proposalLoading ? <Loading /> :
-         percentVoted > 0 ? <StyledChart ref={chartElementRef}/> : ''
+      {proposalLoading ? 
+        <Loading /> 
+        :
+        <StyledChart ref={chartElementRef}/>
       }
     </Content>
   );
