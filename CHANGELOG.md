@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Bug fixes
+- Fix proposal issues in prod #372
 
 ### Features
 
