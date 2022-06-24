@@ -3,7 +3,15 @@
 ## Unreleased
 
 ### Bug fixes
-- Fix proposal issues in prod #372
+
+### Features
+
+## 3.1.1
+
+### Release Name: Sir Crispin Agnew of Lochnaw
+
+### Bug fixes
+- Fix proposal issues in prod [#372](https://github.com/provenance-io/explorer-frontend/issues/372)
 
 ### Features
 
