@@ -5,7 +5,7 @@ import { useGovernance, useApp } from 'redux/hooks';
 
 const ProposalTiming = () => {
   const { proposalId } = useParams();
-  const { tableCount } = useApp();
+  const tableCount = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const {
     getVotesByProposal,
