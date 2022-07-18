@@ -71,6 +71,8 @@ export const NameTreeChart = () => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
   const { matches: isLarge } = useMediaQuery(breakpoints.up('md'));
 
+  console.log(nameTree);
+
   // Pull name tree data
   useEffect(() => {
     getNameTree();

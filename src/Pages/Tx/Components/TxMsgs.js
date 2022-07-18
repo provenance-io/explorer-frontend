@@ -154,11 +154,13 @@ const TxMsgs = () => {
             value: maxLength(value, 24, 10),
             link: `/nft/${value}`,
           };
+        // P8e memorialize contract messages also have contract keys
         case 'contract': //fallthrough
           return {
             title,
-            value: maxLength(value, 24, 10),
-            link: `/contract/${value}`,
+            value: typeof value === 'string' ? maxLength(value, 24, 10) : JSON.stringify(value),
+            isJson: typeof value === 'object',
+            link: typeof value === 'string' && `/contract/${value}`,
           };
         case 'codeId': //fallthrough
           return {

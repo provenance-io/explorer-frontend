@@ -1,11 +1,10 @@
 import React from 'react';
 import { Section, Wrapper } from 'Components';
-import { NameTreeChart } from './Components';
+import { NameTreeChart, NameTreeFileFinder } from './Components';
 
 export const NameTree = () => (
   <Wrapper noHeader>
-    <Section>
-      <NameTreeChart />
-    </Section>
+      {/* <NameTreeChart /> */}
+      <NameTreeFileFinder />
   </Wrapper>
 );

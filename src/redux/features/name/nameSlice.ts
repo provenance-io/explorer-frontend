@@ -5,20 +5,26 @@ import {
 } from 'consts';
 import { ajax } from "../api";
 
-interface Children {
+export interface NameTree {
+  // For name tree map
   segmentName: string;
   fullName: string;
   owner: string;
   restricted: boolean;
-  children: Children[];
+  children: NameTree[];
   name: string;
   value: number;
+  // For name tree file view
+  label: string;
+  key: string;
+  nodes: NameTree[];
+  toggled: boolean;
 }
 
 interface NameTreeState {
   nameTreeLoading: boolean;
   nameTreeDepth: number;
-  nameTree: Children[];
+  nameTree: NameTree[];
 }
 
 export const initialState: NameTreeState = {
@@ -63,10 +69,14 @@ export const nameSlice = createSlice({
       state.nameTreeLoading = true;
     })
     .addCase(getNameTree.fulfilled, (state, { payload }) => {
-      const renameTree = (data: Children[]) => (
+      const renameTree = (data: NameTree[]) => (
         data.map(item => {
           item.name = item.segmentName;
           item.value = item.children.length || 1;
+          item.label = item.fullName;
+          item.nodes = item.children;
+          item.key = item.fullName;
+          item.toggled = true;
           if (item.children.length > 0) {
             renameTree(item.children);
           };
