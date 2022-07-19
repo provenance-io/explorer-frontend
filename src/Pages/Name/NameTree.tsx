@@ -4,7 +4,7 @@ import { NameTreeChart, NameTreeFileFinder } from './Components';
 
 export const NameTree = () => (
   <Wrapper noHeader>
-      {/* <NameTreeChart /> */}
-      <NameTreeFileFinder />
+      <NameTreeChart />
+      {/* <NameTreeFileFinder /> */}
   </Wrapper>
 );

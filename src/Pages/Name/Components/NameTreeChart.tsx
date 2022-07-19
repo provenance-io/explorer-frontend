@@ -1,27 +1,21 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import * as echarts from 'echarts';
-import { format, parseISO } from 'date-fns';
-import { Loading } from 'Components';
-import { useMediaQuery, useName } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { formatDenom, isEmpty } from 'utils';
+import { Loading, Filters, Content } from 'Components';
+import { useName } from 'redux/hooks';
+import { isEmpty } from 'utils';
 
 const StyledChart = styled.div`
-  height: 600px;
+  height: 800px;
   width: 100%;
 `;
-const StyledMessage = styled.div`
-  width: 100%;
-  margin-top: 20px;
+
+const FiltersWrapper = styled.div`
+  margin-bottom: 10px;
 `;
 
 const chartData = {
   tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      type: 'cross',
-    },
     // Needed format for TypeScript
     // eslint-disable-next-line no-empty-pattern
     formatter: ([]) => '',
@@ -29,9 +23,36 @@ const chartData = {
   series: [
     {
       name: 'Name Tree',
+      labelLine: {
+        showAbove: true,
+        verticalAlign: 'top',
+      },
       type: 'treemap',
+      width: '100%',
+      height: '100%',
       data: {},
+      visibleMin: 200,
+      roam: false,
+      breadcrumb: {
+        top: 'top',
+      },
       leafDepth: 1,
+      label: {
+        show: true,
+        fontSize: '15',
+        // Needed format for TypeScript
+        // eslint-disable-next-line no-empty-pattern
+        formatter: ([]) => '',
+      },
+      upperLabel: {
+        show: true,
+        height: 30,
+        fontSize: '20',
+        fontStyle: 'normal',
+        // Needed format for TypeScript
+        // eslint-disable-next-line no-empty-pattern
+        formatter: ([]) => '',
+      },
       levels: [
         {
           itemStyle: {
@@ -66,28 +87,46 @@ const chartData = {
 export const NameTreeChart = () => {
   const { nameTree, nameTreeLoading, getNameTree } = useName();
   const [chart, setChart] = useState(null);
+  const [level, setLevel] = useState(2);
   const chartElementRef = useRef(null);
-  const theme = useTheme();
-  const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
-  const { matches: isLarge } = useMediaQuery(breakpoints.up('md'));
 
-  console.log(nameTree);
+  // Set filter data
+  const filterData = [
+    {
+      title: 'Level View',
+      type: 'number',
+      action: setLevel,
+      value: level,
+      min: '1',
+
+    },
+  ];
 
   // Pull name tree data
   useEffect(() => {
     getNameTree();
   }, [getNameTree]);
 
-  console.log(nameTree);
-
   const buildChartData = useCallback((data) => {
       chartData.series[0].data = data;
-      chartData.tooltip.formatter = params => {
-        console.log(params);
-        return 'params';
-      }
+      chartData.series[0].leafDepth = level;
+      chartData.tooltip.formatter = (info: any) => {
+        const thisLabel = info.data.label && info.data.label.match(/^([^.]+)/);
+        return `
+          <div style="border-bottom:1px solid black;text-align:center;font-weight:bold"> 
+            Name: ${thisLabel && thisLabel.length > 0 ? thisLabel[0] : ''}
+          </div>
+          <div> Total Children: ${info.data.children.length} </div>
+          <div> Restricted: ${String(info.data.restricted)} </div>
+          <div> Full Name: ${info.data.fullName}</div>
+          <div> Owner: ${info.data.owner}</a></div>
+        `;
+      };
+      chartData.series[0].label.formatter = (info: any) => `${info.data.name}`;
+      
+      chartData.series[0].upperLabel.formatter = (info: any) => ` ${info.data.fullName || 'Attribute Name Tree'}`;
     },
-    []
+    [level]
   );
 
   // Build Chart with data
@@ -110,7 +149,15 @@ export const NameTreeChart = () => {
   }, [setChart, chart, nameTree, buildChartData]);
 
   return !nameTreeLoading ? (
-    <StyledChart ref={chartElementRef} />
+    <Content title="Attribute Names">
+      <FiltersWrapper>
+        <Filters
+          filterData={filterData}
+          flush
+        />
+      </FiltersWrapper>
+      <StyledChart ref={chartElementRef} />
+    </Content>
   ) : (
     <Loading />
   );
