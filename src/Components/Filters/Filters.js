@@ -34,8 +34,19 @@ const FilterTitle = styled.div`
 const Filters = ({ filterData, mustApply, flush }) => {
   const buildFilterItems = () =>
     filterData.map((filterItem) => {
-      const { type, title, options, action, maxHeight, setDefaults, list, value, minWidth, min } =
-        filterItem;
+      const {
+        type,
+        title,
+        options,
+        action,
+        maxHeight,
+        setDefaults,
+        list,
+        value,
+        minWidth,
+        min,
+        max,
+      } = filterItem;
       const buildFilterType = () => {
         switch (type) {
           case 'dropdown':
@@ -60,6 +71,7 @@ const Filters = ({ filterData, mustApply, flush }) => {
                 value={value}
                 type="number"
                 min={min}
+                max={max}
               />
             );
           default:

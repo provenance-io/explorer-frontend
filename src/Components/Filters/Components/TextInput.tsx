@@ -28,6 +28,7 @@ interface TextInputProps {
   value?: string;
   type?: string;
   min?: string;
+  max?: string;
 }
 
 const TextInput = ({
@@ -37,6 +38,7 @@ const TextInput = ({
   value = '',
   type = 'text',
   min = '',
+  max = '',
 }: TextInputProps) => {
 
   if (list.length > 0) {
@@ -60,6 +62,7 @@ const TextInput = ({
       name={title}
       type={type}
       min={min}
+      max={max}
       onChange={(e) => action(e.target.value)}
       value={value}
     />

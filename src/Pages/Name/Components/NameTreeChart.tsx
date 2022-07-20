@@ -4,6 +4,7 @@ import * as echarts from 'echarts';
 import { Loading, Filters, Content } from 'Components';
 import { useName } from 'redux/hooks';
 import { isEmpty } from 'utils';
+import { Colors } from 'theme/Colors';
 
 const StyledChart = styled.div`
   height: 800px;
@@ -11,7 +12,6 @@ const StyledChart = styled.div`
 `;
 
 const FiltersWrapper = styled.div`
-  margin-bottom: 10px;
 `;
 
 const chartData = {
@@ -23,13 +23,14 @@ const chartData = {
   series: [
     {
       name: 'Name Tree',
+      top: 0,
       labelLine: {
         showAbove: true,
         verticalAlign: 'top',
       },
       type: 'treemap',
       width: '100%',
-      height: '100%',
+      height: '90%',
       data: {},
       visibleMin: 200,
       roam: false,
@@ -39,7 +40,7 @@ const chartData = {
       leafDepth: 1,
       label: {
         show: true,
-        fontSize: '15',
+        fontSize: '12',
         // Needed format for TypeScript
         // eslint-disable-next-line no-empty-pattern
         formatter: ([]) => '',
@@ -47,13 +48,16 @@ const chartData = {
       upperLabel: {
         show: true,
         height: 30,
-        fontSize: '20',
+        color: '',
+        fontSize: '15',
         fontStyle: 'normal',
+        textBorderColor: 'none',
         // Needed format for TypeScript
         // eslint-disable-next-line no-empty-pattern
         formatter: ([]) => '',
       },
       levels: [
+        // Level 1
         {
           itemStyle: {
             borderColor: '#555',
@@ -61,14 +65,15 @@ const chartData = {
             gapWidth: 4
           }
         },
+        // Level 2
         {
-          colorSaturation: [0.3, 0.6],
           itemStyle: {
             borderColorSaturation: 0.7,
             gapWidth: 2,
             borderWidth: 2
           }
         },
+        // Level 3
         {
           colorSaturation: [0.3, 0.5],
           itemStyle: {
@@ -76,9 +81,41 @@ const chartData = {
             gapWidth: 1
           }
         },
+        // Level 4
         {
-          colorSaturation: [0.3, 0.5]
-        }
+          colorSaturation: [0.3, 0.5],
+          upperLabel: {
+            show: false,
+          },
+        },
+        // Level 5
+        {
+          colorSaturation: [0.3, 0.5],
+          upperLabel: {
+            show: false,
+          },
+        },
+        // Level 6
+        {
+          colorSaturation: [0.3, 0.5],
+          upperLabel: {
+            show: false,
+          },
+        },
+        // Level 7
+        {
+          colorSaturation: [0.3, 0.5],
+          upperLabel: {
+            show: false,
+          },
+        },
+        // Level 8
+        {
+          colorSaturation: [0.3, 0.5],
+          upperLabel: {
+            show: false,
+          },
+        },
       ],
     }
   ]
@@ -90,7 +127,11 @@ export const NameTreeChart = () => {
   const [level, setLevel] = useState(2);
   const chartElementRef = useRef(null);
 
-  // Set filter data
+  // Set filter data. Note that if more levels are eventually
+  // needed, adjust the max here and add more levels to the
+  // above, or rewrite initial chart config as a function
+  // similar to example at 
+  // https://echarts.apache.org/examples/en/editor.html?c=treemap-show-parent
   const filterData = [
     {
       title: 'Level View',
@@ -98,6 +139,7 @@ export const NameTreeChart = () => {
       action: setLevel,
       value: level,
       min: '1',
+      max: '8',
 
     },
   ];
@@ -114,16 +156,16 @@ export const NameTreeChart = () => {
         const thisLabel = info.data.label && info.data.label.match(/^([^.]+)/);
         return `
           <div style="border-bottom:1px solid black;text-align:center;font-weight:bold"> 
-            Name: ${thisLabel && thisLabel.length > 0 ? thisLabel[0] : ''}
+            Name: ${thisLabel && thisLabel.length > 0 ? thisLabel[0] : 'Attribute Name Tree'}
           </div>
           <div> Total Children: ${info.data.children.length} </div>
-          <div> Restricted: ${String(info.data.restricted)} </div>
-          <div> Full Name: ${info.data.fullName}</div>
-          <div> Owner: ${info.data.owner}</a></div>
+          <div> Restricted: ${String(info.data.restricted || 'false')} </div>
+          <div> Full Name: ${info.data.fullName || 'N/A'}</div>
+          <div> Owner: ${info.data.owner || 'N/A'}</a></div>
         `;
       };
+      chartData.series[0].upperLabel.color = Colors.FONT_WHITE;
       chartData.series[0].label.formatter = (info: any) => `${info.data.name}`;
-      
       chartData.series[0].upperLabel.formatter = (info: any) => ` ${info.data.fullName || 'Attribute Name Tree'}`;
     },
     [level]
