@@ -23,6 +23,10 @@ const UL = styled.ul`
 
 const ItemWrapper = styled.div`
   border-bottom: 1px solid ${Colors.BACKGROUND_NAV};
+  :child {
+    float: left;
+    width: 50%;
+  }
   :last-child {
     border-bottom: none;
   }
@@ -49,10 +53,8 @@ export const NameTreeFileFinder = () => {
   let keyToDisplay = <>No data was found</>;
 
   const getKeyInfo = ({ key, tree }:KeySearch) => {
-    console.log(key);
     tree.forEach(item => {
       if (key === item.fullName) {
-        console.log(item);
         keyToDisplay = <Summary data={[
           {title: 'Name', value: item.segmentName},
           {
@@ -78,6 +80,19 @@ export const NameTreeFileFinder = () => {
   }, [getNameTree]);
 
   console.log(nameTree);
+
+  const testData = [
+    {
+      key: 'test1',
+      label: 'test1',
+      nodes: [
+        {
+          key: 'test2',
+          label: 'test2',
+        },
+      ],
+    },
+  ];
 
   return (
     <Div>
@@ -111,5 +126,4 @@ export const NameTreeFileFinder = () => {
       </Content>
     </Div>
   )
-
 };
