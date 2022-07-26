@@ -163,7 +163,7 @@ interface ParamsProps {
 }
 
 const getNumberInHash = (({ amount, denom, total }:{ amount: string, denom: string, total: string }) => {
-  const response = { value: 100 * (Number(amount) / Number(total)), denom, rawValue: Number(amount) };
+  const response = { value: (Number(amount) / Number(total)), denom, rawValue: Number(amount) };
   return response;
 });
 
@@ -216,15 +216,16 @@ export const ProposalVotingChart = () => {
       chartData.series[1].data = [noVotes];
       chartData.series[2].data = [abstainVotes];
       chartData.series[3].data = [noWithVetoVotes];
+
       // Markline for pass threshold
       if (chartData.series[0].markLine) {
         chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold (${Number(passThreshold)*100}%)`;
-        chartData.series[0].markLine.data[0].xAxis = Number(total) > 0 ? Number(passThreshold) * 100 : Number(passThreshold);
+        chartData.series[0].markLine.data[0].xAxis = Number(passThreshold);
         chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
         chartData.series[0].markLine.data[0].lineStyle.color = theme.GREEN_POSITIVE_PRIMARY;
         // Markline for veto threshold
         chartData.series[0].markLine.data[1].label.formatter = `Veto Threshold (${Number(vetoThreshold)*100}%)`;
-        chartData.series[0].markLine.data[1].xAxis = Number(total) > 0 ? 100 - Number(vetoThreshold) * 100 : 1 -  Number(vetoThreshold);
+        chartData.series[0].markLine.data[1].xAxis = 1 -  Number(vetoThreshold);
         chartData.series[0].markLine.data[1].label.color = theme.FONT_PRIMARY;
         chartData.series[0].markLine.data[1].lineStyle.color = theme.RED_NEGATIVE_PRIMARY;
       };
@@ -266,7 +267,7 @@ export const ProposalVotingChart = () => {
               </div>
               <div style="text-align:center;">
                 ${param.seriesName}: ${formatDenom(parseFloat(param.data.rawValue), param.data.denom)}
-                (${param.data.value ? param.data.value : '--'}%)
+                (${param.data.value ? (Number(param.data.value) * 100).toFixed(2) : '--'}%)
               </div>
             </div>`;
             idx++;

@@ -13,6 +13,7 @@ export { default as Faucet } from './Faucet';
 export { default as Gas } from './Gas';
 export { default as Ibc } from './Ibc';
 export { default as Icons } from './Icons';
+export * from './Name';
 export { default as Nft } from './Nft';
 export { default as Nfts } from './Nfts';
 export { default as NoMatch404 } from './NoMatch404';

@@ -8,6 +8,7 @@ import { breakpoints } from 'consts';
 
 const ContentWrapper = styled.div`
   max-width: ${({ size }) => (size ? size : '100%')};
+  max-height: ${({ height }) => (height ? height : '100%')};
   position: relative;
   color: ${({ color }) => color && color};
   flex-basis: ${({ size }) => size};
@@ -56,6 +57,7 @@ const Link = styled(BaseLink)`
 const Content = ({
   children,
   size,
+  height,
   justify,
   alignItems,
   title,
@@ -87,7 +89,13 @@ const Content = ({
   );
 
   return (
-    <ContentWrapper size={size} className={className} alignSelf={alignSelf} color={color}>
+    <ContentWrapper
+      size={size}
+      height={height}
+      className={className}
+      alignSelf={alignSelf}
+      color={color}
+    >
       <ContentSpacer
         justify={justify}
         alignItems={alignItems}
@@ -107,6 +115,7 @@ const Content = ({
 Content.propTypes = {
   children: PropTypes.node,
   size: PropTypes.string,
+  height: PropTypes.string,
   justify: PropTypes.string,
   alignItems: PropTypes.string,
   alignSelf: PropTypes.string,
@@ -130,6 +139,7 @@ Content.defaultProps = {
   className: null,
   children: null,
   size: '100%',
+  height: '100%',
   justify: 'initial',
   alignItems: 'center',
   alignSelf: '',

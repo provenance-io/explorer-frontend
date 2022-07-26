@@ -42,7 +42,7 @@ const DropdownUL = styled.ul`
   margin-left: -55px;
   padding: 10px 0 0 0;
   ${NavSectionLI}:hover & {
-    max-height: 150px;
+    max-height: 200px;
     transition-delay: 500ms;
   }
 `;
@@ -81,7 +81,7 @@ const Link = styled(BaseLink)`
 const DropSprite = styled(Sprite)`
   position: absolute;
   display: flex;
-  margin: -19px 0 0 47%;
+  margin: -17px 0 0 47%;
   transition-delay: 300ms;
   transition-duration: 300ms;
   ${NavSectionLI}:hover & {

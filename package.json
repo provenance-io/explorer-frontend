@@ -34,6 +34,7 @@
     "react-redux": "7.2.4",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
+    "react-simple-tree-menu": "1.1.18",
     "react-tiny-hooks": "1.0.2",
     "redux": "4.1.0",
     "redux-actions": "2.6.5",

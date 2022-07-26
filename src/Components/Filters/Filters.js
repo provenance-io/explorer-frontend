@@ -33,9 +33,20 @@ const FilterTitle = styled.div`
 
 const Filters = ({ filterData, mustApply, flush }) => {
   const buildFilterItems = () =>
-    filterData.map(filterItem => {
-      const { type, title, options, action, maxHeight, setDefaults, list, value, minWidth } =
-        filterItem;
+    filterData.map((filterItem) => {
+      const {
+        type,
+        title,
+        options,
+        action,
+        maxHeight,
+        setDefaults,
+        list,
+        value,
+        minWidth,
+        min,
+        max,
+      } = filterItem;
       const buildFilterType = () => {
         switch (type) {
           case 'dropdown':
@@ -51,6 +62,18 @@ const Filters = ({ filterData, mustApply, flush }) => {
             return <DatePicker {...options} />;
           case 'text':
             return <TextInput title={title} action={action} list={list} value={value} />;
+          case 'number':
+            return (
+              <TextInput
+                title={title}
+                action={action}
+                list={list}
+                value={value}
+                type="number"
+                min={min}
+                max={max}
+              />
+            );
           default:
             return '';
         }

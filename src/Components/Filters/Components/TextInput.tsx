@@ -26,6 +26,9 @@ interface TextInputProps {
   action: (value: string) => void;
   list?: string[];
   value?: string;
+  type?: string;
+  min?: string;
+  max?: string;
 }
 
 const TextInput = ({
@@ -33,6 +36,9 @@ const TextInput = ({
   action,
   list = [],
   value = '',
+  type = 'text',
+  min = '',
+  max = '',
 }: TextInputProps) => {
 
   if (list.length > 0) {
@@ -40,7 +46,7 @@ const TextInput = ({
       <>
         <Input
           name={title}
-          type="text"
+          type={type}
           onChange={(e) => action(e.target.value)}
           list="mylist"
           value={value}
@@ -54,7 +60,9 @@ const TextInput = ({
   return (
     <Input
       name={title}
-      type="text"
+      type={type}
+      min={min}
+      max={max}
       onChange={(e) => action(e.target.value)}
       value={value}
     />

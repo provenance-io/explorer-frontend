@@ -7,6 +7,7 @@ import contractReducer from '../features/contract/contractSlice';
 import faucetReducer from '../features/faucet/faucetSlice';
 import governanceReducer from '../features/governance/governanceSlice';
 import ibcReducer from '../features/ibc/ibcSlice';
+import nameReducer from '../features/name/nameSlice';
 import networkReducer from '../features/network/networkSlice';
 import nftReducer from '../features/nft/nftSlice';
 import notificationReducer from '../features/notification/notificationSlice';
@@ -24,6 +25,7 @@ export const store = configureStore({
     faucet: faucetReducer,
     governance: governanceReducer,
     ibc: ibcReducer,
+    name: nameReducer,
     network: networkReducer,
     nft: nftReducer,
     notification: notificationReducer,

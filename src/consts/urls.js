@@ -68,6 +68,8 @@ export const IBC_DENOMS_ALL_URL = `${BASE_URL}/ibc/denoms/all`;
 export const ORDER_BOOK_URL = 'https://www.dlob.io/gecko/external/api/v1/exchange';
 export const ORDER_BOOK_VOLUME_URL =
   'https://www.dlob.io/aggregator/external/api/v1/order-books/pb18vd8fpwxzck93qlwghaj6arh4p7c5n894vnu5g/daily-price';
+// -- Name
+export const NAME_TREE_URL = `${BASE_URL}/names/tree`;
 // -- NFT
 export const NFT_URL = `${BASE_URL}/nft/scope`;
 // -- Notification
