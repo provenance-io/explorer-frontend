@@ -31,5 +31,6 @@ export { default as InfiniteScroll } from './InfiniteScroll';
 export { default as Progress } from './Progress';
 export { default as Forms } from './Forms';
 export { default as Notification } from './Notification';
+export * from './FileFinder';
 export * from './Layout';
 export * from './PercentBar';

@@ -1,129 +1,92 @@
-import { useEffect, MouseEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import TreeMenu, { defaultChildren, ItemComponent } from 'react-simple-tree-menu';
 import { useName } from 'redux/hooks';
-import { Content as BaseContent, SearchBar, Summary } from 'Components';
-import { Colors } from 'theme/Colors';
+import { FileFinder } from 'Components';
 import { NameTree } from 'redux/features/name/nameSlice';
-import { maxLength } from 'utils';
+import { maxLength, capitalize } from 'utils';
+import { breakpoints } from 'consts';
 
-const Div = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-`;
-
-const ShowJSON = styled.div`
-`;
-
-const UL = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-`;
-
-const ItemWrapper = styled.div`
-  border-bottom: 1px solid ${Colors.BACKGROUND_NAV};
-  :child {
-    float: left;
-    width: 50%;
+const Title = styled.div`
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 5px;
+  @media ${breakpoints.down('sm')} {
+    font-size: 1.2rem;
   }
-  :last-child {
-    border-bottom: none;
+`;
+const Info = styled.div`
+  font-size: 1.4rem;
+  padding: 5px 10px;
+  @media ${breakpoints.down('sm')} {
+    font-size: 1rem;
   }
-  cursor: pointer;
 `;
 
-const Content = styled(BaseContent)`
-  max-height: 200px;
-  margin-left: 10px;
-  text-align: center;
-  display: flex;
+const Left = styled.table``;
+
+const Right = styled.table`
+  text-align: right;
+  margin-left: auto;
+  @media ${breakpoints.down('md')} {
+    margin: 0;
+    text-align: left;
+  }
 `;
 
 interface KeySearch {
   key: string;
   tree: NameTree[];
-};
+}
 
 export const NameTreeFileFinder = () => {
-  const { nameTree, nameTreeLoading, getNameTree } = useName();
-  const [myLabel, setMyLabel] = useState('pb');
-  const [searchTerm, setSearchTerm] = useState('');
+  const { nameTree, getNameTree } = useName();
+  const [currentLabel, setCurrentLabel] = useState('pb');
 
   let keyToDisplay = <>No data was found</>;
 
-  const getKeyInfo = ({ key, tree }:KeySearch) => {
-    tree.forEach(item => {
+  const getKeyInfo = ({ key, tree }: KeySearch) => {
+    tree.forEach((item) => {
       if (key === item.fullName) {
-        keyToDisplay = <Summary data={[
-          {title: 'Name', value: item.segmentName},
-          {
-            title: 'Owner', 
-            value: maxLength(item.owner, 8, '4'),
-            link: `/accounts/${item.owner}`,
-          },
-          {title: 'Restricted', value: String(item.restricted)},
-          {title: 'Children', value: item.children.length},
-        ]} />;
-      }
-      else if (item.children.length > 0) {
-        getKeyInfo({key, tree: item.children})
+        keyToDisplay = (
+          <>
+            <Left>
+              <Title>Name</Title>
+              <Info>{maxLength(item.segmentName, 12, '4')}</Info>
+              <Title>Owner</Title>
+              <Info>
+                <a href={`/accounts/${item.owner}`}>{maxLength(item.owner, 12, '4')}</a>
+              </Info>
+            </Left>
+            <Right>
+              <Title>Restricted</Title>
+              <Info>{capitalize(String(item.restricted))}</Info>
+              <Title>Children</Title>
+              <Info>{item.children.length}</Info>
+            </Right>
+          </>
+        );
+      } else if (item.children.length > 0) {
+        getKeyInfo({ key, tree: item.children });
       }
     });
   };
 
-  getKeyInfo({key: myLabel, tree: nameTree });
+  getKeyInfo({ key: currentLabel, tree: nameTree });
 
   // Pull name tree data
   useEffect(() => {
     getNameTree();
   }, [getNameTree]);
 
-  console.log(nameTree);
-
-  const testData = [
-    {
-      key: 'test1',
-      label: 'test1',
-      nodes: [
-        {
-          key: 'test2',
-          label: 'test2',
-        },
-      ],
-    },
-  ];
-
   return (
-    <Div>
-      <TreeMenu data={nameTree} hasSearch>
-        {({ search, items, resetOpenNodes }) => (
-          <>
-            <button onClick={resetOpenNodes as unknown as MouseEventHandler<HTMLButtonElement>}>
-              Reset
-            </button>
-            <input
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                search && search(searchTerm);
-              }}
-            >
-            </input>
-            <UL>
-              {items.map(({key, label, ...props}) => (
-                <ItemWrapper key={key} onClick={() => setMyLabel(label)}>
-                  <ItemComponent key={key} label={label} {...props} onClick={() => null}/>
-                </ItemWrapper>
-              ))}
-            </UL>
-          </>
-        )}
-      </TreeMenu>
-      <Content>
-        <ShowJSON>
-          {keyToDisplay}
-        </ShowJSON>
-      </Content>
-    </Div>
-  )
+    <FileFinder
+      data={nameTree}
+      inputPlaceHolderText="Search Name Tree"
+      showSearch
+      showResetButton
+      info={keyToDisplay}
+      currentLabel={currentLabel}
+      setCurrentLabel={setCurrentLabel}
+    />
+  );
 };
