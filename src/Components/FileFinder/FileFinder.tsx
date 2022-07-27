@@ -25,6 +25,14 @@ const UL = styled.ul`
   list-style-type: none;
 `;
 
+const Sticky = styled.div`
+  position: sticky;
+  align-self: start;
+  top: 220px;
+  right: 0;
+  z-index: 999;
+`;
+
 const ItemWrapper = styled.div<{ theme: string }>`
   :child {
     float: left;
@@ -88,6 +96,7 @@ interface FileFinderProps {
   info?: JSX.Element;
   currentLabel?: string;
   setCurrentLabel?: (arg: string) => void;
+  searchList?: string[]; // Will search a list provided
 }
 
 export const FileFinder = ({
@@ -97,6 +106,7 @@ export const FileFinder = ({
   showResetButton = false,
   info,
   currentLabel = '',
+  searchList,
   setCurrentLabel,
 }: FileFinderProps) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -107,17 +117,38 @@ export const FileFinder = ({
       <TreeMenu data={data} hasSearch={showSearch}>
         {({ search, items, resetOpenNodes }) => (
           <>
+            {search && search(searchTerm)}
             {(showResetButton || showSearch) && (
               <Menu>
-                {showResetButton && <Button onClick={resetOpenNodes}>Reset</Button>}
-                {showSearch && (
-                  <Input
-                    placeholder={inputPlaceHolderText}
-                    onChange={(e) => {
-                      setSearchTerm(e.target.value);
-                      search && search(searchTerm);
+                {showResetButton && (
+                  <Button
+                    onClick={() => {
+                      resetOpenNodes && resetOpenNodes();
+                      setSearchTerm('');
                     }}
-                  />
+                  >
+                    Reset
+                  </Button>
+                )}
+                {showSearch && (
+                  <>
+                    <Input
+                      placeholder={inputPlaceHolderText}
+                      list={searchList && 'mylist'}
+                      value={searchTerm}
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        search && search(searchTerm);
+                      }}
+                    />
+                    {searchList && (
+                      <datalist id="mylist">
+                        {searchList.map((item, index) => (
+                          <option key={index} value={item} />
+                        ))}
+                      </datalist>
+                    )}
+                  </>
                 )}
               </Menu>
             )}
@@ -142,9 +173,9 @@ export const FileFinder = ({
         )}
       </TreeMenu>
       {info && (
-        <div>
+        <Sticky>
           <Content>{info}</Content>
-        </div>
+        </Sticky>
       )}
     </Div>
   );
