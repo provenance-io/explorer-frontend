@@ -3,6 +3,7 @@ import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { Header, Loading } from 'Components';
 import { isEmpty, formatDenom } from 'utils';
+import { NetworkTokenStats } from 'redux/features/network/networkSlice';
 import { useNetwork } from '../../../redux/hooks';
 
 const StyledChart = styled.div`
@@ -61,29 +62,14 @@ const chartData = {
   ],
 };
 
-interface DataProps {
-  circulation: {
-    amount: string;
-  };
-  communityPool: {
-    amount: string;
-  };
-  bonded: {
-    amount: string;
-  };
-  currentSupply: {
-    amount: string;
-  };
-}
-
 interface Params {
   name: string;
   seriesName: string;
-  data: {value: string, name: string};
+  data: { value: string; name: string };
 }
 
 // Format token data to value:, name: array
-const getDataArray = (data: DataProps) => [
+const getDataArray = (data: NetworkTokenStats) => [
   {
     value: (parseFloat(data.circulation.amount) / 1e9).toFixed(0),
     name: 'Circulation',
@@ -93,18 +79,23 @@ const getDataArray = (data: DataProps) => [
     name: 'Community Pool',
   },
   {
+    value: (parseFloat(data.burned.amount) / 1e9).toFixed(0),
+    name: 'Burned',
+  },
+  {
     value: (parseFloat(data.bonded.amount) / 1e9).toFixed(0),
     name: 'Bonded',
   },
   {
     value: (
-      (parseFloat(data.currentSupply.amount) -
+      (parseFloat(data.maxSupply.amount) -
         (parseFloat(data.circulation.amount) +
           parseFloat(data.communityPool.amount) +
-          parseFloat(data.bonded.amount))) /
+          parseFloat(data.bonded.amount) +
+          parseFloat(data.burned.amount))) /
       1e9
     ).toFixed(0),
-    name: 'Remaining Total',
+    name: 'Remaining Max Supply',
   },
 ];
 
@@ -119,10 +110,11 @@ const TokenStatsChart = () => {
     (data, totalHash) => {
       // Build dynamic chart items
       chartData.color = [
-        theme.CHART_PIE_M,
-        theme.CHART_PIE_L,
-        theme.CHART_PIE_N,
-        theme.CHART_PIE_C,
+        theme.CHART_PIE_CIRCULATION,
+        theme.CHART_PIE_COMMUNITY,
+        theme.CHART_PIE_BURNED,
+        theme.CHART_PIE_BONDED,
+        theme.CHART_PIE_REMAINING,
       ];
       chartData.series[0].data = data;
       chartData.series[0].itemStyle.borderColor = theme.BACKGROUND_LIGHT;
@@ -149,39 +141,40 @@ const TokenStatsChart = () => {
     let chart: echarts.ECharts | undefined;
     if (!isEmpty(networkTokenStats)) {
       // Calculate total Hash
-      const totalHash = (parseFloat(networkTokenStats.currentSupply.amount) / (1e9)).toFixed(0);
+      const totalHash = (parseFloat(networkTokenStats.maxSupply.amount) / 1e9).toFixed(0);
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       // if it isn't initialized then init
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
+        chart =
+          echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+          echarts.init(chartElementRef.current as unknown as HTMLElement);
       }
       // Update the chart with the data
       buildChartData(getDataArray(networkTokenStats), totalHash);
       chart && chart.setOption(chartData);
-      window.addEventListener('resize', () => {chart && chart.resize()});
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
-    return (
-      window.removeEventListener('resize', () => chart && chart.resize())
-    )
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, chart, networkTokenStats, buildChartData]);
 
   const totalHash =
     !isEmpty(networkTokenStats) &&
-    formatDenom(Number(networkTokenStats.currentSupply.amount), networkTokenStats.currentSupply.denom, {
+    formatDenom(Number(networkTokenStats.maxSupply.amount), networkTokenStats.maxSupply.denom, {
       decimal: 0,
     });
 
-  return (
-    networkTokenStatsLoading ? <Loading /> :
-    !isEmpty(networkTokenStats) ? (
-      <>
-        <Header title="Token Statistics" value={`Total: ${totalHash}`} />
-        <StyledChart ref={chartElementRef} />
-      </>
-      ) : (
-      <StyledMessage>Token statistics chart unavailable. Refresh to retry</StyledMessage>
-      )
+  return networkTokenStatsLoading ? (
+    <Loading />
+  ) : !isEmpty(networkTokenStats) ? (
+    <>
+      <Header title="Token Statistics" value={`Max Total: ${totalHash}`} />
+      <StyledChart ref={chartElementRef} />
+    </>
+  ) : (
+    <StyledMessage>Token statistics chart unavailable. Refresh to retry</StyledMessage>
   );
 };
 

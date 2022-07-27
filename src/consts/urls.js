@@ -35,7 +35,7 @@ export const ACCOUNT_INFO_URL = `${BASE_URL}/accounts`;
 // -- Assets
 export const ASSET_DETAIL_URL = `${BASE_URL}/assets`;
 export const ASSETS_LIST_URL = `${BASE_URL}/assets/all`;
-export const ASSETS_DIST_URL = `${BASE_URL}/assets/distribution`;
+export const ASSETS_DIST_URL = `${BASE_URL_V3}/utility_token/distribution`;
 // -- Blocks
 export const BLOCK_HEIGHT_URL = `${BASE_URL}/blocks/height`;
 export const BLOCK_INFO_URL = `${BASE_URL}/blocks/height`;
@@ -91,7 +91,8 @@ export const NETWORK_GAS_STATS_URL = `${BASE_URL}/gas/stats`;
 export const NETWORK_GAS_VOL_URL = `${BASE_URL}/gas/volume`;
 export const NETWORK_PARAMS_URL = `${BASE_URL}/params`;
 export const NETWORK_SPOTLIGHT_URL = `${BASE_URL}/spotlight`;
-export const NETWORK_TOKEN_STATS_URL = `${BASE_URL}/token/stats`;
+export const NETWORK_TOKEN_STATS_URL = `${BASE_URL_V3}/utility_token/stats`;
+export const NETWORK_TOTAL_SUPPLY_URL = `${BASE_URL_V3}/utility_token/total_supply`;
 // -- Txs
 export const TX_INFO_URL = `${BASE_URL}/txs`;
 export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
