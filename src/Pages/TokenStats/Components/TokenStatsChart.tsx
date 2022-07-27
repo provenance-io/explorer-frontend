@@ -95,7 +95,7 @@ const getDataArray = (data: NetworkTokenStats) => [
           parseFloat(data.burned.amount))) /
       1e9
     ).toFixed(0),
-    name: 'Remaining Max Supply',
+    name: 'Locked',
   },
 ];
 

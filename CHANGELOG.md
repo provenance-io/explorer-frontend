@@ -8,6 +8,7 @@
 - Add name tree components #359
 - Update search and display in name tree components #378
 - Add CMC data to token stats #380
+- Change "Remaining Max Supply" to locked in token stats #382
 
 ## 3.1.1
 

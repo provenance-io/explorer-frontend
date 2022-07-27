@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useName } from 'redux/hooks';
-import { FileFinder } from 'Components';
+import { FileFinder, CopyValue } from 'Components';
 import { NameTree } from 'redux/features/name/nameSlice';
 import { maxLength, capitalize } from 'utils';
 import { breakpoints } from 'consts';
@@ -15,6 +15,7 @@ const Title = styled.div`
   }
 `;
 const Info = styled.div`
+  display: flex;
   font-size: 1.4rem;
   padding: 5px 10px;
   @media ${breakpoints.down('sm')} {
@@ -51,10 +52,14 @@ export const NameTreeFileFinder = () => {
           <>
             <Left>
               <Title>Name</Title>
-              <Info>{maxLength(item.segmentName, 12, '4')}</Info>
+              <Info>
+                {maxLength(item.fullName, 10, '4')}
+                <CopyValue value={item.fullName} />
+              </Info>
               <Title>Owner</Title>
               <Info>
-                <a href={`/accounts/${item.owner}`}>{maxLength(item.owner, 12, '4')}</a>
+                <a href={`/accounts/${item.owner}`}>{maxLength(item.owner, 10, '4')}</a>
+                <CopyValue value={item.owner} />
               </Info>
             </Left>
             <Right>
