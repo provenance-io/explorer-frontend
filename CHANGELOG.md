@@ -5,6 +5,8 @@
 ### Bug fixes
 
 ### Features
+- Add name tree components #359
+- Update search and display in name tree components #378
 
 ## 3.1.1
 

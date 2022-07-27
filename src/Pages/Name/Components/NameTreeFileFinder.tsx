@@ -22,9 +22,9 @@ const Info = styled.div`
   }
 `;
 
-const Left = styled.table``;
+const Left = styled.div``;
 
-const Right = styled.table`
+const Right = styled.div`
   text-align: right;
   margin-left: auto;
   @media ${breakpoints.down('md')} {
@@ -65,6 +65,7 @@ export const NameTreeFileFinder = () => {
             </Right>
           </>
         );
+        return;
       } else if (item.children.length > 0) {
         getKeyInfo({ key, tree: item.children });
       }
@@ -72,6 +73,16 @@ export const NameTreeFileFinder = () => {
   };
 
   getKeyInfo({ key: currentLabel, tree: nameTree });
+
+  const getSearchList = (data: NameTree[], listOfNames: string[]) => {
+    data.forEach((item) => {
+      listOfNames.push(item.name);
+      if (item.children.length > 0) {
+        getSearchList(item.children, listOfNames);
+      }
+    });
+    return listOfNames;
+  };
 
   // Pull name tree data
   useEffect(() => {
@@ -87,6 +98,7 @@ export const NameTreeFileFinder = () => {
       info={keyToDisplay}
       currentLabel={currentLabel}
       setCurrentLabel={setCurrentLabel}
+      searchList={getSearchList(nameTree, []).sort()}
     />
   );
 };
