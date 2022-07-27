@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import styled, { useTheme } from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';
 import { formatDenom, subtractDays } from 'utils';
-import { useMediaQuery, useOrderbook } from 'redux/hooks';
+import { useMediaQuery, useOrderbook, useNetwork } from 'redux/hooks';
 import isYesterday from 'date-fns/isYesterday';
 import { breakpoints } from 'consts';
 
@@ -31,6 +31,8 @@ const HashDashboard = () => {
     getPriceHistory,
     getDailyVolume,
   } = useOrderbook();
+
+  const { getNetworkTotalSupply, networkTotalSupply, networkTotalSupplyLoading } = useNetwork();
 
   const theme = useTheme();
 
@@ -81,13 +83,14 @@ const HashDashboard = () => {
   // Initial load, get most recent blocks
   useEffect(() => {
     getDailyPrice();
+    getNetworkTotalSupply();
     getPriceHistory({ startTime: weekAgo, endTime: today });
     getDailyVolume();
-  }, [getDailyPrice, getPriceHistory, today, weekAgo, getDailyVolume]);
+  }, [getDailyPrice, getNetworkTotalSupply, getPriceHistory, today, weekAgo, getDailyVolume]);
 
   const latestPrice = new Big(dailyPrice.last_price || 0);
   const twentyFourHourVolume = latestPrice.times(dailyVolume || 0);
-  const marketCap = latestPrice.times(100000000000);
+  const marketCap = latestPrice.times(networkTotalSupply / 1e9);
 
   return (
     <Content
@@ -101,7 +104,7 @@ const HashDashboard = () => {
       {priceHistoryFailed && dailyPriceFailed && !priceHistory.length && (
         <div>Hash data failed to load, refresh page to try again</div>
       )}
-      {!dailyPriceLoading && !dailyPriceFailed && (
+      {!dailyPriceLoading && !dailyPriceFailed && !networkTotalSupplyLoading && (
         <>
           <DataCard icon="PRICE" title="Latest Price" width="100%">
             <>

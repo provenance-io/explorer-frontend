@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "redux/app/store";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'redux/app/store';
 import {
   NETWORK_UPGRADES_URL,
   NETWORK_PARAMS_URL,
@@ -7,8 +7,9 @@ import {
   NETWORK_GAS_VOL_URL,
   NETWORK_TOKEN_STATS_URL,
   Skips,
+  NETWORK_TOTAL_SUPPLY_URL,
 } from 'consts';
-import { ajax } from "../api";
+import { ajax } from '../api';
 
 interface NetworkUpgrades {
   currentVersion: string;
@@ -18,7 +19,7 @@ interface NetworkUpgrades {
   skipped: boolean;
   upgradeHeight: number;
   upgradeName: string;
-};
+}
 
 interface NetworkParams {
   cosmos?: {
@@ -37,7 +38,7 @@ interface NetworkParams {
       bonus_proposer_reward: string;
       community_tax: string;
       withdraw_addr_enabled: boolean;
-    },
+    };
     gov?: {
       deposit: {
         min_deposit: {
@@ -101,7 +102,7 @@ interface NetworkParams {
       floor_gas_price: {
         denom: string;
         amount: string;
-      }
+      };
     };
     name?: {
       max_segment_length: number;
@@ -110,10 +111,14 @@ interface NetworkParams {
       allow_unrestricted_names: boolean;
     };
   };
-};
+}
 
-interface NetworkTokenStats {
+export interface NetworkTokenStats {
   bonded: {
+    amount: string;
+    denom: string;
+  };
+  burned: {
     amount: string;
     denom: string;
   };
@@ -129,7 +134,11 @@ interface NetworkTokenStats {
     amount: string;
     denom: string;
   };
-};
+  maxSupply: {
+    amount: string;
+    denom: string;
+  };
+}
 
 interface NetworkGasStats {
   avgGasUsed: number;
@@ -138,7 +147,7 @@ interface NetworkGasStats {
   messageType: string;
   minGasUsed: number;
   stdDevGasUsed: number;
-};
+}
 
 export interface NetworkVolumeStats {
   date: string;
@@ -153,8 +162,8 @@ interface NetworkState {
   networkUpgradesLoading: boolean;
   // Params
   networkParams: NetworkParams;
-  cosmosParams: NetworkParams["cosmos"];
-  provParams: NetworkParams["prov"];
+  cosmosParams: NetworkParams['cosmos'];
+  provParams: NetworkParams['prov'];
   networkParamsLoading: boolean;
   // Token Stats
   networkTokenStats: NetworkTokenStats;
@@ -165,7 +174,10 @@ interface NetworkState {
   // Gas Volume
   networkGasVolume: NetworkVolumeStats[];
   networkGasVolumeLoading: boolean;
-};
+  // Total Supply
+  networkTotalSupply: number;
+  networkTotalSupplyLoading: boolean;
+}
 
 export const initialState: NetworkState = {
   // Upgrade Info
@@ -179,20 +191,28 @@ export const initialState: NetworkState = {
   // Token Stats
   networkTokenStats: {
     bonded: {
-      amount: "",
-      denom: "",
+      amount: '',
+      denom: '',
+    },
+    burned: {
+      amount: '',
+      denom: '',
     },
     circulation: {
-      amount: "",
-      denom: "",
+      amount: '',
+      denom: '',
     },
     communityPool: {
-      amount: "",
-      denom: "",
+      amount: '',
+      denom: '',
     },
     currentSupply: {
-      amount: "",
-      denom: "",
+      amount: '',
+      denom: '',
+    },
+    maxSupply: {
+      amount: '',
+      denom: '',
     },
   },
   networkTokenStatsLoading: false,
@@ -202,6 +222,9 @@ export const initialState: NetworkState = {
   // Gas Volume
   networkGasVolume: [],
   networkGasVolumeLoading: false,
+  // Total Supply
+  networkTotalSupply: 0,
+  networkTotalSupplyLoading: false,
 };
 
 /* -----------------
@@ -212,32 +235,27 @@ export const GET_NETWORK_PARAMS = 'GET_NETWORK_PARAMS';
 export const GET_NETWORK_TOKEN_STATS = 'GET_TOKEN_STATS';
 export const GET_NETWORK_GAS_STATS = 'GET_NETWORK_GAS_STATS';
 export const GET_NETWORK_GAS_VOLUME = 'GET_NETWORK_GAS_VOLUME';
+export const GET_NETWORK_TOTAL_SUPPLY = 'GET_NETWORK_TOTAL_SUPPLY';
 
 /* -----------------
 ** ACTIONS
 -------------------*/
-export const getNetworkUpgrades = createAsyncThunk(
-  GET_NETWORK_UPGRADES,
-  () => 
-    ajax({
-      url: NETWORK_UPGRADES_URL,
-    })
+export const getNetworkUpgrades = createAsyncThunk(GET_NETWORK_UPGRADES, () =>
+  ajax({
+    url: NETWORK_UPGRADES_URL,
+  })
 );
 
-export const getNetworkParams = createAsyncThunk(
-  GET_NETWORK_PARAMS,
-  () =>
-    ajax({
-      url: NETWORK_PARAMS_URL,
-    })
+export const getNetworkParams = createAsyncThunk(GET_NETWORK_PARAMS, () =>
+  ajax({
+    url: NETWORK_PARAMS_URL,
+  })
 );
 
-export const getNetworkTokenStats = createAsyncThunk(
-  GET_NETWORK_TOKEN_STATS,
-  () =>
-    ajax({
-      url: NETWORK_TOKEN_STATS_URL,
-    })
+export const getNetworkTokenStats = createAsyncThunk(GET_NETWORK_TOKEN_STATS, () =>
+  ajax({
+    url: NETWORK_TOKEN_STATS_URL,
+  })
 );
 
 export const getNetworkGasStats = createAsyncThunk(
@@ -246,13 +264,13 @@ export const getNetworkGasStats = createAsyncThunk(
     toDate,
     fromDate,
     granularity = 'day',
-  } : {
-    toDate: string,
-    fromDate: string,
-    granularity: string,
+  }: {
+    toDate: string;
+    fromDate: string;
+    granularity: string;
   }) =>
     ajax({
-      url: `${NETWORK_GAS_STATS_URL}?fromDate=${fromDate}&toDate=${toDate}&granularity=${granularity.toUpperCase()}`
+      url: `${NETWORK_GAS_STATS_URL}?fromDate=${fromDate}&toDate=${toDate}&granularity=${granularity.toUpperCase()}`,
     })
 );
 
@@ -262,14 +280,20 @@ export const getNetworkGasVolume = createAsyncThunk(
     toDate,
     fromDate,
     granularity = 'day',
-  } : {
-    toDate: string,
-    fromDate: string,
-    granularity: string,
+  }: {
+    toDate: string;
+    fromDate: string;
+    granularity: string;
   }) =>
     ajax({
-      url: `${NETWORK_GAS_VOL_URL}?fromDate=${fromDate}&toDate=${toDate}&granularity=${granularity.toUpperCase()}`
+      url: `${NETWORK_GAS_VOL_URL}?fromDate=${fromDate}&toDate=${toDate}&granularity=${granularity.toUpperCase()}`,
     })
+);
+
+export const getNetworkTotalSupply = createAsyncThunk(GET_NETWORK_TOTAL_SUPPLY, () =>
+  ajax({
+    url: NETWORK_TOTAL_SUPPLY_URL,
+  })
 );
 
 export const networkActions = {
@@ -278,6 +302,7 @@ export const networkActions = {
   getNetworkTokenStats,
   getNetworkGasStats,
   getNetworkGasVolume,
+  getNetworkTotalSupply,
 };
 /* -----------------
 ** SLICE
@@ -288,80 +313,93 @@ export const networkSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-    /* -----------------
+      /* -----------------
     GET_NETWORK_UPGRADES
     -------------------*/
-    .addCase(getNetworkUpgrades.pending, (state) => {
-      state.networkUpgradesLoading = true;
-    })
-    .addCase(getNetworkUpgrades.fulfilled, (state, { payload }) => {
-      state.networkUpgradesLoading = false;
-      state.networkUpgrades = payload.data.reverse().map((i: NetworkUpgrades) => ({
-        ...i,
-        events:
-          Skips[i.upgradeName] ||
-          (i.scheduled
-            ? `Not yet applied - will be applied at upgrade height ${i.upgradeHeight}`
-            : ''),
-      }));
-    })
-    .addCase(getNetworkUpgrades.rejected, (state) => {
-      state.networkUpgradesLoading = false;
-    })
-    /* -----------------
+      .addCase(getNetworkUpgrades.pending, (state) => {
+        state.networkUpgradesLoading = true;
+      })
+      .addCase(getNetworkUpgrades.fulfilled, (state, { payload }) => {
+        state.networkUpgradesLoading = false;
+        state.networkUpgrades = payload.data.reverse().map((i: NetworkUpgrades) => ({
+          ...i,
+          events:
+            Skips[i.upgradeName] ||
+            (i.scheduled
+              ? `Not yet applied - will be applied at upgrade height ${i.upgradeHeight}`
+              : ''),
+        }));
+      })
+      .addCase(getNetworkUpgrades.rejected, (state) => {
+        state.networkUpgradesLoading = false;
+      })
+      /* -----------------
     GET_NETWORK_PARAMS
     -------------------*/
-    .addCase(getNetworkParams.pending, (state) => {
-      state.networkParamsLoading = true;
-    })
-    .addCase(getNetworkParams.fulfilled, (state, { payload }) => {
-      state.networkParamsLoading = false;
-      state.cosmosParams = payload.data.cosmos;
-      state.provParams = payload.data.prov;
-      state.networkParams = payload.data;
-    })
-    .addCase(getNetworkParams.rejected, (state) => {
-      state.networkParamsLoading = false;
-    })
-    /* -----------------
+      .addCase(getNetworkParams.pending, (state) => {
+        state.networkParamsLoading = true;
+      })
+      .addCase(getNetworkParams.fulfilled, (state, { payload }) => {
+        state.networkParamsLoading = false;
+        state.cosmosParams = payload.data.cosmos;
+        state.provParams = payload.data.prov;
+        state.networkParams = payload.data;
+      })
+      .addCase(getNetworkParams.rejected, (state) => {
+        state.networkParamsLoading = false;
+      })
+      /* -----------------
     GET_NETWORK_TOKEN_STATS
     -------------------*/
-    .addCase(getNetworkTokenStats.pending, (state) => {
-      state.networkTokenStatsLoading = true;
-    })
-    .addCase(getNetworkTokenStats.fulfilled, (state, { payload }) => {
-      state.networkTokenStatsLoading = false;
-      state.networkTokenStats = payload.data;
-    })
-    .addCase(getNetworkTokenStats.rejected, (state) => {
-      state.networkTokenStatsLoading = false;
-    })
-    /* -----------------
+      .addCase(getNetworkTokenStats.pending, (state) => {
+        state.networkTokenStatsLoading = true;
+      })
+      .addCase(getNetworkTokenStats.fulfilled, (state, { payload }) => {
+        state.networkTokenStatsLoading = false;
+        state.networkTokenStats = payload.data;
+      })
+      .addCase(getNetworkTokenStats.rejected, (state) => {
+        state.networkTokenStatsLoading = false;
+      })
+      /* -----------------
     GET_NETWORK_GAS_STATS
     -------------------*/
-    .addCase(getNetworkGasStats.pending, (state) => {
-      state.networkGasStatsLoading = true;
-    })
-    .addCase(getNetworkGasStats.fulfilled, (state, { payload }) => {
-      state.networkGasStatsLoading = false;
-      state.networkGasStats = payload.data;
-    })
-    .addCase(getNetworkGasStats.rejected, (state) => {
-      state.networkGasStatsLoading = false;
-    })
-    /* -----------------
+      .addCase(getNetworkGasStats.pending, (state) => {
+        state.networkGasStatsLoading = true;
+      })
+      .addCase(getNetworkGasStats.fulfilled, (state, { payload }) => {
+        state.networkGasStatsLoading = false;
+        state.networkGasStats = payload.data;
+      })
+      .addCase(getNetworkGasStats.rejected, (state) => {
+        state.networkGasStatsLoading = false;
+      })
+      /* -----------------
     GET_NETWORK_GAS_VOLUME
     -------------------*/
-    .addCase(getNetworkGasVolume.pending, (state) => {
-      state.networkGasVolumeLoading = true;
-    })
-    .addCase(getNetworkGasVolume.fulfilled, (state, { payload }) => {
-      state.networkGasVolumeLoading = false;
-      state.networkGasVolume = payload.data;
-    })
-    .addCase(getNetworkGasVolume.rejected, (state) => {
-      state.networkGasVolumeLoading = false;
-    });
+      .addCase(getNetworkGasVolume.pending, (state) => {
+        state.networkGasVolumeLoading = true;
+      })
+      .addCase(getNetworkGasVolume.fulfilled, (state, { payload }) => {
+        state.networkGasVolumeLoading = false;
+        state.networkGasVolume = payload.data;
+      })
+      .addCase(getNetworkGasVolume.rejected, (state) => {
+        state.networkGasVolumeLoading = false;
+      })
+      /* -----------------
+    GET_NETWORK_TOTAL_SUPPLY
+    -------------------*/
+      .addCase(getNetworkTotalSupply.pending, (state) => {
+        state.networkTotalSupplyLoading = true;
+      })
+      .addCase(getNetworkTotalSupply.fulfilled, (state, { payload }) => {
+        state.networkTotalSupplyLoading = false;
+        state.networkTotalSupply = payload.data;
+      })
+      .addCase(getNetworkTotalSupply.rejected, (state) => {
+        state.networkTotalSupplyLoading = false;
+      });
   },
 });
 /* -----------------
