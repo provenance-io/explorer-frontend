@@ -1,6 +1,8 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
-## Unreleased
+## 3.2.0
+
+### Release Name: Charles John Andersson
 
 ### Bug fixes
 - Formatting fix for right column of name tree display #384
