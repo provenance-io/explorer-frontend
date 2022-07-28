@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Bug fixes
+- Formatting fix for right column of name tree display #384
 
 ### Features
 - Add name tree components #359

@@ -14,8 +14,8 @@ const Title = styled.div`
     font-size: 1.2rem;
   }
 `;
-const Info = styled.div`
-  display: flex;
+const Info = styled.div<{ copy: boolean }>`
+  display: ${({ copy }) => (copy ? 'flex' : 'inherit')};
   font-size: 1.4rem;
   padding: 5px 10px;
   @media ${breakpoints.down('sm')} {
@@ -52,21 +52,21 @@ export const NameTreeFileFinder = () => {
           <>
             <Left>
               <Title>Name</Title>
-              <Info>
+              <Info copy>
                 {maxLength(item.fullName, 10, '4')}
                 <CopyValue value={item.fullName} />
               </Info>
               <Title>Owner</Title>
-              <Info>
+              <Info copy>
                 <a href={`/accounts/${item.owner}`}>{maxLength(item.owner, 10, '4')}</a>
                 <CopyValue value={item.owner} />
               </Info>
             </Left>
             <Right>
               <Title>Restricted</Title>
-              <Info>{capitalize(String(item.restricted))}</Info>
+              <Info copy={false}>{capitalize(String(item.restricted))}</Info>
               <Title>Children</Title>
-              <Info>{item.children.length}</Info>
+              <Info copy={false}>{item.children.length}</Info>
             </Right>
           </>
         );
