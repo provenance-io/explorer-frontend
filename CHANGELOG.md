@@ -1,15 +1,17 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
-## Unreleased
+## 3.2.0
+
+### Release Name: Charles John Andersson
 
 ### Bug fixes
-- Formatting fix for right column of name tree display #384
+- Formatting fix for right column of name tree display [#384](https://github.com/provenance-io/explorer-frontend/issues/384)
 
 ### Features
-- Add name tree components #359
-- Update search and display in name tree components #378
-- Add CMC data to token stats #380
-- Change "Remaining Max Supply" to locked in token stats #382
+- Add name tree components [#359](https://github.com/provenance-io/explorer-frontend/issues/359)
+- Update search and display in name tree components [#378](https://github.com/provenance-io/explorer-frontend/issues/378)
+- Add CMC data to token stats [#380](https://github.com/provenance-io/explorer-frontend/issues/380)
+- Change "Remaining Max Supply" to locked in token stats [#382](https://github.com/provenance-io/explorer-frontend/issues/382)
 
 ## 3.1.1
 
