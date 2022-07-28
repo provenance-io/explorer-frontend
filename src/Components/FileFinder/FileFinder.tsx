@@ -30,7 +30,6 @@ const Sticky = styled.div`
   align-self: start;
   top: 220px;
   right: 0;
-  z-index: 999;
 `;
 
 const ItemWrapper = styled.div<{ theme: string }>`
