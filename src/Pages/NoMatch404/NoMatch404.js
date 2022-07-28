@@ -41,7 +41,7 @@ const NoMatch404 = ({ message }) => {
   const { goBack } = useHistory();
 
   return (
-    <Wrapper>
+    <Wrapper noHeader>
       <Section>
         <Content>
           <TextWrapper>

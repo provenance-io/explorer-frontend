@@ -1,5 +1,12 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
+## Unreleased
+
+### Bugs
+- Add small margin for 404 screen #387
+
+### Features
+
 ## 3.2.0
 
 ### Release Name: Charles John Andersson
