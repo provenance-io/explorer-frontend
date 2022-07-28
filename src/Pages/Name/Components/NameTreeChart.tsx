@@ -11,8 +11,7 @@ const StyledChart = styled.div`
   width: 100%;
 `;
 
-const FiltersWrapper = styled.div`
-`;
+const FiltersWrapper = styled.div``;
 
 const chartData = {
   tooltip: {
@@ -61,65 +60,100 @@ const chartData = {
         {
           itemStyle: {
             borderColor: '#555',
-            borderWidth: 4,
-            gapWidth: 4
-          }
+            borderWidth: 5,
+            gapWidth: 4,
+          },
+          upperLabel: {
+            show: true,
+          },
         },
         // Level 2
         {
           itemStyle: {
-            borderColorSaturation: 0.7,
+            borderColorSaturation: 0.1,
             gapWidth: 2,
-            borderWidth: 2
-          }
+            borderWidth: 5,
+          },
+          upperLabel: {
+            show: true,
+          },
         },
         // Level 3
         {
           colorSaturation: [0.3, 0.5],
           itemStyle: {
-            borderColorSaturation: 0.6,
-            gapWidth: 1
-          }
+            borderColorSaturation: 0.3,
+            gapWidth: 2,
+            borderWidth: 1,
+          },
+          upperLabel: {
+            show: true,
+          },
         },
         // Level 4
         {
           colorSaturation: [0.3, 0.5],
+          itemStyle: {
+            borderColorSaturation: 0.5,
+            gapWidth: 2,
+            borderWidth: 1,
+          },
           upperLabel: {
-            show: false,
+            show: true,
           },
         },
         // Level 5
         {
           colorSaturation: [0.3, 0.5],
+          itemStyle: {
+            borderColorSaturation: 0.6,
+            gapWidth: 2,
+            borderWidth: 1,
+          },
           upperLabel: {
-            show: false,
+            show: true,
           },
         },
         // Level 6
         {
           colorSaturation: [0.3, 0.5],
+          itemStyle: {
+            borderColorSaturation: 0.6,
+            gapWidth: 2,
+            borderWidth: 1,
+          },
           upperLabel: {
-            show: false,
+            show: true,
           },
         },
         // Level 7
         {
           colorSaturation: [0.3, 0.5],
+          itemStyle: {
+            borderColorSaturation: 0.7,
+            gapWidth: 2,
+            borderWidth: 1,
+          },
           upperLabel: {
-            show: false,
+            show: true,
           },
         },
         // Level 8
         {
           colorSaturation: [0.3, 0.5],
+          itemStyle: {
+            borderColorSaturation: 0.8,
+            gapWidth: 2,
+            borderWidth: 1,
+          },
           upperLabel: {
-            show: false,
+            show: true,
           },
         },
       ],
-    }
-  ]
-}
+    },
+  ],
+};
 
 export const NameTreeChart = () => {
   const { nameTree, nameTreeLoading, getNameTree } = useName();
@@ -130,7 +164,7 @@ export const NameTreeChart = () => {
   // Set filter data. Note that if more levels are eventually
   // needed, adjust the max here and add more levels to the
   // above, or rewrite initial chart config as a function
-  // similar to example at 
+  // similar to example at
   // https://echarts.apache.org/examples/en/editor.html?c=treemap-show-parent
   const filterData = [
     {
@@ -140,7 +174,6 @@ export const NameTreeChart = () => {
       value: level,
       min: '1',
       max: '8',
-
     },
   ];
 
@@ -149,7 +182,8 @@ export const NameTreeChart = () => {
     getNameTree();
   }, [getNameTree]);
 
-  const buildChartData = useCallback((data) => {
+  const buildChartData = useCallback(
+    (data) => {
       chartData.series[0].data = data;
       chartData.series[0].leafDepth = level;
       chartData.tooltip.formatter = (info: any) => {
@@ -166,7 +200,8 @@ export const NameTreeChart = () => {
       };
       chartData.series[0].upperLabel.color = Colors.FONT_WHITE;
       chartData.series[0].label.formatter = (info: any) => `${info.data.name}`;
-      chartData.series[0].upperLabel.formatter = (info: any) => ` ${info.data.fullName || 'Attribute Name Tree'}`;
+      chartData.series[0].upperLabel.formatter = (info: any) =>
+        ` ${info.data.fullName || 'Attribute Name Tree'}`;
     },
     [level]
   );
@@ -178,25 +213,24 @@ export const NameTreeChart = () => {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
+        chart =
+          echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+          echarts.init(chartElementRef.current as unknown as HTMLElement);
       }
       // Update the chart with the data
       buildChartData(nameTree);
       chart?.setOption(chartData);
-      window.addEventListener('resize', () => {chart && chart.resize()});
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
-    return (
-      window.removeEventListener('resize', () => chart && chart.resize())
-    )
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, chart, nameTree, buildChartData]);
 
   return !nameTreeLoading ? (
     <Content title="Attribute Names">
       <FiltersWrapper>
-        <Filters
-          filterData={filterData}
-          flush
-        />
+        <Filters filterData={filterData} flush />
       </FiltersWrapper>
       <StyledChart ref={chartElementRef} />
     </Content>
