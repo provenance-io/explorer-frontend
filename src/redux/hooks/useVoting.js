@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { useWallet, WINDOW_MESSAGES } from '@provenanceio/wallet-lib';
+import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
 import useEvent from 'react-tiny-hooks/use-event';
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useApp, useAccounts } from 'redux/hooks';
 import { VOTING_TYPES } from 'consts';
 import OgButton from 'Components/Button';
+import { MsgCreateVestingAccountResponse } from '@provenanceio/wallet-lib/lib/proto/cosmos/vesting/v1beta1/tx_pb';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -30,7 +31,7 @@ const Button = styled(OgButton)`
  * @return {Voting}
  */
 export const useVoting = () => {
-  const { walletService, messageService } = useWallet();
+  const { walletConnectService, walletConnectState } = useWalletConnect();
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page
@@ -39,17 +40,15 @@ export const useVoting = () => {
   const [voted, setVoted] = useState(false);
 
   // Get the address
-  const {
-    state: { address },
-  } = walletService;
+  const { address } = walletConnectState;
 
   // Yep we need the wallet
   useEffect(() => {
-    setIsLoggedIn(!!walletService.state.address);
-  }, [walletService.state.address, setIsLoggedIn]);
+    setIsLoggedIn(!!address);
+  }, [address, setIsLoggedIn]);
 
   useEvent('message', (evt) => {
-    if (walletService.walletUrl?.match(evt.origin)) {
+    if (walletConnectService.walletUrl?.match(evt.origin)) {
       if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_COMPLETE) {
         setVoted(true);
       } else if (evt.data.message === WINDOW_MESSAGES.TRANSACTION_FAILED) {
@@ -62,10 +61,10 @@ export const useVoting = () => {
   const getOptionType = (option) => {
     if (option === 'noWithVeto') option = 'no with veto';
     const optionType = {
-      [VOTING_TYPES.YES]: 1, // 1 "OptionYes"
-      [VOTING_TYPES.ABSTAIN]: 2, // 2 "OptionAbstain"
-      [VOTING_TYPES.NO]: 3, // 3 "OptionNo"
-      [VOTING_TYPES.NO_WITH_VETO]: 4, // 4 "OptionNoWithVeto"
+      [VOTING_TYPES.YES]: 'VOTE_OPTION_YES', // 1 "OptionYes"
+      [VOTING_TYPES.ABSTAIN]: 'VOTE_OPTION_ABSTAIN', // 2 "OptionAbstain"
+      [VOTING_TYPES.NO]: 'VOTE_OPTION_NO', // 3 "OptionNo"
+      [VOTING_TYPES.NO_WITH_VETO]: 'VOTE_OPTION_NO_WITH_VETO', // 4 "OptionNoWithVeto"
     }[option];
     switch (option) {
       case VOTING_TYPES.YES: // fallthrough
@@ -81,37 +80,37 @@ export const useVoting = () => {
     return optionType;
   };
 
-  const handleVoting = (proposalId, voter, option, weighted) => {
-    const optionsList = [];
+  const handleVoting = async (proposalId, voter, option, weighted) => {
+    const votes = [];
     if (!isLoggedIn) return;
     if (weighted) {
       Object.keys(option).forEach((k) => {
         if (option[k] > 0) {
-          optionsList.push({ option: getOptionType(k), weight: (option[k] * 1e16).toString() });
+          votes.push({ option: getOptionType(k), weight: option[k].toString() });
         }
         return;
       });
     } else {
-      option = getOptionType(option.vote);
+      // If weighted vote not selected, just send it in as 100% for user submission
+      votes.push({ option: getOptionType(option.vote), weight: (100).toString() });
     }
 
-    let msgType;
-    let msg;
-
-    if (!weighted) {
-      msgType = 'MsgVote';
-      msg = { proposalId, voter, option };
-    } else if (weighted) {
-      msgType = 'MsgVoteWeighted';
-      msg = { proposalId, voter, optionsList };
-    }
-
-    if (msgType) {
-      const builtMsg = messageService.buildMessage(msgType, msg);
-      const msgAnyB64 = messageService.createAnyMessageBase64(msgType, builtMsg);
-      walletService.transaction({ msgAnyB64 });
+    try {
+      const { data } = await MsgCreateVestingAccountResponse({
+        proposalId,
+        voter,
+        votes,
+      });
+      await walletConnectService.customAction({
+        description: 'Submit Vote',
+        message: data.base64,
+      });
+    } catch (e) {
+      console.log('Some errors');
     }
   };
+
+  console.log('address: ', walletConnectService);
 
   const handleManageVotingClick = () => {
     getAccountDelegations({ address });
