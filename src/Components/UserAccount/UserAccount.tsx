@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
-import { useWallet } from '@provenanceio/wallet-lib';
+import { QRCodeModal, useWalletConnect } from '@provenanceio/walletconnect-js';
+// @ts-ignore
 import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
+// @ts-ignore
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
+// @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { breakpoints, FIGURE_WALLET_URL, ICON_NAMES, PROVENANCE_WALLET_URL } from 'consts';
-import { useApp, useWalletLogin } from 'redux/hooks';
+import { breakpoints, ICON_NAMES } from 'consts';
+import { useApp } from 'redux/hooks';
 import { maxLength } from 'utils';
 import { PopupNote } from 'Components/PopupNote';
 import Button from '../Button';
@@ -25,34 +28,7 @@ const PopupTxt = styled.p`
   }
 `;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
-  @media ${breakpoints.up('md')} {
-    flex-direction: row;
-  }
-`;
-
-const WalletBtn = styled(Button)`
-  margin: 0 auto;
-
-  &:last-child {
-    margin-top: 10px;
-  }
-
-  @media ${breakpoints.up('md')} {
-    margin: 0;
-
-    &:last-child {
-      margin-top: 0;
-      margin-left: 10px;
-    }
-  }
-`;
-
-const AccountBtn = styled(Button)`
+const AccountBtn = styled(Button)<{ isLoggedIn?: boolean }>`
   border: none;
   background: none;
   /* animate.css @keyframe */
@@ -80,32 +56,32 @@ const Link = styled(BaseLink)`
   }
 `;
 
-const UserAccount = ({ isMobile }) => {
-  const { walletService } = useWallet();
-  useWalletLogin(walletService);
+const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
-  const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
-  const containerRef = useOnClickOutside(deactivateShowPopup);
+  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
+  const { connected, address } = walletConnectState;
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
 
+  const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
+  const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
   useEffect(() => {
-    setIsLoggedIn(!!walletService.state.address);
-  }, [walletService.state.address, setIsLoggedIn]);
+    setIsLoggedIn(connected);
+  }, [connected, setIsLoggedIn]);
 
   const handleLogout = () => {
     setWalletUrl('');
-    walletService.disconnect();
-    walletService.updateState();
+    wcs.disconnect();
+    // Don't show Login prompt again
+    setVisible(false);
   };
 
-  const handleConnect = (url) => {
-    setWalletUrl(url);
-    walletService.setWalletUrl(url);
-    walletService.connect();
+  const handleLoginClick = () => {
+    toggleShowPopup();
+    wcs.connect();
   };
 
   return (
@@ -114,10 +90,10 @@ const UserAccount = ({ isMobile }) => {
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >
-      <PopupNote show={visible} position={position} zIndex="201">
+      <PopupNote show={!isLoggedIn && visible} position={position} zIndex="201">
         Login
       </PopupNote>
-      <AccountBtn onClick={toggleShowPopup} isLoggedIn={isLoggedIn}>
+      <AccountBtn onClick={handleLoginClick} isLoggedIn={isLoggedIn}>
         <Sprite
           icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY}
           color={theme.FONT_NAV}
@@ -129,10 +105,8 @@ const UserAccount = ({ isMobile }) => {
         <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
           <PopupTxt>You are currently logged in as</PopupTxt>
           <PopupTxt>
-            <Link to={`/accounts/${walletService.state.address}`}>
-              {isMobile
-                ? maxLength(walletService.state.address, 11, 3)
-                : walletService.state.address}
+            <Link to={`/accounts/${address}`}>
+              {isMobile ? maxLength(address, 11, '3') : address}
             </Link>
           </PopupTxt>
           <LogoutButton color="secondary" onClick={handleLogout} icon={ICON_NAMES.LOGOUT}>
@@ -140,33 +114,12 @@ const UserAccount = ({ isMobile }) => {
           </LogoutButton>
         </PopupNote>
       )}
-
-      {!isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
-          <PopupTxt>Select a wallet provider to connect</PopupTxt>
-          <ButtonGroup>
-            <WalletBtn
-              onClick={() => handleConnect(PROVENANCE_WALLET_URL)}
-              color="secondary"
-              icon={ICON_NAMES.PROVENANCE}
-              iconColor={theme.FONT_NAV}
-              iconSize="20px;"
-            >
-              Provenance Blockchain Wallet
-            </WalletBtn>
-
-            <WalletBtn
-              onClick={() => handleConnect(FIGURE_WALLET_URL)}
-              color="secondary"
-              icon={ICON_NAMES.FIGURE}
-              iconColor={theme.FONT_NAV}
-              iconSize="20px;"
-            >
-              Figure Wallet
-            </WalletBtn>
-          </ButtonGroup>
-        </PopupNote>
-      )}
+      <QRCodeModal
+        walletConnectService={wcs}
+        title="Scan the QRCode with your mobile Provenance Blockchain Wallet."
+        className="QR-Code-Modal"
+        devWallets={['figure_web', 'provenance_extension', 'provenance_mobile']}
+      />
     </Container>
   );
 };

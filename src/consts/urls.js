@@ -57,6 +57,9 @@ export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
 export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
 export const GOVERNANCE_VOTES_URL = `${BASE_URL_V3}/gov/proposals`;
+export const GOVERNANCE_SUBMIT_PROPOSAL_URL = `${BASE_URL_V3}/gov/submit/`;
+export const GOVERNANCE_SUBMIT_VOTES_URL = `${BASE_URL_V3}/gov/vote`;
+export const GOVERNANCE_PROPOSAL_TYPES_URL = `${BASE_URL_V3}/gov/types/supported`;
 // -- Grants
 export const GRANTS_AUTHZ_URL = `${BASE_URL_V3}/grants/authz`;
 export const GRANTS_FEEGRANT_URL = `${BASE_URL_V3}/grants/feegrant`;
@@ -85,6 +88,12 @@ export const SOCIAL_SLACK_URL =
   'https://join.slack.com/t/provenanceio/shared_invite/zt-vysymaqb-VqgW3frXoNNXNlyOiP7mog';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
 export const SOCIAL_DISCORD_URL = 'https://discord.com/invite/kNZC8nwCFP';
+// --Staking
+export const STAKING_DELEGATE_URL = `${BASE_URL_V3}/staking/delegate`;
+export const STAKING_REDELEGATE_URL = `${BASE_URL_V3}/staking/redelegate`;
+export const STAKING_UNDELEGATE_URL = `${BASE_URL_V3}/staking/undelegate`;
+export const STAKING_WITHDRAW_COMMISSION_URL = `${BASE_URL_V3}/staking/withdraw_commission`;
+export const STAKING_WITHDRAW_REWARDS_URL = `${BASE_URL_V3}/staking/withdraw_rewards`;
 // --Stats
 export const NETWORK_ID_URL = `${BASE_URL}/chain/id`;
 export const NETWORK_UPGRADES_URL = `${BASE_URL}/chain/upgrades`;

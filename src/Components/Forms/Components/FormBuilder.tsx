@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { Field as BaseField, ErrorMessage, FormikProps } from "formik";
+import { Field as BaseField, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { capitalize } from 'utils';
+import FileUploadComponent from './FileUploadComponent';
 
 const Option = styled.option`
   background: ${({ theme }) => theme.INPUT_BG_LIGHT};
@@ -17,16 +18,17 @@ const Error = styled.div`
   color: red;
 `;
 
-const Field = styled(BaseField)<{ $issub: boolean }>`
-  margin-top: ${({ $issub }) => $issub ? '5px' : '10px'};
-  padding: ${({ $issub }) => $issub ? '5px' : '10px'};
+const Field = styled(BaseField)<{ $issub: boolean; height?: string }>`
+  margin-top: ${({ $issub }) => ($issub ? '5px' : '10px')};
+  padding: ${({ $issub }) => ($issub ? '5px' : '10px')};
   width: 100%;
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: ${({ $issub }) => $issub ? '1.2rem' : '1.4rem'};
+  font-size: ${({ $issub }) => ($issub ? '1.2rem' : '1.4rem')};
   line-height: 2.2rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
+  height: ${({ height }) => height && height};
 
   &:focus {
     outline: none;
@@ -39,13 +41,13 @@ const Field = styled(BaseField)<{ $issub: boolean }>`
 `;
 
 const TextArea = styled.textarea<{ $issub: boolean }>`
-  margin-top: ${({ $issub }) => $issub ? '5px' : '10px'};
-  padding: ${({ $issub }) => $issub ? '5px' : '10px'};
+  margin-top: ${({ $issub }) => ($issub ? '5px' : '10px')};
+  padding: ${({ $issub }) => ($issub ? '5px' : '10px')};
   width: 100%;
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: ${({ $issub }) => $issub ? '1.2rem' : '1.4rem'};
+  font-size: ${({ $issub }) => ($issub ? '1.2rem' : '1.4rem')};
   line-height: 2.2rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
 
@@ -68,9 +70,9 @@ const ThisField = styled.div<{ grid: boolean }>`
   border-bottom: ${({ grid, theme }) => grid && `1px solid ${theme.INPUT_BG_LIGHT}`};
 `;
 
-const Label = styled.label<{ $issub: boolean, grid: boolean }>`
+const Label = styled.label<{ $issub: boolean; grid: boolean }>`
   margin-top: ${({ grid }) => grid && '10px'};
-  font-size: ${({ $issub }) => $issub ? '1.4rem' : '1.6rem'};
+  font-size: ${({ $issub }) => ($issub ? '1.4rem' : '1.6rem')};
   font-weight: ${({ theme, $issub }) => !$issub && theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
   align-self: center;
@@ -84,13 +86,14 @@ interface FormProps {
   name: string;
   label: string;
   type: string;
-  dropdown?: { [key: string]: string};
+  dropdown?: { [key: string]: string };
   formik: FormikProps<ProposalProps>;
   issub?: boolean;
   grid?: boolean;
+  blockNumber?: number;
 }
 
-const FormBuilder = ({ 
+const FormBuilder = ({
   name,
   label,
   type,
@@ -98,19 +101,22 @@ const FormBuilder = ({
   formik,
   issub = false,
   grid = false,
+  blockNumber,
 }: FormProps) => {
-
   const builder = (
-    name: string, 
-    label: string, 
-    type: string, 
-    dropdown?: { [key: string]: string}) => {
+    name: string,
+    label: string,
+    type: string,
+    dropdown?: { [key: string]: string }
+  ) => {
     switch (type) {
       case 'text':
         return (
           <Fragment key={name}>
             <ThisField grid={grid}>
-              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
               <Field
                 $issub={issub}
                 name={name}
@@ -118,70 +124,91 @@ const FormBuilder = ({
                 placeholder={`Enter ${label}`}
                 value={formik.getFieldProps(name).value || ''}
               />
-              <ErrorMessage name={name}>{msg => <Error>{msg}</Error>}</ErrorMessage>
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
             </ThisField>
           </Fragment>
-          );
+        );
+      case 'file':
+        return (
+          <Fragment key={name}>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
+              <Field
+                component={FileUploadComponent}
+                height="100px"
+                $issub={issub}
+                name={name}
+                type="file"
+                value={undefined}
+              />
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
+            </ThisField>
+          </Fragment>
+        );
       case 'textarea':
         return (
           <Fragment key={name}>
             <ThisField grid={grid}>
-              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
               <TextArea
                 $issub={issub}
                 id={name}
                 placeholder={`Enter ${label}`}
                 {...formik.getFieldProps(`${name}`)}
               />
-              <ErrorMessage name={name}>{msg => <Error>{msg}</Error>}</ErrorMessage>
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
             </ThisField>
           </Fragment>
-          );
+        );
       case 'number':
         return (
           <Fragment key={name}>
             <ThisField grid={grid}>
-              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
               <Field
                 $issub={issub}
                 name={name}
                 type="number"
-                placeholder={'0'}
+                placeholder={name === 'height' ? String(blockNumber) : '0'}
+                value={name === 'height' ? formik.getFieldProps(name).value || '' : undefined}
               />
-              <ErrorMessage name={name}>{msg => <Error>{msg}</Error>}</ErrorMessage>
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
             </ThisField>
           </Fragment>
-        )
+        );
       case 'dropdown':
         return (
           <Fragment key={name}>
             <ThisField grid={grid}>
-              <Label htmlFor={name} $issub={issub} grid={grid}>{capitalize(label)}</Label>
-              <Field 
-                $issub={issub}
-                as="select"
-                {...formik.getFieldProps(`${name}`)}
-              >
-                {dropdown && Object.keys(dropdown).map((key) => {
-                  const myDropdown = dropdown[key];
-                  return (
-                    <Option key={myDropdown} value={myDropdown}>{capitalize(myDropdown)}</Option>
-                  )
-                })}
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
+              <Field $issub={issub} as="select" {...formik.getFieldProps(`${name}`)}>
+                {dropdown &&
+                  Object.keys(dropdown).map((key) => {
+                    const myDropdown = dropdown[key];
+                    return (
+                      <Option key={myDropdown} value={myDropdown}>
+                        {capitalize(myDropdown)}
+                      </Option>
+                    );
+                  })}
               </Field>
             </ThisField>
           </Fragment>
         );
       default:
-        return <ThisField grid={grid}>Unsupported field</ThisField>
+        return <ThisField grid={grid}>Unsupported field</ThisField>;
     }
-  }
+  };
 
-  return (
-    <>
-      {builder(name, label, type, dropdown)}
-    </>
-  );
+  return <>{builder(name, label, type, dropdown)}</>;
 };
 
 export default FormBuilder;
