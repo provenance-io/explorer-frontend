@@ -58,8 +58,8 @@ const chartData = {
 };
 
 // Builds fees
-const getFees = fee => {
-  const value = fee.fees[0].amount;
+const getFees = (fee) => {
+  const value = fee.fees.reduce((sum, a) => sum + Number(a.amount), 0);
   const denom = fee.fees[0].denom;
   const amount = formatDenom(value, denom, { decimal: 20 });
   // roundAmount will determine if the value is shown or not (must be > 0 at 4 dec places)
@@ -68,7 +68,7 @@ const getFees = fee => {
 };
 
 // Populates the chart data
-const addData = fees => {
+const addData = (fees) => {
   // Legend data shows the fees and their color on the right
   const legendData = [];
   // Series data, this is the information in the actual drawn-out chart
@@ -97,12 +97,12 @@ const TxFees = () => {
   const haveTxInfo = !isEmpty(txInfo);
 
   // Break out/format fees
-  const fees = haveTxInfo && txInfo.fee.map(fee => getFees(fee));
+  const fees = haveTxInfo && txInfo.fee.map((fee) => getFees(fee));
 
   // Calculate total fees
   let totalFees = 0;
   if (fees) {
-    fees.forEach(item => (totalFees += parseFloat(item.amount)));
+    fees.forEach((item) => (totalFees += parseFloat(item.amount)));
   }
 
   // Function to build the variable chart elements
