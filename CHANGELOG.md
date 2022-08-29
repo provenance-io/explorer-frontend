@@ -1,5 +1,12 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
+## Unreleased
+
+### Bug fixes
+- Formatting fix for transaction fees and proposal info #391
+
+### Features
+
 ## 3.2.0
 
 ### Release Name: Charles John Andersson

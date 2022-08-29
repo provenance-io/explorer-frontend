@@ -27,8 +27,8 @@ const TxInformation = () => {
 
     const totalFee = { amount: 0, denom: '' };
 
-    fee.map(fee => {
-      const amount = fee.fees[0].amount;
+    fee.map((fee) => {
+      const amount = fee.fees.reduce((sum, a) => sum + Number(a.amount), 0);
       const denom = fee.fees[0].denom;
       totalFee.amount += parseInt(amount);
       totalFee.denom = denom;
@@ -71,7 +71,7 @@ const TxInformation = () => {
       },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
       errorCode !== 0 && { title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote },
-    ].filter(s => s);
+    ].filter((s) => s);
 
     return <Summary data={summaryData} />;
   };

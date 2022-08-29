@@ -1,8 +1,15 @@
 import React from 'react';
+import styled from 'styled-components';
 import { useParams } from 'react-router';
 import { useGovernance } from 'redux/hooks';
 import { Content, DataMissing, Loading, Summary } from 'Components';
-import { camelToSentence, capitalize, maxLength } from 'utils';
+import { camelToSentence, capitalize, formatDenom, maxLength } from 'utils';
+
+const Key = styled.div`
+  font-weight: bold;
+`;
+
+const Value = styled.span``;
 
 const ProposalInformation = () => {
   const { proposalId: linkId } = useParams();
@@ -20,7 +27,7 @@ const ProposalInformation = () => {
     },
   } = proposal;
 
-  const getDetails = (details) => {
+  const getDetails = (details, type) => {
     let subDetails = [];
     const detailsArray = Object.entries(details).map(([key, value]) => {
       const title = camelToSentence(key);
@@ -52,6 +59,29 @@ const ProposalInformation = () => {
               value: JSON.stringify(value),
               isJson: true,
             };
+          case 'amount':
+            return type === 'CommunityPoolSpend'
+              ? {
+                  title,
+                  value: formatDenom(value[0].amount, value[0].denom),
+                }
+              : {
+                  title,
+                  value: maxLength(value, 24, '6'),
+                  externalLink: isLink ? value : '',
+                };
+          case 'changes':
+            return {
+              title,
+              value,
+              list: value.map((v) =>
+                Object.keys(v).map((item) => (
+                  <Key key={v[item]}>
+                    {item}:<Value> {v[item]}</Value>
+                  </Key>
+                ))
+              ),
+            };
           default:
             return {
               title,
@@ -80,7 +110,7 @@ const ProposalInformation = () => {
       ) : proposalId ? (
         <Summary
           data={summaryData.concat(
-            getDetails(details).filter((sd) => sd) /*detailsObj.filter(sd => sd)*/
+            getDetails(details, type).filter((sd) => sd) /*detailsObj.filter(sd => sd)*/
           )}
         />
       ) : (

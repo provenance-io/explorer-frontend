@@ -10,7 +10,7 @@ import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
 import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '../DataRow';
 
-const SummaryRow = styled(DataRow)<{ nobreak: boolean, isJson: boolean }>`
+const SummaryRow = styled(DataRow)<{ nobreak: boolean; isJson: boolean }>`
   word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};
   @media ${breakpoints.up('md')} {
     flex-basis: ${({ isJson }) => (isJson ? 100 : 50)}%;
@@ -103,7 +103,7 @@ const buildPopupNote = (popupData: PopupDataProps) => {
       fontColor={fontColor}
     >
       <PopupNote show={visible} position={position}>
-        {data.map(rowData => buildPopupRow(rowData))}
+        {data.map((rowData) => buildPopupRow(rowData))}
       </PopupNote>
       <Sprite
         icon={icon.name}
@@ -129,7 +129,11 @@ const getExternalLinkValue = (externalLink: string, children: React.ReactNode) =
     {children}
   </a>
 );
-const getInternalLinkValue = (internalLink: string, children: React.ReactNode | string, splitOnSpace: boolean) => {
+const getInternalLinkValue = (
+  internalLink: string,
+  children: React.ReactNode | string,
+  splitOnSpace: boolean
+) => {
   let num = '';
   if (splitOnSpace && children && typeof children === 'string') {
     const splitString = children.split(' ');
@@ -139,7 +143,7 @@ const getInternalLinkValue = (internalLink: string, children: React.ReactNode | 
   return (
     <Fragment>
       {splitOnSpace && <SummaryValue>{num}&nbsp;</SummaryValue>}
-      <Link to={internalLink}>{maxLength(children, 12, "6")}</Link>
+      <Link to={internalLink}>{maxLength(children, 12, '6')}</Link>
     </Fragment>
   );
 };
@@ -151,20 +155,17 @@ const getCopyValue = (copyValue: string, title: string, children: React.ReactNod
 
 const getList = (list: string[], linkList?: string[]) => {
   let index = -1;
-  const myList = list.map(element => {
+  const myList = list.map((element) => {
     index++;
     if (linkList) {
       return (
-        <Link to={linkList[index]} key={element}>
+        <Link to={linkList[index]} key={index}>
           <List>{element}</List>
         </Link>
       );
+    } else {
+      return <List key={index}>{element}</List>;
     }
-    else {
-      return (
-        <List key={element}>{element}</List>
-      );
-    };
   });
   return myList;
 };
@@ -217,7 +218,7 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
     finalValue = getPopupValue(popupNote, finalValue);
   }
   if (list) {
-    finalValue = (<UL>{getList(list, linkList)}</UL>);
+    finalValue = <UL>{getList(list, linkList)}</UL>;
   }
   if (isJson && typeof finalValue === 'string') {
     finalValue = (
@@ -265,15 +266,11 @@ interface DataProps {
 
 export interface SummaryDataProps {
   data: DataProps[];
-};
+}
 
 const Summary = ({ data }: SummaryDataProps) => {
   const { themeName } = useColorScheme();
-  return (
-    <>
-      {data.map(rowData => buildSummaryRow(rowData, themeName))}
-    </>
-  );
+  return <>{data.map((rowData) => buildSummaryRow(rowData, themeName))}</>;
 };
 
 export default Summary;
