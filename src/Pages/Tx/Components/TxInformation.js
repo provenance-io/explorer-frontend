@@ -13,7 +13,7 @@ const MsgContainer = styled.div`
 
 const TxInformation = () => {
   const [showErrorLogPopup, setShowErrorLogPopup] = useState(false);
-  const { txInfo, txInfoLoading } = useTxs();
+  const { txInfo, txInfoLoading, txMsgsLoading } = useTxs();
   const { txHash } = useParams();
 
   const infoExists = !isEmpty(txInfo);
@@ -39,7 +39,9 @@ const TxInformation = () => {
     const utcTime = getUTCTime(time);
     // We don't want to round the fees, they are already rounded when we receive them
     // 20 decimals is the max toLocaleString allows
-    const feeValue = formatDenom(totalFee.amount, totalFee.denom, { decimal: 4 });
+    const feeValue = formatDenom(totalFee.amount, totalFee.denom, {
+      decimal: totalFee.amount / 1e9 < 0.0001 ? 20 : 4,
+    });
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
@@ -82,7 +84,11 @@ const TxInformation = () => {
   return (
     <Fragment>
       <Content title="Information" icon="HASH">
-        <MsgContainer>{txInfoLoading ? <Loading /> : buildTxInformationSection()}</MsgContainer>
+        {txInfoLoading || txMsgsLoading ? (
+          <Loading />
+        ) : (
+          <MsgContainer>{buildTxInformationSection()}</MsgContainer>
+        )}
       </Content>
     </Fragment>
   );
