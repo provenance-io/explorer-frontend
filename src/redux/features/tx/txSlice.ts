@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from "redux/app/store";
+import { RootState } from 'redux/app/store';
 import {
   TX_INFO_URL,
   TXS_RECENT_URL,
@@ -10,9 +10,9 @@ import {
   TX_TYPES_URL,
 } from 'consts';
 import { isEmpty, capitalize } from 'utils';
-import { ajax } from "../api";
+import { ajax } from '../api';
 
-interface TxInfo {
+export interface TxInfo {
   codespace: string;
   errorCode: number;
   errorLog: string;
@@ -35,7 +35,7 @@ interface TxInfo {
     };
     gasUsed: number;
     gasWanted: number;
-  },
+  };
   height: number;
   memo: string;
   monikers: {
@@ -44,11 +44,11 @@ interface TxInfo {
   signers: {
     signers: string[];
     threshold: number;
-  },
+  };
   status: string;
   time: string;
   txHash: string;
-};
+}
 
 interface TxMsgs {
   pages: number;
@@ -65,7 +65,7 @@ interface TxMsgs {
     };
   };
   total: number;
-};
+}
 
 interface TxRecent {
   pages: number;
@@ -83,9 +83,9 @@ interface TxRecent {
       [key: string]: string;
     };
     msg: {
-      displayMsgType: string,
+      displayMsgType: string;
       msgCount: number;
-    },
+    };
     signers: {
       signers: string[];
       threshold: number;
@@ -96,123 +96,123 @@ interface TxRecent {
   }[];
   rollupTotals: {
     [key: string]: {
-      amount: string,
-      denom: string
+      amount: string;
+      denom: string;
     };
   };
   total: number;
-};
+}
 
 export interface TxHistory {
   date: string;
   numberTxs: number;
-};
+}
 
 interface TxTypes {
-  [key: string]: { 
+  [key: string]: {
     isDefault?: boolean;
     title: string;
-    options?: { 
-      [key: string]: { 
-        title: string,
+    options?: {
+      [key: string]: {
+        title: string;
         isDefault?: boolean;
       };
     };
   };
-};
+}
 
 interface TxTypesNoFormat {
   module: string;
   type: string;
-};
+}
 
 interface TxMsgTypes {
   [key: string]: {
     isDefault?: boolean;
     title: string;
   };
-};
+}
 
-interface TxByBlock extends TxRecent {};
-interface TxByAddress extends TxRecent {};
-interface TxByModule extends TxRecent {};
-interface TxByNft extends TxRecent {};
+interface TxByBlock extends TxRecent {}
+interface TxByAddress extends TxRecent {}
+interface TxByModule extends TxRecent {}
+interface TxByNft extends TxRecent {}
 
 interface TxState {
   // Txs
   txInfo: TxInfo;
   txsInfoLoading: boolean;
   // Recent Txs
-  txs: TxRecent["results"];
-  txsPages: TxRecent["pages"];
-  recentTxsCount: TxRecent["total"];
+  txs: TxRecent['results'];
+  txsPages: TxRecent['pages'];
+  recentTxsCount: TxRecent['total'];
   txsRecentLoading: boolean;
   // Full explorer tx history
-  txHistory: TxHistory[],
+  txHistory: TxHistory[];
   txHistoryDayRange: number;
   txHistoryLoading: boolean;
   // Tx JSON
   txFullJSONLoading: boolean;
   txFullJSON: string;
   // Txs for a specific block
-  txsByBlock: TxByBlock["results"];
+  txsByBlock: TxByBlock['results'];
   txsByBlockLoading: boolean;
-  txsByBlockPages: TxByBlock["pages"];
+  txsByBlockPages: TxByBlock['pages'];
   // Txs for a specific wallet address
-  txsByAddress: TxByAddress["results"];
+  txsByAddress: TxByAddress['results'];
   txsByAddressLoading: boolean;
-  txsByAddressPages: TxByAddress["pages"];
+  txsByAddressPages: TxByAddress['pages'];
   // Tx Types (for filters)
   txTypesLoading: boolean;
   txTypes: TxTypes;
   txTypesNoFormat: TxTypesNoFormat[];
   // Tx Msgs
-  txMsgs: { [key: string]: TxMsgs["results"] };
+  txMsgs: { [key: string]: TxMsgs['results'] };
   txMsgsLoading: boolean;
-  txMsgsPages: TxMsgs["pages"];
-  txMsgsTotal: TxMsgs["total"];
+  txMsgsPages: TxMsgs['pages'];
+  txMsgsTotal: TxMsgs['total'];
   // Tx Msg Types
   txMsgTypes: TxMsgTypes;
   txMsgTypesLoading: boolean;
   // TX Modules
-  txByModule: TxByModule["results"]
+  txByModule: TxByModule['results'];
   txByModuleLoading: boolean;
-  txByModulePages: TxByModule["pages"];
+  txByModulePages: TxByModule['pages'];
   // TX by NFT
-  txByNft: TxByNft["results"];
+  txByNft: TxByNft['results'];
   txByNftLoading: boolean;
-  txByNftPages: TxByNft["pages"];
-};
+  txByNftPages: TxByNft['pages'];
+}
 
 export const initialState: TxState = {
   // Txs
   txInfo: {
-    codespace: "",
+    codespace: '',
     errorCode: 0,
-    errorLog: "",
+    errorLog: '',
     fee: [],
     feepayer: {
-      address: "",
-      type: "",
+      address: '',
+      type: '',
     },
     gas: {
       gasPrice: {
-        amount: "",
-        denom: "",
+        amount: '',
+        denom: '',
       },
       gasUsed: 0,
       gasWanted: 0,
     },
     height: 0,
-    memo: "",
+    memo: '',
     monikers: {},
     signers: {
       signers: [],
       threshold: 0,
     },
-    status: "",
-    time: "",
-    txHash: "",
+    status: '',
+    time: '',
+    txHash: '',
   },
   txsInfoLoading: false,
   // Recent Txs
@@ -283,13 +283,13 @@ export const getTxsRecent = createAsyncThunk(
     status = '',
     toDate,
     fromDate,
-  } : {
-    count: number,
-    page: number,
-    type: string,
-    status: string,
-    toDate: string,
-    fromDate: string,
+  }: {
+    count: number;
+    page: number;
+    type: string;
+    status: string;
+    toDate: string;
+    fromDate: string;
   }) =>
     ajax({
       url: `${TXS_RECENT_URL}?count=${count}&page=${page}${type ? `&msgType=${type}` : ''}${
@@ -306,12 +306,12 @@ export const getTxsByAddress = createAsyncThunk(
     type = '',
     status = '',
     address,
-  } : {
-    count: number,
-    page: number,
-    type: string,
-    status: string,
-    address: string,
+  }: {
+    count: number;
+    page: number;
+    type: string;
+    status: string;
+    address: string;
   }) =>
     ajax({
       url: `${TXS_BY_ADDRESS_URL}/${address}?count=${count}&page=${page}${
@@ -322,26 +322,16 @@ export const getTxsByAddress = createAsyncThunk(
 
 export const getTxsByBlock = createAsyncThunk(
   GET_TXS_BY_BLOCK,
-  ({
-    blockheight,
-    count = 10,
-    page = 1,
-  } : {
-    blockheight: number,
-    count: number,
-    page: number,
-  }) =>
+  ({ blockheight, count = 10, page = 1 }: { blockheight: number; count: number; page: number }) =>
     ajax({
       url: `${TXS_BY_BLOCK_URL}/${blockheight}?count=${count}&page=${page}`,
     })
 );
 
-export const getTxInfo = createAsyncThunk(
-  GET_TX_INFO,
-  (txHash: string) =>
-    ajax({
-      url: `${TX_INFO_URL}/${txHash}`,
-    })
+export const getTxInfo = createAsyncThunk(GET_TX_INFO, (txHash: string) =>
+  ajax({
+    url: `${TX_INFO_URL}/${txHash}`,
+  })
 );
 
 export const getTxHistory = createAsyncThunk(
@@ -349,31 +339,27 @@ export const getTxHistory = createAsyncThunk(
   ({
     toDate,
     fromDate,
-    granularity = 'day'
-  } : {
-    toDate: string,
-    fromDate: string,
-    granularity: string,
+    granularity = 'day',
+  }: {
+    toDate: string;
+    fromDate: string;
+    granularity: string;
   }) =>
     ajax({
       url: `${TX_HISTORY_URL}?toDate=${toDate}&fromDate=${fromDate}&granularity=${granularity.toUpperCase()}`,
     })
 );
 
-export const getTxFullJSON = createAsyncThunk(
-  GET_TX_FULL_JSON,
-  (txHash: string) =>
-    ajax({
-      url: `${TX_INFO_URL}/${txHash}/json`,
-    })
+export const getTxFullJSON = createAsyncThunk(GET_TX_FULL_JSON, (txHash: string) =>
+  ajax({
+    url: `${TX_INFO_URL}/${txHash}/json`,
+  })
 );
 
-export const getTxTypes = createAsyncThunk(
-  GET_TX_TYPES,
-  () => 
-    ajax({
-      url: TX_TYPES_URL,
-    })
+export const getTxTypes = createAsyncThunk(GET_TX_TYPES, () =>
+  ajax({
+    url: TX_TYPES_URL,
+  })
 );
 
 export const getTxMsgs = createAsyncThunk(
@@ -383,33 +369,26 @@ export const getTxMsgs = createAsyncThunk(
     count = 10,
     page = 1,
     msgType = '',
-  } : {
-    txHash: string,
-    count: number,
-    page: number,
-    msgType: string,
+  }: {
+    txHash: string;
+    count: number;
+    page: number;
+    msgType: string;
   }) =>
     ajax({
       url: `${TX_INFO_URL}/${txHash}/msgs?${qs.stringify({ page, count, msgType })}`,
     })
 );
 
-export const getTxMsgTypes = createAsyncThunk(
-  GET_TX_MSG_TYPES,
-  (txHash: string) =>
-    ajax({
-      url: `${TX_INFO_URL}/types/tx/${txHash}`,
-    })
+export const getTxMsgTypes = createAsyncThunk(GET_TX_MSG_TYPES, (txHash: string) =>
+  ajax({
+    url: `${TX_INFO_URL}/types/tx/${txHash}`,
+  })
 );
 
 export const getTxByModule = createAsyncThunk(
   GET_TX_BY_MODULE,
-  ({
-    module,
-    ...rest
-  } : {
-    module: string,
-  }) =>
+  ({ module, ...rest }: { module: string }) =>
     ajax({
       url: `${TX_INFO_URL}/module/${module}${!isEmpty(rest) ? `?${qs.stringify(rest)}` : ''}`,
     })
@@ -417,16 +396,7 @@ export const getTxByModule = createAsyncThunk(
 
 export const getTxsByNft = createAsyncThunk(
   GET_TXS_BY_NFT,
-  ({
-    addr,
-    count = 10,
-    page = 1,
-    ...rest
-  } : {
-    addr: string,
-    count: number,
-    page: number,
-  }) =>
+  ({ addr, count = 10, page = 1, ...rest }: { addr: string; count: number; page: number }) =>
     ajax({
       url: `${TX_INFO_URL}/nft/${addr}?${qs.stringify({ count, page, ...rest })}`,
     })
@@ -450,203 +420,200 @@ export const txSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-    /* -----------------
+      /* -----------------
     GET_TX_TYPES
     -------------------*/
-    .addCase(getTxTypes.pending, (state) => {
-      state.txTypesLoading = true;
-    })
-    .addCase(getTxTypes.fulfilled, (state, { payload }) => {
-      // Initial value of "all"
-      const txTypes: TxTypes = {
-        allTxTypes: { isDefault: true, title: 'All Tx Types' },
-      };
-      // Sample of multi-nested options
-      // gov: {
-      //   title: 'Gov',
-      //   options: {
-      //     submitPropsal: { title: 'Submit Proposal' },
-      //     deposit: { title: 'Deposit' },
-      //     vote: { title: 'Vote' },
-      //   },
-      // },
-      // Loop through each module from API and add to types
-      payload.data.forEach(({ module, type } : { module: string, type: string }) => {
-        txTypes[module] = { title: capitalize(module), options: {} };
-      });
-      // Loop through each type from API and add to types
-      payload.data.forEach(({ module, type } : { module: string, type: string }) => {
-        txTypes[module].options = {
-          [type]: { title: capitalize(type) },
-          ...txTypes[module].options,
+      .addCase(getTxTypes.pending, (state) => {
+        state.txTypesLoading = true;
+      })
+      .addCase(getTxTypes.fulfilled, (state, { payload }) => {
+        // Initial value of "all"
+        const txTypes: TxTypes = {
+          allTxTypes: { isDefault: true, title: 'All Tx Types' },
         };
-      });
-      state.txTypesLoading = false;
-      state.txTypes = txTypes;
-      state.txTypesNoFormat = payload.data;
-    })
-    .addCase(getTxTypes.rejected, (state) => {
-      state.txTypesLoading = false;
-    })
-    /* -----------------
+        // Sample of multi-nested options
+        // gov: {
+        //   title: 'Gov',
+        //   options: {
+        //     submitPropsal: { title: 'Submit Proposal' },
+        //     deposit: { title: 'Deposit' },
+        //     vote: { title: 'Vote' },
+        //   },
+        // },
+        // Loop through each module from API and add to types
+        payload.data.forEach(({ module, type }: { module: string; type: string }) => {
+          txTypes[module] = { title: capitalize(module), options: {} };
+        });
+        // Loop through each type from API and add to types
+        payload.data.forEach(({ module, type }: { module: string; type: string }) => {
+          txTypes[module].options = {
+            [type]: { title: capitalize(type) },
+            ...txTypes[module].options,
+          };
+        });
+        state.txTypesLoading = false;
+        state.txTypes = txTypes;
+        state.txTypesNoFormat = payload.data;
+      })
+      .addCase(getTxTypes.rejected, (state) => {
+        state.txTypesLoading = false;
+      })
+      /* -----------------
     GET_TX_FULL_JSON
     -------------------*/
-    .addCase(getTxFullJSON.pending, (state) => {
-      state.txFullJSONLoading = true;
-    })
-    .addCase(getTxFullJSON.fulfilled, (state, { payload }) => {
-      state.txFullJSONLoading = false;
-      state.txFullJSON = payload.data;
-    })
-    .addCase(getTxFullJSON.rejected, (state) => {
-      state.txFullJSONLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxFullJSON.pending, (state) => {
+        state.txFullJSONLoading = true;
+      })
+      .addCase(getTxFullJSON.fulfilled, (state, { payload }) => {
+        state.txFullJSONLoading = false;
+        state.txFullJSON = payload.data;
+      })
+      .addCase(getTxFullJSON.rejected, (state) => {
+        state.txFullJSONLoading = false;
+      })
+      /* -----------------
     GET_TXS_BY_BLOCK
     -------------------*/
-    .addCase(getTxsByBlock.pending, (state) => {
-      state.txsByBlockLoading = true;
-    })
-    .addCase(getTxsByBlock.fulfilled, (state, { payload }) => {
-      state.txsByBlockLoading = false;
-      state.txsByBlock = payload.data.results;
-      state.txsByBlockPages = payload.data.pages;
-    })
-    .addCase(getTxsByBlock.rejected, (state) => {
-      state.txsByBlockLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxsByBlock.pending, (state) => {
+        state.txsByBlockLoading = true;
+      })
+      .addCase(getTxsByBlock.fulfilled, (state, { payload }) => {
+        state.txsByBlockLoading = false;
+        state.txsByBlock = payload.data.results;
+        state.txsByBlockPages = payload.data.pages;
+      })
+      .addCase(getTxsByBlock.rejected, (state) => {
+        state.txsByBlockLoading = false;
+      })
+      /* -----------------
     GET_TXS_BY_ADDRESS
     -------------------*/
-    .addCase(getTxsByAddress.pending, (state) => {
-      state.txsByAddressLoading = true;
-    })
-    .addCase(getTxsByAddress.fulfilled, (state, { payload }) => {
-      state.txsByAddressLoading = false;
-      state.txsByAddress = payload.data.results;
-      state.txsByAddressPages = payload.data.pages;
-    })
-    .addCase(getTxsByAddress.rejected, (state) => {
-      state.txsByAddressLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxsByAddress.pending, (state) => {
+        state.txsByAddressLoading = true;
+      })
+      .addCase(getTxsByAddress.fulfilled, (state, { payload }) => {
+        state.txsByAddressLoading = false;
+        state.txsByAddress = payload.data.results;
+        state.txsByAddressPages = payload.data.pages;
+      })
+      .addCase(getTxsByAddress.rejected, (state) => {
+        state.txsByAddressLoading = false;
+      })
+      /* -----------------
     GET_TXS_RECENT
     -------------------*/
-    .addCase(getTxsRecent.pending, (state) => {
-      state.txsRecentLoading = true;
-    })
-    .addCase(getTxsRecent.fulfilled, (state, { payload }) => {
-      state.txsRecentLoading = false;
-      state.txs = payload.data.results;
-      state.txsPages = payload.data.pages;
-    })
-    .addCase(getTxsRecent.rejected, (state) => {
-      state.txsRecentLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxsRecent.pending, (state) => {
+        state.txsRecentLoading = true;
+      })
+      .addCase(getTxsRecent.fulfilled, (state, { payload }) => {
+        state.txsRecentLoading = false;
+        state.txs = payload.data.results;
+        state.txsPages = payload.data.pages;
+      })
+      .addCase(getTxsRecent.rejected, (state) => {
+        state.txsRecentLoading = false;
+      })
+      /* -----------------
     GET_TX_INFO
     -------------------*/
-    .addCase(getTxInfo.pending, (state) => {
-      state.txsInfoLoading = true;
-    })
-    .addCase(getTxInfo.fulfilled, (state, { payload }) => {
-      state.txsInfoLoading = false;
-      state.txInfo = payload.data;
-    })
-    .addCase(getTxInfo.rejected, (state) => {
-      state.txsInfoLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxInfo.pending, (state) => {
+        state.txsInfoLoading = true;
+      })
+      .addCase(getTxInfo.fulfilled, (state, { payload }) => {
+        state.txsInfoLoading = false;
+        state.txInfo = payload.data;
+      })
+      .addCase(getTxInfo.rejected, (state) => {
+        state.txsInfoLoading = false;
+      })
+      /* -----------------
     GET_TX_HISTORY
     -------------------*/
-    .addCase(getTxHistory.pending, (state) => {
-      state.txHistoryLoading = true;
-    })
-    .addCase(getTxHistory.fulfilled, (state, { payload }) => {
-      state.txHistoryLoading = false;
-      state.txHistory = payload.data.reverse();
-    })
-    .addCase(getTxHistory.rejected, (state) => {
-      state.txHistoryLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxHistory.pending, (state) => {
+        state.txHistoryLoading = true;
+      })
+      .addCase(getTxHistory.fulfilled, (state, { payload }) => {
+        state.txHistoryLoading = false;
+        state.txHistory = payload.data.reverse();
+      })
+      .addCase(getTxHistory.rejected, (state) => {
+        state.txHistoryLoading = false;
+      })
+      /* -----------------
     GET_TX_MSGS
     -------------------*/
-    .addCase(getTxMsgs.pending, (state) => {
-      state.txMsgsLoading = true;
-    })
-    .addCase(getTxMsgs.fulfilled, (state, { payload, meta }) => {
-      const { txHash } = meta.arg;
-      const prevMsgs = state.txMsgs[txHash] || [];
-      state.txMsgs = {
-        ...state.txMsgs,
-        [txHash]: [...prevMsgs, ...payload.data.results],
-      };
-      state.txMsgsLoading = false;
-      state.txMsgsTotal = payload.data.total;
-    })
-    .addCase(getTxMsgs.rejected, (state) => {
-      state.txMsgsLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxMsgs.pending, (state) => {
+        state.txMsgsLoading = true;
+      })
+      .addCase(getTxMsgs.fulfilled, (state, { payload, meta }) => {
+        const { txHash } = meta.arg;
+        const prevMsgs = state.txMsgs[txHash] || [];
+        state.txMsgs = {
+          ...state.txMsgs,
+          [txHash]: [...prevMsgs, ...payload.data.results],
+        };
+        state.txMsgsLoading = false;
+        state.txMsgsTotal = payload.data.total;
+      })
+      .addCase(getTxMsgs.rejected, (state) => {
+        state.txMsgsLoading = false;
+      })
+      /* -----------------
     GET_TX_MSGS_TYPES
     -------------------*/
-    .addCase(getTxMsgTypes.pending, (state) => {
-      state.txMsgTypesLoading = true;
-    })
-    .addCase(getTxMsgTypes.fulfilled, (state, { payload }) => {
-      // Initial value of "all"
-      const txMsgTypes: TxMsgTypes = {
-        allTxTypes: { isDefault: true, title: 'All Tx Types' },
-      };
-      // Loop through each module from API and add to types
-      payload.data.forEach(({ type } : { [key: string]: string} ) => {
-        txMsgTypes[type] = { title: capitalize(type) };
-      });
-      state.txMsgTypesLoading = false;
-      state.txMsgTypes = txMsgTypes;
-    })
-    .addCase(getTxMsgTypes.rejected, (state) => {
-      state.txMsgTypesLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxMsgTypes.pending, (state) => {
+        state.txMsgTypesLoading = true;
+      })
+      .addCase(getTxMsgTypes.fulfilled, (state, { payload }) => {
+        // Initial value of "all"
+        const txMsgTypes: TxMsgTypes = {
+          allTxTypes: { isDefault: true, title: 'All Tx Types' },
+        };
+        // Loop through each module from API and add to types
+        payload.data.forEach(({ type }: { [key: string]: string }) => {
+          txMsgTypes[type] = { title: capitalize(type) };
+        });
+        state.txMsgTypesLoading = false;
+        state.txMsgTypes = txMsgTypes;
+      })
+      .addCase(getTxMsgTypes.rejected, (state) => {
+        state.txMsgTypesLoading = false;
+      })
+      /* -----------------
     GET_TX_BY_MODULE
     -------------------*/
-    .addCase(getTxByModule.pending, (state) => {
-      state.txByModuleLoading = true;
-    })
-    .addCase(getTxByModule.fulfilled, (state, { payload }) => {
-      state.txByModuleLoading = false;
-      state.txByModule = payload.data.results;
-      state.txByModulePages = payload.data.pages;
-    })
-    .addCase(getTxByModule.rejected, (state) => {
-      state.txByModuleLoading = false;
-    })
-    /* -----------------
+      .addCase(getTxByModule.pending, (state) => {
+        state.txByModuleLoading = true;
+      })
+      .addCase(getTxByModule.fulfilled, (state, { payload }) => {
+        state.txByModuleLoading = false;
+        state.txByModule = payload.data.results;
+        state.txByModulePages = payload.data.pages;
+      })
+      .addCase(getTxByModule.rejected, (state) => {
+        state.txByModuleLoading = false;
+      })
+      /* -----------------
     GET_TXS_BY_NFT
     -------------------*/
-    .addCase(getTxsByNft.pending, (state) => {
-      state.txByNftLoading = true;
-    })
-    .addCase(getTxsByNft.fulfilled, (state, { payload }) => {
-      state.txByNftLoading = false;
-      state.txByNft = payload.data.results;
-      state.txByNftPages = payload.data.pages;
-    })
-    .addCase(getTxsByNft.rejected, (state) => {
-      state.txByNftLoading = false;
-    });
+      .addCase(getTxsByNft.pending, (state) => {
+        state.txByNftLoading = true;
+      })
+      .addCase(getTxsByNft.fulfilled, (state, { payload }) => {
+        state.txByNftLoading = false;
+        state.txByNft = payload.data.results;
+        state.txByNftPages = payload.data.pages;
+      })
+      .addCase(getTxsByNft.rejected, (state) => {
+        state.txByNftLoading = false;
+      });
   },
 });
 
 /* -----------------
 BUILD ACTIONS
 -------------------*/
-const {
-  resetTxMsgs,
-  setRecentTxsCount
-} = txSlice.actions;
+const { resetTxMsgs, setRecentTxsCount } = txSlice.actions;
 
 export const txActions = {
   getTxsRecent,
