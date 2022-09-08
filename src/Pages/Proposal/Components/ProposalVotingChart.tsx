@@ -15,7 +15,7 @@ const StyledChart = styled.div`
 interface ParamsArray {
   name: string;
   seriesName: string;
-  data: {value: string, rawValue: string, denom: string};
+  data: { value: string; rawValue: string; denom: string };
 }
 
 // Chart constants
@@ -37,15 +37,15 @@ const chartData = {
     padding: 10,
   },
   xAxis: {
-      type: 'value',
-      show: false,
-      axisLabel: {
-        formatter: '{value} %',
-      },
+    type: 'value',
+    show: false,
+    axisLabel: {
+      formatter: '{value} %',
+    },
   },
   yAxis: {
     type: 'category',
-    show: false,    
+    show: false,
   },
   series: [
     {
@@ -55,7 +55,7 @@ const chartData = {
       showBackground: true,
       stack: 'total',
       itemStyle: {
-        borderRadius: [5,0,0,5],
+        borderRadius: [5, 0, 0, 5],
       },
       backgroundStyle: {
         color: '',
@@ -66,7 +66,7 @@ const chartData = {
         shadowColor: 'black',
         shadowOffsetX: -1,
         shadowOffsetY: 1,
-        borderRadius: [5,0,0,5],
+        borderRadius: [5, 5, 5, 5],
       },
       emphasis: {
         focus: 'series',
@@ -118,10 +118,10 @@ const chartData = {
       type: 'bar',
       stack: 'total',
       itemStyle: {
-        borderRadius: [0,0,0,0],
+        borderRadius: [0, 0, 0, 0],
       },
       backgroundStyle: {
-        borderRadius: [0,0,0,0],
+        borderRadius: [0, 0, 0, 0],
       },
       emphasis: {
         focus: 'series',
@@ -132,10 +132,10 @@ const chartData = {
       type: 'bar',
       stack: 'total',
       itemStyle: {
-        borderRadius: [0,0,0,0],
+        borderRadius: [0, 0, 0, 0],
       },
       backgroundStyle: {
-        borderRadius: [0,0,0,0],
+        borderRadius: [0, 0, 0, 0],
       },
       emphasis: {
         focus: 'series',
@@ -146,26 +146,34 @@ const chartData = {
       type: 'bar',
       stack: 'total',
       itemStyle: {
-        borderRadius: [0,5,5,0],
+        borderRadius: [0, 5, 5, 0],
       },
       backgroundStyle: {
-        borderRadius: [0,5,5,0],
+        borderRadius: [0, 5, 5, 0],
       },
       emphasis: {
         focus: 'series',
       },
     },
-  ]
+  ],
 };
 
 interface ParamsProps {
   proposalId: string;
 }
 
-const getNumberInHash = (({ amount, denom, total }:{ amount: string, denom: string, total: string }) => {
-  const response = { value: (Number(amount) / Number(total)), denom, rawValue: Number(amount) };
+const getNumberInHash = ({
+  amount,
+  denom,
+  total,
+}: {
+  amount: string;
+  denom: string;
+  total: string;
+}) => {
+  const response = { value: Number(amount) / Number(total), denom, rawValue: Number(amount) };
   return response;
-});
+};
 
 export const ProposalVotingChart = () => {
   const { proposalId } = useParams<ParamsProps>();
@@ -180,10 +188,10 @@ export const ProposalVotingChart = () => {
     }
   }, [getProposal, voteData, proposalId]);
 
-  let total = "0";
-  let denom = "";
-  let passThreshold = "0";
-  let vetoThreshold = "0";
+  let total = '0';
+  let denom = '';
+  let passThreshold = '0';
+  let vetoThreshold = '0';
   if (!isEmpty(voteData)) {
     total = voteData.total.amount.amount;
     denom = voteData.total.amount.denom;
@@ -194,10 +202,26 @@ export const ProposalVotingChart = () => {
   const buildChartData = useCallback(
     (data) => {
       // Build data
-      const yesVotes = getNumberInHash({ amount: data.yes.amount.amount, denom: data.yes.amount.denom, total  });
-      const noVotes = getNumberInHash({ amount: data.no.amount.amount, denom: data.no.amount.denom, total });
-      const abstainVotes = getNumberInHash({ amount: data.abstain.amount.amount, denom: data.abstain.amount.denom, total });
-      const noWithVetoVotes = getNumberInHash({ amount: data.noWithVeto.amount.amount, denom: data.noWithVeto.amount.denom, total });
+      const yesVotes = getNumberInHash({
+        amount: data.yes.amount.amount,
+        denom: data.yes.amount.denom,
+        total,
+      });
+      const noVotes = getNumberInHash({
+        amount: data.no.amount.amount,
+        denom: data.no.amount.denom,
+        total,
+      });
+      const abstainVotes = getNumberInHash({
+        amount: data.abstain.amount.amount,
+        denom: data.abstain.amount.denom,
+        total,
+      });
+      const noWithVetoVotes = getNumberInHash({
+        amount: data.noWithVeto.amount.amount,
+        denom: data.noWithVeto.amount.denom,
+        total,
+      });
 
       // Set Chart Data items
       // Color chart pallete
@@ -219,39 +243,41 @@ export const ProposalVotingChart = () => {
 
       // Markline for pass threshold
       if (chartData.series[0].markLine) {
-        chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold (${Number(passThreshold)*100}%)`;
+        chartData.series[0].markLine.data[0].label.formatter = `Pass Threshold (${
+          Number(passThreshold) * 100
+        }%)`;
         chartData.series[0].markLine.data[0].xAxis = Number(passThreshold);
         chartData.series[0].markLine.data[0].label.color = theme.FONT_PRIMARY;
         chartData.series[0].markLine.data[0].lineStyle.color = theme.GREEN_POSITIVE_PRIMARY;
         // Markline for veto threshold
-        chartData.series[0].markLine.data[1].label.formatter = `Veto Threshold (${Number(vetoThreshold)*100}%)`;
-        chartData.series[0].markLine.data[1].xAxis = 1 -  Number(vetoThreshold);
+        chartData.series[0].markLine.data[1].label.formatter = `Veto Threshold (${
+          Number(vetoThreshold) * 100
+        }%)`;
+        chartData.series[0].markLine.data[1].xAxis = 1 - Number(vetoThreshold);
         chartData.series[0].markLine.data[1].label.color = theme.FONT_PRIMARY;
         chartData.series[0].markLine.data[1].lineStyle.color = theme.RED_NEGATIVE_PRIMARY;
-      };
+      }
       // Border radius
       if (noWithVetoVotes.value === 0 && abstainVotes.value !== 0) {
-        chartData.series[2].itemStyle.borderRadius = [0,5,5,0];
-        chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
-      }
-      else if (abstainVotes.value === 0 && noWithVetoVotes.value === 0 && noVotes.value !== 0) {
-        chartData.series[1].itemStyle.borderRadius = [0,5,5,0];
-        chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
-      }
-      else {
-        chartData.series[0].itemStyle.borderRadius = [5,5,5,5];
-        chartData.series[0].backgroundStyle.borderRadius = [5,5,5,5];
+        chartData.series[2].itemStyle.borderRadius = [0, 5, 5, 0];
+        chartData.series[0].backgroundStyle.borderRadius = [5, 5, 5, 5];
+      } else if (abstainVotes.value === 0 && noWithVetoVotes.value === 0 && noVotes.value !== 0) {
+        chartData.series[1].itemStyle.borderRadius = [0, 5, 5, 0];
+        chartData.series[0].itemStyle.borderRadius = [5, 0, 0, 5];
+      } else {
+        chartData.series[0].itemStyle.borderRadius = [5, 5, 5, 5];
+        chartData.series[0].backgroundStyle.borderRadius = [5, 5, 5, 5];
       }
       // Set background style
       if (chartData.series[0].backgroundStyle) {
         chartData.series[0].backgroundStyle.color = theme.BACKGROUND_LIGHT;
         chartData.series[0].backgroundStyle.shadowColor = theme.BACKGROUND_BLACK;
-      };
+      }
       // Tooltip formatting
       chartData.tooltip.formatter = (params: ParamsArray[]) => {
-        let returnString = "";
+        let returnString = '';
         let idx = 0;
-        params.forEach(param => {
+        params.forEach((param) => {
           returnString += `
             <div style="display:flex;padding:2px;">
               <div 
@@ -266,15 +292,20 @@ export const ProposalVotingChart = () => {
               >
               </div>
               <div style="text-align:center;">
-                ${param.seriesName}: ${formatDenom(parseFloat(param.data.rawValue), param.data.denom)}
+                ${param.seriesName}: ${formatDenom(
+            parseFloat(param.data.rawValue),
+            param.data.denom
+          )}
                 (${param.data.value ? (Number(param.data.value) * 100).toFixed(2) : '--'}%)
               </div>
             </div>`;
-            idx++;
+          idx++;
         });
         return returnString;
       };
-  }, [theme, total, vetoThreshold, passThreshold]);
+    },
+    [theme, total, vetoThreshold, passThreshold]
+  );
 
   // Render chart
   useEffect(() => {
@@ -283,25 +314,23 @@ export const ProposalVotingChart = () => {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
-      };
+        chart =
+          echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+          echarts.init(chartElementRef.current as unknown as HTMLElement);
+      }
       // Build the dataset
       buildChartData(voteData);
       chart && chart.setOption(chartData);
-      window.addEventListener('resize', () => {chart && chart.resize()});
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
-    return (
-      window.removeEventListener('resize', () => chart && chart.resize())
-    )
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, chart, buildChartData, voteData]);
 
   return (
     <Content title={proposalLoading ? '' : `Total Votes: ${formatDenom(Number(total), denom)}`}>
-      {proposalLoading ? 
-        <Loading /> 
-        :
-        <StyledChart ref={chartElementRef}/>
-      }
+      {proposalLoading ? <Loading /> : <StyledChart ref={chartElementRef} />}
     </Content>
   );
 };

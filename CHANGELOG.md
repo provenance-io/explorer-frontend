@@ -6,6 +6,7 @@
 - Formatting fix for transaction fees and proposal info #391
 
 ### Features
+- Switch hash stats to pull from CMC #393
 
 ## 3.2.0
 
