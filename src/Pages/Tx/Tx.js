@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { Wrapper, Header, Section, Loading } from 'Components';
 import { useMediaQuery, useTxs } from 'redux/hooks';
 import { breakpoints } from 'consts';
@@ -8,12 +7,8 @@ import { TxInformation, TxMsgs, TxFees, TxJSON } from './Components';
 
 const Tx = () => {
   const { matches: isMed } = useMediaQuery(breakpoints.down('lg'));
-  const { getTxInfo, txInfoLoading } = useTxs();
+  const { txInfoLoading } = useTxs();
   const { txHash } = useParams();
-
-  useEffect(() => {
-    getTxInfo(txHash);
-  }, [txHash, getTxInfo]);
 
   return txInfoLoading ? (
     <Loading />

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { maxLength, getUTCTime, capitalize, isEmpty, formatDenom } from 'utils';
@@ -13,8 +13,12 @@ const MsgContainer = styled.div`
 
 const TxInformation = () => {
   const [showErrorLogPopup, setShowErrorLogPopup] = useState(false);
-  const { txInfo, txInfoLoading, txMsgsLoading } = useTxs();
-  const { txHash } = useParams();
+  const { txInfo, txInfoLoading, txMsgsLoading, getTxInfo } = useTxs();
+  const { txHash, block } = useParams();
+
+  useEffect(() => {
+    getTxInfo({ txHash, block });
+  }, [txHash, getTxInfo, block]);
 
   const infoExists = !isEmpty(txInfo);
 
@@ -23,7 +27,8 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { errorCode, errorLog, fee, height, memo, signers, status, time } = txInfo;
+    const { errorCode, errorLog, fee, height, memo, signers, status, time, additionalHeights } =
+      txInfo;
 
     const totalFee = { amount: 0, denom: '' };
 
@@ -72,6 +77,15 @@ const TxInformation = () => {
         copy: signer,
       },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
+      {
+        title: 'Additional Heights',
+        value: additionalHeights.length > 0 ? additionalHeights : '--',
+        list: additionalHeights.length > 0 ? additionalHeights : undefined,
+        linkList:
+          additionalHeights.length > 0
+            ? additionalHeights.map((block) => `/tx/${txHash}/${block}`)
+            : undefined,
+      },
       errorCode !== 0 && { title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote },
     ].filter((s) => s);
 

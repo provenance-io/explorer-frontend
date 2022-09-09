@@ -153,13 +153,17 @@ const getCopyValue = (copyValue: string, title: string, children: React.ReactNod
   </Fragment>
 );
 
-const getList = (list: string[], linkList?: string[]) => {
+const getList = (list: string[], linkList?: string[], onClick?: (arg?: string) => void) => {
   let index = -1;
   const myList = list.map((element) => {
     index++;
     if (linkList) {
       return (
-        <Link to={linkList[index]} key={index}>
+        <Link
+          to={linkList[index]}
+          key={index}
+          onClick={onClick ? () => onClick(element) : undefined}
+        >
           <List>{element}</List>
         </Link>
       );
@@ -184,6 +188,7 @@ interface RowDataProps {
   splitOnSpace?: boolean;
   list?: string[];
   linkList?: string[];
+  onClick?: (arg?: string) => void; // Something done on clicking a link
 }
 
 const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
@@ -199,6 +204,7 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
     splitOnSpace = false,
     list,
     linkList,
+    onClick,
   } = rowData;
 
   let finalValue = value;
@@ -218,7 +224,7 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
     finalValue = getPopupValue(popupNote, finalValue);
   }
   if (list) {
-    finalValue = <UL>{getList(list, linkList)}</UL>;
+    finalValue = <UL>{getList(list, linkList, onClick)}</UL>;
   }
   if (isJson && typeof finalValue === 'string') {
     finalValue = (

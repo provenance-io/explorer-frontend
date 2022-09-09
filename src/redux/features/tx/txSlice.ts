@@ -13,6 +13,7 @@ import { isEmpty, capitalize } from 'utils';
 import { ajax } from '../api';
 
 export interface TxInfo {
+  additionalHeights: number[];
   codespace: string;
   errorCode: number;
   errorLog: string;
@@ -187,6 +188,7 @@ interface TxState {
 export const initialState: TxState = {
   // Txs
   txInfo: {
+    additionalHeights: [],
     codespace: '',
     errorCode: 0,
     errorLog: '',
@@ -328,10 +330,12 @@ export const getTxsByBlock = createAsyncThunk(
     })
 );
 
-export const getTxInfo = createAsyncThunk(GET_TX_INFO, (txHash: string) =>
-  ajax({
-    url: `${TX_INFO_URL}/${txHash}`,
-  })
+export const getTxInfo = createAsyncThunk(
+  GET_TX_INFO,
+  ({ txHash, block }: { txHash: string; block?: string }) =>
+    ajax({
+      url: `${TX_INFO_URL}/${txHash}${block ? `?blockHeight=${block}` : ''}`,
+    })
 );
 
 export const getTxHistory = createAsyncThunk(

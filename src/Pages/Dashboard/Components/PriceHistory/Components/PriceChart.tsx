@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { useMediaQuery } from 'redux/hooks';
@@ -59,9 +58,15 @@ const chartData = {
     name: 'Price (USD)',
     boundaryGap: false,
     offset: 0,
+    axisTick: {
+      show: true,
+    },
     axisLabel: {
       rotate: 0,
       color: '',
+    },
+    splitLine: {
+      show: false,
     },
     axisLine: {
       lineStyle: {
@@ -132,7 +137,6 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
         item.quote.USD.low,
         item.quote.USD.volume,
       ]);
-
       // Build dynamic chart items
       chartData.grid = { bottom: isLg ? 90 : 75 };
       chartData.tooltip.axisPointer = { lineStyle: { color: theme.CHART_LINE_MAIN, width: '1' } };
@@ -234,12 +238,6 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
   ) : (
     <StyledMessage>No pricing history available</StyledMessage>
   );
-};
-
-PriceChart.propTypes = {
-  data: PropTypes.array.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
 };
 
 export default PriceChart;
