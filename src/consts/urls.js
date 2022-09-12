@@ -64,10 +64,9 @@ export const IBC_BALANCES_DENOM_URL = `${BASE_URL}/ibc/balances/denom`;
 export const IBC_RELAYERS_URL = `${BASE_URL}/ibc/channels/src_port/`;
 export const IBC_CHANNEL_STATUS_URL = `${BASE_URL}/ibc/channels/status`;
 export const IBC_DENOMS_ALL_URL = `${BASE_URL}/ibc/denoms/all`;
-// -- Order book
-export const ORDER_BOOK_URL = 'https://www.dlob.io/gecko/external/api/v1/exchange';
-export const ORDER_BOOK_VOLUME_URL =
-  'https://www.dlob.io/aggregator/external/api/v1/order-books/pb18vd8fpwxzck93qlwghaj6arh4p7c5n894vnu5g/daily-price';
+// -- Utility Token (i.e., CMC pricing data)
+export const UTILITY_TOKEN_HISTORICAL_URL = `${BASE_URL_V3}/utility_token/historical_pricing`;
+export const UTILITY_TOKEN_CURRENT_URL = `${BASE_URL_V3}/utility_token/latest_pricing`;
 // -- Name
 export const NAME_TREE_URL = `${BASE_URL}/names/tree`;
 // -- NFT

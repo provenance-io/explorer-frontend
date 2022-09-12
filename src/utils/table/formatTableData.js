@@ -74,13 +74,14 @@ export const formatTableData = (data = [], tableHeaders) => {
           };
           break;
         // Address or hash leading to the transaction's page
-        case 'txHash':
+        case 'txHash': {
           finalObj[dataName] = {
             value: maxLength(serverValue, 11, 3),
-            link: `/tx/${serverValue}`,
+            link: `/tx/${serverValue}/${dataObj.block}`,
             hover: serverValue,
           };
           break;
+        }
         // Address or hash leading to the proposal page
         case 'proposalTitle': // fallthrough
         case 'title': {

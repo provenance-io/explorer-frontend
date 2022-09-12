@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { maxLength, getUTCTime, capitalize, isEmpty, formatDenom } from 'utils';
@@ -13,8 +13,12 @@ const MsgContainer = styled.div`
 
 const TxInformation = () => {
   const [showErrorLogPopup, setShowErrorLogPopup] = useState(false);
-  const { txInfo, txInfoLoading } = useTxs();
-  const { txHash } = useParams();
+  const { txInfo, txInfoLoading, txMsgsLoading, getTxInfo } = useTxs();
+  const { txHash, block } = useParams();
+
+  useEffect(() => {
+    getTxInfo({ txHash, block });
+  }, [txHash, getTxInfo, block]);
 
   const infoExists = !isEmpty(txInfo);
 
@@ -23,12 +27,13 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { errorCode, errorLog, fee, height, memo, signers, status, time } = txInfo;
+    const { errorCode, errorLog, fee, height, memo, signers, status, time, additionalHeights } =
+      txInfo;
 
     const totalFee = { amount: 0, denom: '' };
 
-    fee.map(fee => {
-      const amount = fee.fees[0].amount;
+    fee.map((fee) => {
+      const amount = fee.fees.reduce((sum, a) => sum + Number(a.amount), 0);
       const denom = fee.fees[0].denom;
       totalFee.amount += parseInt(amount);
       totalFee.denom = denom;
@@ -39,7 +44,9 @@ const TxInformation = () => {
     const utcTime = getUTCTime(time);
     // We don't want to round the fees, they are already rounded when we receive them
     // 20 decimals is the max toLocaleString allows
-    const feeValue = formatDenom(totalFee.amount, totalFee.denom, { decimal: 4 });
+    const feeValue = formatDenom(totalFee.amount, totalFee.denom, {
+      decimal: totalFee.amount / 1e9 < 0.0001 ? 20 : 4,
+    });
 
     // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
     const signer = signers?.signers[0];
@@ -70,8 +77,17 @@ const TxInformation = () => {
         copy: signer,
       },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
+      {
+        title: 'Additional Heights',
+        value: additionalHeights.length > 0 ? additionalHeights : '--',
+        list: additionalHeights.length > 0 ? additionalHeights : undefined,
+        linkList:
+          additionalHeights.length > 0
+            ? additionalHeights.map((block) => `/tx/${txHash}/${block}`)
+            : undefined,
+      },
       errorCode !== 0 && { title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote },
-    ].filter(s => s);
+    ].filter((s) => s);
 
     return <Summary data={summaryData} />;
   };
@@ -82,7 +98,11 @@ const TxInformation = () => {
   return (
     <Fragment>
       <Content title="Information" icon="HASH">
-        <MsgContainer>{txInfoLoading ? <Loading /> : buildTxInformationSection()}</MsgContainer>
+        {txInfoLoading || txMsgsLoading ? (
+          <Loading />
+        ) : (
+          <MsgContainer>{buildTxInformationSection()}</MsgContainer>
+        )}
       </Content>
     </Fragment>
   );

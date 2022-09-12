@@ -36,7 +36,7 @@ const TxHistory = () => {
 
   const { txHistoryLoading, getTxHistory } = useTxs();
   const { getNetworkGasVolume } = useNetwork();
-  const { priceHistory } = useOrderbook();
+  const { historicalPricing } = useOrderbook();
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
 
@@ -106,7 +106,7 @@ const TxHistory = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select From Date',
-        onChange: date => date && setTxHistoryFrom(format(date, defaultDateFormat)),
+        onChange: (date) => date && setTxHistoryFrom(format(date, defaultDateFormat)),
         selected: endDate,
         dateFormat: defaultDateFormat,
         maxDate: subtractDays(startDate, 1), // 15 Days from the start day is the max length of time
@@ -118,7 +118,7 @@ const TxHistory = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select To Date',
-        onChange: date => date && setTxHistoryTo(format(date, defaultDateFormat)),
+        onChange: (date) => date && setTxHistoryTo(format(date, defaultDateFormat)),
         selected: startDate,
         dateFormat: defaultDateFormat,
         maxDate: today,
@@ -142,7 +142,7 @@ const TxHistory = () => {
       title={`${txHistoryDayRange}-Day ${sizeMd || sizeSm ? 'Tx' : 'Transaction'} History`}
       link={{ to: '/txs', title: 'View All' }}
     >
-      {priceHistory.length > 0 ? (
+      {historicalPricing.length > 0 ? (
         <>
           <FiltersWrapper>
             {filterError && <FilterError>{filterError}</FilterError>}

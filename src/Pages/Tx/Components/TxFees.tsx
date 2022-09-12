@@ -19,15 +19,18 @@ const StyledChart = styled.div`
 // Constant chart data
 const chartData = {
   // When you hover over the pie chart, the data that gets displayed
+  color: [''],
   tooltip: {
     trigger: 'item',
-    formatter: ({ data, percent }) => {
+    formatter: ({ data, percent }: { data: { name: string; amount: string }; percent: number }) => {
       const { name, amount } = data;
       return `${name}<br />Value: ${amount} (${percent}%)<br />`;
     },
   },
   // The legend/key on the right side showing color/name
   legend: {
+    data: [],
+    selected: {},
     top: '0%',
     width: '65%',
     type: 'scroll',
@@ -40,6 +43,7 @@ const chartData = {
   // The data actually populating the pie chart
   series: [
     {
+      data: [],
       type: 'pie',
       radius: '70%',
       avoidLabelOverlap: false,
@@ -57,24 +61,42 @@ const chartData = {
   ],
 };
 
+interface FeeProps {
+  fees: {
+    amount: string;
+    denom: string;
+    msgType: string;
+  }[];
+  type: string;
+}
+
 // Builds fees
-const getFees = fee => {
-  const value = fee.fees[0].amount;
+const getFees = (fee: FeeProps) => {
+  const value = fee.fees.reduce((sum, a) => sum + Number(a.amount), 0);
   const denom = fee.fees[0].denom;
   const amount = formatDenom(value, denom, { decimal: 20 });
   // roundAmount will determine if the value is shown or not (must be > 0 at 4 dec places)
-  const roundAmount = parseFloat(formatDenom(value, denom, { decimal: 4, showDenom: false }));
+  const roundAmount = parseFloat(
+    formatDenom(value, denom, { decimal: value / 1e9 < 0.0001 ? 20 : 4, showDenom: false })
+  );
   return { type: fee.type, amount, value, roundAmount };
 };
 
+interface AdjustedFeeProps {
+  type: string;
+  amount: string;
+  value: number;
+  roundAmount: number;
+}
+
 // Populates the chart data
-const addData = fees => {
+const addData = (fees: AdjustedFeeProps[]) => {
   // Legend data shows the fees and their color on the right
-  const legendData = [];
+  const legendData: string[] = [];
   // Series data, this is the information in the actual drawn-out chart
-  const seriesData = [];
+  const seriesData: { value: number; name: string; amount: string }[] = [];
   // Track selected fees (able to toggle them on/off in the legend)
-  const selectedData = {};
+  const selectedData: { [key: string]: boolean } = {};
   fees.forEach(({ type, value, amount, roundAmount }) => {
     if (roundAmount > 0) {
       // Add to legendData
@@ -93,16 +115,16 @@ const TxFees = () => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
-  const { txInfo, txInfoLoading } = useTxs();
+  const { txInfo, txsInfoLoading, txMsgsLoading } = useTxs();
   const haveTxInfo = !isEmpty(txInfo);
 
   // Break out/format fees
-  const fees = haveTxInfo && txInfo.fee.map(fee => getFees(fee));
+  const fees = haveTxInfo && txInfo.fee.map((fee) => getFees(fee));
 
   // Calculate total fees
   let totalFees = 0;
   if (fees) {
-    fees.forEach(item => (totalFees += parseFloat(item.amount)));
+    fees.forEach((item) => (totalFees += parseFloat(item.amount)));
   }
 
   // Function to build the variable chart elements
@@ -127,21 +149,23 @@ const TxFees = () => {
   useEffect(() => {
     // Only render if transaction info is available
     if (fees) {
-      // On load, chartElementRef should get set and we can update the chart to be an echart
-      // first try to get the initialized instance
-      let echart = echarts.getInstanceByDom(chartElementRef.current);
-      // if it isn't initialized then init
-      if (!echart) echart = echarts.init(chartElementRef.current);
-      setChart(echart);
-      // Build the dataset
       const data = addData(fees);
       // Update the chart with the data
       buildChartData(data.seriesData, data.legendData, data.selectedData);
-      chart && chart.setOption(chartData);
-      window.addEventListener('resize', () => {
-        chart && chart.resize();
-      });
     }
+    // On load, chartElementRef should get set and we can update the chart to be an echart
+    // first try to get the initialized instance
+    let chart: echarts.ECharts | undefined;
+    // if it isn't initialized then init
+    if (chartElementRef.current) {
+      chart =
+        echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+        echarts.init(chartElementRef.current as unknown as HTMLElement);
+    }
+    chart?.setOption(chartData);
+    window.addEventListener('resize', () => {
+      chart && chart.resize();
+    });
     return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, buildChartData, chart, fees]);
 
@@ -150,9 +174,15 @@ const TxFees = () => {
       alignItems="flex-start"
       alignContent="flex-start"
       icon="PRICE"
-      title={`Fees: ${formatDenom(totalFees, 'hash', { decimal: 4 })}`}
+      title={`Fees: ${
+        txMsgsLoading
+          ? '--'
+          : formatDenom(totalFees, 'hash', {
+              decimal: totalFees < 0.0001 ? 20 : 4,
+            })
+      }`}
     >
-      {txInfoLoading ? (
+      {txsInfoLoading || txMsgsLoading ? (
         <Loading />
       ) : haveTxInfo ? (
         <StyledChart ref={chartElementRef} />

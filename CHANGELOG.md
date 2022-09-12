@@ -2,9 +2,12 @@
 
 ## Unreleased
 
-### Bug Fixes
+### Bug fixes
+- Formatting fix for transaction fees and proposal info #391
 
 ### Features
+- Switch hash stats to pull from CMC #393
+- Display multiple blocks per tx hash, navigate to tx by hash and block #395
 - Update governance to use new endpoints #390
 
 ## 3.2.0
