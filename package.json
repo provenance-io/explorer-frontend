@@ -12,6 +12,7 @@
   "sideEffects": false,
   "dependencies": {
     "@provenanceio/wallet-lib": "2.4.3",
+    "@provenanceio/walletconnect-js": "1.2.6",
     "@reduxjs/toolkit": "1.8.1",
     "axios": "0.21.2",
     "bech32": "2.0.0",
