@@ -8,6 +8,7 @@ import { breakpoints, polling } from 'consts';
 const HashSpan = styled.p`
   margin: 0;
   padding: 0;
+  margin-top: 5px;
 `;
 const PercentChange = styled.span`
   color: ${({ color }) => color};
@@ -39,6 +40,7 @@ const HashDashboard = () => {
   const latestPrice = currentPricing.quote.USD?.price || 0;
   const priceChange = currentPricing.quote.USD?.percent_change_24h || 0;
   const twentyFourHourVolume = currentPricing.quote.USD?.volume_24h;
+  const volumeChange = currentPricing.quote.USD?.volume_change_24h;
   const marketCap = currentPricing.quote.USD?.market_cap_by_total_supply;
 
   return (
@@ -84,6 +86,14 @@ const HashDashboard = () => {
               shorthand: true,
               decimal: 2,
             })}`}
+            <HashSpan>
+              24 hour change:{' '}
+              <PercentChange
+                color={volumeChange >= 0 ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
+              >
+                {volumeChange < 0 ? `-$${Math.abs(volumeChange).toFixed(2)}` : `$${volumeChange}`}
+              </PercentChange>
+            </HashSpan>
           </DataCard>
         </>
       ) : (
