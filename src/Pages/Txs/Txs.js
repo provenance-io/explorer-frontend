@@ -4,13 +4,11 @@ import { useTxs } from 'redux/hooks';
 import { TxList } from './Components';
 
 const Txs = () => {
-  const { txsPages, txs } = useTxs();
-  // The api sends through a page count (tableCount) and returns a total amount of pages
-  const txsTotal = txsPages * txs.length;
+  const { txTotal } = useTxs();
 
   return (
     <Wrapper>
-      <Header title="Transaction List" value={`${txsTotal} total`} />
+      <Header title="Transaction List" value={`${txTotal} total`} />
       <Section header>
         <TxList />
       </Section>
