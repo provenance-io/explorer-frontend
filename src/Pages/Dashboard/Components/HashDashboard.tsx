@@ -5,13 +5,12 @@ import { formatDenom } from 'utils';
 import { useInterval, useMediaQuery, useOrderbook } from 'redux/hooks';
 import { breakpoints, polling } from 'consts';
 
-const HashSpan = styled.span`
-  font-size: 1.8rem;
-  margin-left: 5%;
+const HashSpan = styled.p`
+  margin: 0;
+  padding: 0;
 `;
 const PercentChange = styled.span`
   color: ${({ color }) => color};
-  font-size: 1.8rem;
   font-weight: bold;
 `;
 
@@ -65,13 +64,12 @@ const HashDashboard = () => {
                 minimumFractionDigits: 3,
               })}    `}
               <HashSpan>
-                (
+                24 hour change:{' '}
                 <PercentChange
                   color={priceChange >= 0 ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
                 >
                   {priceChange ? priceChange.toFixed(1) : 0}%
                 </PercentChange>
-                )
               </HashSpan>
             </>
           </DataCard>
