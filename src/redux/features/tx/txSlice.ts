@@ -146,6 +146,7 @@ interface TxState {
   // Recent Txs
   txs: TxRecent['results'];
   txsPages: TxRecent['pages'];
+  txTotal: TxRecent['total'];
   recentTxsCount: TxRecent['total'];
   txsRecentLoading: boolean;
   // Full explorer tx history
@@ -220,6 +221,7 @@ export const initialState: TxState = {
   // Recent Txs
   txs: [],
   txsPages: 0,
+  txTotal: 0,
   recentTxsCount: 10,
   txsRecentLoading: false,
   // Full explorer tx history
@@ -512,6 +514,7 @@ export const txSlice = createSlice({
       .addCase(getTxsRecent.fulfilled, (state, { payload }) => {
         state.txsRecentLoading = false;
         state.txs = payload.data.results;
+        state.txTotal = payload.data.total;
         state.txsPages = payload.data.pages;
       })
       .addCase(getTxsRecent.rejected, (state) => {

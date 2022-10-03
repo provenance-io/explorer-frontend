@@ -6,6 +6,7 @@
 - Formatting fix for transaction fees and proposal info #391
 - Fix latest transaction volume display #400
 - Add small margin for 404 screen #387
+- Fix transaction totals issue #389
 
 ### Features
 - Switch hash stats to pull from CMC #393
