@@ -25,34 +25,50 @@ const FilterError = styled.div`
 const PriceHistory = () => {
   const today = new Date();
   const defaultDateFormat = 'yyyy-MM-dd';
-  const { dailyPrice, priceHistoryLoading, getPriceHistory, priceHistory } = useOrderbook();
+  const {
+    getHistoricalPricing,
+    historicalPricing,
+    historicalPricingLoading,
+    getCurrentPricing,
+    currentPricing,
+    currentPricingLoading,
+  } = useOrderbook();
   // Make sure we have all the data
-  const havePriceHistory = priceHistory.length > 1000;
+  const havePriceHistory = historicalPricing.length > 0;
 
-  // Default view is 30 day history
-  const defaultDayFrom = format(subtractDays(today, 29), defaultDateFormat);
+  // Default view is 14 day history
+  const defaultDayFrom = format(subtractDays(today, 13), defaultDateFormat);
   const defaultDayTo = format(today, defaultDateFormat);
   const oldestDate =
-    havePriceHistory && new Date((priceHistory[0].trade_timestamp as string).slice(0, 10).replace(/-/, '/'));
-
-  // There may be cases where there is no priceHistory returned for the current day.
-  // If so, use the most recent price as a current value until a new price is
-  // available for the current date:
-  let data = [...priceHistory];
-
-  if (
     havePriceHistory &&
-    // Check if the current date is the last available date in the
-    // priceHistory array.
-    defaultDayTo !== (priceHistory[priceHistory.length - 1].trade_timestamp as string).slice(0, 10)
-  ) {
-    const tempData = JSON.parse(JSON.stringify(priceHistory[priceHistory.length - 1]));
-    // Ensure we get the latest daily price
-    tempData.price = dailyPrice.last_price;
-    tempData.trade_timestamp = new Date(defaultDayTo).toISOString();
-    // If current date is not the last available date in the priceHistory
-    // array, then there is no pricing. Add it in temporarily to today.
-    data = [...data, tempData];
+    new Date((historicalPricing[0].time_close as string).slice(0, 10).replace(/-/, '/'));
+
+  // Build the current price to resemble the historical price format
+  let currPrice = {};
+  if (!currentPricingLoading && currentPricing.last_updated) {
+    currPrice = {
+      quote: {
+        USD: {
+          close: currentPricing.quote.USD?.price,
+          high: currentPricing.quote.USD?.price,
+          low: currentPricing.quote.USD?.price,
+          market_cap: currentPricing.quote.USD?.market_cap,
+          open: currentPricing.quote.USD?.price,
+          timestamp: new Date(currentPricing.last_updated).toISOString(),
+          volume: currentPricing.quote.USD?.volume_24h.toFixed(2),
+        },
+      },
+      time_close: new Date(currentPricing.last_updated).toISOString(),
+      time_high: new Date(currentPricing.last_updated).toISOString(),
+      time_low: new Date(currentPricing.last_updated).toISOString(),
+      time_open: new Date(currentPricing.last_updated).toISOString(),
+    };
+  }
+
+  // Add the current pricing to the historical pricing array
+  const data = JSON.parse(JSON.stringify(historicalPricing));
+  if (havePriceHistory && !currentPricingLoading) {
+    data.push(currPrice);
   }
 
   const [priceHistoryTo, setPriceHistoryTo] = useState(defaultDayTo);
@@ -64,19 +80,22 @@ const PriceHistory = () => {
   // Determine/Set Date range in days based on last api search/response
   // 'dayFrom' - 'dayTo' = diff in ms, then 1000ms * 60s * 60min * 24hours = days diff
   const priceHistoryDayRange =
-    (Number(new Date(priceHistoryToGo)) - Number(new Date(priceHistoryFromGo))) / (1000 * 60 * 60 * 24) + 1;
+    (Number(new Date(priceHistoryToGo)) - Number(new Date(priceHistoryFromGo))) /
+      (1000 * 60 * 60 * 24) +
+    1;
   const cleanHistoryTo = priceHistoryToGo.replace(/-/g, '/');
   const cleanHistoryFrom = priceHistoryFromGo.replace(/-/g, '/');
   const startDate = new Date(cleanHistoryTo);
   const endDate = new Date(cleanHistoryFrom);
 
-  // On initial load get all the priceHistory
+  // On initial load get all the historical pricing
   useEffect(() => {
-    getPriceHistory({
+    getHistoricalPricing({
       startTime: '',
       endTime: '',
     });
-  }, [getPriceHistory]);
+    getCurrentPricing();
+  }, [getHistoricalPricing, getCurrentPricing]);
 
   // Check for a valid filter before making api call
   const isFilterValid = () => {
@@ -85,6 +104,10 @@ const PriceHistory = () => {
     // From day must be less than to day and To day must be more than from day
     if (priceHistoryToDay <= priceHistoryFromDay) {
       setFilterError('Filter Error: "To" date must be greater than "From" date.');
+      return false;
+    }
+    if (subtractDays(priceHistoryToDay, 7) < priceHistoryFromDay) {
+      setFilterError('Filter Error: "Date range must be at least 7 days.');
       return false;
     }
     return true;
@@ -138,7 +161,7 @@ const PriceHistory = () => {
       icon="HASH"
       title={filterError ? 'Hash Price History' : `${priceHistoryDayRange}-Day Hash Price History`}
     >
-      {havePriceHistory && !priceHistoryLoading ? (
+      {havePriceHistory && !historicalPricingLoading && !currentPricingLoading ? (
         <>
           <FiltersWrapper>
             {filterError && <FilterError>{filterError}</FilterError>}

@@ -2,10 +2,14 @@
 
 ## Unreleased
 
-### Bugs
+### Bug fixes
+- Formatting fix for transaction fees and proposal info #391
+- Fix latest transaction volume display #400
 - Add small margin for 404 screen #387
 
 ### Features
+- Switch hash stats to pull from CMC #393
+- Display multiple blocks per tx hash, navigate to tx by hash and block #395
 
 ## 3.2.0
 
