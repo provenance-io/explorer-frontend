@@ -55,7 +55,7 @@ const PriceHistory = () => {
           market_cap: currentPricing.quote.USD?.market_cap,
           open: currentPricing.quote.USD?.price,
           timestamp: new Date(currentPricing.last_updated).toISOString(),
-          volume: currentPricing.quote.USD?.volume_change_24h,
+          volume: currentPricing.quote.USD?.volume_24h.toFixed(2),
         },
       },
       time_close: new Date(currentPricing.last_updated).toISOString(),

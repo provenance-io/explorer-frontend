@@ -38,7 +38,7 @@ const HashDashboard = () => {
   useInterval(() => getCurrentPricing(), polling.latestPrice, currentPricingFailed);
 
   const latestPrice = currentPricing.quote.USD?.price || 0;
-  const priceChange = currentPricing.quote.USD?.percent_change_24h;
+  const priceChange = currentPricing.quote.USD?.percent_change_24h || 0;
   const twentyFourHourVolume = currentPricing.quote.USD?.volume_24h;
   const marketCap = currentPricing.quote.USD?.market_cap_by_total_supply;
 
@@ -57,7 +57,7 @@ const HashDashboard = () => {
       {currentPricingFailed && historicalPricingFailed && (
         <div>Hash data failed to load, refresh page to try again</div>
       )}
-      {!currentPricingLoading && !currentPricingFailed && priceChange && (
+      {!currentPricingLoading && !currentPricingFailed ? (
         <>
           <DataCard icon="PRICE" title="Latest Price (USD)" width="100%">
             <>
@@ -69,7 +69,7 @@ const HashDashboard = () => {
                 <PercentChange
                   color={priceChange >= 0 ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
                 >
-                  {priceChange.toFixed(1)}%
+                  {priceChange ? priceChange.toFixed(1) : 0}%
                 </PercentChange>
                 )
               </HashSpan>
@@ -88,6 +88,8 @@ const HashDashboard = () => {
             })}`}
           </DataCard>
         </>
+      ) : (
+        <Loading />
       )}
     </Content>
   );
