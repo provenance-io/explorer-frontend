@@ -5,13 +5,13 @@ import { formatDenom } from 'utils';
 import { useInterval, useMediaQuery, useOrderbook } from 'redux/hooks';
 import { breakpoints, polling } from 'consts';
 
-const HashSpan = styled.span`
-  font-size: 1.8rem;
-  margin-left: 5%;
+const HashSpan = styled.p`
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
 `;
 const PercentChange = styled.span`
   color: ${({ color }) => color};
-  font-size: 1.8rem;
   font-weight: bold;
 `;
 
@@ -38,8 +38,9 @@ const HashDashboard = () => {
   useInterval(() => getCurrentPricing(), polling.latestPrice, currentPricingFailed);
 
   const latestPrice = currentPricing.quote.USD?.price || 0;
-  const priceChange = currentPricing.quote.USD?.percent_change_24h;
+  const priceChange = currentPricing.quote.USD?.percent_change_24h || 0;
   const twentyFourHourVolume = currentPricing.quote.USD?.volume_24h;
+  const volumeChange = currentPricing.quote.USD?.volume_change_24h || 0;
   const marketCap = currentPricing.quote.USD?.market_cap_by_total_supply;
 
   return (
@@ -57,7 +58,7 @@ const HashDashboard = () => {
       {currentPricingFailed && historicalPricingFailed && (
         <div>Hash data failed to load, refresh page to try again</div>
       )}
-      {!currentPricingLoading && !currentPricingFailed && priceChange && (
+      {!currentPricingLoading && !currentPricingFailed ? (
         <>
           <DataCard icon="PRICE" title="Latest Price (USD)" width="100%">
             <>
@@ -65,13 +66,12 @@ const HashDashboard = () => {
                 minimumFractionDigits: 3,
               })}    `}
               <HashSpan>
-                (
+                24 hour change:{' '}
                 <PercentChange
                   color={priceChange >= 0 ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
                 >
-                  {priceChange.toFixed(1)}%
+                  {priceChange ? priceChange.toFixed(1) : 0}%
                 </PercentChange>
-                )
               </HashSpan>
             </>
           </DataCard>
@@ -86,8 +86,18 @@ const HashDashboard = () => {
               shorthand: true,
               decimal: 2,
             })}`}
+            <HashSpan>
+              24 hour change:{' '}
+              <PercentChange
+                color={volumeChange >= 0 ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
+              >
+                {volumeChange ? (volumeChange as number).toFixed(1) : 0}%
+              </PercentChange>
+            </HashSpan>
           </DataCard>
         </>
+      ) : (
+        <Loading />
       )}
     </Content>
   );

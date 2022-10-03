@@ -153,7 +153,7 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
           <tr>
             <td style="text-align:left; padding:0 15px; border-right:1px solid black;">${high}</td>
             <td style="text-align:center; padding:0 20px;">${price}</td>
-            <td style="text-align:left; padding:0 15px; border-left:1px solid black;">${volume}</td>
+            <td style="text-align:left; padding:0 15px; border-left:1px solid black;">$${volume}</td>
           </tr>`;
         });
         return `
