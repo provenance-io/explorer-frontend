@@ -1,28 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { formatDenom, isEmpty } from 'utils';
+import { formatDenom } from 'utils';
 import { useValidators, useAccounts } from 'redux/hooks';
-import { Accordion, Table } from 'Components';
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-`;
+import { Table } from 'Components';
 
 const AccountRewards = () => {
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<any[]>([]);
   const { accountRewards, accountRewardsLoading, getAccountRewards } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
-  const { addressId } = useParams();
-  const haveRewards = !isEmpty(accountRewards);
+  const { addressId } = useParams<{ addressId: string }>();
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    getAllValidators();
+    getAllValidators({});
     getAccountRewards(addressId);
   }, [getAllValidators, addressId, getAccountRewards]);
 
@@ -33,7 +23,7 @@ const AccountRewards = () => {
         const totalBalancePrice =
           d.reward.length > 0
             ? `$${formatDenom(
-                d.reward[0].totalBalancePrice.amount,
+                Number(d.reward[0].totalBalancePrice.amount),
                 d.reward[0].totalBalancePrice.denom,
                 { decimal: 4, minimumFractionDigits: 2 }
               )}`
@@ -49,29 +39,12 @@ const AccountRewards = () => {
     { displayName: 'Value', dataName: 'totalBalancePrice' },
   ];
 
-  const totalRewards =
-    haveRewards && accountRewards.total.length > 0
-      ? `${formatDenom(accountRewards.total[0].amount, accountRewards.total[0].denom, {
-          decimal: 2,
-          minimumFractionDigits: 2,
-        })}`
-      : '0 hash';
-
   return (
-    <ButtonWrapper>
-      <Accordion
-        showChevron
-        title={`Rewards (${totalRewards})`}
-        titleFont={`font-weight: bold; font-size: 1.4rem`}
-        dontDrop
-      >
-        <Table
-          isLoading={accountRewardsLoading || allValidatorsLoading}
-          tableData={tableData?.filter((element) => element.totalBalancePrice)}
-          tableHeaders={tableHeaders}
-        />
-      </Accordion>
-    </ButtonWrapper>
+    <Table
+      isLoading={accountRewardsLoading || allValidatorsLoading}
+      tableData={tableData?.filter((element) => element.totalBalancePrice)}
+      tableHeaders={tableHeaders}
+    />
   );
 };
 

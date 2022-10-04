@@ -1,23 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 import { useAssets, useAccounts } from 'redux/hooks';
-import { Accordion, Table } from 'Components';
+import { Table } from 'Components';
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-`;
-
-const AccountAssets = () => {
+export const AccountAssets = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
-  const { addressId } = useParams();
+  const { addressId } = useParams<{ addressId: string }>();
   const {
     accountAssets,
-    accountAssetsTotal,
     accountAssetsPages: tablePages,
     getAccountAssets: getTableData,
     accountAssetsLoading: tableLoading,
@@ -50,25 +40,13 @@ const AccountAssets = () => {
   ];
 
   return (
-    <ButtonWrapper>
-      <Accordion
-        showChevron
-        title={`Assets (${accountAssetsTotal})`}
-        titleFont={`font-weight: bold; font-size: 1.4rem`}
-        startOpen={true}
-        dontDrop={true}
-      >
-        <Table
-          changePage={setTableCurrentPage}
-          currentPage={tableCurrentPage}
-          isLoading={tableLoading}
-          tableData={tableData}
-          tableHeaders={tableHeaders}
-          totalPages={tablePages}
-        />
-      </Accordion>
-    </ButtonWrapper>
+    <Table
+      changePage={setTableCurrentPage}
+      currentPage={tableCurrentPage}
+      isLoading={tableLoading}
+      tableData={tableData}
+      tableHeaders={tableHeaders}
+      totalPages={tablePages}
+    />
   );
 };
-
-export default AccountAssets;
