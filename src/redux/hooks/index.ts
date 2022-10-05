@@ -5,6 +5,7 @@ export * from './useBlocks';
 export * from './useColorScheme';
 export * from './useContracts';
 export * from './useFaucet';
+export * from './useFrontendPagination';
 export * from './useGovernance';
 export * from './useIbc';
 export * from './useInterval';

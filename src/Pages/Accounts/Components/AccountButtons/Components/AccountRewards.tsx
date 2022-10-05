@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { formatDenom } from 'utils';
-import { useValidators, useAccounts } from 'redux/hooks';
+import { formatDenom, isEmpty } from 'utils';
+import { useValidators, useAccounts, useFrontendPagination } from 'redux/hooks';
 import { Table } from 'Components';
 
-const AccountRewards = () => {
+export const AccountRewards = () => {
   const [tableData, setTableData] = useState<any[]>([]);
   const { accountRewards, accountRewardsLoading, getAccountRewards } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
   const { addressId } = useParams<{ addressId: string }>();
+  // Add frontend-enabled Pagination
+  const {
+    tableData: paginatedTableData,
+    currentPage,
+    changePage,
+    totalPages,
+  } = useFrontendPagination({ data: tableData, count: 10 });
 
   useEffect(() => {
     // pulling first 100 validators with status=all
@@ -33,6 +40,16 @@ const AccountRewards = () => {
     );
   }, [accountRewards, allValidators, setTableData]);
 
+  // Determine total awards for Rewards title
+  const haveRewards = !isEmpty(accountRewards);
+  const totalRewards =
+    haveRewards && accountRewards.total.length > 0
+      ? `${formatDenom(Number(accountRewards.total[0].amount), accountRewards.total[0].denom, {
+          decimal: 2,
+          minimumFractionDigits: 2,
+        })}`
+      : '0 hash';
+
   const tableHeaders = [
     { displayName: 'Moniker', dataName: 'moniker' },
     { displayName: 'Reward', dataName: 'reward' },
@@ -42,10 +59,12 @@ const AccountRewards = () => {
   return (
     <Table
       isLoading={accountRewardsLoading || allValidatorsLoading}
-      tableData={tableData?.filter((element) => element.totalBalancePrice)}
+      tableData={paginatedTableData.filter((element) => element.totalBalancePrice)}
       tableHeaders={tableHeaders}
+      changePage={changePage}
+      currentPage={currentPage}
+      totalPages={totalPages}
+      title={`Total Rewards: ${totalRewards}`}
     />
   );
 };
-
-export default AccountRewards;

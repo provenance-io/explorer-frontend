@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useValidators, useAccounts } from 'redux/hooks';
 import { Table } from 'Components';
+import { formatDenom } from 'utils';
 
 export const AccountDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [tableData, setTableData] = useState<any[]>([]);
   const {
     accountDelegations,
+    accountDelegationsTotal: { amount, denom },
     accountDelegationsLoading,
     accountDelegationsPages: tablePages,
     getAccountDelegations,
@@ -31,6 +33,8 @@ export const AccountDelegations = () => {
     );
   }, [allValidators, accountDelegations, setTableData]);
 
+  const totalDelegations = formatDenom(Number(amount), denom, { decimal: 2 });
+
   const tableHeaders = [
     //{ displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
@@ -45,6 +49,7 @@ export const AccountDelegations = () => {
       tableData={tableData}
       tableHeaders={tableHeaders}
       totalPages={tablePages}
+      title={`Total Delegations: ${totalDelegations}`}
     />
   );
 };

@@ -8,6 +8,7 @@ export const AccountAssets = () => {
   const { addressId } = useParams<{ addressId: string }>();
   const {
     accountAssets,
+    accountAssetsTotal,
     accountAssetsPages: tablePages,
     getAccountAssets: getTableData,
     accountAssetsLoading: tableLoading,
@@ -47,6 +48,7 @@ export const AccountAssets = () => {
       tableData={tableData}
       tableHeaders={tableHeaders}
       totalPages={tablePages}
+      title={`Total Assets: ${accountAssetsTotal}`}
     />
   );
 };

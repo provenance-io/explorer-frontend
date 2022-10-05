@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAccounts } from 'redux/hooks';
 import { Table } from 'Components';
 
-const AccountAttributes = () => {
+export const AccountAttributes = () => {
   const { accountInfo, accountInfoLoading: tableLoading, getAccountInfo } = useAccounts();
 
   const { addressId } = useParams<{ addressId: string }>();
@@ -20,7 +20,12 @@ const AccountAttributes = () => {
     { displayName: 'Data', dataName: 'data' },
   ];
 
-  return <Table isLoading={tableLoading} tableData={tableData} tableHeaders={tableHeaders} />;
+  return (
+    <Table
+      isLoading={tableLoading}
+      tableData={tableData}
+      tableHeaders={tableHeaders}
+      title={`Total Attributes: ${tableData ? tableData.length : '0'}`}
+    />
+  );
 };
-
-export default AccountAttributes;

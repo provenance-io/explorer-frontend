@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { Table } from 'Components';
+import { formatDenom } from 'utils';
 import ManageStakingModal from '../../../../Validators/Components/ManageStakingModal';
 
 export const AccountDelegationsOwner = () => {
@@ -9,6 +10,7 @@ export const AccountDelegationsOwner = () => {
   const [tableData, setTableData] = useState([]);
   const {
     accountDelegations,
+    accountDelegationsTotal: { amount, denom },
     accountDelegationsLoading,
     accountDelegationsPages: tablePages,
     getAccountDelegations,
@@ -21,7 +23,7 @@ export const AccountDelegationsOwner = () => {
 
   useEffect(() => {
     // pulling first 100 validators with status=all
-    if (isLoggedIn) getAllValidators();
+    if (isLoggedIn) getAllValidators({});
     getAccountDelegations({ address: addressId, page: tableCurrentPage, count: tableCount });
   }, [isLoggedIn, addressId, getAllValidators, getAccountDelegations, tableCurrentPage]);
 
@@ -33,6 +35,8 @@ export const AccountDelegationsOwner = () => {
       })
     );
   }, [allValidators, accountDelegations, setTableData]);
+
+  const totalDelegations = formatDenom(Number(amount), denom, { decimal: 2 });
 
   const tableHeaders = [
     { displayName: 'Staking', dataName: 'manageStaking' },
@@ -50,6 +54,7 @@ export const AccountDelegationsOwner = () => {
         tableData={tableData}
         tableHeaders={tableHeaders}
         totalPages={tablePages}
+        title={`Total Delegations: ${totalDelegations}`}
       />
       <ManageStakingModal
         isDelegate={isDelegate}
