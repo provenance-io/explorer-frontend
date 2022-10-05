@@ -428,10 +428,11 @@ export const formatTableData = (data = [], tableHeaders) => {
 
         case 'totalBalancePrice.amount':
           finalObj[dataName] = {
-            value: formatDenom(serverValue, 'USD', { decimal: 2 }),
+            value: serverValue
+              ? `$${formatDenom(serverValue, 'USD', { decimal: 2, minimumFractionDigits: 2 })}`
+              : '--',
           };
           break;
-
         // TokenStats Range Data
         case 'range':
           finalObj[dataName] = {

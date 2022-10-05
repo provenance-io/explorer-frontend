@@ -11,6 +11,7 @@
 ### Features
 - Switch hash stats to pull from CMC #393
 - Display multiple blocks per tx hash, navigate to tx by hash and block #395
+- Refactor accounts page #265
 
 ## 3.2.0
 

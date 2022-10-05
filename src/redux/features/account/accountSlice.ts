@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from "redux/app/store";
-import { ACCOUNT_INFO_URL } from "consts";
-import { ajax } from "../api";
+import { RootState } from 'redux/app/store';
+import { ACCOUNT_INFO_URL } from 'consts';
+import { ajax } from '../api';
 
 interface AccountInfo {
   accountAum?: {
@@ -27,7 +27,7 @@ interface AccountInfo {
     fungibleCount: number;
     nonFungibleCount: number;
   };
-};
+}
 
 interface AccountAssets {
   pages: number;
@@ -42,10 +42,10 @@ interface AccountAssets {
       amount: string;
       denom: string;
     };
-  }[],
+  }[];
   total: number;
   rollupTotals: {};
-};
+}
 
 interface AccountDelegations {
   pages: number;
@@ -64,7 +64,7 @@ interface AccountDelegations {
     shares: string;
     validatorDstAddr: string;
     validatorSrcAddr: string;
-  }[],
+  }[];
   total: number;
   rollupTotals: {
     bondedTotal: {
@@ -72,7 +72,7 @@ interface AccountDelegations {
       denom: string;
     };
   };
-};
+}
 
 interface AccountRedelegations {
   records: {
@@ -82,7 +82,9 @@ interface AccountRedelegations {
     };
     block: number;
     delegatorAddr: string;
-    endTime: string;
+    endTime: {
+      millis: string;
+    };
     initialBal: {
       amount: string;
       denom: string;
@@ -97,7 +99,7 @@ interface AccountRedelegations {
       denom: string;
     };
   };
-};
+}
 
 interface AccountRewards {
   rewards: {
@@ -127,7 +129,7 @@ interface AccountRewards {
       denom: string;
     };
   }[];
-};
+}
 
 interface AccountUnbonding {
   records: {
@@ -137,7 +139,9 @@ interface AccountUnbonding {
     };
     block: number;
     delegatorAddr: string;
-    endTime: string;
+    endTime: {
+      millis: string;
+    };
     initialBal: {
       amount: string;
       denom: string;
@@ -152,7 +156,7 @@ interface AccountUnbonding {
       denom: string;
     };
   };
-};
+}
 
 interface AccountState {
   // Account
@@ -161,26 +165,26 @@ interface AccountState {
   accountInfoFailure: boolean;
   // Account Assets
   accountAssetsLoading: boolean;
-  accountAssets: AccountAssets["results"];
-  accountAssetsPages: AccountAssets["pages"];
-  accountAssetsTotal: AccountAssets["total"];
+  accountAssets: AccountAssets['results'];
+  accountAssetsPages: AccountAssets['pages'];
+  accountAssetsTotal: AccountAssets['total'];
   // Account Delegations
   accountDelegationsLoading: boolean;
-  accountDelegations: AccountDelegations["results"];
-  accountDelegationsPages: AccountDelegations["pages"];
-  accountDelegationsCount: AccountDelegations["total"];
-  accountDelegationsTotal: AccountDelegations["rollupTotals"]["bondedTotal"];
+  accountDelegations: AccountDelegations['results'];
+  accountDelegationsPages: AccountDelegations['pages'];
+  accountDelegationsCount: AccountDelegations['total'];
+  accountDelegationsTotal: AccountDelegations['rollupTotals']['bondedTotal'];
   // Account Redelegations
   accountRedelegationsLoading: boolean;
-  accountRedelegations: AccountRedelegations["records"],
-  accountRedelegationsTotal: AccountRedelegations["rollupTotals"]["redelegationTotal"];
+  accountRedelegations: AccountRedelegations['records'];
+  accountRedelegationsTotal: AccountRedelegations['rollupTotals']['redelegationTotal'];
   // Account Rewards
   accountRewardsLoading: boolean;
   accountRewards: AccountRewards;
   // Account Unbonding
   accountUnbondingLoading: boolean;
-  accountUnbonding: AccountUnbonding["records"];
-  accountUnbondingTotal: AccountUnbonding["rollupTotals"]["unbondingTotal"];
+  accountUnbonding: AccountUnbonding['records'];
+  accountUnbondingTotal: AccountUnbonding['rollupTotals']['unbondingTotal'];
 }
 
 const initialState: AccountState = {
@@ -199,15 +203,15 @@ const initialState: AccountState = {
   accountDelegationsPages: 0,
   accountDelegationsCount: 0,
   accountDelegationsTotal: {
-    amount: "",
-    denom: "",
+    amount: '',
+    denom: '',
   },
   // Account Redelegations
   accountRedelegationsLoading: false,
   accountRedelegations: [],
   accountRedelegationsTotal: {
-    amount: "",
-    denom: "",
+    amount: '',
+    denom: '',
   },
   // Account Rewards
   accountRewardsLoading: false,
@@ -216,8 +220,8 @@ const initialState: AccountState = {
   accountUnbondingLoading: false,
   accountUnbonding: [],
   accountUnbondingTotal: {
-    amount: "",
-    denom: "",
+    amount: '',
+    denom: '',
   },
 };
 
@@ -234,25 +238,15 @@ const GET_ACCOUNT_UNBONDING = 'ACCOUNTS::GET_ACCOUNT_UNBONDING';
 /* -----------------
 ** ACTIONS
 -------------------*/
-export const getAccountInfo = createAsyncThunk(
-  GET_ACCOUNT_INFO,
-  (address: string) => 
-    ajax({
-      url: `${ACCOUNT_INFO_URL}/${address}`,
-    })
+export const getAccountInfo = createAsyncThunk(GET_ACCOUNT_INFO, (address: string) =>
+  ajax({
+    url: `${ACCOUNT_INFO_URL}/${address}`,
+  })
 );
 
 export const getAccountAssets = createAsyncThunk(
   GET_ACCOUNT_ASSETS,
-  ({
-    address,
-    page = 1,
-    count = 10,
-  }: {
-    address: string,
-    page?: number,
-    count?: number,
-  }) => 
+  ({ address, page = 1, count = 10 }: { address: string; page?: number; count?: number }) =>
     ajax({
       url: `${ACCOUNT_INFO_URL}/${address}/balances?${qs.stringify({ page, count })}`,
     })
@@ -260,15 +254,7 @@ export const getAccountAssets = createAsyncThunk(
 
 export const getAccountDelegations = createAsyncThunk(
   GET_ACCOUNT_DELEGATIONS,
-  ({
-    address,
-    page = 1,
-    count = 10,
-  }: {
-    address: string,
-    page?: number,
-    count?: number,
-  }) => 
+  ({ address, page = 1, count = 10 }: { address: string; page?: number; count?: number }) =>
     ajax({
       url: `${ACCOUNT_INFO_URL}/${address}/delegations?${qs.stringify({ page, count })}`,
     })
@@ -276,26 +262,22 @@ export const getAccountDelegations = createAsyncThunk(
 
 export const getAccountRedelegations = createAsyncThunk(
   GET_ACCOUNT_REDELEGATIONS,
-  (address: string) => 
+  (address: string) =>
     ajax({
       url: `${ACCOUNT_INFO_URL}/${address}/redelegations`,
     })
 );
 
-export const getAccountRewards = createAsyncThunk(
-  GET_ACCOUNT_REWARDS,
-  (address: string) => 
-    ajax({
-      url: `${ACCOUNT_INFO_URL}/${address}/rewards`,
-    })
+export const getAccountRewards = createAsyncThunk(GET_ACCOUNT_REWARDS, (address: string) =>
+  ajax({
+    url: `${ACCOUNT_INFO_URL}/${address}/rewards`,
+  })
 );
 
-export const getAccountUnbonding = createAsyncThunk(
-  GET_ACCOUNT_UNBONDING,
-  (address: string) => 
-    ajax({
-      url: `${ACCOUNT_INFO_URL}/${address}/unbonding`,
-    })
+export const getAccountUnbonding = createAsyncThunk(GET_ACCOUNT_UNBONDING, (address: string) =>
+  ajax({
+    url: `${ACCOUNT_INFO_URL}/${address}/unbonding`,
+  })
 );
 
 export const accountActions = {
