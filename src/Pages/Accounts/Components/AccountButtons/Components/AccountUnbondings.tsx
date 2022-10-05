@@ -25,7 +25,7 @@ export const AccountUnbondings = () => {
     currentPage,
     changePage,
     totalPages,
-  } = useFrontendPagination({ data: tableData, count: 10 });
+  } = useFrontendPagination({ data: tableData, count: 5 });
 
   useEffect(() => {
     // pulling first 100 validators with status=all
