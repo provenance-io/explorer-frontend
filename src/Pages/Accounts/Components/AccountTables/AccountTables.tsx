@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useWallet } from '@provenanceio/wallet-lib';
 import { MultiTable, Section as BaseSection } from 'Components';
+import { breakpoints } from 'consts';
+import { useMediaQuery } from 'redux/hooks';
 import {
   AccountAssets,
   AccountDelegations,
@@ -10,6 +12,8 @@ import {
   AccountRewards,
   AccountUnbondings,
   AccountAttributes,
+  AccountRedelegations,
+  AccountTxs,
 } from './Components';
 
 const Section = styled(BaseSection)`
@@ -17,6 +21,7 @@ const Section = styled(BaseSection)`
 `;
 
 export const AccountTables = () => {
+  const { matches: isSmall } = useMediaQuery(breakpoints.down('lg'));
   const { walletService } = useWallet();
   const { addressId } = useParams<{ addressId: string }>();
   const {
@@ -28,16 +33,18 @@ export const AccountTables = () => {
 
   return (
     <Section>
-      <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
-        <AccountAssets key={`Assets`} />
+      <MultiTable active={activeTableTab} setActive={setActiveTableTab} isSmall={isSmall}>
+        <AccountAssets key="Assets" />
         {isOwnAccount ? (
-          <AccountDelegationsOwner key={`Delegations`} />
+          <AccountDelegationsOwner key="Delegations" />
         ) : (
-          <AccountDelegations key={`Delegations`} />
+          <AccountDelegations key="Delegations" />
         )}
-        <AccountUnbondings key={`Unbondings`} />
-        <AccountRewards key={`Rewards`} />
-        <AccountAttributes key={`Attributes`} />
+        <AccountRedelegations key="Redelegations" />
+        <AccountUnbondings key="Unbondings" />
+        <AccountRewards key="Rewards" />
+        <AccountAttributes key="Attributes" />
+        <AccountTxs key="Transactions" />
       </MultiTable>
     </Section>
   );

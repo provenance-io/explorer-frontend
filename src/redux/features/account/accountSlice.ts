@@ -47,7 +47,7 @@ interface AccountAssets {
   rollupTotals: {};
 }
 
-interface AccountDelegations {
+export interface AccountDelegations {
   pages: number;
   results: {
     amount: {
@@ -74,7 +74,7 @@ interface AccountDelegations {
   };
 }
 
-interface AccountRedelegations {
+export interface AccountRedelegations {
   records: {
     amount: {
       amount: string;
@@ -101,7 +101,7 @@ interface AccountRedelegations {
   };
 }
 
-interface AccountRewards {
+export interface AccountRewards {
   rewards: {
     reward: {
       amount: string;
@@ -131,7 +131,7 @@ interface AccountRewards {
   }[];
 }
 
-interface AccountUnbonding {
+export interface AccountUnbonding {
   records: {
     amount: {
       amount: string;
@@ -185,6 +185,15 @@ interface AccountState {
   accountUnbondingLoading: boolean;
   accountUnbonding: AccountUnbonding['records'];
   accountUnbondingTotal: AccountUnbonding['rollupTotals']['unbondingTotal'];
+  // Hash Data
+  accountHashData: {
+    unbonding: AccountUnbonding;
+    rewards: AccountRewards;
+    redelegations: AccountRedelegations;
+    delegations: AccountDelegations;
+    assets: AccountAssets;
+  };
+  accountHashDataLoading: boolean;
 }
 
 const initialState: AccountState = {
@@ -223,6 +232,26 @@ const initialState: AccountState = {
     amount: '',
     denom: '',
   },
+  // Hash Data
+  accountHashData: {
+    assets: { pages: 0, results: [], total: 0, rollupTotals: {} },
+    rewards: { total: [], rewards: [] },
+    delegations: {
+      pages: 0,
+      results: [],
+      total: 0,
+      rollupTotals: { bondedTotal: { amount: '', denom: '' } },
+    },
+    redelegations: {
+      records: [],
+      rollupTotals: { redelegationTotal: { amount: '', denom: '' } },
+    },
+    unbonding: {
+      records: [],
+      rollupTotals: { unbondingTotal: { amount: '', denom: '' } },
+    },
+  },
+  accountHashDataLoading: false,
 };
 
 /* -----------------
@@ -234,6 +263,7 @@ const GET_ACCOUNT_DELEGATIONS = 'ACCOUNTS::GET_ACCOUNT_DELEGATIONS';
 const GET_ACCOUNT_REDELEGATIONS = 'ACCOUNTS::GET_ACCOUNT_REDELEGATIONS';
 const GET_ACCOUNT_REWARDS = 'ACCOUNTS::GET_ACCOUNT_REWARDS';
 const GET_ACCOUNT_UNBONDING = 'ACCOUNTS::GET_ACCOUNT_UNBONDING';
+const GET_ACCOUNT_HASH_DATA = 'ACCOUNTS::GET_ACCOUNT_HASH_DATA';
 
 /* -----------------
 ** ACTIONS
@@ -280,6 +310,34 @@ export const getAccountUnbonding = createAsyncThunk(GET_ACCOUNT_UNBONDING, (addr
   })
 );
 
+export const getAccountHashData = createAsyncThunk(
+  GET_ACCOUNT_HASH_DATA,
+  async (address: string) => {
+    const unbonding = await ajax({
+      url: `${ACCOUNT_INFO_URL}/${address}/unbonding`,
+    });
+    const rewards = await ajax({
+      url: `${ACCOUNT_INFO_URL}/${address}/rewards`,
+    });
+    const redelegations = await ajax({
+      url: `${ACCOUNT_INFO_URL}/${address}/redelegations`,
+    });
+    const delegations = await ajax({
+      url: `${ACCOUNT_INFO_URL}/${address}/delegations?${qs.stringify({ page: 1, count: 100 })}`,
+    });
+    const assets = await ajax({
+      url: `${ACCOUNT_INFO_URL}/${address}/balances?${qs.stringify({ page: 1, count: 100 })}`,
+    });
+    return {
+      unbonding: { ...unbonding.data },
+      rewards: { ...rewards.data },
+      redelegations: { ...redelegations.data },
+      delegations: { ...delegations.data },
+      assets: { ...assets.data },
+    };
+  }
+);
+
 export const accountActions = {
   getAccountAssets,
   getAccountDelegations,
@@ -287,6 +345,7 @@ export const accountActions = {
   getAccountRedelegations,
   getAccountRewards,
   getAccountUnbonding,
+  getAccountHashData,
 };
 
 /* -----------------
@@ -385,6 +444,19 @@ export const accountSlice = createSlice({
       })
       .addCase(getAccountUnbonding.rejected, (state) => {
         state.accountUnbondingLoading = false;
+      })
+      /* -----------------
+      GET_ACCOUNT_HASH_DATA
+      -------------------*/
+      .addCase(getAccountHashData.pending, (state) => {
+        state.accountHashDataLoading = true;
+      })
+      .addCase(getAccountHashData.fulfilled, (state, { payload }) => {
+        state.accountHashDataLoading = false;
+        state.accountHashData = payload;
+      })
+      .addCase(getAccountHashData.rejected, (state) => {
+        state.accountHashDataLoading = false;
       });
   },
 });

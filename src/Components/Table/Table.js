@@ -81,6 +81,7 @@ const FlexContainer = styled.div`
 const Table = ({
   changePage,
   className,
+  tableBorder,
   currentPage,
   isLoading,
   ManageStakingBtn,
@@ -274,7 +275,13 @@ const Table = ({
     tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
 
   return (
-    <Content className={className} size={size} title={title} headerContent={headerContent}>
+    <Content
+      className={className}
+      size={size}
+      title={title}
+      headerContent={headerContent}
+      contentBorder={tableBorder}
+    >
       {notes && (
         <Notes>
           {`* ${capitalize(notes)}:`}
@@ -329,6 +336,7 @@ Table.propTypes = {
   totalPages: PropTypes.number,
   title: PropTypes.string,
   headerContent: PropTypes.element,
+  tableBorder: PropTypes.bool,
 };
 Table.defaultProps = {
   changePage: null,
@@ -346,6 +354,7 @@ Table.defaultProps = {
   title: '',
   headerContent: null,
   totalPages: 0,
+  tableBorder: true,
 };
 
 export default Table;

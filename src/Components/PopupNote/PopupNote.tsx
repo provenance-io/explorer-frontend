@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import Sprite from '../Sprite';
 
-const PopupContainer = styled.div`
+const PopupContainer = styled.div<{
+  minWidth?: string;
+  position?: 'above' | 'below' | 'left' | 'right';
+  zIndex?: string;
+  delay?: number;
+}>`
   position: absolute;
   ${({ minWidth }) => minWidth && `min-width: ${minWidth};`};
   left: -30px;
@@ -35,9 +39,9 @@ const PopupContainer = styled.div`
   &.hide {
     opacity: 0;
   }
-  ${({ zIndex }) => zIndex && `z-index: ${zIndex}`};
+  z-index: ${({ zIndex }) => zIndex && zIndex};
 `;
-const Caret = styled(Sprite)`
+const Caret = styled(Sprite)<{ position?: 'above' | 'below' | 'left' | 'right' }>`
   position: absolute;
   left: 30px;
   ${({ position }) => {
@@ -70,16 +74,36 @@ const Caret = styled(Sprite)`
   }}
 `;
 
-const PopupNote = ({ show, children, position, carat, delay, className, minWidth, zIndex }) => {
+interface PopupNoteProps {
+  show?: boolean;
+  children?: any;
+  position?: 'above' | 'below' | 'left' | 'right';
+  carat?: boolean;
+  delay?: number;
+  className?: string;
+  minWidth?: string;
+  zIndex?: string;
+}
+
+export const PopupNote = ({
+  show = false,
+  children = null,
+  position = 'below',
+  carat = true,
+  delay = 250,
+  className = '',
+  minWidth = '',
+  zIndex = '',
+}: PopupNoteProps) => {
   const [showPopup, setShowPopup] = useState(false);
   const [fadingIn, setFadingIn] = useState(false);
   const [fadingOut, setFadingOut] = useState(false);
-  const [timeoutInstance, setTimeoutInstance] = useState(null);
+  const [timeoutInstance, setTimeoutInstance] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const changed = showPopup !== show;
     if (changed && show && !fadingIn) {
-      clearTimeout(timeoutInstance);
+      clearTimeout(timeoutInstance as unknown as number);
       setFadingIn(true);
       setFadingOut(false);
       const visibilityTimeout = setTimeout(() => {
@@ -87,7 +111,7 @@ const PopupNote = ({ show, children, position, carat, delay, className, minWidth
       }, delay);
       setTimeoutInstance(visibilityTimeout);
     } else if (changed && !show && !fadingOut) {
-      clearTimeout(timeoutInstance);
+      clearTimeout(timeoutInstance as unknown as number);
       setFadingOut(true);
       setFadingIn(false);
       const visibilityTimeout = setTimeout(() => {
@@ -100,7 +124,7 @@ const PopupNote = ({ show, children, position, carat, delay, className, minWidth
   // Cleanup timer
   useEffect(
     () => () => {
-      clearTimeout(timeoutInstance);
+      clearTimeout(timeoutInstance as unknown as number);
     },
     [timeoutInstance]
   );
@@ -118,27 +142,3 @@ const PopupNote = ({ show, children, position, carat, delay, className, minWidth
     </PopupContainer>
   ) : null;
 };
-
-PopupNote.propTypes = {
-  show: PropTypes.bool,
-  children: PropTypes.node,
-  position: PropTypes.string,
-  carat: PropTypes.bool,
-  delay: PropTypes.number,
-  className: PropTypes.string,
-  minWidth: PropTypes.string,
-  zIndex: PropTypes.string,
-};
-
-PopupNote.defaultProps = {
-  show: false,
-  children: null,
-  position: 'below',
-  carat: true,
-  delay: 250,
-  className: '',
-  minWidth: '',
-  zIndex: '',
-};
-
-export default PopupNote;

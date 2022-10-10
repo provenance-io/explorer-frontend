@@ -1,3 +1,4 @@
-export { default as AccountSpotlight } from './AccountSpotlight';
-export { default as AccountTxs } from './AccountTxs';
-export * from './AccountButtons';
+export * from './AccountSpotlight';
+export * from './AccountTables';
+export * from './HashChart';
+export * from './AccountTransactions';

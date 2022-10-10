@@ -443,6 +443,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Server value already correct
         case 'contractCount': //fallthrough
         case 'creationHeight': // fallthrough
+        case 'hashBucket': // fallthrough
         case 'label': // fallthrough
         case 'percentTotal': // fallthrough
         case 'amountHash': // fallthrough

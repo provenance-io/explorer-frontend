@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Table, Filters } from 'Components';
 import { useParams } from 'react-router-dom';
@@ -9,11 +9,11 @@ const TxContainer = styled.div`
   width: 100%;
 `;
 
-const AccountTxs = () => {
+export const AccountTxs = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
-  const { addressId: address } = useParams();
+  const { addressId: address } = useParams<{ addressId: string }>();
   const { tableCount } = useApp();
   const {
     getTxsByAddress: getTableData,
@@ -28,12 +28,12 @@ const AccountTxs = () => {
   const txTypesExist = Object.keys(txTypes).length > 0;
 
   // Use this to check for a reset to 'all' where we will pass '' as the type
-  const updateFilterType = (newType) => {
+  const updateFilterType = (newType: string) => {
     const finalType = newType === 'allTxTypes' ? '' : newType;
     setFilterType(finalType);
   };
   // Use this to check for a reset to 'all' where we will pass '' as the status
-  const updateFilterStatus = (newStatus) => {
+  const updateFilterStatus = (newStatus: string) => {
     const finalStatus = newStatus === 'all' ? '' : newStatus;
     setFilterStatus(finalStatus);
   };
@@ -71,7 +71,7 @@ const AccountTxs = () => {
     });
   }, [getTableData, tableCount, address]);
   // Fetch on page change
-  const changePage = (newPage) => {
+  const changePage = (newPage: number) => {
     setTableCurrentPage(newPage);
     getTableData({
       page: newPage,
@@ -110,7 +110,9 @@ const AccountTxs = () => {
 
   return (
     <TxContainer>
-      {!txTypesLoading && txTypesExist && <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />}
+      {!txTypesLoading && txTypesExist && (
+        <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />
+      )}
       <Table
         tableHeaders={tableHeaders}
         tableData={tableData}
@@ -125,5 +127,3 @@ const AccountTxs = () => {
     </TxContainer>
   );
 };
-
-export default AccountTxs;

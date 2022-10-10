@@ -1,10 +1,9 @@
-import React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { Sprite as BaseSprite } from 'Components';
 import { breakpoints } from 'consts';
+import { BuildPopupNote } from 'Components/PopupNote/BuildPopupNote';
 
-const DataCardContainer = styled.div`
+const DataCardContainer = styled.div<{ width?: string }>`
   width: ${({ width }) => (width ? width : '50%')};
   @media ${breakpoints.down('sm')} {
     min-width: 100%;
@@ -23,11 +22,11 @@ const Sprite = styled(BaseSprite)`
   margin-right: 8px;
 `;
 
-const TitleRow = styled.div`
+const TitleRow = styled.div<{ titleMargin?: string; titleSize?: string }>`
   display: flex;
   margin: ${({ titleMargin }) => (titleMargin ? titleMargin : '0 0 30px 0')};
 `;
-const Title = styled.div`
+const Title = styled.div<{ titleSize?: string }>`
   font-size: ${({ titleSize }) => (titleSize ? titleSize : '1.4rem')};
 `;
 const DataContainer = styled.div`
@@ -52,7 +51,20 @@ const CloseIcon = styled(Sprite)`
   }
 `;
 
-const DataCard = ({
+interface DataCardProps {
+  className?: string;
+  icon?: string;
+  title: string;
+  children: any;
+  width?: string;
+  handleClose?: () => void;
+  iconColor?: string;
+  titleMargin?: string;
+  titleSize?: string;
+  popup?: any;
+}
+
+export const DataCard = ({
   className,
   icon,
   title,
@@ -62,7 +74,8 @@ const DataCard = ({
   iconColor,
   titleMargin,
   titleSize,
-}) => (
+  popup,
+}: DataCardProps) => (
   <DataCardContainer className={className} width={width}>
     <DataContent>
       <TitleRow titleMargin={titleMargin}>
@@ -71,6 +84,7 @@ const DataCard = ({
         {handleClose && (
           <CloseIcon icon="CLOSE" onClick={handleClose} size="1.4rem" color="ICON_WHITE" />
         )}
+        {popup && BuildPopupNote(popup)}
       </TitleRow>
       <DataContainer>
         {Array.isArray(children) ? (
@@ -82,26 +96,3 @@ const DataCard = ({
     </DataContent>
   </DataCardContainer>
 );
-
-DataCard.propTypes = {
-  className: PropTypes.string,
-  icon: PropTypes.string,
-  iconColor: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  children: PropTypes.any.isRequired,
-  width: PropTypes.string,
-  handleClose: PropTypes.func,
-  titleMargin: PropTypes.string,
-  titleSize: PropTypes.string,
-};
-DataCard.defaultProps = {
-  className: '',
-  icon: '',
-  iconColor: '',
-  width: '',
-  handleClose: null,
-  titleMargin: '',
-  titleSize: '',
-};
-
-export default DataCard;

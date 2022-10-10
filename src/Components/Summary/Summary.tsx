@@ -5,7 +5,7 @@ import ReactJson from 'react-json-view';
 import { breakpoints } from 'consts';
 import { useColorScheme } from 'redux/hooks';
 import { maxLength } from 'utils';
-import PopupNote from '../PopupNote';
+import { PopupNote } from 'Components/PopupNote';
 import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
 import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '../DataRow';
@@ -63,7 +63,7 @@ interface PopupDataProps {
   method: string[];
   fontColor: string;
   data: [];
-  position: string;
+  position: 'above' | 'below' | 'left' | 'right';
   titleMinWidth: string;
   noteMinWidth: string;
 }

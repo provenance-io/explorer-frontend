@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
@@ -9,8 +9,8 @@ import useToggle from 'react-tiny-hooks/use-toggle';
 import { breakpoints, FIGURE_WALLET_URL, ICON_NAMES, PROVENANCE_WALLET_URL } from 'consts';
 import { useApp, useWalletLogin } from 'redux/hooks';
 import { maxLength } from 'utils';
+import { PopupNote } from 'Components/PopupNote';
 import Button from '../Button';
-import PopupNote from '../PopupNote';
 import Sprite from '../Sprite';
 
 const Container = styled.div`
