@@ -20,6 +20,11 @@ import { isEmpty } from '../lang/isEmpty';
 // Example: We assume votingPower will always be an object with count and total.
 // If this assumption cannot be made then this function loses its use and will fail
 
+// Note: For items like account data (possibly others) they must be separated by another field
+//       or else it renders incorrectly. Not sure yet why this is occurring, but will be fixed
+//       during the reskin effort. Example: Contract 'admin' and 'creator' fields cannot be side
+//       by side as it screws up the entire table rendering in each row.
+
 export const formatTableData = (data = [], tableHeaders) => {
   // If the data doesn't have anything in it, just return it to end this fx
   if (!data.length) return data;
@@ -40,16 +45,24 @@ export const formatTableData = (data = [], tableHeaders) => {
       switch (dataName) {
         // Address or hash leading to the account's page
         case 'ownerAddress': // fallthrough
+
         case 'holdingAccount': // fallthrough
         case 'delegatorAddr': // fallthrough
         case 'creator': // fallthrough
         case 'admin': // fallthrough
+        case 'granter': // fallthrough
+        case 'grantee': // fallthrough
         case 'address':
           finalObj[dataName] = {
             value: serverValue ? maxLength(serverValue, 11, 3) : '--',
             link: serverValue && `/accounts/${serverValue}`,
             hover: serverValue || '--',
-            copy: serverValue && (dataName === 'creator' || dataName === 'admin'),
+            copy:
+              serverValue &&
+              (dataName === 'creator' ||
+                dataName === 'admin' ||
+                dataName === 'granter' ||
+                dataName === 'grantee'),
             raw: serverValue,
           };
           break;
@@ -262,6 +275,12 @@ export const formatTableData = (data = [], tableHeaders) => {
           finalObj[dataName] = { value, raw: serverValue };
           break;
         }
+        // Authz grant expiration info
+        case 'expiration': {
+          const value = serverValue ? `${getUTCTime(serverValue, 'MMM dd, yyyy')}` : 'N/A';
+          finalObj[dataName] = { value, raw: serverValue };
+          break;
+        }
         case 'endTime': {
           const value = serverValue
             ? `${getUTCTime(new Date(serverValue.millis ? serverValue.millis : serverValue))}+UTC`
@@ -272,13 +291,20 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Find the transaction type within the message object, then capitalize it
         case 'txType': // fallthrough
         case 'type': {
-          const {
-            msg: { msgCount, displayMsgType: type = '--' },
-          } = dataObj;
-          const msgNum = msgCount > 1 ? `+${msgCount - 1}` : '';
-          finalObj[dataName] = {
-            value: `${capitalize(type)} ${msgNum}`,
-          };
+          // If granter exists, it's a grant type
+          if (dataObj.granter) {
+            finalObj[dataName] = {
+              value: `${capitalize(serverValue)}`,
+            };
+          } else {
+            const {
+              msg: { msgCount, displayMsgType: type = '--' },
+            } = dataObj;
+            const msgNum = msgCount > 1 ? `+${msgCount - 1}` : '';
+            finalObj[dataName] = {
+              value: `${capitalize(type)} ${msgNum}`,
+            };
+          }
           break;
         }
         // Get the voting power as a percent from the serverValue (object)
@@ -362,6 +388,13 @@ export const formatTableData = (data = [], tableHeaders) => {
             size: '2.0rem',
           };
           break;
+        // Accordion information
+        case 'accordion': {
+          finalObj[dataName] = {
+            value: '',
+          };
+          break;
+        }
         // Boolean to string
         case 'mintable':
           finalObj[dataName] = { value: capitalize(`${serverValue}`) };
@@ -443,6 +476,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         // Server value already correct
         case 'contractCount': //fallthrough
         case 'creationHeight': // fallthrough
+        case 'hashBucket': // fallthrough
         case 'label': // fallthrough
         case 'percentTotal': // fallthrough
         case 'amountHash': // fallthrough

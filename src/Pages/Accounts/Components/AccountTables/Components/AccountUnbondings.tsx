@@ -7,14 +7,10 @@ import { formatDenom } from 'utils';
 export const AccountUnbondings = () => {
   const [tableData, setTableData] = useState<any[]>([]);
   const {
-    accountRedelegations,
-    accountRedelegationsLoading,
     accountUnbonding,
     accountUnbondingLoading,
-    getAccountRedelegations,
     getAccountUnbonding,
-    accountUnbondingTotal: { amount: uAmount, denom: uDenom },
-    accountRedelegationsTotal: { amount: rAmount },
+    accountUnbondingTotal: { amount, denom },
   } = useAccounts();
   const { allValidators, allValidatorsLoading, getAllValidators } = useValidators();
   const { addressId } = useParams<{ addressId: string }>();
@@ -25,18 +21,17 @@ export const AccountUnbondings = () => {
     currentPage,
     changePage,
     totalPages,
-  } = useFrontendPagination({ data: tableData, count: 5 });
+  } = useFrontendPagination({ data: tableData });
 
   useEffect(() => {
     // pulling first 100 validators with status=all
     getAllValidators({});
     getAccountUnbonding(addressId);
-    getAccountRedelegations(addressId);
-  }, [addressId, getAllValidators, getAccountUnbonding, getAccountRedelegations]);
+  }, [addressId, getAllValidators, getAccountUnbonding]);
 
   useEffect(() => {
     setTableData(
-      [...accountRedelegations, ...accountUnbonding]
+      accountUnbonding
         .map((d) => {
           const validator = allValidators.find((v) => v.addressId === d.validatorSrcAddr);
           return { ...validator, ...d };
@@ -44,15 +39,11 @@ export const AccountUnbondings = () => {
         })
         .sort((a, b) => Number(a.endTime.millis) - Number(b.endTime.millis))
     );
-  }, [allValidators, accountRedelegations, accountUnbonding, setTableData]);
+  }, [allValidators, accountUnbonding, setTableData]);
 
-  const totalUnbondings = formatDenom(
-    parseFloat(rAmount || '0') + parseFloat(uAmount || '0'),
-    uDenom,
-    {
-      decimal: 2,
-    }
-  );
+  const totalUnbondings = formatDenom(parseFloat(amount || '0'), denom, {
+    decimal: 2,
+  });
 
   const tableHeaders = [
     { displayName: 'Moniker', dataName: 'moniker' },
@@ -62,7 +53,7 @@ export const AccountUnbondings = () => {
 
   return (
     <Table
-      isLoading={accountRedelegationsLoading || accountUnbondingLoading || allValidatorsLoading}
+      isLoading={accountUnbondingLoading || allValidatorsLoading}
       tableData={paginatedTableData}
       tableHeaders={tableHeaders}
       changePage={changePage}

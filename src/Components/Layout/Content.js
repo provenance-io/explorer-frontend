@@ -21,7 +21,7 @@ const ContentSpacer = styled.div`
   align-items: ${({ alignItems }) => alignItems};
   ${({ alignContent }) => alignContent && `align-content: ${alignContent};`};
   background: ${({ theme, background }) => (background ? background : theme.BACKGROUND_CONTENT)};
-  border: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
+  border: ${({ border, theme }) => border && `1px solid ${theme.BORDER_PRIMARY}`};
   border-bottom: ${({ borderBottom }) => borderBottom && borderBottom};
   border-top: ${({ borderTop }) => borderTop && borderTop};
   flex-wrap: wrap;
@@ -70,6 +70,7 @@ const Content = ({
   alignContent,
   headerContent,
   headerMargin,
+  contentBorder,
   borderTop,
   borderBottom,
   background,
@@ -104,6 +105,7 @@ const Content = ({
         borderTop={borderTop}
         background={background}
         borderRadius={borderRadius}
+        border={contentBorder}
       >
         {showHeader && buildHeader()}
         {children}
@@ -133,6 +135,7 @@ Content.propTypes = {
   background: PropTypes.string,
   borderRadius: PropTypes.string,
   color: PropTypes.string,
+  contentBorder: PropTypes.bool,
 };
 
 Content.defaultProps = {
@@ -156,6 +159,7 @@ Content.defaultProps = {
   background: '',
   borderRadius: '',
   color: '',
+  contentBorder: true,
 };
 
 export default Content;

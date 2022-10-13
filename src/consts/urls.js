@@ -57,6 +57,9 @@ export const GOVERNANCE_URL = `${BASE_URL}/gov`;
 export const GOVERNANCE_ADDRESS_URL = `${BASE_URL}/gov/address`;
 export const GOVERNANCE_PROPOSALS_URL = `${BASE_URL}/gov/proposals`;
 export const GOVERNANCE_VOTES_URL = `${BASE_URL_V3}/gov/proposals`;
+// -- Grants
+export const GRANTS_AUTHZ_URL = `${BASE_URL_V3}/grants/authz`;
+export const GRANTS_FEEGRANT_URL = `${BASE_URL_V3}/grants/feegrant`;
 // -- IBC
 export const IBC_CHAIN_URL = `${BASE_URL}/ibc/balances/chain`;
 export const IBC_CHANNEL_URL = `${BASE_URL}/ibc/balances/channel`;

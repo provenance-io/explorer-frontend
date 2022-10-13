@@ -135,7 +135,7 @@ interface TxMsgTypes {
 }
 
 interface TxByBlock extends TxRecent {}
-interface TxByAddress extends TxRecent {}
+export interface TxByAddress extends TxRecent {}
 interface TxByModule extends TxRecent {}
 interface TxByNft extends TxRecent {}
 
@@ -184,6 +184,9 @@ interface TxState {
   txByNft: TxByNft['results'];
   txByNftLoading: boolean;
   txByNftPages: TxByNft['pages'];
+  // TX by Account By Week
+  accountTxByDate: TxByAddress['results'];
+  accountTxByDateLoading: boolean;
 }
 
 export const initialState: TxState = {
@@ -258,6 +261,9 @@ export const initialState: TxState = {
   txByNft: [],
   txByNftLoading: false,
   txByNftPages: 0,
+  // TX by account each week
+  accountTxByDate: [],
+  accountTxByDateLoading: false,
 };
 
 /* -----------------
@@ -274,6 +280,7 @@ export const GET_TX_MSGS = 'TX::GET_TX_MSGS';
 export const GET_TX_MSG_TYPES = 'TX::GET_TX_MSG_TYPES';
 export const GET_TX_BY_MODULE = 'TX::GET_TX_BY_MODULE';
 export const GET_TXS_BY_NFT = 'TX::GET_TXS_BY_NFT';
+export const GET_ACCOUNT_TX_BY_DATE = 'TX::GET_ACCOUNT_TX_BY_DATE';
 
 /* -----------------
 ** ACTIONS
@@ -310,17 +317,23 @@ export const getTxsByAddress = createAsyncThunk(
     type = '',
     status = '',
     address,
+    toDate,
+    fromDate,
   }: {
     count: number;
     page: number;
     type: string;
     status: string;
     address: string;
+    toDate: string;
+    fromDate: string;
   }) =>
     ajax({
       url: `${TXS_BY_ADDRESS_URL}/${address}?count=${count}&page=${page}${
         type ? `&msgType=${type}` : ''
-      }${status ? `&txStatus=${status.toUpperCase()}` : ''}`,
+      }${status ? `&txStatus=${status.toUpperCase()}` : ''}${toDate ? `&toDate=${toDate}` : ''}${
+        fromDate ? `&fromDate=${fromDate}` : ''
+      }`,
     })
 );
 
@@ -405,6 +418,14 @@ export const getTxsByNft = createAsyncThunk(
   ({ addr, count = 10, page = 1, ...rest }: { addr: string; count: number; page: number }) =>
     ajax({
       url: `${TX_INFO_URL}/nft/${addr}?${qs.stringify({ count, page, ...rest })}`,
+    })
+);
+
+export const getAccountTxByDate = createAsyncThunk(
+  GET_ACCOUNT_TX_BY_DATE,
+  ({ address, toDate, fromDate }: { address: string; toDate: string; fromDate: string }) =>
+    ajax({
+      url: `${TXS_BY_ADDRESS_URL}/${address}?toDate=${toDate}&fromDate=${fromDate}`,
     })
 );
 
@@ -613,6 +634,19 @@ export const txSlice = createSlice({
       })
       .addCase(getTxsByNft.rejected, (state) => {
         state.txByNftLoading = false;
+      })
+      /* -----------------
+    GET_ACCOUNT_TX_BY_DATE
+    -------------------*/
+      .addCase(getAccountTxByDate.pending, (state) => {
+        state.accountTxByDateLoading = true;
+      })
+      .addCase(getAccountTxByDate.fulfilled, (state, { payload }) => {
+        state.accountTxByDateLoading = false;
+        state.accountTxByDate = payload.data.results;
+      })
+      .addCase(getAccountTxByDate.rejected, (state) => {
+        state.accountTxByDateLoading = false;
       });
   },
 });
@@ -623,6 +657,7 @@ BUILD ACTIONS
 const { resetTxMsgs, setRecentTxsCount } = txSlice.actions;
 
 export const txActions = {
+  getAccountTxByDate,
   getTxsRecent,
   getTxsByAddress,
   getTxsByBlock,

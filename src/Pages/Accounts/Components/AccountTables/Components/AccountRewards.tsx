@@ -15,7 +15,7 @@ export const AccountRewards = () => {
     currentPage,
     changePage,
     totalPages,
-  } = useFrontendPagination({ data: tableData, count: 5 });
+  } = useFrontendPagination({ data: tableData });
 
   useEffect(() => {
     // pulling first 100 validators with status=all

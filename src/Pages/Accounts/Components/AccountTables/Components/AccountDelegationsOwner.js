@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { Table } from 'Components';

@@ -20,10 +20,7 @@ interface SpriteTypes extends SvgProps {
   onClick?: () => void;
 }
 
-const Svg =
-  styled.svg <
-  SvgProps >
-  `
+const Svg = styled.svg<SvgProps>`
   --secondaryColor: ${({ secondaryColor }) => secondaryColor};
   width: ${({ size, width }) => width || size};
   height: ${({ size, height }) => height || size};
@@ -43,7 +40,6 @@ const Sprite = ({
   onClick,
   ...svgIcons
 }: SpriteTypes) => {
-  
   const theme = useTheme();
 
   // Use the variable color name if it exists, else the actual color passed in, or else default color

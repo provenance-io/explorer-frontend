@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
@@ -35,9 +35,14 @@ const TableHead = styled.thead`
 `;
 const HeadRow = styled.tr``;
 const Row = styled.tr`
-  &:nth-child(even) {
-    background-color: ${({ theme }) => theme.BACKGROUND_LIGHT};
-  }
+  background-color: ${({ theme, index, isOpen }) =>
+    isOpen
+      ? index % 2 !== 0
+        ? theme.BACKGROUND_LIGHT
+        : ''
+      : index % 2 !== 0
+      ? theme.BACKGROUND_LIGHT
+      : ''};
 `;
 const TableBody = styled.tbody``;
 const TableHeadData = styled.th`
@@ -81,6 +86,7 @@ const FlexContainer = styled.div`
 const Table = ({
   changePage,
   className,
+  tableBorder,
   currentPage,
   isLoading,
   ManageStakingBtn,
@@ -95,11 +101,17 @@ const Table = ({
   totalPages,
   title,
   headerContent,
+  // isOpen,
+  // setIsOpen,
+  accordionData,
 }) => {
   // Format the raw table data into the form we need it to be displayed
   const theme = useTheme();
   const { pathname } = useLocation();
   const tableData = formatTableData(rawTableData, tableHeaders);
+  const [isOpen, setIsOpen] = useState(
+    Object.fromEntries(tableData.map((item, index) => [index, false]))
+  );
   const dataExists = tableData.length;
   const hasPagination = currentPage && changePage;
   const showPagination = dataExists && !isLoading && hasPagination && totalPages;
@@ -126,7 +138,7 @@ const Table = ({
   };
 
   const loaderRow = () => (
-    <Row>
+    <Row index={0}>
       <LoadingContainer colSpan="10">
         <Loading />
       </LoadingContainer>
@@ -187,6 +199,20 @@ const Table = ({
           );
         }
 
+        if (dataName === 'accordion') {
+          return (
+            <TableData key={dataName} title="View Data">
+              <Sprite
+                style={{ cursor: 'pointer' }}
+                size="1.5rem"
+                icon="CHEVRON"
+                spin={isOpen[index] ? '90' : '-90'}
+                onClick={() => setIsOpen({ [index]: !isOpen[index] })}
+              />
+            </TableData>
+          );
+        }
+
         if (!rowData[dataName]) {
           console.warn(`Table Error! Data not found (rowData.${dataName}): `, {
             rowData,
@@ -201,6 +227,7 @@ const Table = ({
           value = '--',
           hover = false,
           icon,
+          spin,
           skipped = false,
           scheduled = false,
           iconColor = theme.FONT_LINK,
@@ -261,7 +288,7 @@ const Table = ({
                   </a>
                 )}
                 {!externalLink && value}
-                {icon && <Sprite icon={icon} size={size} color={iconColor} />}
+                {icon && <Sprite icon={icon} size={size} color={iconColor} spin={spin} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </>
             )}
@@ -271,10 +298,27 @@ const Table = ({
     );
 
   const buildAllRows = () =>
-    tableData.map((data, index) => <Row key={index}>{buildSingleRow(data, index)}</Row>);
+    tableData.map((data, index) => (
+      <Fragment key={index}>
+        <Row key={index} index={index}>
+          {buildSingleRow(data, index)}
+        </Row>
+        {isOpen[index] && accordionData.length > 0 && (
+          <Row key={`subindex ${index}`} index={index}>
+            <td colSpan={tableHeaders.length}>{accordionData[index]}</td>
+          </Row>
+        )}
+      </Fragment>
+    ));
 
   return (
-    <Content className={className} size={size} title={title} headerContent={headerContent}>
+    <Content
+      className={className}
+      size={size}
+      title={title}
+      headerContent={headerContent}
+      contentBorder={tableBorder}
+    >
       {notes && (
         <Notes>
           {`* ${capitalize(notes)}:`}
@@ -292,7 +336,7 @@ const Table = ({
             ) : dataExists ? (
               buildAllRows()
             ) : (
-              <Row>
+              <Row index={0}>
                 <TableData colSpan="1000">{noResults}</TableData>
               </Row>
             )}
@@ -329,6 +373,10 @@ Table.propTypes = {
   totalPages: PropTypes.number,
   title: PropTypes.string,
   headerContent: PropTypes.element,
+  tableBorder: PropTypes.bool,
+  isOpen: PropTypes.object,
+  setIsOpen: PropTypes.func,
+  accordionData: PropTypes.array,
 };
 Table.defaultProps = {
   changePage: null,
@@ -346,6 +394,10 @@ Table.defaultProps = {
   title: '',
   headerContent: null,
   totalPages: 0,
+  tableBorder: true,
+  isOpen: {},
+  setIsOpen: null,
+  accordionData: [],
 };
 
 export default Table;

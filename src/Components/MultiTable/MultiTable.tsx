@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 
 const MultiTableContainer = styled.div`
   width: 100%;
@@ -11,7 +10,7 @@ const TableLabelsContainer = styled.div`
   margin-bottom: 10px;
   border-bottom: ${({ theme }) => `3px solid ${theme.FONT_SECONDARY}`};
 `;
-const TableLabel = styled.div`
+const TableLabel = styled.div<{ active?: boolean }>`
   cursor: pointer;
   padding: 10px 20px;
   margin-bottom: -3px;
@@ -33,13 +32,48 @@ const TableChild = styled.div`
   flex-basis: 100%;
 `;
 
-const MultiTable = ({ className, children, active, setActive }) => {
-  const [tableLabels, setTableLabels] = useState([]);
+const Select = styled.select`
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme[`BUTTON_PRIMARY_FONT`]};
+  background: ${({ theme }) => theme[`BUTTON_PRIMARY`]};
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  &:focus {
+    background: ${({ theme }) => theme[`BUTTON_PRIMARY_FOCUS`]};
+    border-color: ${({ theme }) => theme[`BUTTON_PRIMARY_FOCUS`]};
+  }
+  &:hover {
+    background: ${({ theme }) => theme[`BUTTON_PRIMARY_HOVER`]};
+    border-color: ${({ theme }) => theme[`BUTTON_PRIMARY_FOCUS`]};
+  }
+  margin-bottom: 10px;
+`;
+
+interface MultiTableProps {
+  className?: string;
+  children: JSX.Element[];
+  active: number;
+  setActive: (arg: number) => void;
+  isSmall?: boolean;
+}
+
+export const MultiTable = ({
+  className = '',
+  children,
+  active,
+  setActive,
+  isSmall = false,
+}: MultiTableProps) => {
+  const [tableLabels, setTableLabels] = useState<React.Key[]>([]);
 
   // On component load, get all names of tables to render labels
   useEffect(() => {
-    const allLabels = children.map(table => table.key);
-    setTableLabels(allLabels);
+    const allLabels = children.map((table) => table.key);
+    setTableLabels(allLabels as unknown as React.Key[]);
   }, [children]);
   useEffect(() => {
     // Check if the activeIndex has been loaded, if it hasn't, load it, then add it to loadedIndexes
@@ -52,6 +86,11 @@ const MultiTable = ({ className, children, active, setActive }) => {
     children.map((childTable, index) =>
       index === active ? <TableChild key={index}>{childTable}</TableChild> : null
     );
+
+  // If in a small view, handle when user selects a different table to view
+  const handleChange = (e: React.ChangeEvent<any>) => {
+    setActive(Number(e.target.value));
+  };
 
   const renderLabels = () =>
     tableLabels.map((label, index) => (
@@ -68,22 +107,16 @@ const MultiTable = ({ className, children, active, setActive }) => {
 
   return (
     <MultiTableContainer className={className}>
-      <TableLabelsContainer>{renderLabels()}</TableLabelsContainer>
+      {!isSmall ? (
+        <TableLabelsContainer>{renderLabels()}</TableLabelsContainer>
+      ) : (
+        <Select onChange={(e: any) => handleChange(e)}>
+          {tableLabels.map((label, index) => (
+            <option label={String(label)} key={index} value={index} />
+          ))}
+        </Select>
+      )}
       <TablesContainer>{renderTables()}</TablesContainer>
     </MultiTableContainer>
   );
 };
-
-MultiTable.propTypes = {
-  className: PropTypes.string,
-  children: PropTypes.node,
-  active: PropTypes.number,
-  setActive: PropTypes.func.isRequired,
-};
-MultiTable.defaultProps = {
-  className: '',
-  children: null,
-  active: 0,
-};
-
-export default MultiTable;

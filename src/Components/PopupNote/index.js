@@ -1,1 +1,2 @@
-export { default } from './PopupNote';
+export * from './BuildPopupNote';
+export * from './PopupNote';

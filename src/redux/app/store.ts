@@ -1,4 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, PreloadedState, ThunkAction, Action } from '@reduxjs/toolkit';
+import { grantsApi } from 'redux/services';
+import { combineReducers } from 'redux';
 import accountReducer from '../features/account/accountSlice';
 import assetReducer from '../features/asset/assetSlice';
 import appReducer from '../features/app/appSlice';
@@ -15,27 +17,43 @@ import orderbookReducer from '../features/orderbook/orderbookSlice';
 import txReducer from '../features/tx/txSlice';
 import validatorReducer from '../features/validator/validatorSlice';
 
-export const store = configureStore({
-  reducer: {
-    account: accountReducer,
-    asset: assetReducer,
-    app: appReducer,
-    block: blockReducer,
-    contract: contractReducer,
-    faucet: faucetReducer,
-    governance: governanceReducer,
-    ibc: ibcReducer,
-    name: nameReducer,
-    network: networkReducer,
-    nft: nftReducer,
-    notification: notificationReducer,
-    orderbook: orderbookReducer,
-    tx: txReducer,
-    validator: validatorReducer,
-  },
+export const rootReducer = combineReducers({
+  account: accountReducer,
+  asset: assetReducer,
+  app: appReducer,
+  block: blockReducer,
+  contract: contractReducer,
+  faucet: faucetReducer,
+  governance: governanceReducer,
+  ibc: ibcReducer,
+  name: nameReducer,
+  network: networkReducer,
+  nft: nftReducer,
+  notification: notificationReducer,
+  orderbook: orderbookReducer,
+  tx: txReducer,
+  validator: validatorReducer,
+  [grantsApi.reducerPath]: grantsApi.reducer,
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+export const store = (preloadedState?: PreloadedState<RootState>) =>
+  configureStore({
+    devTools: process.env.REACT_APP_ENV === 'local',
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(grantsApi.middleware),
+    preloadedState,
+  });
+
+// Infer the `RootState` and `AppDispatch` types from the rootReducer itself
+export type AppStore = ReturnType<typeof store>;
+export type AppDispatch = AppStore['dispatch'];
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;

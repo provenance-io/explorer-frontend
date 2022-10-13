@@ -9,15 +9,15 @@ import { useState } from 'react';
 interface FrontendPaginationProps {
   // The data to be paginated. Must be an array
   data: any[];
-  // The number of data items to display in each page
-  count: number;
+  // The number of data items to display in each page (default is 10)
+  count?: number;
   // Optional starting page (default is 1)
   startingPage?: number;
 }
 
 export const useFrontendPagination = ({
   data,
-  count,
+  count = 10,
   startingPage = 1,
 }: FrontendPaginationProps) => {
   // Create state variables for changing page
