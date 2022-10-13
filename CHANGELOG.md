@@ -12,7 +12,7 @@
 - Switch hash stats to pull from CMC #393
 - Display multiple blocks per tx hash, navigate to tx by hash and block #395
 - Refactor accounts page #265
-- Add grants to accounts page #262
+- Add grants to accounts page, add expanding table component, add tx search by date for accounts #262
 
 ## 3.2.0
 
