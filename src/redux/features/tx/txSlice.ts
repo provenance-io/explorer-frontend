@@ -317,17 +317,23 @@ export const getTxsByAddress = createAsyncThunk(
     type = '',
     status = '',
     address,
+    toDate,
+    fromDate,
   }: {
     count: number;
     page: number;
     type: string;
     status: string;
     address: string;
+    toDate: string;
+    fromDate: string;
   }) =>
     ajax({
       url: `${TXS_BY_ADDRESS_URL}/${address}?count=${count}&page=${page}${
         type ? `&msgType=${type}` : ''
-      }${status ? `&txStatus=${status.toUpperCase()}` : ''}`,
+      }${status ? `&txStatus=${status.toUpperCase()}` : ''}${toDate ? `&toDate=${toDate}` : ''}${
+        fromDate ? `&fromDate=${fromDate}` : ''
+      }`,
     })
 );
 

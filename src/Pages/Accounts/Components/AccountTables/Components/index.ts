@@ -1,6 +1,7 @@
 export * from './AccountAssets';
 export * from './AccountDelegations';
 export * from './AccountDelegationsOwner';
+export * from './AccountGrants';
 export * from './AccountRedelegations';
 export * from './AccountRewards';
 export * from './AccountUnbondings';

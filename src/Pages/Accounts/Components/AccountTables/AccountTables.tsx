@@ -9,6 +9,7 @@ import {
   AccountAssets,
   AccountDelegations,
   AccountDelegationsOwner,
+  AccountGrants,
   AccountRewards,
   AccountUnbondings,
   AccountAttributes,
@@ -45,6 +46,7 @@ export const AccountTables = () => {
         <AccountRewards key="Rewards" />
         <AccountAttributes key="Attributes" />
         <AccountTxs key="Transactions" />
+        <AccountGrants key="Grants" />
       </MultiTable>
     </Section>
   );

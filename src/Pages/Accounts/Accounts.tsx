@@ -52,7 +52,7 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="50%"
-                title={`Total Hash: ${formatDenom(Number(totalHash.amount), totalHash.denom, {
+                title={`Total Hash: ${formatDenom(Number(totalHash?.amount), totalHash?.denom, {
                   decimal: 2,
                 })}`}
               >
@@ -67,9 +67,13 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="100%"
-                title={`Total Hash: ${formatDenom(Number(totalHash.amount), totalHash.denom, {
-                  decimal: 2,
-                })}`}
+                title={`Total Hash: ${
+                  totalHash
+                    ? formatDenom(Number(totalHash?.amount), totalHash?.denom, {
+                        decimal: 2,
+                      })
+                    : '0 hash'
+                }`}
               >
                 <Group isMdSm={isMdSm}>
                   <HashChart />

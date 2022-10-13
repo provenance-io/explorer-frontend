@@ -7,11 +7,13 @@ import { ICON_NAMES } from 'consts';
 const Wrapper = styled.div`
   width: 100%;
   margin: ${({ isOpen, dontDrop }) => isOpen && !dontDrop && '16px 0'};
-  border-top: ${({ theme, isOpen }) => !isOpen && `${theme.BORDER_PRIMARY} 1px solid`};
+  border-top: ${({ theme, isOpen, table }) =>
+    !isOpen && !table && `${theme.BORDER_PRIMARY} 1px solid`};
   box-shadow: ${({ theme, isOpen }) =>
     isOpen &&
     `${theme.BOX_SHADOW} 0px 2px 1px -1px ${theme.BOX_SHADOW} 0px 1px 1px 0px ${theme.BOX_SHADOW} 0px 1px 3px 0px`};
-  background-color: ${({ theme }) => theme.BACKGROUND_LIGHT};
+  background-color: ${({ theme, index }) =>
+    (index + 1) % 2 === 0 ? theme.BACKGROUND_LIGHT : 'none'};
   transition: margin 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &:first-of-type {
@@ -33,7 +35,7 @@ const AccordionHeader = styled.header`
   grid-template-columns: ${({ showChevron, changeColumns }) =>
     showChevron ? (changeColumns ? changeColumns : '2fr 1fr') : '1fr'};
   align-items: center;
-  padding: 20px;
+  padding: ${({ table }) => (table ? '10px' : '20px')};
   cursor: pointer;
   user-select: none;
 `;
@@ -47,19 +49,29 @@ const AccordionBody = styled.div`
   visibility: ${({ isOpen }) => !isOpen && 'hidden'};
 `;
 
-const Accordion = ({ children, showChevron, title, startOpen, changeColumns, dontDrop }) => {
+const Accordion = ({
+  children,
+  showChevron,
+  title,
+  startOpen,
+  changeColumns,
+  dontDrop,
+  table,
+  index,
+}) => {
   const [isOpen, setIsOpen] = useState(startOpen);
   const theme = useTheme();
 
-  const toggleState = () => setIsOpen(open => !open);
+  const toggleState = () => setIsOpen((open) => !open);
 
   return (
-    <Wrapper isOpen={isOpen} dontDrop={dontDrop}>
+    <Wrapper isOpen={isOpen} dontDrop={dontDrop} table={table} index={index}>
       <AccordionHeader
         onClick={toggleState}
         isOpen={isOpen}
         showChevron={showChevron}
         changeColumns={changeColumns}
+        table={table}
       >
         {title}
         {showChevron && (
@@ -86,6 +98,8 @@ Accordion.propTypes = {
   startOpen: PropTypes.bool,
   changeColumns: PropTypes.string,
   dontDrop: PropTypes.bool,
+  table: PropTypes.bool,
+  index: PropTypes.number,
 };
 
 Accordion.defaultProps = {
@@ -93,6 +107,8 @@ Accordion.defaultProps = {
   startOpen: false,
   changeColumns: '',
   dontDrop: false,
+  table: false,
+  index: 0,
 };
 
 export default Accordion;

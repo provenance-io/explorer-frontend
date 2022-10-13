@@ -23,7 +23,7 @@ const chartData = {
     // shape: 'circle',
     indicator: [{ name: '', max: 0 }],
     splitNumber: 3,
-    nameGap: 5,
+    axisNameGap: 5,
   },
   tooltip: {
     show: true,
@@ -58,6 +58,7 @@ export const HashChart = () => {
   const { addressId: address } = useParams<{ addressId: string }>();
   const { matches: isLg } = useMediaQuery(breakpoints.up('lg'));
   const { matches: isMd } = useMediaQuery(breakpoints.down('md'));
+  const { matches: isSm } = useMediaQuery(breakpoints.down('sm'));
 
   const { getAccountHashData, accountHashData, accountHashDataLoading } = useAccounts();
 
@@ -100,11 +101,11 @@ export const HashChart = () => {
       theseDels,
     ];
     chartData.radar.indicator = [
-      { name: 'Available', max: theseTotal },
-      { name: 'Reward', max: theseTotal },
-      { name: 'Redelegated', max: theseTotal },
-      { name: 'Unbonding', max: theseTotal },
-      { name: 'Delegated', max: theseTotal },
+      { name: 'Available', max: theseTotal || 1 },
+      { name: 'Reward', max: theseTotal || 1 },
+      { name: 'Redelegated', max: theseTotal || 1 },
+      { name: 'Unbonding', max: theseTotal || 1 },
+      { name: 'Delegated', max: theseTotal || 1 },
     ];
     chartData.series[0].backgroundColor = theme.CHART_LINE_MAIN;
     chartData.series[0].areaStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -143,6 +144,6 @@ export const HashChart = () => {
   ) : isEmpty(accountHashData) ? (
     <StyledMessage>No hash data available</StyledMessage>
   ) : (
-    <StyledChart ref={chartElementRef} height={isLg || isMd ? '250px' : ''} />
+    <StyledChart ref={chartElementRef} height={isSm ? '155px' : isLg || isMd ? '250px' : ''} />
   );
 };
