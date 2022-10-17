@@ -52,9 +52,13 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="50%"
-                title={`Total Hash: ${formatDenom(Number(totalHash?.amount), totalHash?.denom, {
-                  decimal: 2,
-                })}`}
+                title={`Total Hash: ${
+                  totalHash?.amount
+                    ? formatDenom(Number(totalHash?.amount), totalHash?.denom, {
+                        decimal: 2,
+                      })
+                    : '0 hash'
+                }`}
               >
                 <HashChart />
                 <HashTable />

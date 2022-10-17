@@ -51,6 +51,10 @@ const List = styled.li`
   margin-bottom: 5px;
 `;
 
+const ListElement = styled.div`
+  display: flex;
+`;
+
 interface PopupDataProps {
   visibility: {
     visible: boolean;
@@ -153,22 +157,37 @@ const getCopyValue = (copyValue: string, title: string, children: React.ReactNod
   </Fragment>
 );
 
-const getList = (list: string[], linkList?: string[], onClick?: (arg?: string) => void) => {
+const getList = (
+  list: string[],
+  linkList?: string[],
+  onClick?: (arg?: string) => void,
+  copyList?: string[]
+) => {
   let index = -1;
   const myList = list.map((element) => {
     index++;
     if (linkList) {
       return (
-        <Link
-          to={linkList[index]}
-          key={index}
-          onClick={onClick ? () => onClick(element) : undefined}
-        >
-          <List>{element}</List>
-        </Link>
+        <ListElement key={element}>
+          <Link
+            to={linkList[index]}
+            key={element}
+            onClick={onClick ? () => onClick(element) : undefined}
+          >
+            <List>{element}</List>
+          </Link>
+          {copyList && <CopyValue value={copyList[index]} />}
+        </ListElement>
       );
     } else {
-      return <List key={index}>{element}</List>;
+      return (
+        <ListElement key={element}>
+          <List key={element} onClick={onClick ? () => onClick(element) : undefined}>
+            {element}
+          </List>
+          {copyList && <CopyValue value={copyList[index]} />}
+        </ListElement>
+      );
     }
   });
   return myList;
@@ -189,6 +208,7 @@ interface RowDataProps {
   list?: string[];
   linkList?: string[];
   onClick?: (arg?: string) => void; // Something done on clicking a link
+  copyList?: string[];
 }
 
 const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
@@ -205,6 +225,7 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
     list,
     linkList,
     onClick,
+    copyList,
   } = rowData;
 
   let finalValue = value;
@@ -224,7 +245,7 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
     finalValue = getPopupValue(popupNote, finalValue);
   }
   if (list) {
-    finalValue = <UL>{getList(list, linkList, onClick)}</UL>;
+    finalValue = <UL>{getList(list, linkList, onClick, copyList)}</UL>;
   }
   if (isJson && typeof finalValue === 'string') {
     finalValue = (
