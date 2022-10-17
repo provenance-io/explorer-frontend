@@ -25,9 +25,9 @@ const chartData = {
     splitNumber: 3,
     axisNameGap: 5,
   },
-  tooltip: {
-    show: true,
-  },
+  // tooltip: {
+  //   show: true,
+  // },
   series: [
     {
       name: 'Hash',
