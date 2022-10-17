@@ -236,6 +236,7 @@ const Table = ({
           copy = false,
           blockImage = {},
           raw = '',
+          addTextToLink = '',
         } = rowData[dataName] || {};
 
         // Note: if the value is an array, split all values out
@@ -278,6 +279,7 @@ const Table = ({
                   {finalValue}
                   {icon && <Sprite icon={icon} size={size} color={iconColor} />}
                 </Link>
+                {addTextToLink && ` ${addTextToLink}`}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </>
             ) : (
@@ -288,6 +290,7 @@ const Table = ({
                   </a>
                 )}
                 {!externalLink && value}
+                {addTextToLink && ` ${addTextToLink}`}
                 {icon && <Sprite icon={icon} size={size} color={iconColor} spin={spin} />}
                 {copy && <CopyValue value={raw} title={`Copy ${hover}`} />}
               </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, Field as BaseField } from "formik";
+import { Formik, Field as BaseField } from 'formik';
 import styled from 'styled-components';
 import { Button, Modal, Forms } from 'Components';
 import { capitalize, proposalData, proposalValidations } from 'utils';
@@ -10,7 +10,7 @@ import { Countdown } from '../../Proposal/Components/ManageVotingModal/Component
 const Title = styled.div`
   text-align: center;
   font-size: 2rem;
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD}; 
+  font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
 `;
 
 const Option = styled.option`
@@ -106,11 +106,11 @@ const ManageProposalModal = ({
     const emptyObj: ItemProps = {};
     proposalData(values.dropdown).forEach((item) => {
       if (item.field !== 'initialDeposit') {
-        emptyObj[item.field] = values[item.field]
+        emptyObj[item.field] = values[item.field];
       }
     });
     return emptyObj;
-  }
+  };
 
   useEffect(() => {
     setIsOpen(isLoggedIn && modalOpen);
@@ -120,7 +120,7 @@ const ManageProposalModal = ({
     getBlocksHeight();
     setBlockNumber(blocksHeight as number);
     // eslint-disable-next-line
-  },[]);
+  }, []);
 
   const handleModalClose = () => {
     setSubmitted(false);
@@ -129,20 +129,17 @@ const ManageProposalModal = ({
 
   const handleChange = (e: EventProps) => {
     setProposalType(e.target.value);
-  }
+  };
 
   // Get initial values
   const getInitialValues = (type: string) => {
     const initialValues: { [key: string]: string | [{}] } = {};
     proposalData(type).map((item) => {
       if (!item.subFields) {
-        initialValues[item.field] = item.initialValue || "";
-      }
-      else {
+        initialValues[item.field] = item.initialValue || '';
+      } else {
         const subValues: { [key: string]: string | string[] } = {};
-        item.subFields.map(subItem =>
-          subValues[subItem.field] = item.initialValue || ""
-        );
+        item.subFields.map((subItem) => (subValues[subItem.field] = item.initialValue || ''));
         initialValues[item.field] = [subValues];
       }
       return initialValues;
@@ -156,10 +153,10 @@ const ManageProposalModal = ({
       <br />
       <br />
       Results may take up to 30 seconds to post to Explorer. Please be patient.
-      <br/>
-      <br/>
-      To continue, either wait for the timer to time out, at which point the page will
-      refresh. Otherwise, exit this popup and refresh the page to view your proposal.
+      <br />
+      <br />
+      To continue, either wait for the timer to time out, at which point the page will refresh.
+      Otherwise, exit this popup and refresh the page to view your proposal.
     </>
   );
 
@@ -176,33 +173,35 @@ const ManageProposalModal = ({
           // Submit proposal message
           if (!submitted) {
             if (values.initialDeposit) {
-              onProposal(getContent(values), [{amount: (parseFloat(values.initialDeposit)*1e9).toFixed(), denom: 'nhash'}], proposerId, proposalType);
-            }
-            else {
+              onProposal(
+                getContent(values),
+                [{ amount: (parseFloat(values.initialDeposit) * 1e9).toFixed(), denom: 'nhash' }],
+                proposerId,
+                proposalType
+              );
+            } else {
               onProposal(getContent(values), [], proposerId, proposalType);
-            };
-          };
+            }
+          }
           // Clear the form
           resetForm();
         }}
       >
-        {formik => (
+        {(formik) => (
           <form onSubmit={formik.handleSubmit}>
-            {!submitted &&
+            {!submitted && (
               <>
                 <Title>{`Proposal ${proposalId}`}</Title>
                 <ThisField>
                   <Label htmlFor="dropdown">Proposal Type</Label>
-                  <Field 
-                    as="select"
-                    name="dropdown"
-                    onChange={handleChange}
-                  >
+                  <Field as="select" name="dropdown" onChange={handleChange}>
                     {Object.keys(PROPOSAL_TYPES).map((key) => {
                       const proposal = PROPOSAL_TYPES[key];
                       return (
-                        <Option key={proposal} value={proposal}>{capitalize(proposal)}</Option>
-                      )
+                        <Option key={proposal} value={proposal}>
+                          {capitalize(proposal)}
+                        </Option>
+                      );
                     })}
                   </Field>
                 </ThisField>
@@ -211,17 +210,17 @@ const ManageProposalModal = ({
                   <Button type="submit">Submit</Button>
                 </ButtonGroup>
               </>
-            }
-            {submitted &&
-              <Countdown 
+            )}
+            {submitted && (
+              <Countdown
                 onClick={handleModalClose}
                 seconds={30}
-                title='Proposal Submitted'
+                title="Proposal Submitted"
                 message={proposalMessage}
               />
-            } 
+            )}
           </form>
-        )}  
+        )}
       </Formik>
     </Modal>
   );

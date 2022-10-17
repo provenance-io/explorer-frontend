@@ -13,6 +13,7 @@ const MsgContainer = styled.div`
 
 const TxInformation = () => {
   const [showErrorLogPopup, setShowErrorLogPopup] = useState(false);
+  const [showFeepayerTypePopup, setShowFeepayerTypePopup] = useState(false);
   const { txInfo, txInfoLoading, txMsgsLoading, getTxInfo } = useTxs();
   const { txHash, block } = useParams();
 
@@ -27,13 +28,23 @@ const TxInformation = () => {
   );
 
   const buildTxInformationContent = () => {
-    const { errorCode, errorLog, fee, height, memo, signers, status, time, additionalHeights } =
-      txInfo;
+    const {
+      errorCode,
+      errorLog,
+      fee,
+      height,
+      memo,
+      signers,
+      status,
+      time,
+      feepayer,
+      additionalHeights,
+    } = txInfo;
 
     const totalFee = { amount: 0, denom: '' };
 
     fee.map((fee) => {
-      const amount = fee.fees.reduce((sum, a) => sum + Number(a.amount), 0);
+      const amount = fee.fees[0].amount;
       const denom = fee.fees[0].denom;
       totalFee.amount += parseInt(amount);
       totalFee.denom = denom;
@@ -48,8 +59,8 @@ const TxInformation = () => {
       decimal: totalFee.amount / 1e9 < 0.0001 ? 20 : 4,
     });
 
-    // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
-    const signer = signers?.signers[0];
+    // Signers is an object containing signers [array] and threshold [number] - we only need the signers array
+    const signerArray = signers?.signers;
 
     const errorLogPopupNote = {
       visibility: { visible: showErrorLogPopup, setVisible: setShowErrorLogPopup },
@@ -64,6 +75,19 @@ const TxInformation = () => {
       ],
     };
 
+    const feepayerTypePopupNote = {
+      visibility: { visible: showFeepayerTypePopup, setVisible: setShowFeepayerTypePopup },
+      icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+      method: ['click', 'hover'],
+      fontColor: 'FONT_WHITE',
+      data: [
+        {
+          title: 'Feepayer Type:',
+          value: feepayer.type,
+        },
+      ],
+    };
+
     const summaryData = [
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
@@ -71,10 +95,18 @@ const TxInformation = () => {
       { title: 'Total Fees', value: feeValue },
 
       {
-        title: 'Signer',
-        value: maxLength(signer, 24, 10),
-        link: `/accounts/${signer}`,
-        copy: signer,
+        title: 'Signer(s)',
+        value: signerArray, // maxLength(signer, 24, 10),
+        list: signerArray.map((val) => maxLength(val, 12, '4')),
+        linkList: signerArray.map((val) => '/accounts/' + val),
+        copyList: signerArray,
+      },
+      {
+        title: 'Feepayer',
+        value: maxLength(feepayer.address, 12, '4'),
+        link: `/accounts/${feepayer.address}`,
+        copy: feepayer.address,
+        popupNote: feepayerTypePopupNote,
       },
       { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
       {

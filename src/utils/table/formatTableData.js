@@ -68,12 +68,18 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Address or hash leading to the account's page (multiple)
         case 'signers': {
-          // Signers is an object containing signers [array] and threshold [number] - we only need the first signers array item
+          // Signers is an object containing signers [array] and threshold [number] - we only need
+          // the first value and the length to indicate the total number of signers
           const signer = serverValue?.signers[0];
           finalObj[dataName] = {
             value: maxLength(signer, 11, 3),
             link: `/accounts/${signer}`,
-            hover: signer,
+            addTextToLink:
+              serverValue?.signers.length > 1 ? ` +${serverValue?.signers.length - 1}` : '',
+            hover:
+              serverValue?.signers.length <= 1
+                ? signer
+                : `${serverValue.signers.length} total signers`,
           };
           break;
         }
