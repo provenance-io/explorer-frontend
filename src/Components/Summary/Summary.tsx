@@ -55,7 +55,7 @@ const ListElement = styled.div`
   display: flex;
 `;
 
-interface PopupDataProps {
+export interface PopupDataProps {
   visibility: {
     visible: boolean;
     setVisible: (arg: boolean) => MouseEventHandler<HTMLDivElement>;

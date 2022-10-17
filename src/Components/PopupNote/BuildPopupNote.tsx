@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { PopupNote, Sprite } from 'Components';
+import { Link } from 'react-router-dom';
 
 const NoteContainer = styled.div<{ fontColor: string }>`
   position: relative;
@@ -17,9 +18,11 @@ const NoteRow = styled.div`
 const NoteTitle = styled.div<{ titleMinWidth: string }>`
   min-width: ${({ titleMinWidth }) => (titleMinWidth ? titleMinWidth : '100px')};
 `;
-const NoteValue = styled.div<{ noteMinWidth: string }>`
+const NoteValue = styled.div<{ noteMinWidth: string; column?: string }>`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   display: flex;
+  gap: 10px;
+  flex-direction: ${({ column }) => column && 'column'};
   min-width: ${({ noteMinWidth }) => (noteMinWidth ? noteMinWidth : '100px')};
 `;
 
@@ -59,12 +62,39 @@ export const BuildPopupNote = (popupData: PopupDataProps) => {
     title: string;
     value: string;
     hideTitle?: boolean;
+    externalLink?: string;
+    link?: string; // The link embedded in the popup note
+    linkValue?: string; // the value displayed that holds the link
   }
 
-  const buildPopupRow = ({ title, value, hideTitle = false }: BuildPopupRowProps) => (
+  const buildPopupRow = ({
+    title,
+    value,
+    hideTitle = false,
+    externalLink,
+    link,
+    linkValue,
+  }: BuildPopupRowProps) => (
     <NoteRow key={title}>
       {!hideTitle && <NoteTitle titleMinWidth={titleMinWidth}>{title}</NoteTitle>}
-      <NoteValue noteMinWidth={noteMinWidth}>{value}</NoteValue>
+      {
+        <NoteValue noteMinWidth={noteMinWidth} column={(link || externalLink) && linkValue}>
+          {externalLink ? (
+            <>
+              {value}
+              <a href={externalLink} target="_blank" rel="noreferrer">
+                {linkValue}
+              </a>
+            </>
+          ) : link ? (
+            <>
+              {value} <Link to={link}>{linkValue}</Link>
+            </>
+          ) : (
+            value
+          )}
+        </NoteValue>
+      }
     </NoteRow>
   );
 

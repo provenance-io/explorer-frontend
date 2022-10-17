@@ -7,6 +7,7 @@
 - Fix latest transaction volume display #400
 - Add small margin for 404 screen #387
 - Fix transaction totals issue #389
+- Minor corrections to updated accounts page #407
 
 ### Features
 - Switch hash stats to pull from CMC #393

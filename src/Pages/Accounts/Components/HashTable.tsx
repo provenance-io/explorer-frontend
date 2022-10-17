@@ -53,7 +53,7 @@ export const HashTable = () => {
       hashBucket: 'Rewards',
       amount: {
         amount: theseRewards,
-        denom: accountHashData?.rewards?.total[0]?.amount,
+        denom: accountHashData?.rewards?.total[0]?.denom,
       },
     },
   ];
