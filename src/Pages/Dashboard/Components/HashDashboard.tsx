@@ -40,7 +40,6 @@ const HashDashboard = () => {
   const latestPrice = currentPricing.quote.USD?.price || 0;
   const priceChange = currentPricing.quote.USD?.percent_change_24h || 0;
   const twentyFourHourVolume = currentPricing.quote.USD?.volume_24h;
-  const volumeChange = currentPricing.quote.USD?.volume_change_24h || 0;
   const marketCap = currentPricing.quote.USD?.market_cap_by_total_supply;
 
   return (
@@ -86,14 +85,6 @@ const HashDashboard = () => {
               shorthand: true,
               decimal: 2,
             })}`}
-            <HashSpan>
-              24 hour change:{' '}
-              <PercentChange
-                color={volumeChange >= 0 ? theme.POSITIVE_CHANGE : theme.NEGATIVE_CHANGE}
-              >
-                {volumeChange ? (volumeChange as number).toFixed(1) : 0}%
-              </PercentChange>
-            </HashSpan>
           </DataCard>
         </>
       ) : (

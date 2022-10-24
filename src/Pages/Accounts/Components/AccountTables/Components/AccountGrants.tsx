@@ -3,7 +3,7 @@ import ReactJson from 'react-json-view';
 import { Content, MultiTable, Loading, Summary, Table } from 'Components';
 import { useParams } from 'react-router';
 import { AuthzProps, FeeGrantProps, useGetGrantsQuery } from 'redux/services';
-import { capitalize, isEmpty } from 'utils';
+import { capitalize, formatDenom, isEmpty } from 'utils';
 
 interface GrantsProps {
   grant: 'authz' | 'feegrant';
@@ -55,7 +55,11 @@ const AllGrants = ({ grant, type, currentPage, changePage }: GrantsProps) => {
             title: key,
             value: item.authorization[key as keyof typeof item.authorization],
             list: Array.isArray(item.authorization[key as keyof typeof item.authorization])
-              ? item.authorization[key as keyof typeof item.authorization]
+              ? key === 'transferLimits'
+                ? (item.authorization[key as keyof typeof item.authorization] as Array<any>).map(
+                    (val) => formatDenom(val.amount, val.denom)
+                  )
+                : item.authorization[key as keyof typeof item.authorization]
               : undefined,
           }))}
         />
