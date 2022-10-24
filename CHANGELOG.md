@@ -15,6 +15,7 @@
 - Refactor accounts page #265
 - Add grants to accounts page, add expanding table component, add tx search by date for accounts #262
 - Displays all signers on transactions, shows feepayers and type in Tx view #405
+- Update RTK Query to run a single endpoint with multiple injects #409
 
 ## 3.2.0
 

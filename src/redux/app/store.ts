@@ -1,5 +1,5 @@
 import { configureStore, PreloadedState, ThunkAction, Action } from '@reduxjs/toolkit';
-import { grantsApi } from 'redux/services';
+import { api } from 'redux/services/serviceApi';
 import { combineReducers } from 'redux';
 import accountReducer from '../features/account/accountSlice';
 import assetReducer from '../features/asset/assetSlice';
@@ -33,7 +33,7 @@ export const rootReducer = combineReducers({
   orderbook: orderbookReducer,
   tx: txReducer,
   validator: validatorReducer,
-  [grantsApi.reducerPath]: grantsApi.reducer,
+  [api.reducerPath]: api.reducer,
 });
 
 export const store = (preloadedState?: PreloadedState<RootState>) =>
@@ -43,7 +43,7 @@ export const store = (preloadedState?: PreloadedState<RootState>) =>
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
-      }).concat(grantsApi.middleware),
+      }).concat(api.middleware),
     preloadedState,
   });
 

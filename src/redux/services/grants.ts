@@ -1,5 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { GRANTS_AUTHZ_URL, GRANTS_FEEGRANT_URL } from 'consts';
+import qs from 'query-string';
+import { api } from './serviceApi';
 
 export interface AuthzProps {
   authorization: object;
@@ -34,11 +35,7 @@ interface FeeGrantGrantee {
   total: number;
 }
 
-export const grantsApi = createApi({
-  reducerPath: 'grantsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '',
-  }),
+export const grantsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getGrants: builder.query<
       AuthzGrantee | FeeGrantGrantee,
@@ -50,20 +47,10 @@ export const grantsApi = createApi({
         count?: number;
       }
     >({
-      query: ({ grant, type, address, page = 1, count = 10 }) => {
-        const searchParamsObj = new URLSearchParams();
-        // Page and count are optional params
-        searchParamsObj.append('page', `${page}`);
-        searchParamsObj.append('count', `${count}`);
-        // Base api url (without page or count)
-        const urlObj = new URL(
-          `${grant === 'authz' ? GRANTS_AUTHZ_URL : GRANTS_FEEGRANT_URL}/${address}/${type}`
-        );
-        // Append page/count to url as needed
-        urlObj.search = searchParamsObj.toString();
-
-        return urlObj.toString();
-      },
+      query: ({ grant, type, address, page = 1, count = 10 }) =>
+        `${
+          grant === 'authz' ? GRANTS_AUTHZ_URL : GRANTS_FEEGRANT_URL
+        }/${address}/${type}?${qs.stringify({ page, count })}`,
     }),
   }),
 });
