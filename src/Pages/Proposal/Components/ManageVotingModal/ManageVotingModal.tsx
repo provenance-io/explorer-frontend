@@ -138,7 +138,6 @@ const ManageVotingModal = ({
   // Delegations are pulled when the vote button is clicked
   const hasDelegations = parseInt(accountDelegationsTotal.amount) > 0;
   const [voteAnyway, setVoteAnyway] = useState(false);
-  const [error, setError] = useState('');
   const { walletConnectService: wcs } = useWalletConnect();
 
   useEffect(() => {
@@ -146,7 +145,6 @@ const ManageVotingModal = ({
   }, [isLoggedIn, modalOpen]);
 
   const handleModalClose = () => {
-    setError('');
     setVoteAnyway(false);
     setVoteType('');
     setVoted(false);
@@ -271,7 +269,7 @@ const ManageVotingModal = ({
                   </VoteWarning>
                 </ThisField>
               )}
-              {(hasDelegations || voteAnyway) && !voted && !error ? (
+              {(hasDelegations || voteAnyway) && !voted && (
                 <>
                   <Title>
                     Vote on <b>{title}</b>
@@ -304,11 +302,6 @@ const ManageVotingModal = ({
                     </ButtonGroup>
                   </MenuEnd>
                 </>
-              ) : (
-                <VoteWarning color={theme.RED_LIGHT}>
-                  <WarningTitle>The following errors occurred in your submission: </WarningTitle>
-                  {error}
-                </VoteWarning>
               )}
               {voted && (
                 <Countdown

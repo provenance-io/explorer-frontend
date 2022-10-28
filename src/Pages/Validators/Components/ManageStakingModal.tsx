@@ -4,7 +4,7 @@ import { Button, DropdownBtn, Forms, Loading, Modal, SelectFolders, Sprite } fro
 import { CurrentValidator, useAccounts, useStaking, useValidators } from 'redux/hooks';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { capitalize, currencyFormat, maxLength, numberFormat } from 'utils';
+import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from 'utils';
 import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from 'consts';
 import {
   DelegateProps,
@@ -540,17 +540,15 @@ export const ManageStakingModal = ({
               {/* Buttons for submission */}
               {stakingType && (
                 <>
-                  {stakingType === STAKING_TYPES.CLAIM && (
+                  {stakingType === STAKING_TYPES.CLAIM && validator.reward && (
                     <Info>
                       <Pair>
                         <PairTitle>Total Rewards Available</PairTitle>
                         <PairValue>
-                          {validator.reward && validator.reward.length > 0
-                            ? currencyFormat(
-                                Number(validator.reward[0].amount),
-                                validator.reward[0].denom
-                              )
-                            : '-- --'}
+                          {formatDenom(
+                            Number(validator.reward[0].amount),
+                            validator.reward[0].denom
+                          )}
                         </PairValue>
                       </Pair>
                     </Info>
