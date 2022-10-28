@@ -294,6 +294,7 @@ export const ManageStakingModal = ({
           })}
           onSubmit={async (values: DelegationFormProps, { resetForm }) => {
             handleSubmit(values.amount);
+            handleModalClose();
             resetForm();
           }}
         >
