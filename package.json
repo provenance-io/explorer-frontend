@@ -125,7 +125,7 @@
     "docker:prod": "docker build -f Dockerfile-prod -t explorer-frontend:prod .",
     "procreate": "pro create",
     "proremove": "pro remove",
-    "script:linkify": "python ./scripts/linkify.py ./CHANGELOG.md"
+    "script:linkify": "python3 ./scripts/linkify.py ./CHANGELOG.md"
   },
   "browserslist": {
     "production": [
