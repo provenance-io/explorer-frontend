@@ -2,8 +2,16 @@
 
 ## Unreleased
 
+### Bugs
+
+### Features
+
+## 3.3.1
+
+### Release Name: John Young
+
 ### Bug Fixes
-- Fix accordion dropdown background color #416
+- Fix accordion dropdown background color [#416](https://github.com/provenance-io/explorer-frontend/issues/416)
 
 ### Features
 
