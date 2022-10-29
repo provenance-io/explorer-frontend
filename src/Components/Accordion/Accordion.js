@@ -13,7 +13,7 @@ const Wrapper = styled.div`
     isOpen &&
     `${theme.BOX_SHADOW} 0px 2px 1px -1px ${theme.BOX_SHADOW} 0px 1px 1px 0px ${theme.BOX_SHADOW} 0px 1px 3px 0px`};
   background-color: ${({ theme, index }) =>
-    (index + 1) % 2 === 0 ? theme.BACKGROUND_LIGHT : 'none'};
+    index ? ((index + 1) % 2 === 0 ? theme.BACKGROUND_LIGHT : 'none') : theme.BACKGROUND_LIGHT};
   transition: margin 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &:first-of-type {

@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Bug Fixes
+- Fix accordion dropdown background color #416
 
 ### Features
 
