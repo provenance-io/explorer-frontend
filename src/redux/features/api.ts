@@ -18,6 +18,10 @@ export const axios = _axios.create({
   withCredentials: true,
 });
 
+export const xhrSetToken = (value: string) => {
+  axios.defaults.headers.Authorization = `Bearer ${value}`;
+};
+
 function errorHandling(error: any) {
   if (error.response) {
     return error.response.data;

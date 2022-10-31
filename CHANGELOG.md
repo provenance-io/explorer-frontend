@@ -5,6 +5,7 @@
 ### Bugs
 
 ### Features
+- Update governance to use new endpoints #390
 
 ## 3.3.1
 

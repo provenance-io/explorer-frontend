@@ -1,4 +1,5 @@
 export * from './breakpoints';
+export * from './fileSize';
 export * from './iconNames';
 export * from './links';
 export * from './options';

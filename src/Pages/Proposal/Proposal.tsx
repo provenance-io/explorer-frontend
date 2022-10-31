@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useWallet } from '@provenanceio/wallet-lib';
 import { Wrapper, Header, Section, Loading } from 'Components';
 import { isEmpty } from 'utils';
+import { useWalletConnect } from '@provenanceio/walletconnect-js';
 import { useGovernance, useAccounts, useApp } from '../../redux/hooks';
 import {
   ProposalDeposits,
@@ -24,15 +24,13 @@ const Proposal = () => {
   const { proposal, proposalLoading, getProposal } = useGovernance();
   const { timings } = proposal;
   const { accountAssets, getAccountAssets } = useAccounts();
-  const { walletService } = useWallet();
   const { isLoggedIn } = useApp();
+  const { walletConnectState } = useWalletConnect();
+  const { address } = walletConnectState;
   const hashBalance: { amount: string; denom: string } = accountAssets?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
   const hasHash = !isEmpty(hashBalance) && parseFloat(hashBalance.amount) > 0;
-  const {
-    state: { address },
-  } = walletService;
 
   const votingIsOpen =
     !isEmpty(timings) &&
@@ -47,7 +45,8 @@ const Proposal = () => {
 
   useEffect(() => {
     if (address) {
-      getAccountAssets({ address });
+      // TODO: Need an endpoint that only returns a users hash value
+      getAccountAssets({ address, count: 100 });
     }
   }, [getAccountAssets, address]);
 

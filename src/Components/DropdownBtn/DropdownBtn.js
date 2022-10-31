@@ -79,7 +79,7 @@ const ListItem = styled.li`
   }
 `;
 
-const DropdownBtn = ({ className, color, initial, onClick, options }) => {
+const DropdownBtn = ({ className, color, initial, onClick, options, type }) => {
   const $color = color.toUpperCase();
   const [showDropdown, toggleDropdown, , deactivateDropdown] = useToggle();
   const containerRef = useOnClickOutside(deactivateDropdown);
@@ -105,10 +105,10 @@ const DropdownBtn = ({ className, color, initial, onClick, options }) => {
   return (
     <Container className={className} ref={containerRef}>
       <ButtonGroup>
-        <Button color={color} onClick={handleAction}>
+        <Button color={color} onClick={handleAction} type={type}>
           {initial}
         </Button>
-        <SelectArrow $color={$color} onClick={toggleDropdown}>
+        <SelectArrow $color={$color} onClick={toggleDropdown} type={type}>
           <Sprite icon="CARET" size="0.9rem" color={theme[`BUTTON_${$color}_FONT`]} />
         </SelectArrow>
       </ButtonGroup>
@@ -129,6 +129,7 @@ DropdownBtn.propTypes = {
   initial: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  type: PropTypes.string,
 };
 
 DropdownBtn.defaultProps = {

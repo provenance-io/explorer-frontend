@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Table, Section as BaseSection, Loading } from 'Components';
-import { useWallet } from '@provenanceio/wallet-lib';
+import { useWalletConnect } from '@provenanceio/walletconnect-js';
 import { isEmpty } from 'utils';
-import { ManageProposalModal } from ".";
+import { ManageProposalModal } from '.';
 import { useApp, useGovernance, useProposal } from '../../../redux/hooks';
 
 const Section = styled(BaseSection)`
@@ -19,9 +19,9 @@ const ProposalsList = () => {
     proposalsLoading: tableLoading,
     proposalsPages: tablePages,
   } = useGovernance();
-  const { walletService } = useWallet();
+  const { walletConnectState } = useWalletConnect();
   const { isLoggedIn } = useApp();
-  const { handleProposal, ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
+  const { ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
   const [proposalMax, setProposalMax] = useState(1);
 
   // Calculate the current max proposal ID
@@ -29,13 +29,14 @@ const ProposalsList = () => {
     if (!isEmpty(proposals) && proposalMax === 1) {
       setProposalMax(proposals[0].header.proposalId + 1);
     }
-  },[proposals, proposalMax]);
+  }, [proposals, proposalMax]);
 
-  const {
-    state: { address },
-  } = walletService;
+  const { address } = walletConnectState;
 
-  const tableData = proposals.map((d: {header: object, timings: object}) => ({ ...d.header, ...d.timings }));
+  const tableData = proposals.map((d: { header: object; timings: object }) => ({
+    ...d.header,
+    ...d.timings,
+  }));
 
   useEffect(() => {
     getAllProposals({ count: tableCount, page: tableCurrentPage });
@@ -53,33 +54,31 @@ const ProposalsList = () => {
 
   return (
     <>
-    {isLoggedIn && (
-      <Section header>
-        {!address ? <Loading /> :
-        <ManageProposalBtn />}
-        <ManageProposalModal 
-          isLoggedIn={isLoggedIn}
-          modalOpen={modalFns.modalOpen}
-          onClose={modalFns.deactivateModalOpen}
-          onProposal={handleProposal}
-          proposalId={`${proposalMax}`}
-          proposerId={address}
-          submitted={submitted}
-          setSubmitted={setSubmitted}
+      {isLoggedIn && (
+        <Section header>
+          {!address ? <Loading /> : <ManageProposalBtn />}
+          <ManageProposalModal
+            isLoggedIn={isLoggedIn}
+            modalOpen={modalFns.modalOpen}
+            onClose={modalFns.deactivateModalOpen}
+            proposalId={`${proposalMax}`}
+            proposerId={address}
+            submitted={submitted}
+            setSubmitted={setSubmitted}
+          />
+        </Section>
+      )}
+      <Section header={!isLoggedIn}>
+        <Table
+          tableHeaders={tableHeaders}
+          tableData={tableData}
+          currentPage={tableCurrentPage}
+          changePage={setTableCurrentPage}
+          totalPages={tablePages}
+          isLoading={tableLoading}
+          title="Proposals List"
         />
       </Section>
-    )}
-    <Section header={!isLoggedIn}>
-      <Table
-        tableHeaders={tableHeaders}
-        tableData={tableData}
-        currentPage={tableCurrentPage}
-        changePage={setTableCurrentPage}
-        totalPages={tablePages}
-        isLoading={tableLoading}
-        title="Proposals List"
-      />
-    </Section>
     </>
   );
 };
