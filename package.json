@@ -7,7 +7,7 @@
     "type": "git",
     "url": "https://github.com/provenance-io/explorer-frontend"
   },
-  "version": "3.2.0",
+  "version": "3.3.1",
   "private": false,
   "sideEffects": false,
   "dependencies": {
@@ -128,7 +128,7 @@
     "docker:prod": "docker build -f Dockerfile-prod -t explorer-frontend:prod .",
     "procreate": "pro create",
     "proremove": "pro remove",
-    "script:linkify": "python ./scripts/linkify.py ./CHANGELOG.md"
+    "script:linkify": "python3 ./scripts/linkify.py ./CHANGELOG.md"
   },
   "browserslist": {
     "production": [

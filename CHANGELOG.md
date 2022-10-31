@@ -2,21 +2,38 @@
 
 ## Unreleased
 
-### Bug fixes
-- Formatting fix for transaction fees and proposal info #391
-- Fix latest transaction volume display #400
-- Add small margin for 404 screen #387
-- Fix transaction totals issue #389
-- Minor corrections to updated accounts page #407
+### Bugs
 
 ### Features
-- Switch hash stats to pull from CMC #393
-- Display multiple blocks per tx hash, navigate to tx by hash and block #395
-- Refactor accounts page #265
-- Add grants to accounts page, add expanding table component, add tx search by date for accounts #262
-- Displays all signers on transactions, shows feepayers and type in Tx view #405
-- Update RTK Query to run a single endpoint with multiple injects #409
 - Update governance to use new endpoints #390
+
+## 3.3.1
+
+### Release Name: John Young
+
+### Bug Fixes
+- Fix accordion dropdown background color [#416](https://github.com/provenance-io/explorer-frontend/issues/416)
+
+### Features
+
+## 3.3.0
+
+### Release Name: Flóki Vilgerðarson
+
+### Bug fixes
+- Formatting fix for transaction fees and proposal info [#391](https://github.com/provenance-io/explorer-frontend/issues/391)
+- Fix latest transaction volume display [#400](https://github.com/provenance-io/explorer-frontend/issues/400)
+- Add small margin for 404 screen [#387](https://github.com/provenance-io/explorer-frontend/issues/387)
+- Fix transaction totals issue [#389](https://github.com/provenance-io/explorer-frontend/issues/389)
+- Minor corrections to updated accounts page [#407](https://github.com/provenance-io/explorer-frontend/issues/407)
+
+### Features
+- Switch hash stats to pull from CMC [#393](https://github.com/provenance-io/explorer-frontend/issues/393)
+- Display multiple blocks per tx hash, navigate to tx by hash and block [#395](https://github.com/provenance-io/explorer-frontend/issues/395)
+- Refactor accounts page [#265](https://github.com/provenance-io/explorer-frontend/issues/265)
+- Add grants to accounts page, add expanding table component, add tx search by date for accounts [#262](https://github.com/provenance-io/explorer-frontend/issues/262)
+- Displays all signers on transactions, shows feepayers and type in Tx view [#405](https://github.com/provenance-io/explorer-frontend/issues/405)
+- Update RTK Query to run a single endpoint with multiple injects [#409](https://github.com/provenance-io/explorer-frontend/issues/409)
 
 ## 3.2.0
 
