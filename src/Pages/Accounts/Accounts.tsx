@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useMediaQuery, useAccounts } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { formatDenom, maxLength } from 'utils';
+import Big from 'big.js';
 import { AccountSpotlight, HashChart } from './Components';
 import { AccountTables } from './Components/AccountTables/AccountTables';
 import { NoMatch404 } from '..';
@@ -25,9 +26,21 @@ const Accounts = () => {
   const { matches: isLg } = useMediaQuery(breakpoints.up('md'));
   const { accountInfoFailure, accountHashData } = useAccounts();
 
-  const totalHash = accountHashData.assets.results?.find(
+  const availableHash = accountHashData.assets.results?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
+  const theseDels = new Big(
+    Number(accountHashData?.delegations?.rollupTotals?.bondedTotal?.amount || 0)
+  ).toNumber();
+  const theseRedels = new Big(
+    accountHashData?.redelegations?.rollupTotals?.redelegationTotal?.amount || 0
+  ).toNumber();
+  const theseUnbonds = new Big(
+    accountHashData?.unbonding?.rollupTotals?.unbondingTotal?.amount || 0
+  ).toNumber();
+  const theseRewards = new Big(accountHashData?.rewards?.total[0]?.amount || 0).toNumber();
+  const available = new Big(Number(availableHash?.amount || 0)).toNumber();
+  const totalHash = available + theseDels + theseRedels + theseUnbonds + theseRewards;
 
   const headerValue = sizeSm ? maxLength(addressId, 20, '3') : addressId;
 
@@ -52,13 +65,9 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="50%"
-                title={`Total Hash: ${
-                  totalHash?.amount
-                    ? formatDenom(Number(totalHash?.amount), totalHash?.denom, {
-                        decimal: 2,
-                      })
-                    : '0 hash'
-                }`}
+                title={`Total Hash: ${formatDenom(Number(totalHash), 'hash', {
+                  decimal: 2,
+                })}`}
               >
                 <HashChart />
                 <HashTable />
@@ -71,13 +80,9 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="100%"
-                title={`Total Hash: ${
-                  totalHash
-                    ? formatDenom(Number(totalHash?.amount), totalHash?.denom, {
-                        decimal: 2,
-                      })
-                    : '0 hash'
-                }`}
+                title={`Total Hash: ${formatDenom(Number(totalHash), 'hash', {
+                  decimal: 2,
+                })}`}
               >
                 <Group isMdSm={isMdSm}>
                   <HashChart />

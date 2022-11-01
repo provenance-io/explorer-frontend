@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Bugs
+- Fix account chart issues #421
 
 ### Features
 - Update governance to use new endpoints #390
