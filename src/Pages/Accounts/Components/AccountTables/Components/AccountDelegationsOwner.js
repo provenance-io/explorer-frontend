@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { Table } from 'Components';
 import { formatDenom } from 'utils';
-import ManageStakingModal from '../../../../Validators/Components/ManageStakingModal';
+import { ManageStakingModal } from '../../../../Validators/Components/ManageStakingModal';
 
 export const AccountDelegationsOwner = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

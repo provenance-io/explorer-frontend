@@ -135,7 +135,7 @@ const SelectFolders = ({ allOptions, action, maxHeight, setDefaults }) => {
     // eslint-disable-next-line
   }, []);
 
-  const toggleMenu = e => {
+  const toggleMenu = (e) => {
     // Don't let this event bubble
     e.stopPropagation();
     setMenuOpen(!menuOpen);
@@ -144,7 +144,7 @@ const SelectFolders = ({ allOptions, action, maxHeight, setDefaults }) => {
   const buildOptions = (options, isChild) => {
     const optionKeys = Object.keys(options);
     // Loop through all first layer of options
-    return optionKeys.map(optionItemKey => {
+    return optionKeys.map((optionItemKey) => {
       // Shape with up to 3 keys: title, options, and default
       const optionItem = options[optionItemKey];
       const { title, options: folderOptions } = optionItem;
@@ -166,7 +166,7 @@ const SelectFolders = ({ allOptions, action, maxHeight, setDefaults }) => {
               // If top-layer item (non-child), need to close already open folder
               onMouseEnter={() => (!isChild ? setHoverFolder(null) : null)}
               active={activeFilter === optionItemKey}
-              onClick={e => {
+              onClick={(e) => {
                 // Don't let this event bubble
                 e.stopPropagation();
                 // Close the menu since an option was selected

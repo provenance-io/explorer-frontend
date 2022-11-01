@@ -9,10 +9,10 @@ interface ButtonProps {
   iconSize?: string;
   iconColor?: string;
   iconOptions?: object; // see Components/Sprite for available options
-  onClick?: () => void;
+  onClick?: (arg?: any) => void;
   children: React.ReactNode;
   disabled?: boolean;
-  type?: "button" | "submit" | "reset" | undefined;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -58,7 +58,7 @@ const Button = ({
   iconSize = '2.2rem',
   iconColor = 'ICON_WHITE',
   iconOptions,
-  onClick = () => {},
+  onClick = (arg?: any) => {},
   children,
   disabled = false,
   type,
@@ -67,7 +67,7 @@ const Button = ({
     className={className}
     onClick={onClick}
     color={color.toUpperCase()}
-    onKeyPress={e => {
+    onKeyPress={(e) => {
       if (e.key === 'Enter') {
         onClick();
       }
@@ -83,6 +83,5 @@ const Button = ({
     )}
   </StyledButton>
 );
-
 
 export default Button;
