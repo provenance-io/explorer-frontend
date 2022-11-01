@@ -97,7 +97,7 @@ export const TxHistory = () => {
       ) : (
         <TxChart txHistoryGran={txHistoryGran} data={txHistoryData as TxHistoryProps[]} />
       )}
-      <Button onClick={activateModalOpen}>Download CSV</Button>
+      <Button onClick={activateModalOpen}>Generate CSV</Button>
       <DownloadCsvModal modalOpen={modalOpen} onClose={deactivateModalOpen} />
     </Content>
   );
