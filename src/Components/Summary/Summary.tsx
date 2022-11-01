@@ -295,9 +295,7 @@ export interface SummaryDataProps {
   data: DataProps[];
 }
 
-const Summary = ({ data }: SummaryDataProps) => {
+export const Summary = ({ data }: SummaryDataProps) => {
   const { themeName } = useColorScheme();
   return <>{data.map((rowData) => buildSummaryRow(rowData, themeName))}</>;
 };
-
-export default Summary;

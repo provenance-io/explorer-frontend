@@ -81,6 +81,7 @@ const TopValidators = () => {
           // When you hover over the pie chart, the data that gets displayed
           tooltip: {
             trigger: 'item',
+            position: ['10%'],
             formatter: ({ data, percent }) => {
               const { name, value } = data;
               return `${name}<br />Voting Power: ${numberFormat(value)} (${percent}%)`;
