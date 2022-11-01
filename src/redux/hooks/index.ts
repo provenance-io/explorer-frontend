@@ -21,4 +21,3 @@ export * from './useTimeout';
 export * from './useTxs';
 export * from './useValidators';
 export * from './useVoting';
-export * from './useWalletLogin';

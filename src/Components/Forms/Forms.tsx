@@ -41,9 +41,10 @@ interface FormProps {
   formik: FormikProps<any>;
   issub?: boolean;
   grid?: boolean;
+  blockNumber?: number;
 }
 
-const Forms = ({ config, formik, issub = false, grid = false }: FormProps) => {
+const Forms = ({ config, formik, issub = false, grid = false, blockNumber }: FormProps) => {
   const builder = (individualConfig: MyFieldsProps) => {
     switch (individualConfig.type) {
       case 'text': // fallthrough
@@ -51,6 +52,7 @@ const Forms = ({ config, formik, issub = false, grid = false }: FormProps) => {
       case 'textarea': // fallthrough
       case 'checkbox': // fallthrough
       case 'number': // fallthrough
+      case 'file': // fallthrough
         return (
           <FormBuilder
             key={individualConfig.field}
@@ -59,6 +61,7 @@ const Forms = ({ config, formik, issub = false, grid = false }: FormProps) => {
             type={individualConfig.type}
             formik={formik}
             grid={grid}
+            blockNumber={blockNumber}
           />
         );
       case 'dropdown':

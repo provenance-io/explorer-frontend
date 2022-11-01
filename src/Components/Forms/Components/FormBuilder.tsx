@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Field as BaseField, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { capitalize } from 'utils';
+import FileUploadComponent from './FileUploadComponent';
 
 const Option = styled.option`
   background: ${({ theme }) => theme.INPUT_BG_LIGHT};
@@ -17,7 +18,7 @@ const Error = styled.div`
   color: red;
 `;
 
-const Field = styled(BaseField)<{ $issub: boolean; $noShadow?: boolean }>`
+const Field = styled(BaseField)<{ $issub: boolean; height?: string; $noShadow?: boolean }>`
   margin-top: ${({ $issub }) => ($issub ? '5px' : '10px')};
   padding: ${({ $issub }) => ($issub ? '5px' : '10px')};
   width: 100%;
@@ -27,6 +28,7 @@ const Field = styled(BaseField)<{ $issub: boolean; $noShadow?: boolean }>`
   font-size: ${({ $issub }) => ($issub ? '1.2rem' : '1.4rem')};
   line-height: 2.2rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
+  height: ${({ height }) => height && height};
 
   &:focus {
     outline: none;
@@ -89,6 +91,7 @@ interface FormProps {
   formik: FormikProps<ProposalProps>;
   issub?: boolean;
   grid?: boolean;
+  blockNumber?: number;
 }
 
 const FormBuilder = ({
@@ -99,6 +102,7 @@ const FormBuilder = ({
   formik,
   issub = false,
   grid = false,
+  blockNumber,
 }: FormProps) => {
   const builder = (
     name: string,
@@ -142,6 +146,25 @@ const FormBuilder = ({
             </ThisField>
           </Fragment>
         );
+      case 'file':
+        return (
+          <Fragment key={name}>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
+              <Field
+                component={FileUploadComponent}
+                height="100px"
+                $issub={issub}
+                name={name}
+                type="file"
+                value={undefined}
+              />
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
+            </ThisField>
+          </Fragment>
+        );
       case 'textarea':
         return (
           <Fragment key={name}>
@@ -166,7 +189,13 @@ const FormBuilder = ({
               <Label htmlFor={name} $issub={issub} grid={grid}>
                 {capitalize(label)}
               </Label>
-              <Field $issub={issub} name={name} type="number" placeholder={'0'} />
+              <Field
+                $issub={issub}
+                name={name}
+                type="number"
+                placeholder={name === 'height' ? String(blockNumber) : '0'}
+                value={name === 'height' ? formik.getFieldProps(name).value || '' : undefined}
+              />
               <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
             </ThisField>
           </Fragment>

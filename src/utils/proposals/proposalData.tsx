@@ -3,12 +3,12 @@
     type: Type of field for UI. Options are text, 
 */
 
-import { ACCESS_TYPES, VOTING_TYPES } from "consts";
+import { ACCESS_TYPES, VOTING_TYPES } from 'consts';
 
 export interface MyFieldsProps {
   type: string;
-  dropdown?: typeof ACCESS_TYPES | typeof VOTING_TYPES,
-  initialValue?: string,
+  dropdown?: typeof ACCESS_TYPES | typeof VOTING_TYPES;
+  initialValue?: string;
   label: string;
   field: string;
   subFields?: MyFieldsProps[];
@@ -34,13 +34,9 @@ export const proposalData = (proposalType: string) => {
   };
 
   switch (proposalType) {
-    case 'cancel software upgrade': // fallthrough
+    case 'cancel upgrade': // fallthrough
     case 'text':
-      myFields = [
-        title,
-        description,
-        initialDeposit,
-      ];
+      myFields = [title, description, initialDeposit];
       break;
     case 'software upgrade':
       myFields = [
@@ -74,9 +70,9 @@ export const proposalData = (proposalType: string) => {
           field: 'runAs',
         },
         {
-          type: 'textarea',
+          type: 'file',
           label: 'WASM Byte Code',
-          field: 'wasmByteCode',
+          field: 'file',
         },
         {
           type: 'dropdown',
@@ -94,7 +90,7 @@ export const proposalData = (proposalType: string) => {
         initialDeposit,
       ];
       break;
-    case 'instantiate code':
+    case 'instantiate contract':
       myFields = [
         title,
         description,
@@ -150,7 +146,7 @@ export const proposalData = (proposalType: string) => {
         {
           type: 'repeating',
           label: 'change',
-          field: 'changesList',
+          field: 'changes',
           subFields: [
             {
               type: 'text',
@@ -167,7 +163,7 @@ export const proposalData = (proposalType: string) => {
               label: 'value',
               field: 'value',
             },
-          ]
+          ],
         },
         initialDeposit,
       ];

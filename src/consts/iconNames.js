@@ -38,6 +38,7 @@ export const ICON_NAMES = {
   SHARED_POOLS: 'SHARED_POOLS',
   SLACK: 'SLACK',
   SUN: 'SUN',
+  TRASH: 'TRASH',
   UPGRADE: 'UPGRADE',
   WARNING: 'WARNING',
 };

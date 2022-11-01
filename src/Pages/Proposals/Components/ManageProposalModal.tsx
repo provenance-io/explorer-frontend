@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik, Field as BaseField } from 'formik';
 import styled from 'styled-components';
 import { Button, Modal, Forms } from 'Components';
-import { capitalize, proposalData, proposalValidations } from 'utils';
+import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import {
+  capitalize,
+  proposalData,
+  proposalValidations,
+  proposalContent,
+  ContentProps,
+} from 'utils';
 import { PROPOSAL_TYPES } from 'consts';
-import { useBlocks } from '../../../redux/hooks';
+import { useApp, useBlocks, useGovernance } from 'redux/hooks';
 import { Countdown } from '../../Proposal/Components/ManageVotingModal/Components';
 
 const Title = styled.div`
@@ -64,7 +71,6 @@ interface NewModalProps {
   isLoggedIn: boolean;
   modalOpen: boolean;
   onClose: Function;
-  onProposal: Function;
   proposalId: string;
   proposerId: string;
   submitted: boolean;
@@ -74,10 +80,6 @@ interface NewModalProps {
 interface ProposalProps {
   [key: string]: string;
   dropdown: string;
-}
-
-interface ItemProps {
-  [key: string]: string | number;
 }
 
 interface EventProps {
@@ -90,7 +92,6 @@ const ManageProposalModal = ({
   isLoggedIn,
   modalOpen,
   onClose,
-  onProposal,
   proposalId,
   proposerId,
   submitted,
@@ -100,17 +101,9 @@ const ManageProposalModal = ({
   const [blockNumber, setBlockNumber] = useState(0);
   const { blocksHeight, getBlocksHeight } = useBlocks();
   const [proposalType, setProposalType] = useState('text');
-
-  // Get content for proposal message
-  const getContent = (values: ProposalProps) => {
-    const emptyObj: ItemProps = {};
-    proposalData(values.dropdown).forEach((item) => {
-      if (item.field !== 'initialDeposit') {
-        emptyObj[item.field] = values[item.field];
-      }
-    });
-    return emptyObj;
-  };
+  const { submitProposal } = useGovernance();
+  const { walletConnectService: wcs } = useWalletConnect();
+  const { authToken } = useApp();
 
   useEffect(() => {
     setIsOpen(isLoggedIn && modalOpen);
@@ -118,13 +111,17 @@ const ManageProposalModal = ({
 
   useEffect(() => {
     getBlocksHeight();
-    setBlockNumber(blocksHeight as number);
-    // eslint-disable-next-line
-  }, []);
+    // Note we are requiring at least 20 blocks from the
+    // time of rendering to increase the probability of a
+    // successful submission in the case of a Software
+    // Upgrade proposal
+    setBlockNumber((blocksHeight as number) + 20);
+  }, [blocksHeight, getBlocksHeight]);
 
   const handleModalClose = () => {
     setSubmitted(false);
     onClose();
+    setProposalType('text');
   };
 
   const handleChange = (e: EventProps) => {
@@ -166,23 +163,31 @@ const ManageProposalModal = ({
         enableReinitialize
         initialValues={{
           dropdown: proposalType,
+          submitter: proposerId,
           ...getInitialValues(proposalType),
         }}
         validationSchema={proposalValidations(proposalType, blockNumber)}
-        onSubmit={(values: ProposalProps, { resetForm }) => {
-          // Submit proposal message
-          if (!submitted) {
-            if (values.initialDeposit) {
-              onProposal(
-                getContent(values),
-                [{ amount: (parseFloat(values.initialDeposit) * 1e9).toFixed(), denom: 'nhash' }],
-                proposerId,
-                proposalType
-              );
-            } else {
-              onProposal(getContent(values), [], proposerId, proposalType);
-            }
-          }
+        onSubmit={async (values: ProposalProps, { resetForm }) => {
+          // Remove the file from values to send separately
+          const file = values?.file;
+          if (file) delete values.file;
+          // Format values as needed
+          const { data } = await submitProposal({
+            // Format the type string to match the query
+            type: values.dropdown.toUpperCase().replace(/ /g, '_'),
+            // Get the proposal content as a string
+            data: proposalContent(values as unknown as ContentProps),
+            file: (file as unknown as File) || undefined,
+            token: authToken,
+          });
+
+          // Submit via walletconnect-js
+          wcs.customAction({
+            description: 'Submit Proposal',
+            message: data.base64,
+          });
+          // Set proposal type back to default
+          setProposalType('text');
           // Clear the form
           resetForm();
         }}
@@ -194,7 +199,7 @@ const ManageProposalModal = ({
                 <Title>{`Proposal ${proposalId}`}</Title>
                 <ThisField>
                   <Label htmlFor="dropdown">Proposal Type</Label>
-                  <Field as="select" name="dropdown" onChange={handleChange}>
+                  <Field as="select" name="dropdown" onChange={handleChange} value={proposalType}>
                     {Object.keys(PROPOSAL_TYPES).map((key) => {
                       const proposal = PROPOSAL_TYPES[key];
                       return (
@@ -205,7 +210,11 @@ const ManageProposalModal = ({
                     })}
                   </Field>
                 </ThisField>
-                <Forms config={proposalData(proposalType)} formik={formik} />
+                <Forms
+                  config={proposalData(proposalType)}
+                  formik={formik}
+                  blockNumber={blockNumber}
+                />
                 <ButtonGroup>
                   <Button type="submit">Submit</Button>
                 </ButtonGroup>

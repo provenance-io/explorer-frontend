@@ -1,7 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
 import { RootState } from 'redux/app/store';
-import { GOVERNANCE_ADDRESS_URL, GOVERNANCE_PROPOSALS_URL, GOVERNANCE_VOTES_URL } from 'consts';
+import {
+  GOVERNANCE_ADDRESS_URL,
+  GOVERNANCE_PROPOSALS_URL,
+  GOVERNANCE_VOTES_URL,
+  GOVERNANCE_SUBMIT_PROPOSAL_URL,
+  GOVERNANCE_PROPOSAL_TYPES_URL,
+  GOVERNANCE_SUBMIT_VOTES_URL,
+} from 'consts';
 import { ajax } from '../api';
 
 interface AddressVotes {
@@ -170,6 +177,74 @@ interface ProposalAll {
   total: number;
 }
 
+export interface SubmitProposalProps {
+  content: string;
+  description: string;
+  initialDeposit: {
+    amount: string;
+    denom: string;
+  }[];
+  submitter: string;
+  title: string;
+  file?: File;
+}
+
+export interface SubmitVotesProps {
+  proposalId: number;
+  voter: string;
+  votes: {
+    option: string;
+    weight: number;
+  }[];
+}
+
+export type TextProposal = {};
+
+export type ParameterChangeProposal = {
+  changes: {
+    subspace: string;
+    key: string;
+    value: string;
+  }[];
+};
+
+type SoftwareUpgradeProposal = {
+  name: string;
+  height: number;
+  info: string;
+};
+
+type CancelUpgradeProposal = {};
+
+type StoreCodeProposal = {
+  runAs: string;
+  accessConfig: {
+    type: string;
+    address: string | null;
+  };
+};
+
+type InstantiateContractProposal = {
+  runAs: string;
+  admin: string;
+  codeId: number;
+  label: string;
+  msg: string;
+  funds: {
+    amount: string;
+    denom: string;
+  }[];
+};
+
+export interface ProposalTypes {
+  TEXT: TextProposal;
+  PARAMETER_CHANGE: ParameterChangeProposal;
+  SOFTWARE_UPGRADE: SoftwareUpgradeProposal;
+  CANCEL_UPGRADE: CancelUpgradeProposal;
+  STORE_CODE: StoreCodeProposal;
+  INSTANTIATE_CONTRACT: InstantiateContractProposal;
+}
+
 interface GovernanceState {
   // addressVotes
   addressVotes: AddressVotes['results'];
@@ -193,6 +268,9 @@ interface GovernanceState {
   proposalVotesLoading: boolean;
   proposalVotesPages: number;
   proposalVotesTotal: number;
+  // proposalTypes
+  proposalTypes: ProposalTypes;
+  proposalTypesLoading: boolean;
 }
 
 export const initialState: GovernanceState = {
@@ -338,6 +416,35 @@ export const initialState: GovernanceState = {
   proposalVotesLoading: false,
   proposalVotesPages: 0,
   proposalVotesTotal: 0,
+  // proposalTypes
+  proposalTypes: {
+    TEXT: {},
+    PARAMETER_CHANGE: {
+      changes: [],
+    },
+    SOFTWARE_UPGRADE: {
+      name: '',
+      height: 0,
+      info: '',
+    },
+    CANCEL_UPGRADE: {},
+    STORE_CODE: {
+      runAs: '',
+      accessConfig: {
+        type: '',
+        address: '',
+      },
+    },
+    INSTANTIATE_CONTRACT: {
+      runAs: '',
+      admin: '',
+      codeId: 0,
+      label: '',
+      msg: '',
+      funds: [],
+    },
+  },
+  proposalTypesLoading: false,
 };
 
 /* -----------------
@@ -349,6 +456,7 @@ export const GET_PROPOSAL_DEPOSITS = `${NS}::GET_PROPOSAL_DEPOSITS`;
 export const GET_PROPOSALS = `${NS}::GET_PROPOSALS`;
 export const GET_VOTES_BY_ADDRESS = `${NS}::GET_VOTES_BY_ADDRESS`;
 export const GET_VOTES_BY_PROPOSAL = `${NS}::GET_VOTES_BY_PROPOSAL`;
+export const GET_PROPOSAL_TYPES = `${NS}::GET_PROPOSAL_TYPES`;
 
 /* -----------------
 ** ACTIONS
@@ -391,12 +499,62 @@ export const getVotesByProposal = createAsyncThunk(
     })
 );
 
+export const getProposalTypes = createAsyncThunk(GET_PROPOSAL_TYPES, () =>
+  ajax({
+    url: `${GOVERNANCE_PROPOSAL_TYPES_URL}/types/supported`,
+  })
+);
+
+export const submitVotes = (data: SubmitVotesProps) =>
+  ajax({
+    url: `${GOVERNANCE_SUBMIT_VOTES_URL}`,
+    method: 'POST',
+    data,
+  });
+
+export const submitProposal = ({
+  type,
+  data,
+  file,
+  token,
+}: {
+  type: string;
+  data: SubmitProposalProps;
+  file?: File;
+  token: string;
+}) => {
+  // Create a new FormData object
+  const formData = new FormData();
+  // Blob the data to submit, as type application/json
+  formData.append('request', new Blob([JSON.stringify(data)], { type: 'application/json' }));
+  // Note this currently only supports wasm file uploads
+  if (file && type === 'STORE_CODE') {
+    formData.append('wasmFile', file);
+  }
+  return ajax({
+    url: `${GOVERNANCE_SUBMIT_PROPOSAL_URL}${type}`,
+    method: 'POST',
+    data: formData,
+    config: {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    },
+  });
+};
+
 export const governanceActions = {
   getProposal,
   getProposalDeposits,
   getAllProposals,
   getVotesByAddress,
   getVotesByProposal,
+  getProposalTypes,
+};
+
+export const noDispatchActions = {
+  submitProposal,
+  submitVotes,
 };
 /* -----------------
 ** SLICE

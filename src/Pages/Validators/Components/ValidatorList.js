@@ -4,7 +4,7 @@ import { Table, Filters } from 'Components';
 import { formatDenom } from 'utils';
 import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
 import { MY_VALIDATOR_STATUS_OPTIONS, STAKING_TYPES, VALIDATOR_STATUS_OPTIONS } from 'consts';
-import ManageStakingModal from './ManageStakingModal';
+import { ManageStakingModal } from './ManageStakingModal';
 
 const ValidatorListContainer = styled.div`
   width: 100%;
@@ -29,7 +29,7 @@ const ValidatorList = () => {
     getAllValidators,
     getValidatorsRecent: getTableData,
   } = useValidators();
-  const { handleStaking, isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
+  const { isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
   const {
     accountDelegations,
     accountDelegationsLoading,
@@ -181,7 +181,6 @@ const ValidatorList = () => {
         isLoggedIn={isLoggedIn}
         modalOpen={modalFns.modalOpen}
         onClose={modalFns.deactivateModalOpen}
-        onStaking={handleStaking}
         validator={validator || {}}
       />
     </ValidatorListContainer>

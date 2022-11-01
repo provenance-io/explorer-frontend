@@ -14,6 +14,7 @@ import networkReducer from '../features/network/networkSlice';
 import nftReducer from '../features/nft/nftSlice';
 import notificationReducer from '../features/notification/notificationSlice';
 import orderbookReducer from '../features/orderbook/orderbookSlice';
+import stakingReducer from '../features/staking/stakingSlice';
 import txReducer from '../features/tx/txSlice';
 import validatorReducer from '../features/validator/validatorSlice';
 
@@ -31,6 +32,7 @@ export const rootReducer = combineReducers({
   nft: nftReducer,
   notification: notificationReducer,
   orderbook: orderbookReducer,
+  staking: stakingReducer,
   tx: txReducer,
   validator: validatorReducer,
   [api.reducerPath]: api.reducer,

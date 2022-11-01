@@ -27,7 +27,7 @@ interface AllValidators {
   total: number;
 }
 
-interface ValidatorsRecent {
+export interface ValidatorsRecent {
   pages: number;
   results: {
     addressId: string;
@@ -60,7 +60,32 @@ interface ValidatorsRecent {
   total: number;
 }
 
-type ValidatorSpotlight = ValidatorsRecent['results'][0];
+export interface ValidatorSpotlight {
+  blockCount: {
+    count: number;
+    total: number;
+  };
+  bondHeight: number;
+  consensusPubKey: string;
+  description: string;
+  identity: string;
+  imgUrl: string;
+  jailedUntil: string;
+  moniker: string;
+  operatorAddress: string;
+  ownerAddress: string;
+  removed: boolean;
+  siteUrl: string;
+  status: string;
+  unbondingHeight: number;
+  uptime: number;
+  votingPower: {
+    count: number;
+    total: number;
+  };
+  withdrawalAddress: string;
+}
+
 interface TopValidators extends ValidatorsRecent {}
 
 interface BlockValidators {
@@ -87,7 +112,7 @@ interface BlockValidators {
   total: number;
 }
 
-interface ValidatorDelegations {
+export interface ValidatorDelegations {
   pages: number;
   results: {
     amount: {
@@ -224,19 +249,21 @@ export const initialState: ValidatorState = {
   validatorsRecentLoading: false,
   // Validator Spotlight
   validatorSpotlight: {
-    addressId: '',
-    bondedTokens: {
-      count: '',
-      denom: '',
-      total: '',
+    blockCount: {
+      count: 0,
+      total: 0,
     },
-    commission: '',
-    consensusAddress: '',
-    delegators: 0,
-    hr24Change: '',
+    bondHeight: 0,
+    consensusPubKey: '',
+    description: '',
+    identity: '',
     imgUrl: '',
+    jailedUntil: '',
     moniker: '',
-    proposerPriority: 0,
+    operatorAddress: '',
+    ownerAddress: '',
+    removed: false,
+    siteUrl: '',
     status: '',
     unbondingHeight: 0,
     uptime: 0,
@@ -244,6 +271,7 @@ export const initialState: ValidatorState = {
       count: 0,
       total: 0,
     },
+    withdrawalAddress: '',
   },
   validatorSpotlightLoading: false,
   // Top Validators
