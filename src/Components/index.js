@@ -16,7 +16,7 @@ export { default as Pagination } from './Pagination';
 export { default as Table } from './Table';
 export * from './MultiTable';
 export { default as Filters } from './Filters';
-export { default as Summary } from './Summary';
+export * from './Summary';
 export { default as Button } from './Button';
 export { default as BlockImage } from './BlockImage';
 export * from './DataCard';

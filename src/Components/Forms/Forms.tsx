@@ -48,7 +48,9 @@ const Forms = ({ config, formik, issub = false, grid = false, blockNumber }: For
   const builder = (individualConfig: MyFieldsProps) => {
     switch (individualConfig.type) {
       case 'text': // fallthrough
+      case 'date': // fallthrough
       case 'textarea': // fallthrough
+      case 'checkbox': // fallthrough
       case 'number': // fallthrough
       case 'file': // fallthrough
         return (

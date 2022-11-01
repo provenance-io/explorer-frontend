@@ -6,6 +6,7 @@
 - Fix account chart issues #421
 
 ### Features
+- Add data download csv for transaction volume #399
 - Update governance to use new endpoints #390
 
 ## 3.3.1

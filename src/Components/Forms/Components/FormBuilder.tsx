@@ -18,7 +18,7 @@ const Error = styled.div`
   color: red;
 `;
 
-const Field = styled(BaseField)<{ $issub: boolean; height?: string }>`
+const Field = styled(BaseField)<{ $issub: boolean; height?: string; $noShadow?: boolean }>`
   margin-top: ${({ $issub }) => ($issub ? '5px' : '10px')};
   padding: ${({ $issub }) => ($issub ? '5px' : '10px')};
   width: 100%;
@@ -32,7 +32,7 @@ const Field = styled(BaseField)<{ $issub: boolean; height?: string }>`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 1px 1px ${({ theme }) => theme.INPUT_OUTLINE_LIGHT};
+    box-shadow: ${({ theme, $noShadow }) => !$noShadow && `0 0 1px 1px ${theme.INPUT_BG_LIGHT}`};
   }
 
   &::placeholder {
@@ -63,11 +63,12 @@ const TextArea = styled.textarea<{ $issub: boolean }>`
   text-align: top;
 `;
 
-const ThisField = styled.div<{ grid: boolean }>`
+const ThisField = styled.div<{ grid: boolean; noBorder?: boolean }>`
   padding: 1.6rem 0 1.6rem 0;
   display: ${({ grid }) => grid && 'grid'};
   grid-template-columns: ${({ grid }) => grid && ' 3fr 0.75fr'};
-  border-bottom: ${({ grid, theme }) => grid && `1px solid ${theme.INPUT_BG_LIGHT}`};
+  border-bottom: ${({ grid, theme, noBorder }) =>
+    !noBorder && grid && `1px solid ${theme.INPUT_BG_LIGHT}`};
 `;
 
 const Label = styled.label<{ $issub: boolean; grid: boolean }>`
@@ -128,6 +129,23 @@ const FormBuilder = ({
             </ThisField>
           </Fragment>
         );
+      case 'date':
+        return (
+          <Fragment key={name}>
+            <ThisField grid={grid}>
+              <Label htmlFor={name} $issub={issub} grid={grid}>
+                {capitalize(label)}
+              </Label>
+              <Field
+                $issub={issub}
+                name={name}
+                type="date"
+                value={formik.getFieldProps(name).value || ''}
+              />
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
+            </ThisField>
+          </Fragment>
+        );
       case 'file':
         return (
           <Fragment key={name}>
@@ -178,6 +196,18 @@ const FormBuilder = ({
                 placeholder={name === 'height' ? String(blockNumber) : '0'}
                 value={name === 'height' ? formik.getFieldProps(name).value || '' : undefined}
               />
+              <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
+            </ThisField>
+          </Fragment>
+        );
+      case 'checkbox':
+        return (
+          <Fragment key={name}>
+            <ThisField grid noBorder>
+              <Label htmlFor={name} $issub={issub} grid>
+                {capitalize(label)}
+              </Label>
+              <Field $issub={issub} name={name} type="checkbox" $noShadow />
               <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
             </ThisField>
           </Fragment>

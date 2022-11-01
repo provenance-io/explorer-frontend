@@ -3,10 +3,10 @@ import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
 import { breakpoints } from 'consts';
-import { TxHistory } from 'redux/features/tx/txSlice';
-import { NetworkVolumeStats } from 'redux/features/network/networkSlice';
-import { HistoricalPricing } from 'redux/features/orderbook/orderbookSlice';
-import { useTxs, useMediaQuery, useNetwork, useOrderbook } from '../../../../../redux/hooks';
+import { TxHistoryProps } from 'redux/services';
+import { formatDenom } from 'utils';
+import Big from 'big.js';
+import { useMediaQuery, useOrderbook } from '../../../../../redux/hooks';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -27,15 +27,17 @@ const chartData = {
         color: '',
         width: '1',
       },
-      //formatter: ([]) => '',
-      formatter: '{b} <br/> transactions: {c}',
     },
+    // Needed format for TypeScript
+    // eslint-disable-next-line no-empty-pattern
+    formatter: ([]) => '',
   },
   grid: {
-    right: '20%',
+    right: '15%',
+    left: '15%',
   },
   legend: {
-    data: ['Transactions', 'Fees (USD)'],
+    data: ['Transactions', 'Fees'],
     textStyle: {},
     itemGap: 20,
     padding: 0,
@@ -127,7 +129,7 @@ const chartData = {
       },
     },
     {
-      name: 'Fees (USD)',
+      name: 'Fees',
       type: 'line',
       showSymbol: false,
       smooth: true,
@@ -140,96 +142,63 @@ const chartData = {
   ],
 };
 
-// Checks value array against date array. If values are missing, add
-// previous day's values
-const fillGaps = (dateArray: string[], valueArray: ValueProps[]) => {
-  if (dateArray.length !== valueArray.length && valueArray.length > 0) {
-    let idx = 0;
-    dateArray.forEach((item) => {
-      if (idx >= valueArray.length || item !== valueArray[idx].name) {
-        if (idx === 0) {
-          valueArray.unshift({
-            value: valueArray[idx].value,
-            name: item,
-          });
-        } else if (idx >= valueArray.length) {
-          valueArray.push({
-            value: valueArray[idx - 1].value,
-            name: item,
-          });
-        } else {
-          valueArray.splice(idx, 0, {
-            value: valueArray[idx].value,
-            name: item,
-          });
-        }
-      }
-      idx++;
-    });
-  }
-  return valueArray;
-};
-
 interface ValueProps {
   value: number;
   name: string;
 }
 
-interface TxHistoryProps {
+interface TxChartProps {
+  data: TxHistoryProps[];
   txHistoryGran: string;
 }
 
-const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
+interface ParamsArray {
+  name: string;
+  seriesName: string;
+  data: { value: string; name: string };
+}
+
+export const TxChart = ({ txHistoryGran, data }: TxChartProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
-  const { txHistory } = useTxs();
-  const { networkGasVolume } = useNetwork();
-  const { historicalPricing, currentPricing } = useOrderbook();
   const theme = useTheme();
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
   const { matches: isLg } = useMediaQuery(breakpoints.down('lg'));
-  const granIsDay = txHistoryGran === 'day';
+  const granIsDay = txHistoryGran === 'DAY';
+  const granIsMonth = txHistoryGran === 'MONTH';
+  const { getCurrentPricing, currentPricing } = useOrderbook();
 
-  const txHistoryCount = txHistory.length;
+  useEffect(() => {
+    getCurrentPricing();
+  }, [getCurrentPricing]);
+
+  const txHistoryCount = data && data.length;
 
   const buildChartData = useCallback(() => {
-    const xAxisTicks: string[] = [];
-    const xAxisShort: string[] = [];
-    const xAxisData = txHistory.map(({ date }: TxHistory) => {
-      xAxisTicks.push(date);
-      xAxisShort.push(date.slice(0, 10));
-      return format(parseISO(date), granIsDay ? 'MMM dd' : 'MM/dd, hh:mm');
+    const transactions: ValueProps[] = [];
+    const fees: ValueProps[] = [];
+
+    // Populate series information
+    const xAxisData = data.map(({ txCount, date, feesPaidInUsd, feeAmountInToken }) => {
+      transactions.push({
+        value: txCount,
+        name: new Date(date).toISOString(),
+      });
+      fees.push({
+        value: feesPaidInUsd
+          ? Number(feesPaidInUsd)
+          : new Big(feeAmountInToken).times(currentPricing.quote.USD.price).toNumber(),
+        name: new Date(date).toISOString(),
+      });
+      return format(
+        parseISO(new Date(date).toISOString()),
+        granIsDay ? 'MMM dd' : granIsMonth ? 'MMM' : 'MM/dd, hh:mm'
+      );
     });
 
-    const transactions = txHistory.map(({ numberTxs, date }: TxHistory) => ({
-      value: numberTxs,
-      name: date,
-    }));
-    const fees = networkGasVolume.map(({ feeAmount, date }: NetworkVolumeStats) => ({
-      value: parseInt((feeAmount / 1e9).toFixed(0)),
-      name: date,
-    }));
-
-    let priceHistoryRange: ValueProps[] = [];
-    if (historicalPricing.length > 0) {
-      priceHistoryRange = fees.map(({ name }: ValueProps) => {
-        const found = historicalPricing.find(
-          (price: HistoricalPricing) =>
-            name.slice(0, 10) === (price.time_close as string).slice(0, 10)
-        );
-        return {
-          value: found?.quote.USD?.close || currentPricing.quote.USD?.price,
-          name,
-        };
-      });
-    }
-
-    // Check against xAxisTicks if any fees are missing. If so, add in the previous day's fees
-    fillGaps(xAxisTicks, fees);
-    fillGaps(xAxisShort, priceHistoryRange);
-
     // Now set chart data dynamically
-    chartData.color = [theme.CHART_LINE_MAIN, theme.CHART_PIE_YES];
+    const colors: string[] = [theme.CHART_LINE_MAIN, theme.CHART_PIE_YES];
+    chartData.color = colors;
     // X axis
     chartData.xAxis[0].data = xAxisData;
     chartData.xAxis[0].axisLabel.color = theme.FONT_PRIMARY;
@@ -251,32 +220,51 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
     ]);
     chartData.yAxis[0].splitLine.lineStyle.color = theme.FONT_PRIMARY;
     // Y axis: fees (right side)
-    chartData.yAxis[1].axisLine.lineStyle.color = theme.CHART_PIE_YES;
+    chartData.yAxis[1].axisLine.lineStyle.color = colors[1];
     chartData.yAxis[1].offset = isSmall ? -14 : 0;
     chartData.yAxis[1].axisLabel.color = theme.FONT_PRIMARY;
     chartData.yAxis[1].axisLabel.rotate = isLg ? -45 : 0;
-    let count = 0;
-    chartData.series[1].data = fees.map(({ value, name }: ValueProps) => {
-      const conversion = (value * priceHistoryRange[count].value).toFixed(2);
-      count++;
-      return {
-        value: conversion,
-        name,
-      };
-    });
-    chartData.yAxis[1].axisLabel.color = theme.CHART_PIE_YES;
+    chartData.series[1].data = fees;
+    chartData.yAxis[1].axisLabel.color = colors[1];
     // Tooltip
-    chartData.tooltip.axisPointer.lineStyle.color = theme.CHART_LINE_MAIN;
-  }, [
-    txHistory,
-    networkGasVolume,
-    granIsDay,
-    isSmall,
-    isLg,
-    theme,
-    historicalPricing,
-    currentPricing,
-  ]);
+    chartData.tooltip.axisPointer.lineStyle.color = colors[0];
+    chartData.tooltip.formatter = (params: ParamsArray[]) => {
+      let returnString = '';
+      let idx = 0;
+      params.forEach((p) => {
+        returnString += `
+        <div style="display:flex;padding:2px;">
+          <div 
+            style="
+              height:10px;
+              width:10px;
+              border-radius:50%;
+              align-self:center;
+              margin-right:10px;
+              background-color:${colors[idx]};
+            "
+          >
+          </div>
+          <div style="text-align:center;">
+            ${p.seriesName}: ${
+          p.seriesName === 'Fees'
+            ? `$${formatDenom(parseFloat(p.data.value), 'USD', {
+                decimal: 2,
+                minimumFractionDigits: 2,
+              })}`
+            : formatDenom(Number(p.data.value), '')
+        }
+          </div>
+          </div>`;
+        idx++;
+      });
+      returnString = `<div>${format(
+        parseISO(params[0].data.name),
+        granIsDay ? 'MMM dd' : 'MMM-yyyy'
+      )}</div> ${returnString}`;
+      return returnString;
+    };
+  }, [data, granIsDay, granIsMonth, isLg, isSmall, theme, currentPricing]);
   // Legend
   chartData.legend.textStyle = {
     color: theme.FONT_PRIMARY,
@@ -307,5 +295,3 @@ const TxChart = ({ txHistoryGran }: TxHistoryProps) => {
     <StyledMessage>No transactions available</StyledMessage>
   );
 };
-
-export default TxChart;

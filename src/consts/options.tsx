@@ -39,6 +39,7 @@ export const TRANSACTION_STATUS_OPTIONS = {
 export const TRANSACTION_HISTORY_GRANULARITY_OPTIONS = {
   day: { title: 'Day', isDefault: true },
   hour: { title: 'Hour' },
+  month: { title: 'Month' },
 };
 
 export const PRICE_HISTORY_GRANULARITY_OPTIONS = {

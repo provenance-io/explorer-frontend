@@ -106,6 +106,7 @@ export const NETWORK_TOKEN_STATS_URL = `${BASE_URL_V3}/utility_token/stats`;
 export const NETWORK_TOTAL_SUPPLY_URL = `${BASE_URL_V3}/utility_token/total_supply`;
 // -- Txs
 export const TX_INFO_URL = `${BASE_URL}/txs`;
+export const TX_V3_URL = `${BASE_URL_V3}/txs`;
 export const TXS_RECENT_URL = `${BASE_URL}/txs/recent`;
 export const TX_HISTORY_URL = `${BASE_URL}/txs/history`;
 export const TXS_BY_BLOCK_URL = `${BASE_URL}/txs/height`;
