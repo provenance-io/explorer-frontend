@@ -68,7 +68,7 @@ export const HashChart = () => {
   }, [address, getAccountHashData]);
 
   // Grab the account total hash amount:
-  const totalHash = accountHashData.assets.results?.find(
+  const availableHash = accountHashData.assets.results?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
 
@@ -91,8 +91,8 @@ export const HashChart = () => {
     const theseRewards = new Big(accountHashData?.rewards?.total[0]?.amount || 0)
       .div(1e9)
       .toNumber();
-    const theseTotal = new Big(Number(totalHash?.amount || 0)).div(1e9).toNumber();
-    const available = theseTotal - theseDels - theseRedels - theseUnbonds;
+    const available = new Big(Number(availableHash?.amount || 0)).div(1e9).toNumber();
+    const theseTotal = available + theseDels + theseRedels + theseUnbonds + theseRewards;
     chartData.series[0].data[0].value = [
       available,
       theseRewards,
@@ -118,7 +118,7 @@ export const HashChart = () => {
         color: theme.CHART_LINE_GRADIENT_END,
       },
     ]);
-  }, [totalHash, accountHashData, theme]);
+  }, [availableHash, accountHashData, theme]);
 
   // Build Chart with data
   useEffect(() => {

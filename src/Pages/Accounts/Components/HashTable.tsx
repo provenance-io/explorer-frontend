@@ -4,7 +4,7 @@ import { useAccounts } from 'redux/hooks';
 
 export const HashTable = () => {
   const { accountHashData, accountHashDataLoading: tableLoading } = useAccounts();
-  const totalHash = accountHashData.assets.results?.find(
+  const availableHash = accountHashData.assets.results?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
   const theseDels = new Big(
@@ -17,8 +17,7 @@ export const HashTable = () => {
     accountHashData?.unbonding?.rollupTotals?.unbondingTotal?.amount || 0
   ).toNumber();
   const theseRewards = new Big(accountHashData?.rewards?.total[0]?.amount || 0).toNumber();
-  const theseTotal = new Big(Number(totalHash?.amount || 0)).toNumber();
-  const available = theseTotal - theseDels - theseRedels - theseUnbonds;
+  const available = new Big(Number(availableHash?.amount || 0)).toNumber();
 
   const tableData = [
     {
