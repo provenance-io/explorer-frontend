@@ -107,7 +107,7 @@ export const DownloadCsvModal = ({ modalOpen, onClose }: DownloadCsvProps) => {
             <Notice show={formik.values.advancedMetrics}>
               Toggling on advanced metrics will include transaction and fee type metrics in the CSV
             </Notice>
-            <Button type="submit">Generate CSV</Button>
+            <Button type="submit">Download</Button>
           </form>
         )}
       </Formik>
