@@ -59,9 +59,6 @@ const TxInformation = () => {
       decimal: totalFee.amount / 1e9 < 0.0001 ? 20 : 4,
     });
 
-    // Signers is an object containing signers [array] and threshold [number] - we only need the signers array
-    const signerArray = signers?.signers;
-
     const errorLogPopupNote = {
       visibility: { visible: showErrorLogPopup, setVisible: setShowErrorLogPopup },
       icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
@@ -96,10 +93,10 @@ const TxInformation = () => {
 
       {
         title: 'Signer(s)',
-        value: signerArray, // maxLength(signer, 24, 10),
-        list: signerArray.map((val) => maxLength(val, 12, '4')),
-        linkList: signerArray.map((val) => '/accounts/' + val),
-        copyList: signerArray,
+        value: signers, // maxLength(signer, 24, 10),
+        list: signers.map((val) => maxLength(val.address, 12, '4')),
+        linkList: signers.map((val) => '/accounts/' + val.address),
+        copyList: signers.map((val) => signers.address),
       },
       {
         title: 'Feepayer',

@@ -43,9 +43,11 @@ export interface TxInfo {
     [key: string]: string;
   };
   signers: {
-    signers: string[];
-    threshold: number;
-  };
+    address: string;
+    idx: number;
+    sequence: number;
+    type: string;
+  }[];
   status: string;
   time: string;
   txHash: string;
@@ -212,10 +214,7 @@ export const initialState: TxState = {
     height: 0,
     memo: '',
     monikers: {},
-    signers: {
-      signers: [],
-      threshold: 0,
-    },
+    signers: [],
     status: '',
     time: '',
     txHash: '',

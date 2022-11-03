@@ -7,3 +7,4 @@ export * from './AccountRewards';
 export * from './AccountUnbondings';
 export * from './AccountAttributes';
 export * from './AccountTxs';
+export * from './AccountMultiSigModal';
