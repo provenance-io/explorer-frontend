@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+// @ts-ignore
+import useToggle from 'react-tiny-hooks/use-toggle';
 import { Link, useParams } from 'react-router-dom';
 import { useAccounts } from 'redux/hooks';
-import { DataCard, CopyValue } from 'Components';
+import { DataCard, CopyValue, Button as BaseButton } from 'Components';
 import { PopupDataProps } from 'Components/Summary/Summary';
 import { maxLength, formatDenom } from 'utils';
+import { AccountMultiSigModal } from './AccountTables/Components';
+
+const Button = styled(BaseButton)`
+  margin: 0;
+`;
 
 const Group = styled.div`
   display: flex;
@@ -12,7 +19,7 @@ const Group = styled.div`
 
 export const AccountSpotlight = () => {
   const { accountInfo, getAccountAssets, getAccountInfo, getAccountRewards } = useAccounts();
-
+  const [modalOpen, deactivateModalOpen, activateModalOpen] = useToggle(false);
   const { addressId } = useParams<{ addressId: string }>();
   const [showKeyPopup, setShowKeyPopup] = useState(false);
   const [showAUMPopup, setShowAUMPopup] = useState(false);
@@ -30,13 +37,13 @@ export const AccountSpotlight = () => {
     accountName = '--',
     accountNumber = '--',
     accountType = '--',
-    publicKeys = { pubKey: '', type: '' },
+    publicKey = { base64: '', sigList: [], type: '' },
     sequence = '--',
     tokens = { fungibleCount: 0, nonFungibleCount: 0 },
     accountAum = { amount: 0, denom: '' },
   } = accountInfo;
 
-  const { pubKey: publicKey, type: publicKeyType } = publicKeys;
+  const { base64, sigList, type: publicKeyType } = publicKey;
 
   const popupNoteKeyType = {
     visibility: { visible: showKeyPopup, setVisible: setShowKeyPopup },
@@ -123,6 +130,7 @@ export const AccountSpotlight = () => {
     popupNote?: PopupDataProps;
     link?: string;
     copy?: string;
+    button?: JSX.Element;
   }
 
   const cardData: ItemProps[] = [
@@ -145,23 +153,41 @@ export const AccountSpotlight = () => {
     { title: 'Number', value: String(accountNumber), popupNote: popupNoteNumber as PopupDataProps },
     {
       title: 'Public Key',
-      value: maxLength(publicKey, 12, '3'),
-      copy: publicKey,
+      value: base64 && maxLength(base64, 12, '3'),
+      copy: base64 && base64,
       popupNote: popupNoteKeyType as PopupDataProps,
+      button: !base64 ? (
+        <Button icon="INVENTORY" onClick={activateModalOpen}>
+          View All
+        </Button>
+      ) : (
+        <></>
+      ),
     },
     { title: 'Sequence', value: String(sequence), popupNote: popupNoteSequence as PopupDataProps },
   ];
 
   return (
     <>
-      {cardData.map((item) => (
-        <DataCard title={item.title} popup={item.popupNote} key={item.title}>
-          <Group>
-            {item.link ? <Link to={item.link}>{item.value}</Link> : item.value}
-            {item.copy && <CopyValue value={item.copy} title={`Copy ${item.title}`} size="2rem" />}
-          </Group>
-        </DataCard>
-      ))}
+      <>
+        {cardData.map((item) => (
+          <DataCard
+            title={item.title}
+            popup={item.popupNote}
+            key={item.title}
+            titleMargin={item.button && '0 0 15px 0'}
+          >
+            <Group>
+              {item.button && item.button}
+              {item.link ? <Link to={item.link}>{item.value}</Link> : item.value}
+              {item.copy && (
+                <CopyValue value={item.copy} title={`Copy ${item.title}`} size="2rem" />
+              )}
+            </Group>
+          </DataCard>
+        ))}
+      </>
+      <AccountMultiSigModal modalOpen={modalOpen} onClose={deactivateModalOpen} data={sigList} />
     </>
   );
 };

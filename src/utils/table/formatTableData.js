@@ -70,16 +70,12 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'signers': {
           // Signers is an object containing signers [array] and threshold [number] - we only need
           // the first value and the length to indicate the total number of signers
-          const signer = serverValue?.signers[0];
+          const signer = serverValue?.[0].address;
           finalObj[dataName] = {
             value: maxLength(signer, 11, 3),
             link: `/accounts/${signer}`,
-            addTextToLink:
-              serverValue?.signers.length > 1 ? ` +${serverValue?.signers.length - 1}` : '',
-            hover:
-              serverValue?.signers.length <= 1
-                ? signer
-                : `${serverValue.signers.length} total signers`,
+            addTextToLink: serverValue?.length > 1 ? ` +${serverValue?.length - 1}` : '',
+            hover: serverValue?.length <= 1 ? signer : `${serverValue.length} total signers`,
           };
           break;
         }

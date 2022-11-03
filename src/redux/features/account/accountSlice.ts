@@ -4,7 +4,7 @@ import { RootState } from 'redux/app/store';
 import { ACCOUNT_INFO_URL } from 'consts';
 import { ajax } from '../api';
 
-interface AccountInfo {
+export interface AccountInfo {
   accountAum?: {
     amount: string;
     denom: string;
@@ -18,8 +18,12 @@ interface AccountInfo {
     data: string;
   }[];
   isContract?: boolean;
-  publicKeys?: {
-    pubKey: string;
+  publicKey: {
+    base64: string;
+    sigList: {
+      address: string;
+      idx: number;
+    }[];
     type: string;
   };
   sequence?: number;
@@ -198,7 +202,13 @@ interface AccountState {
 
 const initialState: AccountState = {
   // Account
-  accountInfo: {},
+  accountInfo: {
+    publicKey: {
+      base64: '',
+      sigList: [],
+      type: '',
+    },
+  },
   accountInfoLoading: false,
   accountInfoFailure: false,
   // Account Assets
