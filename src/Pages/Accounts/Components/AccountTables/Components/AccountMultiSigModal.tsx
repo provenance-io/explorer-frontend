@@ -39,7 +39,7 @@ export const AccountMultiSigModal = ({ modalOpen, onClose, data }: MultiSigModal
   return (
     <Modal isOpen={isOpen} onClose={handleModalClose}>
       <>
-        <Title>Generate a CSV of Transaction Information</Title>
+        <Title>The Following Accounts Form This Multi-Sig Account</Title>
         <ol>
           {data.map((account) => (
             <Description key={account.idx}>
