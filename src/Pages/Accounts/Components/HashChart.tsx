@@ -1,11 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import Big from 'big.js';
-import { useAccounts, useMediaQuery } from 'redux/hooks';
+import { useMediaQuery } from 'redux/hooks';
 import { Loading } from 'Components';
-import { isEmpty } from 'utils';
+import { AccountHashTotals, isEmpty } from 'utils';
 import { breakpoints } from 'consts';
 
 const StyledChart = styled.div<{ height?: string }>`
@@ -51,61 +49,34 @@ const chartData = {
   ],
 };
 
-export const HashChart = () => {
+export const HashChart = ({
+  hashData,
+  isLoading,
+}: {
+  hashData: AccountHashTotals;
+  isLoading: boolean;
+}) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
-  const { addressId: address } = useParams<{ addressId: string }>();
   const { matches: isLg } = useMediaQuery(breakpoints.up('lg'));
   const { matches: isMd } = useMediaQuery(breakpoints.down('md'));
   const { matches: isSm } = useMediaQuery(breakpoints.down('sm'));
 
-  const { getAccountHashData, accountHashData, accountHashDataLoading } = useAccounts();
-
-  // Pull all hash data only at the initial render
-  useEffect(() => {
-    getAccountHashData(address);
-  }, [address, getAccountHashData]);
-
-  // Grab the account total hash amount:
-  const availableHash = accountHashData.assets.results?.find(
-    (b: { amount: string; denom: string }) => b.denom === 'nhash'
-  ) as { amount: string; denom: string };
-
   const buildChartData = useCallback(() => {
-    const theseDels = new Big(
-      Number(accountHashData?.delegations?.rollupTotals?.bondedTotal?.amount || 0)
-    )
-      .div(1e9)
-      .toNumber();
-    const theseRedels = new Big(
-      accountHashData?.redelegations?.rollupTotals?.redelegationTotal?.amount || 0
-    )
-      .div(1e9)
-      .toNumber();
-    const theseUnbonds = new Big(
-      accountHashData?.unbonding?.rollupTotals?.unbondingTotal?.amount || 0
-    )
-      .div(1e9)
-      .toNumber();
-    const theseRewards = new Big(accountHashData?.rewards?.total[0]?.amount || 0)
-      .div(1e9)
-      .toNumber();
-    const available = new Big(Number(availableHash?.amount || 0)).div(1e9).toNumber();
-    const theseTotal = available + theseDels + theseRedels + theseUnbonds + theseRewards;
     chartData.series[0].data[0].value = [
-      available,
-      theseRewards,
-      theseRedels,
-      theseUnbonds,
-      theseDels,
+      hashData.hashAvailable,
+      hashData.hashRewards,
+      hashData.hashRedelegations,
+      hashData.hashUnbondings,
+      hashData.hashDelegations,
     ];
     chartData.radar.indicator = [
-      { name: 'Available', max: theseTotal || 1 },
-      { name: 'Reward', max: theseTotal || 1 },
-      { name: 'Redelegated', max: theseTotal || 1 },
-      { name: 'Unbonding', max: theseTotal || 1 },
-      { name: 'Delegated', max: theseTotal || 1 },
+      { name: 'Available', max: hashData.hashTotal || 1 },
+      { name: 'Reward', max: hashData.hashTotal || 1 },
+      { name: 'Redelegated', max: hashData.hashTotal || 1 },
+      { name: 'Unbonding', max: hashData.hashTotal || 1 },
+      { name: 'Delegated', max: hashData.hashTotal || 1 },
     ];
     chartData.series[0].backgroundColor = theme.CHART_LINE_MAIN;
     chartData.series[0].areaStyle.color = new echarts.graphic.LinearGradient(0, 0, 0, 1, [
@@ -118,7 +89,7 @@ export const HashChart = () => {
         color: theme.CHART_LINE_GRADIENT_END,
       },
     ]);
-  }, [availableHash, accountHashData, theme]);
+  }, [hashData, theme]);
 
   // Build Chart with data
   useEffect(() => {
@@ -139,9 +110,9 @@ export const HashChart = () => {
     return window.removeEventListener('resize', () => chart && chart.resize());
   }, [chart, buildChartData, setChart]);
 
-  return accountHashDataLoading ? (
+  return isLoading ? (
     <Loading />
-  ) : isEmpty(accountHashData) ? (
+  ) : isEmpty(hashData) ? (
     <StyledMessage>No hash data available</StyledMessage>
   ) : (
     <StyledChart ref={chartElementRef} height={isSm ? '155px' : isLg || isMd ? '250px' : ''} />

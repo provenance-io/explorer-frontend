@@ -6,6 +6,7 @@ import { breakpoints } from 'consts';
 import { useColorScheme } from 'redux/hooks';
 import { maxLength } from 'utils';
 import { PopupNote } from 'Components/PopupNote';
+import { Table } from 'Components';
 import Sprite from '../Sprite';
 import CopyValue from '../CopyValue';
 import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '../DataRow';
@@ -209,6 +210,7 @@ interface RowDataProps {
   linkList?: string[];
   onClick?: (arg?: string) => void; // Something done on clicking a link
   copyList?: string[];
+  table?: any;
 }
 
 const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
@@ -261,12 +263,20 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
 };
 
 const buildSummaryRow = (rowData: RowDataProps, theme: string) => {
-  const { isJson, nobreak = false, title, value, hover = '' } = rowData;
+  const { isJson, nobreak = false, title, value, hover = '', table } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
     <SummaryRow key={title} isJson={isJson || false} nobreak={nobreak}>
       <SummaryTitle>{title}:</SummaryTitle>
+      {table && (
+        <Table
+          tableHeaders={table.tableHeaders}
+          tableData={table.tableData}
+          isLoading={table.isLoading}
+          showIndex={table.showIndex}
+        />
+      )}
       {hover ? (
         <SummaryValue title={hover}>
           {valueMissing ? '--' : buildSummaryValue(rowData, theme)}
@@ -289,6 +299,7 @@ interface DataProps {
   copy?: string;
   splitOnSpace?: boolean;
   popupNote?: PopupDataProps;
+  table?: any;
 }
 
 export interface SummaryDataProps {

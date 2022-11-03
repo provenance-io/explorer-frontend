@@ -62,7 +62,8 @@ export const formatTableData = (data = [], tableHeaders) => {
               (dataName === 'creator' ||
                 dataName === 'admin' ||
                 dataName === 'granter' ||
-                dataName === 'grantee'),
+                dataName === 'grantee' ||
+                dataObj.copy),
             raw: serverValue,
           };
           break;
@@ -476,7 +477,8 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
 
         // Server value already correct
-        case 'contractCount': //fallthrough
+        case 'sequence': // fallthrough
+        case 'contractCount': // fallthrough
         case 'creationHeight': // fallthrough
         case 'hashBucket': // fallthrough
         case 'label': // fallthrough

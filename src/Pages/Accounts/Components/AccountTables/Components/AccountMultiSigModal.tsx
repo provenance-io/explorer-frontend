@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 
 const Title = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
-  margin: 20px 0;
+  margin: 30px 0 20px 0;
 `;
 
 const Description = styled.li`
@@ -39,7 +39,7 @@ export const AccountMultiSigModal = ({ modalOpen, onClose, data }: MultiSigModal
   return (
     <Modal isOpen={isOpen} onClose={handleModalClose}>
       <>
-        <Title>The Following Accounts Form This Multi-Sig Account</Title>
+        <Title>The following accounts form this multi-sig account</Title>
         <ol>
           {data.map((account) => (
             <Description key={account.idx}>
