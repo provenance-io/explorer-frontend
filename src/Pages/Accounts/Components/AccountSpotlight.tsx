@@ -160,9 +160,7 @@ export const AccountSpotlight = () => {
         <Button icon="INVENTORY" onClick={activateModalOpen}>
           View All
         </Button>
-      ) : (
-        <></>
-      ),
+      ) : undefined,
     },
     { title: 'Sequence', value: String(sequence), popupNote: popupNoteSequence as PopupDataProps },
   ];
