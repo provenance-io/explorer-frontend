@@ -85,18 +85,33 @@ const TxInformation = () => {
       ],
     };
 
+    const tableData = JSON.parse(JSON.stringify(signers)).map((item) => ({
+      copy: true,
+      ...item,
+    }));
+
     const summaryData = [
       { title: 'Block', value: height, link: `/block/${height}`, copy: height },
       { title: 'Status', value: capitalize(status) },
       { title: 'Timestamp', value: `${utcTime}+UTC` },
       { title: 'Total Fees', value: feeValue },
-
       {
-        title: 'Signer(s)',
-        value: signers, // maxLength(signer, 24, 10),
-        list: signers.map((val) => maxLength(val.address, 12, '4')),
-        linkList: signers.map((val) => '/accounts/' + val.address),
-        copyList: signers.map((val) => signers.address),
+        title: signers.length === 1 ? 'Signer' : 'Signer(s)',
+        value: signers.length === 1 && maxLength(signers[0].address, 12, '4'),
+        link: signers.length === 1 && `/accounts/${feepayer.address}`,
+        copy: signers.length === 1 && signers[0].address,
+        table:
+          signers.length > 1
+            ? {
+                tableHeaders: [
+                  { displayName: 'Address', dataName: 'address' },
+                  { displayName: 'Sequence', dataName: 'sequence' },
+                ],
+                tableData,
+                isLoading: txInfoLoading,
+                showIndex: true,
+              }
+            : null,
       },
       {
         title: 'Feepayer',
@@ -105,17 +120,20 @@ const TxInformation = () => {
         copy: feepayer.address,
         popupNote: feepayerTypePopupNote,
       },
-      { title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo },
-      {
-        title: 'Additional Heights',
-        value: additionalHeights.length > 0 ? additionalHeights : '--',
-        list: additionalHeights.length > 0 ? additionalHeights : undefined,
-        linkList:
-          additionalHeights.length > 0
-            ? additionalHeights.map((block) => `/tx/${txHash}/${block}`)
-            : undefined,
-      },
-      errorCode !== 0 && { title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote },
+      ...(memo ? [{ title: 'Memo', value: maxLength(memo, 100) || '--', copy: memo }] : []),
+      ...(additionalHeights.length > 0
+        ? [
+            {
+              title: 'Additional Heights',
+              value: additionalHeights,
+              list: additionalHeights,
+              linkList: additionalHeights.map((block) => `/tx/${txHash}/${block}`),
+            },
+          ]
+        : []),
+      ...(errorCode !== 0
+        ? [{ title: 'Error Code', value: errorCode, popupNote: errorLogPopupNote }]
+        : []),
     ].filter((s) => s);
 
     return <Summary data={summaryData} />;

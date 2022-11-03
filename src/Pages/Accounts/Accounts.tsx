@@ -4,8 +4,8 @@ import { Section, Wrapper, Header, Content } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery, useAccounts } from 'redux/hooks';
 import { breakpoints } from 'consts';
-import { formatDenom, maxLength } from 'utils';
-import Big from 'big.js';
+import { formatDenom, maxLength, accountHashTotals } from 'utils';
+import { HashDataProps, useGetHashDataQuery } from 'redux/services';
 import { AccountSpotlight, HashChart } from './Components';
 import { AccountTables } from './Components/AccountTables/AccountTables';
 import { NoMatch404 } from '..';
@@ -24,23 +24,13 @@ const Accounts = () => {
   const { matches: exactlyMd } = useMediaQuery(breakpoints.only('md'));
   const { matches: isMdSm } = useMediaQuery(`(max-width: 780px)`);
   const { matches: isLg } = useMediaQuery(breakpoints.up('md'));
-  const { accountInfoFailure, accountHashData } = useAccounts();
+  const { accountInfoFailure } = useAccounts();
+  const { data: accountHashData, isLoading: accountHashDataLoading } = useGetHashDataQuery({
+    address: addressId,
+    denom: 'nhash',
+  });
 
-  const availableHash = accountHashData.assets.results?.find(
-    (b: { amount: string; denom: string }) => b.denom === 'nhash'
-  ) as { amount: string; denom: string };
-  const theseDels = new Big(
-    Number(accountHashData?.delegations?.rollupTotals?.bondedTotal?.amount || 0)
-  ).toNumber();
-  const theseRedels = new Big(
-    accountHashData?.redelegations?.rollupTotals?.redelegationTotal?.amount || 0
-  ).toNumber();
-  const theseUnbonds = new Big(
-    accountHashData?.unbonding?.rollupTotals?.unbondingTotal?.amount || 0
-  ).toNumber();
-  const theseRewards = new Big(accountHashData?.rewards?.total[0]?.amount || 0).toNumber();
-  const available = new Big(Number(availableHash?.amount || 0)).toNumber();
-  const totalHash = available + theseDels + theseRedels + theseUnbonds + theseRewards;
+  const hashData = accountHashTotals(accountHashData as unknown as HashDataProps);
 
   const headerValue = sizeSm ? maxLength(addressId, 20, '3') : addressId;
 
@@ -65,12 +55,12 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="50%"
-                title={`Total Hash: ${formatDenom(Number(totalHash), 'hash', {
+                title={`Total Hash: ${formatDenom(Number(hashData.hashTotal), 'nhash', {
                   decimal: 2,
                 })}`}
               >
-                <HashChart />
-                <HashTable />
+                <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
+                <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
               </Content>
             )}
           </Section>
@@ -80,13 +70,13 @@ const Accounts = () => {
                 justify="center"
                 alignItems="center"
                 size="100%"
-                title={`Total Hash: ${formatDenom(Number(totalHash), 'hash', {
+                title={`Total Hash: ${formatDenom(Number(hashData.hashTotal), 'nhash', {
                   decimal: 2,
                 })}`}
               >
                 <Group isMdSm={isMdSm}>
-                  <HashChart />
-                  <HashTable />
+                  <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
+                  <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
                 </Group>
               </Content>
             </Section>

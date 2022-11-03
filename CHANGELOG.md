@@ -4,10 +4,13 @@
 
 ### Bugs
 - Fix account chart issues #421
+- Fix modal title and data card spacing in accounts #426
 
 ### Features
 - Add data download csv for transaction volume #399
 - Update governance to use new endpoints #390
+- Update transactions for multi-sig changes #424
+- Update account calculations #423
 
 ## 3.3.1
 

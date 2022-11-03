@@ -32,6 +32,7 @@ export const PROVENANCE_WALLET_URL = isProd
 // Actual API URLs
 // -- Accounts
 export const ACCOUNT_INFO_URL = `${BASE_URL}/accounts`;
+export const ACCOUNT_INFO_V3_URL = `${BASE_URL_V3}/accounts`;
 // -- Assets
 export const ASSET_DETAIL_URL = `${BASE_URL}/assets`;
 export const ASSETS_LIST_URL = `${BASE_URL}/assets/all`;
