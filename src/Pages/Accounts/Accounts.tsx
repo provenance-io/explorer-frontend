@@ -6,6 +6,7 @@ import { useMediaQuery, useAccounts } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { formatDenom, maxLength, accountHashTotals } from 'utils';
 import { HashDataProps, useGetHashDataQuery } from 'redux/services';
+import { TxHistory } from 'Pages/Dashboard/Components';
 import { AccountSpotlight, HashChart } from './Components';
 import { AccountTables } from './Components/AccountTables/AccountTables';
 import { NoMatch404 } from '..';
@@ -81,6 +82,9 @@ const Accounts = () => {
               </Content>
             </Section>
           )}
+          <Section>
+            <TxHistory address={addressId} />
+          </Section>
           {/* <AccountTxs /> */}
           <Section>
             <AccountTables />

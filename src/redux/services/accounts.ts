@@ -217,7 +217,7 @@ export const accountsApi = api.injectEndpoints({
           !redelegationsError &&
           !unbondingsError &&
           !rewardsError
-          ? { data: hashAccountData, isLoading: false }
+          ? { data: hashAccountData }
           : {
               error: {
                 status: 500,
@@ -230,7 +230,6 @@ export const accountsApi = api.injectEndpoints({
                   rewardsError,
                 },
               },
-              isLoading: false,
             };
       },
     }),
