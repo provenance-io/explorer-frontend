@@ -4,7 +4,7 @@ import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
 import { breakpoints } from 'consts';
 import { TxHistoryProps } from 'redux/services';
-import { formatDenom } from 'utils';
+import { formatDenom, isEmpty, subtractDays } from 'utils';
 import Big from 'big.js';
 import { useMediaQuery, useOrderbook } from '../../../../../redux/hooks';
 
@@ -150,6 +150,8 @@ interface ValueProps {
 interface TxChartProps {
   data: TxHistoryProps[];
   txHistoryGran: string;
+  span?: number;
+  today?: Date;
 }
 
 interface ParamsArray {
@@ -158,7 +160,7 @@ interface ParamsArray {
   data: { value: string; name: string };
 }
 
-export const TxChart = ({ txHistoryGran, data }: TxChartProps) => {
+export const TxChart = ({ txHistoryGran, data, span, today }: TxChartProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
@@ -177,24 +179,54 @@ export const TxChart = ({ txHistoryGran, data }: TxChartProps) => {
   const buildChartData = useCallback(() => {
     const transactions: ValueProps[] = [];
     const fees: ValueProps[] = [];
+    const dateArray: TxHistoryProps[] = [];
 
+    // If the txHistoryCount is different, we want to ensure we populate
+    // zeros for each day in the time span
+    if (txHistoryCount - 1 !== span) {
+      // First, build the date array
+      for (let i = Number(span); i >= 0; i--) {
+        dateArray.push({
+          date: new Date(format(subtractDays(today, i), 'yyyy-MM-dd')).getTime(),
+          feepayer: null,
+          txCount: 0,
+          feeAmountInBaseToken: 0,
+          gasWanted: 0,
+          gasUsed: 0,
+          feeAmountInToken: 0,
+          feesPaidInUsd: 0,
+          maxTokenPriceUsd: 0,
+          minTokenPriceUsd: 0,
+          avgTokenPriceUsd: 0,
+        });
+      }
+      // Then, fill dateArray with data that exists
+      dateArray.forEach((item, idx) => {
+        const index = data.findIndex((element) => element.date === item.date);
+        if (index !== -1) {
+          dateArray[idx] = data[index];
+        }
+      });
+    }
     // Populate series information
-    const xAxisData = data.map(({ txCount, date, feesPaidInUsd, feeAmountInToken }) => {
-      transactions.push({
-        value: txCount,
-        name: new Date(date).toISOString(),
-      });
-      fees.push({
-        value: feesPaidInUsd
-          ? Number(feesPaidInUsd)
-          : new Big(feeAmountInToken).times(currentPricing.quote.USD.price).toNumber(),
-        name: new Date(date).toISOString(),
-      });
-      return format(
-        parseISO(new Date(date).toISOString()),
-        granIsDay ? 'MMM dd' : granIsMonth ? 'MMM' : 'MM/dd, hh:mm'
-      );
-    });
+    const xAxisData = (dateArray.length === 0 ? data : dateArray).map(
+      ({ txCount, date, feesPaidInUsd, feeAmountInToken }) => {
+        transactions.push({
+          value: txCount,
+          name: new Date(date).toISOString(),
+        });
+        fees.push({
+          value: feesPaidInUsd
+            ? Number(feesPaidInUsd)
+            : new Big(feeAmountInToken).times(currentPricing?.quote?.USD?.price || 0).toNumber(),
+          name: new Date(date).toISOString(),
+        });
+        return format(
+          parseISO(new Date(date).toISOString()),
+          granIsDay ? 'MMM dd' : granIsMonth ? 'MMM' : 'MM/dd, hh:mm'
+        );
+      }
+    );
 
     // Now set chart data dynamically
     const colors: string[] = [theme.CHART_LINE_MAIN, theme.CHART_PIE_YES];
@@ -264,7 +296,18 @@ export const TxChart = ({ txHistoryGran, data }: TxChartProps) => {
       )}</div> ${returnString}`;
       return returnString;
     };
-  }, [data, granIsDay, granIsMonth, isLg, isSmall, theme, currentPricing]);
+  }, [
+    data,
+    granIsDay,
+    granIsMonth,
+    isLg,
+    isSmall,
+    theme,
+    currentPricing,
+    span,
+    today,
+    txHistoryCount,
+  ]);
   // Legend
   chartData.legend.textStyle = {
     color: theme.FONT_PRIMARY,
@@ -273,7 +316,7 @@ export const TxChart = ({ txHistoryGran, data }: TxChartProps) => {
   // Build chart with data
   useEffect(() => {
     let chart: echarts.ECharts | undefined;
-    if (txHistoryCount > 0) {
+    if (txHistoryCount > 0 && !isEmpty(currentPricing)) {
       if (chartElementRef.current) {
         chart =
           echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
@@ -287,7 +330,7 @@ export const TxChart = ({ txHistoryGran, data }: TxChartProps) => {
       });
     }
     return window.removeEventListener('resize', () => chart && chart.resize());
-  }, [setChart, txHistoryCount, chart, buildChartData]);
+  }, [setChart, txHistoryCount, chart, buildChartData, currentPricing]);
 
   return txHistoryCount > 0 ? (
     <StyledChart ref={chartElementRef} />

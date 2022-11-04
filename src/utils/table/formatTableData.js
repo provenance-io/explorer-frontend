@@ -1,3 +1,4 @@
+import { currencyFormat } from 'utils/number';
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
 import { formatDenom } from '../number/formatDenom';
@@ -176,6 +177,11 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'depositAmount': {
           const { amount = '--', denom = '--' } = serverValue || {};
           finalObj[dataName] = { value: formatDenom(amount, denom) };
+          break;
+        }
+        case 'hashAmount': {
+          const { amount = '--', denom = '--' } = serverValue || {};
+          finalObj[dataName] = { value: currencyFormat(amount, denom).amount };
           break;
         }
         case 'fee': // fallthrough

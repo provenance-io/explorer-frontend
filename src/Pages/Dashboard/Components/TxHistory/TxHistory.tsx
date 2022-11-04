@@ -38,7 +38,14 @@ const radioButtons = [
   },
 ];
 
-export const TxHistory = () => {
+interface TxHistoryChartProps {
+  // If address is provided, will render for account information
+  address?: string;
+  // For split views, default is 50%
+  size?: '100%' | '50%';
+}
+
+export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
   // Modal controls
   const [modalOpen, deactivateModalOpen, activateModalOpen] = useToggle(false);
   const defaultDateFormat = 'yyyy-MM-dd';
@@ -53,6 +60,7 @@ export const TxHistory = () => {
     fromDate: format(subtractDays(today, daysFrom), defaultDateFormat),
     toDate: dayTo,
     granularity: txHistoryGran.toUpperCase() as GranularityProps,
+    address,
   });
 
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
@@ -71,34 +79,45 @@ export const TxHistory = () => {
     <Content
       alignItems="flex-start"
       alignContent="flex-start"
-      size={sizeMd || sizeSm ? '100%' : '50%'}
+      size={size === '50%' ? (sizeMd || sizeSm ? '100%' : '50%') : size}
       icon="INVENTORY"
-      title={`${daysFrom}-Day ${sizeMd || sizeSm ? 'Tx' : 'Transaction'} History`}
-      link={{ to: '/txs', title: 'View All' }}
+      title={`${txHistoryData && txHistoryData.length > 0 ? `${daysFrom}-Day` : ''} ${
+        sizeMd || sizeSm ? 'Tx' : 'Transaction'
+      } History`}
+      link={!address ? { to: '/txs', title: 'View All' } : {}}
     >
-      <RadioButtonGroup>
-        {radioButtons.map((button) => (
-          <div key={button.value}>
-            <Input
-              type="radio"
-              id={button.label}
-              key={button.value}
-              name="radio-button"
-              value={button.value}
-              onClick={handleChange}
-              defaultChecked={daysFrom === button.value}
-            />
-            <Label htmlFor="radio-button">{button.label}</Label>
-          </div>
-        ))}
-      </RadioButtonGroup>
+      {txHistoryData && txHistoryData.length > 0 && (
+        <RadioButtonGroup>
+          {radioButtons.map((button) => (
+            <div key={button.value}>
+              <Input
+                type="radio"
+                id={button.label}
+                key={button.value}
+                name="radio-button"
+                value={button.value}
+                onClick={handleChange}
+                defaultChecked={daysFrom === button.value}
+              />
+              <Label htmlFor="radio-button">{button.label}</Label>
+            </div>
+          ))}
+        </RadioButtonGroup>
+      )}
       {txHistoryDataLoading ? (
         <Loading />
       ) : (
-        <TxChart txHistoryGran={txHistoryGran} data={txHistoryData as TxHistoryProps[]} />
+        <TxChart
+          txHistoryGran={txHistoryGran}
+          data={txHistoryData as TxHistoryProps[]}
+          span={daysFrom}
+          today={today}
+        />
       )}
-      <Button onClick={activateModalOpen}>Generate CSV</Button>
-      <DownloadCsvModal modalOpen={modalOpen} onClose={deactivateModalOpen} />
+      {txHistoryData && txHistoryData.length > 0 && (
+        <Button onClick={activateModalOpen}>Generate CSV</Button>
+      )}
+      <DownloadCsvModal modalOpen={modalOpen} onClose={deactivateModalOpen} address={address} />
     </Content>
   );
 };

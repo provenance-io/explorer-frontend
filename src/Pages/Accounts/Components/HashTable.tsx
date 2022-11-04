@@ -11,35 +11,35 @@ export const HashTable = ({
   const tableData = [
     {
       hashBucket: 'Available',
-      amount: {
+      hashAmount: {
         amount: hashData.hashAvailable,
         denom: 'nhash',
       },
     },
     {
       hashBucket: 'Delegated',
-      amount: {
+      hashAmount: {
         amount: hashData.hashDelegations,
         denom: 'nhash',
       },
     },
     {
       hashBucket: 'Redelegated',
-      amount: {
+      hashAmount: {
         amount: hashData.hashRedelegations,
         denom: 'nhash',
       },
     },
     {
       hashBucket: 'Unbondings',
-      amount: {
+      hashAmount: {
         amount: hashData.hashUnbondings,
         denom: 'nhash',
       },
     },
     {
       hashBucket: 'Rewards',
-      amount: {
+      hashAmount: {
         amount: hashData.hashRewards,
         denom: 'nhash',
       },
@@ -57,7 +57,7 @@ export const HashTable = ({
         },
         {
           displayName: 'Amount',
-          dataName: 'amount',
+          dataName: 'hashAmount',
         },
       ]}
       tableBorder={false}
