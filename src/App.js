@@ -75,7 +75,7 @@ const App = () => {
             <Route path="/accounts/:addressId" component={Accounts} />
             <Route path="/announcement/:announcementId" component={Announcement} />
             <Route path="/announcements" component={Announcements} />
-            <Route path="/asset/:assetId" component={Asset} />
+            <Route path="/asset/:assetId*" component={Asset} />
             <Route path="/assets" component={Assets} />
             <Route path="/blocks" component={Blocks} />
             <Route path="/block/:blockHeight" component={Block} />
