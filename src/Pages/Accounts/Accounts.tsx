@@ -27,7 +27,6 @@ const Accounts = () => {
   const { accountInfoFailure } = useAccounts();
   const { data: accountHashData, isLoading: accountHashDataLoading } = useGetHashDataQuery({
     address: addressId,
-    denom: 'nhash',
   });
 
   const hashData = accountHashTotals(accountHashData as unknown as HashDataProps);

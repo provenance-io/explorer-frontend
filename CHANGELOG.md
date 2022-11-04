@@ -5,6 +5,7 @@
 ### Bugs
 - Fix account chart issues #421
 - Fix modal title and data card spacing in accounts #426
+- Fix hash on account page to draw from utility_token ednpoint #431
 
 ### Features
 - Add data download csv for transaction volume #399

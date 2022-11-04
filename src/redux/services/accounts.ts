@@ -150,6 +150,15 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address, denom }) => `${ACCOUNT_INFO_V3_URL}/${address}/balances/${denom}`,
     }),
+    getUtilityTokenAmount: builder.query<
+      AccountDenomBalance,
+      {
+        address: string;
+        denom: string;
+      }
+    >({
+      query: ({ address }) => `${ACCOUNT_INFO_V3_URL}/${address}/balances/utility_token`,
+    }),
     getUnbondings: builder.query<
       AccountUnbondings,
       {
@@ -186,12 +195,11 @@ export const accountsApi = api.injectEndpoints({
       HashDataProps,
       {
         address: string;
-        denom: string;
       }
     >({
-      async queryFn({ address, denom }, queryApi, extraOptions, baseQuery) {
+      async queryFn({ address }, _queryApi, _extraOptions, baseQuery) {
         const { data: hashData, error: hashDataError } = await baseQuery(
-          `${ACCOUNT_INFO_V3_URL}/${address}/balances/${denom}`
+          `${ACCOUNT_INFO_V3_URL}/${address}/balances/utility_token`
         );
         const { data: delegationsData, error: delegationsError } = await baseQuery(
           `${ACCOUNT_INFO_URL}/${address}/delegations`
@@ -241,6 +249,7 @@ export const accountsApi = api.injectEndpoints({
 // auto-generated based on the defined endpoints
 export const {
   useGetDenomAmountQuery,
+  useGetUtilityTokenAmountQuery,
   useGetUnbondingsQuery,
   useGetDelegationsQuery,
   useGetRedelegationsQuery,
