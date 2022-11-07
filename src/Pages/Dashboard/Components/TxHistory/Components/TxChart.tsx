@@ -14,7 +14,7 @@ const StyledChart = styled.div`
 `;
 const StyledMessage = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin: 10px 0;
 `;
 
 const chartData = {
@@ -335,6 +335,6 @@ export const TxChart = ({ txHistoryGran, data, span, today }: TxChartProps) => {
   return txHistoryCount > 0 ? (
     <StyledChart ref={chartElementRef} />
   ) : (
-    <StyledMessage>No transactions available</StyledMessage>
+    <StyledMessage>No transactions in the last {span} days</StyledMessage>
   );
 };

@@ -56,7 +56,11 @@ export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
 
   const [txHistoryGran, setTxHistoryGran] = useState<GranularityProps>(defaultGranularity);
 
-  const { data: txHistoryData, isLoading: txHistoryDataLoading } = useGetTxHistoryDataQuery({
+  const {
+    data: txHistoryData,
+    isLoading: txHistoryDataLoading,
+    error: txHistoryDataError,
+  } = useGetTxHistoryDataQuery({
     fromDate: format(subtractDays(today, daysFrom), defaultDateFormat),
     toDate: dayTo,
     granularity: txHistoryGran.toUpperCase() as GranularityProps,
@@ -83,10 +87,10 @@ export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
       icon="INVENTORY"
       title={`${txHistoryData && txHistoryData.length > 0 ? `${daysFrom}-Day` : ''} ${
         sizeMd || sizeSm ? 'Tx' : 'Transaction'
-      } History`}
+      } Activity`}
       link={!address ? { to: '/txs', title: 'View All' } : {}}
     >
-      {txHistoryData && txHistoryData.length > 0 && (
+      {txHistoryData && !txHistoryDataError && (
         <RadioButtonGroup>
           {radioButtons.map((button) => (
             <div key={button.value}>
@@ -114,7 +118,7 @@ export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
           today={today}
         />
       )}
-      {txHistoryData && txHistoryData.length > 0 && (
+      {txHistoryData && !txHistoryDataError && (
         <Button onClick={activateModalOpen}>Generate CSV</Button>
       )}
       <DownloadCsvModal modalOpen={modalOpen} onClose={deactivateModalOpen} address={address} />
