@@ -103,7 +103,6 @@ export const AccountTxs = () => {
     <Content
       alignItems="flex-start"
       alignContent="flex-start"
-      size={sizeMd || sizeSm ? '100%' : '50%'}
       icon="INVENTORY"
       title={`${dayFrom}-Day ${sizeMd || sizeSm ? 'Tx' : 'Transaction'} History`}
     >
