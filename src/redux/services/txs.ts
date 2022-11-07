@@ -1,4 +1,4 @@
-import { TX_V3_URL } from 'consts';
+import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from 'consts';
 import qs from 'query-string';
 import { api } from './serviceApi';
 
@@ -7,7 +7,7 @@ export type GranularityProps = 'MONTH' | 'DAY' | 'HOUR';
 export interface TxHistoryProps {
   date: number;
   feepayer: string | null;
-  txCount: 928;
+  txCount: number;
   feeAmountInBaseToken: number;
   gasWanted: number;
   gasUsed: number;
@@ -26,10 +26,13 @@ export const txsApi = api.injectEndpoints({
         fromDate: string;
         toDate: string;
         granularity: GranularityProps;
+        address?: string;
       }
     >({
-      query: ({ fromDate, toDate, granularity }) =>
-        `${TX_V3_URL}/history?${qs.stringify({ fromDate, toDate, granularity })}`,
+      query: ({ fromDate, toDate, granularity, address = '' }) =>
+        `${
+          address ? `${ACCOUNT_INFO_V3_URL}/${address}/tx_history` : `${TX_V3_URL}/history`
+        }?${qs.stringify({ fromDate, toDate, granularity })}`,
     }),
   }),
 });
