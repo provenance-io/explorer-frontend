@@ -12,7 +12,6 @@
 - Update governance to use new endpoints #390
 - Update transactions for multi-sig changes #424
 - Update account calculations #423
-- Add tx history download to account pages #429
 
 ## 3.3.1
 

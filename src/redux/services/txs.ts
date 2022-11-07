@@ -1,4 +1,4 @@
-import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from 'consts';
+import { TX_V3_URL } from 'consts';
 import qs from 'query-string';
 import { api } from './serviceApi';
 
@@ -26,13 +26,10 @@ export const txsApi = api.injectEndpoints({
         fromDate: string;
         toDate: string;
         granularity: GranularityProps;
-        address?: string;
       }
     >({
-      query: ({ fromDate, toDate, granularity, address = '' }) =>
-        `${
-          address ? `${ACCOUNT_INFO_V3_URL}/${address}/tx_history` : `${TX_V3_URL}/history`
-        }?${qs.stringify({ fromDate, toDate, granularity })}`,
+      query: ({ fromDate, toDate, granularity }) =>
+        `${TX_V3_URL}/history?${qs.stringify({ fromDate, toDate, granularity })}`,
     }),
   }),
 });
