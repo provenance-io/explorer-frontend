@@ -2,8 +2,8 @@ import { useEffect, useState, useRef, Ref } from 'react';
 import { Formik, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { Button as Basebutton, Modal, Forms } from 'Components';
-import { downloadData as data, downloadValidations as validations, maxLength } from 'utils';
-import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from 'consts';
+import { downloadData as data, downloadValidations as validations } from 'utils';
+import { TX_V3_URL } from 'consts';
 import qs from 'query-string';
 import { GranularityProps } from 'redux/services';
 
@@ -33,7 +33,6 @@ const Notice = styled.div<{ show?: boolean }>`
 interface DownloadCsvProps {
   modalOpen: boolean;
   onClose: Function;
-  address?: string; // If address is provided, this will download the CSV for a specific address
 }
 
 interface CsvOptions {
@@ -43,7 +42,7 @@ interface CsvOptions {
   advancedMetrics: boolean;
 }
 
-export const DownloadCsvModal = ({ modalOpen, onClose, address }: DownloadCsvProps) => {
+export const DownloadCsvModal = ({ modalOpen, onClose }: DownloadCsvProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleModalClose = () => {
@@ -86,9 +85,7 @@ export const DownloadCsvModal = ({ modalOpen, onClose, address }: DownloadCsvPro
           { resetForm }
         ) => {
           const a = document.createElement('a');
-          a.href = `${
-            address ? `${ACCOUNT_INFO_V3_URL}/${address}/tx_history` : `${TX_V3_URL}/history`
-          }/download?${qs.stringify({
+          a.href = `${TX_V3_URL}/history/download?${qs.stringify({
             fromDate,
             toDate,
             granularity,
@@ -105,9 +102,7 @@ export const DownloadCsvModal = ({ modalOpen, onClose, address }: DownloadCsvPro
       >
         {(formik) => (
           <form onSubmit={formik.handleSubmit}>
-            <Title>
-              Generate a CSV of {address ? maxLength(address, 12, '4') : ''} Transaction Information
-            </Title>
+            <Title>Generate a CSV of Transaction Information</Title>
             <Forms config={data()} formik={formik} />
             <Notice show={formik.values.advancedMetrics}>
               Toggling on advanced metrics will include transaction and fee type metrics in the CSV
