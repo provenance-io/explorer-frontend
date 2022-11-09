@@ -49,7 +49,7 @@ const chartData = {
   ],
 };
 
-export const HashChart = ({
+export const AccountHashChart = ({
   hashData,
   isLoading,
 }: {
@@ -115,6 +115,6 @@ export const HashChart = ({
   ) : isEmpty(hashData) ? (
     <StyledMessage>No hash data available</StyledMessage>
   ) : (
-    <StyledChart ref={chartElementRef} height={isSm ? '155px' : isLg || isMd ? '250px' : ''} />
+    <StyledChart ref={chartElementRef} height={isSm || isLg ? '155px' : isMd ? '250px' : ''} />
   );
 };

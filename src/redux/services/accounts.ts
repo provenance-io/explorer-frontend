@@ -1,4 +1,5 @@
 import { ACCOUNT_INFO_URL, ACCOUNT_INFO_V3_URL } from 'consts';
+import { AccountInfo } from 'redux/features/account/accountSlice';
 import { api } from './serviceApi';
 
 export interface VestingInfo {
@@ -160,14 +161,31 @@ export interface HashDataProps {
 
 export const accountsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // Returns balance for the queried denom
+    // Returns vesting information, but only runs the query if it is a vesting account
     getVestingData: builder.query<
-      VestingInfo,
+      VestingInfo | null,
       {
         address: string;
       }
     >({
-      query: ({ address }) => `${ACCOUNT_INFO_V3_URL}/${address}/vesting`,
+      async queryFn({ address }, _queryApi, _extraOptions, baseQuery) {
+        const { data: accountInfo, error: accountInfoError } = await baseQuery(
+          `${ACCOUNT_INFO_URL}/${address}`
+        );
+        let info: any = {
+          error: {
+            status: 500,
+            statusText: 'Account is not a vesting account',
+            data: {
+              accountInfo,
+            },
+          },
+        };
+        if ((accountInfo as AccountInfo).isVesting && !accountInfoError) {
+          info = await baseQuery(`${ACCOUNT_INFO_V3_URL}/${address}/vesting`);
+        }
+        return info;
+      },
     }),
     // Returns balance for the queried denom
     getDenomAmount: builder.query<

@@ -18,6 +18,7 @@ export interface AccountInfo {
     data: string;
   }[];
   isContract?: boolean;
+  isVesting?: boolean;
   publicKey: {
     base64: string;
     sigList: {
