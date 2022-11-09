@@ -57,12 +57,17 @@ export const AccountVestingChart = ({ data }: { data: VestingInfo }) => {
       .toNumber();
     // Most vesting accounts begin vesting with a cliff after the first year, and
     // continued vesting events every month after the first year to year 4. This
-    // means most accounts will have 3*12 = 36 + 1 = 37 vesting events. If the
-    // computed number is greater than this, just set it to 37 tick marks.
+    // means most accounts will have 3*12 = 36 + 1 = 37 vesting events. However, the
+    // first vesting event is usually the first 12 months, which must be accounted for
+    // as this chart will show the total vested as a percentage of the amount vested.
+    // Therefore, we will default to a 4 year vesting schedule with the knowledge that
+    // the first vesting event will likely be after the first 12 months and consist of
+    // 1/4th of the total grant, or 4*12 = 48 months. If the computed number is
+    // greater than this, just set it to 48 tick marks.
     chartData.angleAxis.interval =
-      numTickMarks <= 37
+      numTickMarks <= 48
         ? new Big(Number(data.periodicVestingList[0].coins[0].amount)).div(1e9).toNumber()
-        : new Big(Number(data?.originalVestingList[0].amount)).div(1e9).div(37).toNumber();
+        : new Big(Number(data?.originalVestingList[0].amount)).div(1e9).div(48).toNumber();
     // Max amount to vest is the original vesting list in hash
     chartData.angleAxis.max = new Big(Number(data?.originalVestingList[0].amount))
       .div(1e9)
