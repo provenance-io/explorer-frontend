@@ -14,6 +14,7 @@
 - Update transactions for multi-sig changes #424
 - Update account calculations #423
 - Add tx history download to account pages #429
+- Add FE support for vesting accounts #433
 
 ## 3.3.1
 

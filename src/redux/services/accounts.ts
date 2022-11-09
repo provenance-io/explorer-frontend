@@ -1,6 +1,25 @@
 import { ACCOUNT_INFO_URL, ACCOUNT_INFO_V3_URL } from 'consts';
 import { api } from './serviceApi';
 
+export interface VestingInfo {
+  dataAsOfDate: string;
+  endTime: string;
+  originalVestingList: {
+    amount: string;
+    denom: string;
+  }[];
+  periodicVestingList: {
+    coins: {
+      amount: string;
+      denom: string;
+    }[];
+    isVested: boolean;
+    length: number;
+    vestingDate: string;
+  }[];
+  startTime: string;
+}
+
 interface DenomProps {
   amount: string;
   denom: string;
@@ -141,6 +160,16 @@ export interface HashDataProps {
 
 export const accountsApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    // Returns balance for the queried denom
+    getVestingData: builder.query<
+      VestingInfo,
+      {
+        address: string;
+      }
+    >({
+      query: ({ address }) => `${ACCOUNT_INFO_V3_URL}/${address}/vesting`,
+    }),
+    // Returns balance for the queried denom
     getDenomAmount: builder.query<
       AccountDenomBalance,
       {
@@ -150,6 +179,7 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address, denom }) => `${ACCOUNT_INFO_V3_URL}/${address}/balances/${denom}`,
     }),
+    // Returns balance for the blockchain utility token
     getUtilityTokenAmount: builder.query<
       AccountDenomBalance,
       {
@@ -159,6 +189,7 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address }) => `${ACCOUNT_INFO_V3_URL}/${address}/balances/utility_token`,
     }),
+    // Returns unbonding balance for account
     getUnbondings: builder.query<
       AccountUnbondings,
       {
@@ -167,6 +198,7 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address }) => `${ACCOUNT_INFO_URL}/${address}/unbonding`,
     }),
+    // Returns delegation balance for account
     getDelegations: builder.query<
       AccountDelegations,
       {
@@ -175,6 +207,7 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address }) => `${ACCOUNT_INFO_URL}/${address}/delegations`,
     }),
+    // Returns redelegation balance for account
     getRedelegations: builder.query<
       AccountRedelegations,
       {
@@ -183,6 +216,7 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address }) => `${ACCOUNT_INFO_URL}/${address}/redelegations`,
     }),
+    // Returns rewards balance for account
     getRewards: builder.query<
       AccountRewards,
       {
@@ -191,6 +225,9 @@ export const accountsApi = api.injectEndpoints({
     >({
       query: ({ address }) => `${ACCOUNT_INFO_URL}/${address}/rewards`,
     }),
+    // Returns object of all utility token balances (available, delegated,
+    // redelegated, unbonding, and rewards balances). This runs five
+    // queries on 5 different endpoints based on the address provided
     getHashData: builder.query<
       HashDataProps,
       {
@@ -247,6 +284,7 @@ export const accountsApi = api.injectEndpoints({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+  useGetVestingDataQuery,
   useGetDenomAmountQuery,
   useGetUtilityTokenAmountQuery,
   useGetUnbondingsQuery,
