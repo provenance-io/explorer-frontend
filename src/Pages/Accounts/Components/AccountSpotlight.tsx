@@ -153,14 +153,15 @@ export const AccountSpotlight = () => {
     { title: 'Number', value: String(accountNumber), popupNote: popupNoteNumber as PopupDataProps },
     {
       title: 'Public Key',
-      value: base64 && maxLength(base64, 12, '3'),
+      value: base64 && sigList.length === 1 ? maxLength(base64, 12, '3') : 'N/A',
       copy: base64 && base64,
-      popupNote: popupNoteKeyType as PopupDataProps,
-      button: !base64 ? (
-        <Button icon="INVENTORY" onClick={activateModalOpen}>
-          View All
-        </Button>
-      ) : undefined,
+      popupNote: publicKeyType ? (popupNoteKeyType as PopupDataProps) : undefined,
+      button:
+        !base64 && sigList.length > 1 ? (
+          <Button icon="INVENTORY" onClick={activateModalOpen}>
+            View All
+          </Button>
+        ) : undefined,
     },
     { title: 'Sequence', value: String(sequence), popupNote: popupNoteSequence as PopupDataProps },
   ];

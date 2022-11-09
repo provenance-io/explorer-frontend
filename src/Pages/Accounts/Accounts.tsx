@@ -1,13 +1,18 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import styled from 'styled-components';
-import { Section, Wrapper, Header, Content } from 'Components';
+import { Section, Wrapper, Header, Content, Loading, MultiTable } from 'Components';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery, useAccounts } from 'redux/hooks';
 import { breakpoints } from 'consts';
 import { formatDenom, maxLength, accountHashTotals } from 'utils';
-import { HashDataProps, useGetHashDataQuery } from 'redux/services';
+import { HashDataProps, useGetHashDataQuery, useGetVestingDataQuery } from 'redux/services';
 import { TxHistory } from 'Pages/Dashboard/Components';
-import { AccountSpotlight, HashChart } from './Components';
+import {
+  AccountSpotlight,
+  AccountVestingChart,
+  AccountVestingTable,
+  HashChart,
+} from './Components';
 import { AccountTables } from './Components/AccountTables/AccountTables';
 import { NoMatch404 } from '..';
 import { HashTable } from './Components/HashTable';
@@ -19,6 +24,7 @@ const Group = styled.div<{ isMdSm?: boolean }>`
 `;
 
 const Accounts = () => {
+  const [activeTableTab, setActiveTableTab] = useState(0);
   const { addressId } = useParams<{ addressId: string }>();
   const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
   const { matches: isMd } = useMediaQuery(breakpoints.down('md'));
@@ -27,6 +33,13 @@ const Accounts = () => {
   const { matches: isLg } = useMediaQuery(breakpoints.up('md'));
   const { accountInfoFailure } = useAccounts();
   const { data: accountHashData, isLoading: accountHashDataLoading } = useGetHashDataQuery({
+    address: addressId,
+  });
+  const {
+    data: vestingData,
+    isLoading: vestingDataLoading,
+    error: vestingDataError,
+  } = useGetVestingDataQuery({
     address: addressId,
   });
 
@@ -59,8 +72,27 @@ const Accounts = () => {
                   decimal: 2,
                 })}`}
               >
-                <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
-                <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
+                {vestingData && !vestingDataError ? (
+                  <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
+                    <Fragment key="Hash Info">
+                      <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
+                      <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
+                    </Fragment>
+                    <Fragment key="Vesting Info">
+                      {vestingDataLoading ? (
+                        <Loading />
+                      ) : (
+                        <AccountVestingChart data={vestingData} />
+                      )}
+                      <AccountVestingTable data={vestingData} isLoading={vestingDataLoading} />
+                    </Fragment>
+                  </MultiTable>
+                ) : (
+                  <>
+                    <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
+                    <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
+                  </>
+                )}
               </Content>
             )}
           </Section>
@@ -75,8 +107,27 @@ const Accounts = () => {
                 })}`}
               >
                 <Group isMdSm={isMdSm}>
-                  <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
-                  <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
+                  {vestingData && !vestingDataError ? (
+                    <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
+                      <Fragment key="Hash Info">
+                        <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
+                        <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
+                      </Fragment>
+                      <Fragment key="Vesting Info">
+                        {vestingDataLoading ? (
+                          <Loading />
+                        ) : (
+                          <AccountVestingChart data={vestingData} />
+                        )}
+                        <AccountVestingTable data={vestingData} isLoading={vestingDataLoading} />
+                      </Fragment>
+                    </MultiTable>
+                  ) : (
+                    <>
+                      <HashChart hashData={hashData} isLoading={accountHashDataLoading} />
+                      <HashTable hashData={hashData} isLoading={accountHashDataLoading} />
+                    </>
+                  )}
                 </Group>
               </Content>
             </Section>
