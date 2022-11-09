@@ -581,6 +581,7 @@ export const txSlice = createSlice({
         };
         state.txMsgsLoading = false;
         state.txMsgsTotal = payload.data.total;
+        state.txMsgsPages = payload.data.pages;
       })
       .addCase(getTxMsgs.rejected, (state) => {
         state.txMsgsLoading = false;

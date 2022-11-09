@@ -7,6 +7,7 @@
 - Fix modal title and data card spacing in accounts #426
 - Fix hash on account page to draw from utility_token ednpoint #431
 - Fix transactions history display when data length is 0 #436
+- Fix vesting account issues #439
 
 ### Features
 - Add data download csv for transaction volume #399

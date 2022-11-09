@@ -1,7 +1,7 @@
 import { Table } from 'Components';
 import { AccountHashTotals } from 'utils';
 
-export const HashTable = ({
+export const AccountHashTable = ({
   hashData,
   isLoading,
 }: {
@@ -9,6 +9,13 @@ export const HashTable = ({
   isLoading: boolean;
 }) => {
   const tableData = [
+    {
+      hashBucket: 'Total',
+      hashAmount: {
+        amount: hashData.hashTotal,
+        denom: 'nhash',
+      },
+    },
     {
       hashBucket: 'Available',
       hashAmount: {

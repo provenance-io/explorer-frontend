@@ -3,7 +3,7 @@ import * as echarts from 'echarts';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaQuery } from 'redux/hooks';
 import { breakpoints } from 'consts';
-import { formatDenom, isEmpty } from 'utils';
+import { isEmpty } from 'utils';
 import { VestingInfo } from 'redux/services';
 import Big from 'big.js';
 
@@ -15,11 +15,6 @@ const StyledChart = styled.div<{ height?: string }>`
 // Set initial chart data
 const chartData = {
   color: '',
-  tooltip: {
-    // Needed format for TypeScript
-    // eslint-disable-next-line no-empty-pattern
-    formatter: ([]) => '',
-  },
   polar: {
     radius: [40, '80%'],
   },
@@ -28,7 +23,7 @@ const chartData = {
     interval: 0,
     startAngle: 90,
     axisLabel: {
-      show: true,
+      show: false,
     },
   },
   radiusAxis: {
@@ -55,9 +50,24 @@ export const AccountVestingChart = ({ data }: { data: VestingInfo }) => {
 
   const buildChartData = useCallback(() => {
     // Set the polar axis min/max tick intervals to the vesting amounts
-    chartData.angleAxis.interval = new Big(Number(data.periodicVestingList[0].coins[0].amount))
+    // Make sure there are a reasonable number of tick marks
+    const numTickMarks = new Big(Number(data?.originalVestingList[0].amount))
       .div(1e9)
+      .div(new Big(Number(data.periodicVestingList[0].coins[0].amount)).div(1e9).toNumber())
       .toNumber();
+    // Most vesting accounts begin vesting with a cliff after the first year, and
+    // continued vesting events every month after the first year to year 4. This
+    // means most accounts will have 3*12 = 36 + 1 = 37 vesting events. However, the
+    // first vesting event is usually the first 12 months, which must be accounted for
+    // as this chart will show the total vested as a percentage of the amount vested.
+    // Therefore, we will default to a 4 year vesting schedule with the knowledge that
+    // the first vesting event will likely be after the first 12 months and consist of
+    // 1/4th of the total grant, or 4*12 = 48 months. If the computed number is
+    // greater than this, just set it to 48 tick marks.
+    chartData.angleAxis.interval =
+      numTickMarks <= 48
+        ? new Big(Number(data.periodicVestingList[0].coins[0].amount)).div(1e9).toNumber()
+        : new Big(Number(data?.originalVestingList[0].amount)).div(1e9).div(48).toNumber();
     // Max amount to vest is the original vesting list in hash
     chartData.angleAxis.max = new Big(Number(data?.originalVestingList[0].amount))
       .div(1e9)
@@ -85,21 +95,6 @@ export const AccountVestingChart = ({ data }: { data: VestingInfo }) => {
       chartData.angleAxis.interval = currentlyVested;
       chartData.angleAxis.axisLabel.show = false;
     }
-    // Tooltip formatting
-    chartData.tooltip.formatter = (params: any[]) => `
-      <div>Amount Vested: ${formatDenom(
-        currentlyVested,
-        data.periodicVestingList[0].coins[0].denom
-      )}</div>
-      ${
-        !(currentlyVested === Number(data?.originalVestingList[0].amount))
-          ? `<div>Amount Remaining: ${formatDenom(
-              new Big(Number(data.originalVestingList[0].amount)).minus(currentlyVested).toNumber(),
-              data.originalVestingList[0].denom
-            )}</div>`
-          : ''
-      }
-    `;
   }, [data, theme]);
 
   // Build Chart with data
@@ -124,6 +119,6 @@ export const AccountVestingChart = ({ data }: { data: VestingInfo }) => {
   }, [chart, buildChartData, setChart, data]);
 
   return (
-    <StyledChart ref={chartElementRef} height={isSm ? '155px' : isLg || isMd ? '250px' : ''} />
+    <StyledChart ref={chartElementRef} height={isSm || isLg ? '155px' : isMd ? '250px' : ''} />
   );
 };
