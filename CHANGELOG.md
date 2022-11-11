@@ -1,21 +1,23 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
-## Unreleased
+## 3.4.0
+
+### Release Name: Saint Brendan
 
 ### Bugs
-- Fix account chart issues #421
-- Fix modal title and data card spacing in accounts #426
-- Fix hash on account page to draw from utility_token ednpoint #431
-- Fix transactions history display when data length is 0 #436
-- Fix vesting account issues #439
+- Fix account chart issues [#421](https://github.com/provenance-io/explorer-frontend/issues/421)
+- Fix modal title and data card spacing in accounts [#426](https://github.com/provenance-io/explorer-frontend/issues/426)
+- Fix hash on account page to draw from utility_token ednpoint [#431](https://github.com/provenance-io/explorer-frontend/issues/431)
+- Fix transactions history display when data length is 0 [#436](https://github.com/provenance-io/explorer-frontend/issues/436)
+- Fix vesting account issues [#439](https://github.com/provenance-io/explorer-frontend/issues/439)
 
 ### Features
-- Add data download csv for transaction volume #399
-- Update governance to use new endpoints #390
-- Update transactions for multi-sig changes #424
-- Update account calculations #423
-- Add tx history download to account pages #429
-- Add FE support for vesting accounts #433
+- Add data download csv for transaction volume [#399](https://github.com/provenance-io/explorer-frontend/issues/399)
+- Update governance to use new endpoints [#390](https://github.com/provenance-io/explorer-frontend/issues/390)
+- Update transactions for multi-sig changes [#424](https://github.com/provenance-io/explorer-frontend/issues/424)
+- Update account calculations [#423](https://github.com/provenance-io/explorer-frontend/issues/423)
+- Add tx history download to account pages [#429](https://github.com/provenance-io/explorer-frontend/issues/429)
+- Add FE support for vesting accounts [#433](https://github.com/provenance-io/explorer-frontend/issues/433)
 
 ## 3.3.1
 
