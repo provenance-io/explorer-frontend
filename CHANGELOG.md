@@ -2,10 +2,16 @@
 
 ## Unreleased
 
-### Bugs
+### Bug Fixes
 
 ### Features
-- Upgrade to wcjs 2.0.0 #442
+
+## Kurbat Ivanov
+
+### Bug Fixes
+
+### Features
+- Upgrade to wcjs 2.0.0 [#442](https://github.com/provenance-io/explorer-frontend/issues/442)
 
 ## 3.4.0
 
