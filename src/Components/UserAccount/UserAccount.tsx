@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
 import { QRCodeModal, useWalletConnect } from '@provenanceio/walletconnect-js';
+import { WalletId } from '@provenanceio/walletconnect-js/lib/types';
 // @ts-ignore
 import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
 // @ts-ignore
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { breakpoints, ICON_NAMES } from 'consts';
+import { breakpoints, ICON_NAMES, isProd } from 'consts';
 import { useApp } from 'redux/hooks';
 import { maxLength } from 'utils';
 import { PopupNote } from 'Components/PopupNote';
@@ -84,6 +85,12 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
     wcs.connect();
   };
 
+  const devWallets = [
+    ...(isProd ? ['figure_web'] : ['figure_web_test', 'figure_mobile_test']),
+    'provenance_extension',
+    'provenance_mobile',
+  ];
+
   return (
     <Container
       ref={containerRef}
@@ -118,7 +125,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
         walletConnectService={wcs}
         title="Scan the QRCode with your mobile Provenance Blockchain Wallet."
         className="QR-Code-Modal"
-        devWallets={['figure_web', 'provenance_extension', 'provenance_mobile']}
+        devWallets={devWallets as WalletId[]}
+        hideWallets={isProd ? ['figure_web_test', 'figure_mobile_test'] : ['figure_web']}
       />
     </Container>
   );
