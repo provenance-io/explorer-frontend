@@ -208,7 +208,7 @@ export const ManageStakingModal = ({
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
     // Submit via walletconnect-js
-    wcs.customAction({
+    wcs.sendMessage({
       description: 'Submit Delegation',
       message: data.base64,
     });
