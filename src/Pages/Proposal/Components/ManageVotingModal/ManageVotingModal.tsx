@@ -241,7 +241,7 @@ const ManageVotingModal = ({
                 voter: voterId,
                 votes,
               });
-              wcs.customAction({
+              wcs.sendMessage({
                 description: 'Submit Proposal',
                 message: data.base64,
               });

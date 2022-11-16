@@ -1,5 +1,12 @@
 # CHANGELOG | <img src="./public/logo.svg" style="height: 36px; margin: 0 0 -7px 4px;" alt="Provenance Explorer"/>
 
+## Unreleased
+
+### Bugs
+
+### Features
+- Upgrade to wcjs 2.0.0 #442
+
 ## 3.4.0
 
 ### Release Name: Saint Brendan

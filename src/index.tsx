@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
@@ -7,10 +6,7 @@ import App from './App';
 
 ReactDOM.render(
   <Provider store={store()}>
-    <WalletConnectContextProvider
-      network={process.env.REACT_APP_ENV === 'test' ? 'testnet' : 'mainnet'}
-      timeout={process.env.REACT_APP_ENV === 'test' ? 86400 : 1800}
-    >
+    <WalletConnectContextProvider>
       <App />
     </WalletConnectContextProvider>
   </Provider>,
