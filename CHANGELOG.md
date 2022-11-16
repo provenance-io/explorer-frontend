@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 ### Features
+- Add Figure test wallets to User Login component #445
 
 ## Kurbat Ivanov
 
