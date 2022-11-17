@@ -77,11 +77,9 @@ const TxMsgs = () => {
     setFilterMsgType(finalType);
   };
 
-  const chaincodePrefixCopy = chaincodePrefixes && JSON.parse(JSON.stringify(chaincodePrefixes));
-
   // Determine link prefix
   const getPrefix = (value) => {
-    const prefix = chaincodePrefixCopy
+    const prefix = [...chaincodePrefixes]
       // Sort the response of prefixes so longest are first
       .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
       // Find the matching prefix in the account hash
@@ -93,7 +91,7 @@ const TxMsgs = () => {
   };
 
   let msgs = [];
-  if (chaincodePrefixCopy)
+  if (chaincodePrefixes)
     msgs = txMsgs?.[txHash]?.map((msg) => [
       { title: 'Tx Type', value: capitalize(msg.type) },
       ...Object.entries(msg?.msg).map(([key, value]) => {
