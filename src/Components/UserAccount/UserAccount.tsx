@@ -9,7 +9,7 @@ import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { breakpoints, ICON_NAMES, isProd } from 'consts';
+import { breakpoints, ICON_NAMES } from 'consts';
 import { useApp } from 'redux/hooks';
 import { maxLength } from 'utils';
 import { PopupNote } from 'Components/PopupNote';
@@ -118,14 +118,7 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
         walletConnectService={wcs}
         title="Scan the QRCode with your mobile Provenance Blockchain Wallet."
         className="QR-Code-Modal"
-        devWallets={[
-          'figure_web',
-          'figure_web_test',
-          'figure_mobile_test',
-          'provenance_extension',
-          'provenance_mobile',
-        ]}
-        hideWallets={isProd ? ['figure_web_test', 'figure_mobile_test'] : ['figure_web']}
+        devWallets={['figure_web', 'provenance_extension', 'provenance_mobile']}
       />
     </Container>
   );

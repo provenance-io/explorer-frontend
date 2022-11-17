@@ -6,7 +6,10 @@ import App from './App';
 
 ReactDOM.render(
   <Provider store={store()}>
-    <WalletConnectContextProvider>
+    <WalletConnectContextProvider
+      network={process.env.REACT_APP_ENV === 'test' ? 'testnet' : 'mainnet'}
+      timeout={process.env.REACT_APP_ENV === 'test' ? 86400 : 1800}
+    >
       <App />
     </WalletConnectContextProvider>
   </Provider>,

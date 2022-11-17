@@ -33,19 +33,19 @@ export const useProposal = () => {
       setShouldPull(true);
       setSubmitted(true);
     };
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
+    wcs.addListener(WINDOW_MESSAGES.CUSTOM_ACTION_COMPLETE, submitSuccess);
 
     // Fail message for transaction messages
     const submitFailure = (result: BroadcastResults) => {
       setSubmitted(false);
       deactivateModalOpen();
     };
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
+    wcs.addListener(WINDOW_MESSAGES.CUSTOM_ACTION_FAILED, submitFailure);
 
     // Remove event listeners when no longer needed
     return () => {
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
+      wcs.removeListener(WINDOW_MESSAGES.CUSTOM_ACTION_COMPLETE, submitSuccess);
+      wcs.removeListener(WINDOW_MESSAGES.CUSTOM_ACTION_FAILED, submitFailure);
       wcs.removeAllListeners();
     };
   }, [wcs, deactivateModalOpen]);
