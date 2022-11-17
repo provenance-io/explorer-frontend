@@ -531,16 +531,16 @@ export const submitProposal = ({
   if (file && type === 'STORE_CODE') {
     formData.append('wasmFile', file);
   }
-  return ajax({
-    url: `${GOVERNANCE_SUBMIT_PROPOSAL_URL}${type}`,
+  return fetch(`${GOVERNANCE_SUBMIT_PROPOSAL_URL}${type}`, {
     method: 'POST',
-    data: formData,
-    config: {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
+    body: formData,
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-  });
+  })
+    .then((res) => res.json())
+    .then((json) => ({ data: json }));
 };
 
 export const governanceActions = {

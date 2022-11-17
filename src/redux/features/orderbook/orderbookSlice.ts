@@ -113,9 +113,6 @@ export const GET_CURRENT_PRICING = 'ORDERBOOK::GET_CURRENT_PRICING';
 -------------------*/
 export const getCurrentPricing = createAsyncThunk(GET_CURRENT_PRICING, () =>
   ajax({
-    config: {
-      withCredentials: false,
-    },
     url: `${UTILITY_TOKEN_CURRENT_URL}`,
   })
 );
@@ -125,9 +122,6 @@ export const getHistoricalPricing = createAsyncThunk(
   GET_HISTORICAL_PRICING,
   ({ startTime = '', endTime = '' }: { startTime: string; endTime: string }) =>
     ajax({
-      config: {
-        withCredentials: false,
-      },
       url: `${UTILITY_TOKEN_HISTORICAL_URL}${startTime || endTime ? '?' : ''}${
         startTime ? `fromDate=${startTime}` : ''
       }${startTime && endTime ? '&' : ''}${endTime ? `&toDate=${endTime}` : ''}`,

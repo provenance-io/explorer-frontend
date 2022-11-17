@@ -1,47 +1,61 @@
-import _axios, { Method } from 'axios';
+let token: string;
 
 type Request = {
-  config?: object;
+  config?: {
+    headers?: {
+      [key: string]: string;
+    };
+  };
   data?: object;
   meta?: any;
-  method?: Method;
+  method?: RequestInit['method'];
   url: string;
 };
 
-export const axios = _axios.create({
-  baseURL: window.location.hostname,
-  timeout: 45000,
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});
-
 export const xhrSetToken = (value: string) => {
-  axios.defaults.headers.Authorization = `Bearer ${value}`;
+  token = value;
 };
 
 function errorHandling(error: any) {
-  if (error.response) {
-    return error.response.data;
-  }
-
-  if (error.request) {
-    console.error(`Unexpected request error ${error.request}`, error); // eslint-disable-line no-console
+  if (error.statusText) {
+    return console.error(`Error: ${error.statusText}`, error);
   }
 
   // eslint-disable-next-line no-console
-  console.error(`Something happened setting up the request ${error.message}`, error);
+  console.error(`Something happened setting up the request to ${error.url}`, error);
   return null;
 }
 
 export const ajax = async ({ config, data, method = 'GET', url }: Request) => {
   try {
-    const result = await axios(url, { ...config, data, method });
+    let headers: HeadersInit = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    if (config?.headers) {
+      headers = { ...headers, ...config.headers };
+    }
+
+    const result = await fetch(url, {
+      ...config,
+      body: JSON.stringify(data),
+      headers,
+      method,
+    });
+
+    if (!result.ok) {
+      return Promise.reject(errorHandling(result));
+    }
+
+    const json = await result.json();
 
     return Promise.resolve({
-      data: result.data,
+      data: json,
       responseHeaders: { ...result.headers },
     });
   } catch (error) {

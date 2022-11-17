@@ -12,9 +12,8 @@
   "sideEffects": false,
   "dependencies": {
     "@provenanceio/wallet-utils": "2.3.0",
-    "@provenanceio/walletconnect-js": "1.2.9",
+    "@provenanceio/walletconnect-js": "2.0.5",
     "@reduxjs/toolkit": "1.8.1",
-    "axios": "0.21.2",
     "bech32": "2.0.0",
     "big.js": "6.1.1",
     "date-fns": "2.22.1",
@@ -86,7 +85,6 @@
     "fs-extra": "10.0.0",
     "husky": "4.3.0",
     "inquirer": "8.1.2",
-    "jest-mock-axios": "4.4.0",
     "lint-staged": "11.0.0",
     "nyc": "15.1.0",
     "prettier": "2.3.2",
