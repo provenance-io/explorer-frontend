@@ -1,17 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/app/store';
-import { CHAINCODE_ID_URL, CHAINCODE_PREFIXES_URL } from 'consts';
 import { getCookie, setCookie } from 'utils';
-import { ajax, xhrSetToken } from '../api';
+import { xhrSetToken } from '../api';
 
 export interface AppState {
-  chaincodeId: string;
-  chaincodeIdLoading: boolean;
-  chaincodePrefixes: {
-    prefix: string;
-    type: string;
-  }[];
-  chaincodePrefixesLoading: boolean;
   topCount: number;
   tableCount: number;
   validatorCount: number;
@@ -30,10 +22,6 @@ export interface AppState {
 }
 
 export const initialState: AppState = {
-  chaincodeId: '',
-  chaincodePrefixes: [],
-  chaincodeIdLoading: false,
-  chaincodePrefixesLoading: false,
   topCount: 10,
   tableCount: 30,
   validatorCount: 100,
@@ -56,24 +44,10 @@ export const initialState: AppState = {
 /* -----------------
 ** TYPES
 -------------------*/
-// API
-const GET_CHAINCODE_ID = 'GET_CHAINCODE_ID';
-const GET_CHAINCODE_PREFIXES = 'GET_CHAINCODE_PREFIXES';
 
 /* -----------------
 ** ACTIONS
 -------------------*/
-export const getChaincodeId = createAsyncThunk(GET_CHAINCODE_ID, () =>
-  ajax({
-    url: CHAINCODE_ID_URL,
-  })
-);
-
-export const getChaincodePrefixes = createAsyncThunk(GET_CHAINCODE_PREFIXES, () =>
-  ajax({
-    url: CHAINCODE_PREFIXES_URL,
-  })
-);
 
 /* -----------------
 ** SLICE
@@ -121,35 +95,6 @@ export const appSlice = createSlice({
       state.changeOwnerData = { ...state.changeOwnerData, ...action.payload };
     },
   },
-  extraReducers(builder) {
-    builder
-      /* -----------------
-      GET_CHAINCODE_ID
-      -------------------*/
-      .addCase(getChaincodeId.pending, (state) => {
-        state.chaincodeIdLoading = true;
-      })
-      .addCase(getChaincodeId.fulfilled, (state, { payload }) => {
-        state.chaincodeIdLoading = false;
-        state.chaincodeId = payload.data;
-      })
-      .addCase(getChaincodeId.rejected, (state) => {
-        state.chaincodeIdLoading = false;
-      })
-      /* -----------------
-      GET_CHAINCODE_PREFIXES
-      -------------------*/
-      .addCase(getChaincodePrefixes.pending, (state) => {
-        state.chaincodePrefixesLoading = true;
-      })
-      .addCase(getChaincodePrefixes.fulfilled, (state, { payload }) => {
-        state.chaincodePrefixesLoading = false;
-        state.chaincodePrefixes = payload.data;
-      })
-      .addCase(getChaincodePrefixes.rejected, (state) => {
-        state.chaincodePrefixesLoading = false;
-      });
-  },
 });
 
 /* -----------------
@@ -166,8 +111,6 @@ const {
 } = appSlice.actions;
 
 export const appActions = {
-  getChaincodeId,
-  getChaincodePrefixes,
   setTheme,
   setWalletUrl,
   setIsLoggedIn,

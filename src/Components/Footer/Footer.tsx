@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useApp } from 'redux/hooks';
 import { Link } from 'react-router-dom';
 import {
   breakpoints,
@@ -10,6 +8,8 @@ import {
   SOCIAL_DISCORD_URL,
   isProd,
 } from 'consts';
+import { useGetChaincodeIdQuery } from 'redux/services';
+import Loading from 'Components/Loading';
 import Sprite from '../Sprite';
 import { version } from '../../../package.json';
 
@@ -61,16 +61,14 @@ const FooterVersion = styled.div`
   margin-left: 25px;
 `;
 
-const Footer = () => {
-  const { getChaincodeId, chaincodeId } = useApp();
+export const Footer = () => {
+  const {
+    data: chaincodeId,
+    isLoading: chaincodeIdLoading,
+    isFetching: chaincodeIdFetching,
+  } = useGetChaincodeIdQuery();
 
-  useEffect(() => {
-    if (!chaincodeId) {
-      getChaincodeId();
-    }
-  }, [chaincodeId, getChaincodeId]);
-
-  return (
+  return !chaincodeIdLoading && !chaincodeIdFetching ? (
     <FooterContainer>
       <FooterData>Provenance Blockchain Explorer</FooterData>
       <FooterData>
@@ -121,7 +119,7 @@ const Footer = () => {
         <FooterVersion>v{version ? version : '?.?.?'}</FooterVersion>
       </FooterSocial>
     </FooterContainer>
+  ) : (
+    <Loading />
   );
 };
-
-export default Footer;

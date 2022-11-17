@@ -21,6 +21,7 @@ const AllGrants = ({ grant, type, currentPage, changePage }: GrantsProps) => {
     page: currentPage,
     // default count is 10 items
   });
+
   const { results: Data = [], pages: Pages = 0, total: Total = 0 } = data || {};
 
   const grantHeaders = (grant: 'authz' | 'feegrant', type: 'grantee' | 'granter') => [
