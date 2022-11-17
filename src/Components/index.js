@@ -7,7 +7,7 @@ export { default as Header } from './Header';
 export { default as SearchBar } from './SearchBar';
 export { default as TimeTicker } from './TimeTicker';
 export { default as Loading } from './Loading';
-export { default as Footer } from './Footer';
+export * from './Footer';
 export { default as SelectFolders } from './SelectFolders';
 export { default as DatePicker } from './DatePicker';
 export { default as Sprite } from './Sprite';

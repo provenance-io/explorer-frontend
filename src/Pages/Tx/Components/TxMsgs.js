@@ -13,6 +13,7 @@ import {
 } from 'utils';
 import { Content, InfiniteScroll, Loading, Summary, Filters, DataMissing } from 'Components';
 import { useApp, useTxs } from 'redux/hooks';
+import { useGetChaincodePrefixesQuery } from 'redux/services';
 
 const MsgContainer = styled.div`
   flex-basis: 100%;
@@ -34,8 +35,11 @@ const FiltersWrapper = styled.div`
 
 const TxMsgs = () => {
   const [filterMsgType, setFilterMsgType] = useState('');
-  const { tableCount, getChaincodePrefixes, chaincodePrefixes, chaincodePrefixesLoading } =
-    useApp();
+  const { tableCount } = useApp();
+
+  const { data: chaincodePrefixes, isLoading: chaincodePrefixesLoading } =
+    useGetChaincodePrefixesQuery();
+
   const {
     txInfo,
     getTxMsgs,
@@ -49,13 +53,6 @@ const TxMsgs = () => {
     txMsgTypesLoading,
   } = useTxs();
   const { txHash } = useParams();
-
-  // Get chaincode prefixes
-  useEffect(() => {
-    if (isEmpty(chaincodePrefixes)) {
-      getChaincodePrefixes();
-    }
-  }, [getChaincodePrefixes, chaincodePrefixes]);
 
   const loadMsgs = useCallback(
     (page) => {
@@ -80,11 +77,9 @@ const TxMsgs = () => {
     setFilterMsgType(finalType);
   };
 
-  const chaincodePrefixCopy = JSON.parse(JSON.stringify(chaincodePrefixes));
-
   // Determine link prefix
   const getPrefix = (value) => {
-    const prefix = chaincodePrefixCopy
+    const prefix = [...chaincodePrefixes]
       // Sort the response of prefixes so longest are first
       .sort((a, b) => (b.prefix.length > a.prefix.length ? 1 : -1))
       // Find the matching prefix in the account hash
@@ -95,92 +90,94 @@ const TxMsgs = () => {
     return prefix === 'account' ? `${prefix}s` : prefix;
   };
 
-  const msgs = txMsgs?.[txHash]?.map((msg) => [
-    { title: 'Tx Type', value: capitalize(msg.type) },
-    ...Object.entries(msg?.msg).map(([key, value]) => {
-      const title = camelToSentence(key);
-      switch (key) {
-        case 'amount': {
-          let amt = formatDenom(value.amount, value.denom);
-          let denom = value.denom;
-          if (isArray(value)) {
-            denom = value[0].denom;
-            amt = value.map((v) => formatDenom(v.amount, v.denom)).join(', ');
+  let msgs = [];
+  if (chaincodePrefixes)
+    msgs = txMsgs?.[txHash]?.map((msg) => [
+      { title: 'Tx Type', value: capitalize(msg.type) },
+      ...Object.entries(msg?.msg).map(([key, value]) => {
+        const title = camelToSentence(key);
+        switch (key) {
+          case 'amount': {
+            let amt = formatDenom(value.amount, value.denom);
+            let denom = value.denom;
+            if (isArray(value)) {
+              denom = value[0].denom;
+              amt = value.map((v) => formatDenom(v.amount, v.denom)).join(', ');
+            }
+            return {
+              title,
+              value: amt,
+              link: `/asset/${denom}`,
+              splitOnSpace: true,
+            };
           }
-          return {
-            title,
-            value: amt,
-            link: `/asset/${denom}`,
-            splitOnSpace: true,
-          };
-        }
-        case 'delegatorAddress': //fallthrough
-        case 'fromAddress': // fallthrough
-        case 'invoker': // fallthrough
-        case 'proposer': // fallthrough
-        case 'toAddress': // fallthrough
-        case 'voter': //fallthrough
-        case 'validatorAddr': //fallthrough
-        case 'granter': // fallthrough
-        case 'grantee': //fallthrough
-        case 'sender': //fallthrough
-        case 'account': //fallthrough
-        case 'owner': //fallthrough
-        case 'manager': //fallthrough
-        case 'administrator': //fallthrough
-        case 'admin': //fallthrough
-        case 'validatorAddress': {
-          return {
-            title,
-            value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
-            link: `/${getPrefix(value)}/${value}`,
-          };
-        }
-        case 'time':
-          return {
-            title,
-            value: `${getUTCTime(value)}+UTC`,
-          };
-        case 'denom':
-          return {
-            title,
-            value,
-            link: `/asset/${value}`,
-          };
-        case 'scopeUuid': //fallthrough
-        case 'scopeId':
-          return {
-            title,
-            value: maxLength(value, 24, 10),
-            link: `/nft/${value}`,
-          };
-        // P8e memorialize contract messages also have contract keys
-        case 'contract': //fallthrough
-          return {
-            title,
-            value: typeof value === 'string' ? maxLength(value, 24, 10) : JSON.stringify(value),
-            isJson: typeof value === 'object',
-            link: typeof value === 'string' && `/contract/${value}`,
-          };
-        case 'codeId': //fallthrough
-          return {
-            title,
-            value,
-            link: `/code/${value}`,
-          };
-        default:
-          if (isArray(value) || isObject(value)) {
-            return { title, value: JSON.stringify(value), isJson: true };
+          case 'delegatorAddress': //fallthrough
+          case 'fromAddress': // fallthrough
+          case 'invoker': // fallthrough
+          case 'proposer': // fallthrough
+          case 'toAddress': // fallthrough
+          case 'voter': //fallthrough
+          case 'validatorAddr': //fallthrough
+          case 'granter': // fallthrough
+          case 'grantee': //fallthrough
+          case 'sender': //fallthrough
+          case 'account': //fallthrough
+          case 'owner': //fallthrough
+          case 'manager': //fallthrough
+          case 'administrator': //fallthrough
+          case 'admin': //fallthrough
+          case 'validatorAddress': {
+            return {
+              title,
+              value: txInfo?.monikers?.[value] || maxLength(value, 24, 10),
+              link: `/${getPrefix(value)}/${value}`,
+            };
           }
-          // Summary does not accept booleans
-          if (typeof value === 'boolean') {
-            return { title, value: value.toString() };
-          }
+          case 'time':
+            return {
+              title,
+              value: `${getUTCTime(value)}+UTC`,
+            };
+          case 'denom':
+            return {
+              title,
+              value,
+              link: `/asset/${value}`,
+            };
+          case 'scopeUuid': //fallthrough
+          case 'scopeId':
+            return {
+              title,
+              value: maxLength(value, 24, 10),
+              link: `/nft/${value}`,
+            };
+          // P8e memorialize contract messages also have contract keys
+          case 'contract': //fallthrough
+            return {
+              title,
+              value: typeof value === 'string' ? maxLength(value, 24, 10) : JSON.stringify(value),
+              isJson: typeof value === 'object',
+              link: typeof value === 'string' && `/contract/${value}`,
+            };
+          case 'codeId': //fallthrough
+            return {
+              title,
+              value,
+              link: `/code/${value}`,
+            };
+          default:
+            if (isArray(value) || isObject(value)) {
+              return { title, value: JSON.stringify(value), isJson: true };
+            }
+            // Summary does not accept booleans
+            if (typeof value === 'boolean') {
+              return { title, value: value.toString() };
+            }
 
-          return { title, value };
-      }
-    }),
-  ]);
+            return { title, value };
+        }
+      }),
+    ]);
 
   const infoExists = !isEmpty(msgs);
   const msgTypesExist = Object.keys(txMsgTypes).length > 2;
