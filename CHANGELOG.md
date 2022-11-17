@@ -4,6 +4,8 @@
 
 ### Bug Fixes
 - Revert wcjs 2.0.0 changes #447
+- Revert Revert wcjs 2.0.0 changes #447
+- Use Fetch instead of Axios
 
 ### Features
 - Add Figure test wallets to User Login component #445

@@ -208,7 +208,7 @@ export const ManageStakingModal = ({
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
     // Submit via walletconnect-js
-    wcs.customAction({
+    wcs.sendMessage({
       description: 'Submit Delegation',
       message: data.base64,
     });
@@ -345,7 +345,7 @@ export const ManageStakingModal = ({
                     {/* This modal is from a manage button selection. It allows you
                   to undelegate, redelegate, claim rewards, or delegate more
                   to the selected validator. Don't show claim rewards option if
-                  no rewards exist to be claimed. Don't show dropdown if not 
+                  no rewards exist to be claimed. Don't show dropdown if not
                   currently delegating with the validator. */}
                     {delegation ? (
                       <DropdownBtn
