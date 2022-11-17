@@ -182,7 +182,7 @@ const ManageProposalModal = ({
           });
 
           // Submit via walletconnect-js
-          wcs.sendMessage({
+          wcs.customAction({
             description: 'Submit Proposal',
             message: data.base64,
           });
