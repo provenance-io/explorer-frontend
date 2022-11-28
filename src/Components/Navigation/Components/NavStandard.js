@@ -25,7 +25,7 @@ const NavigationWrapper = styled.div`
 
 const NavStandard = () => {
   const { setTheme } = useApp();
-  const { themeName } = useColorScheme();
+  const { isSpecial, themeName } = useColorScheme();
   const theme = useTheme();
 
   return (
@@ -38,6 +38,7 @@ const NavStandard = () => {
         <AnnouncementMenu />
         <UserAccount />
         <Toggle
+          disabled={isSpecial}
           active={themeName === 'night'}
           optionA={{
             title: 'Night Mode',
