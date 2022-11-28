@@ -49,7 +49,7 @@ const ToggleNotch = styled.div`
   z-index: 100;
 `;
 
-const Toggle = ({ optionA, optionB, active, special }) => {
+const Toggle = ({ optionA, optionB, active, disabled, special }) => {
   // Will run as optionA = OFF, optionB = ON
   const [isOn, setIsOn] = useState(active);
   const [specialActive, setSpecialActive] = useState(special.active);
@@ -70,6 +70,7 @@ const Toggle = ({ optionA, optionB, active, special }) => {
   } = special;
 
   const toggle = () => {
+    if (disabled) return;
     // Secret toggle, if clicked enough times
     if (special && !specialActive && count && specialCount + 1 === count) {
       setIsOn(false);
