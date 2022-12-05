@@ -2,12 +2,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
 import { store } from 'redux/app/store';
+import { Maintenance } from 'Pages';
+// eslint-disable-next-line
 import App from './App';
 
 ReactDOM.render(
   <Provider store={store()}>
     <WalletConnectContextProvider>
-      <App />
+      {/* <App /> */}
+      <Maintenance />
     </WalletConnectContextProvider>
   </Provider>,
   document.getElementById('root')

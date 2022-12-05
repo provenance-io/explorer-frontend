@@ -10,6 +10,7 @@
 
 ### Features
 - Add Figure test wallets to User Login component #445
+- Add maintenance page #371
 
 ## Kurbat Ivanov
 
