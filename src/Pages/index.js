@@ -17,6 +17,7 @@ export * from './Name';
 export { default as Nft } from './Nft';
 export { default as Nfts } from './Nfts';
 export { default as NoMatch404 } from './NoMatch404';
+export * from './Maintenance';
 export { default as Params } from './Params';
 export { default as Proposal } from './Proposal';
 export { default as Proposals } from './Proposals';
