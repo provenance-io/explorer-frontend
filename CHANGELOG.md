@@ -11,6 +11,7 @@
 ### Features
 - Add Figure test wallets to User Login component #445
 - Add maintenance page #371
+- Remove maintenance page from being the only displayed page #461
 
 ## Kurbat Ivanov
 
