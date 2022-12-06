@@ -21,6 +21,7 @@ import {
   Dashboard,
   Faucet,
   Gas,
+  HashStats,
   Ibc,
   Icons,
   NameTree,
@@ -84,6 +85,7 @@ const App = () => {
             <Route path="/contracts" component={Contracts} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
+            <Route path="/hashstats" component={HashStats} />
             <Route path="/ibc" component={Ibc} />
             <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
             <Route path="/network/name-tree" component={NameTree}></Route>

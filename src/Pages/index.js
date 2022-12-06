@@ -11,6 +11,7 @@ export { default as Contracts } from './Contracts';
 export { default as Dashboard } from './Dashboard';
 export { default as Faucet } from './Faucet';
 export { default as Gas } from './Gas';
+export * from './HashStats';
 export { default as Ibc } from './Ibc';
 export { default as Icons } from './Icons';
 export * from './Name';
