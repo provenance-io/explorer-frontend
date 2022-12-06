@@ -2,15 +2,20 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
 import { store } from 'redux/app/store';
-import { Maintenance } from 'Pages';
 // eslint-disable-next-line
+import { Maintenance } from 'Pages';
 import App from './App';
+
+/* Note: during maintenance cycles, update the tests in package.json
+         to only run the linter. Show Maintenance component here
+         instead of the App component.
+*/
 
 ReactDOM.render(
   <Provider store={store()}>
     <WalletConnectContextProvider>
-      {/* <App /> */}
-      <Maintenance />
+      <App />
+      {/* <Maintenance /> */}
     </WalletConnectContextProvider>
   </Provider>,
   document.getElementById('root')
