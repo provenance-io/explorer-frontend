@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Section, Wrapper } from 'Components';
+import { Section } from 'Components';
 import { HashDashboard, PriceHistory } from 'Pages/Dashboard/Components';
 
 const Background = styled.div`
@@ -14,11 +14,9 @@ const Background = styled.div`
 
 export const HashStats = () => (
   <Background>
-    <Wrapper noHeader>
-      <Section>
-        <HashDashboard />
-        <PriceHistory />
-      </Section>
-    </Wrapper>
+    <Section>
+      <HashDashboard />
+      <PriceHistory />
+    </Section>
   </Background>
 );
