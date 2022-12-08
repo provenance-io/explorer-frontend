@@ -1,14 +1,16 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import styled, { useTheme } from 'styled-components';
+import { useState, useRef, useEffect, useCallback, SetStateAction, Dispatch } from 'react';
+import styled from 'styled-components';
 import { format } from 'date-fns';
 import * as echarts from 'echarts';
 import { useTxs } from 'redux/hooks';
-import { subtractDays } from 'utils';
+import { maxLength, subtractDays } from 'utils';
 import { TxRecent } from 'redux/features/tx/txSlice';
 import { Loading } from 'Components';
 import Big from 'big.js';
 import { ajax } from 'redux/features/api';
 import { TXS_BY_ADDRESS_URL } from 'consts';
+
+// TODO: Need to clean up how nodes are generated
 
 const StyledChart = styled.div`
   height: 500px;
@@ -16,22 +18,29 @@ const StyledChart = styled.div`
 `;
 // Set chart data
 const chartData = {
-  title: {
-    text: 'Account Transactions Node Link Chart',
-    top: -5,
-    left: '5%',
-    textStyle: {
-      color: '',
-      fontWeight: 'normal',
+  // title: {
+  //   text: 'Account Transactions Node Link Chart',
+  //   top: -5,
+  //   left: '5%',
+  //   textStyle: {
+  //     color: '',
+  //     fontWeight: 'normal',
+  //   },
+  // },
+  // grid: {
+  //   left: '15%',
+  //   right: '15%',
+  //   top: '25%',
+  //   bottom: '15%',
+  // },
+  tooltip: {
+    // eslint-disable-next-line
+    formatter: ({}) => '',
+    position(point: any, params: any, dom: any, rect: any, size: any) {
+      // fixed at top
+      return [point[0], point[0]];
     },
   },
-  grid: {
-    left: '15%',
-    right: '15%',
-    top: '15%',
-    bottom: '15%',
-  },
-  tooltip: {},
   legend: [
     {
       data: [''],
@@ -44,9 +53,6 @@ const chartData = {
       name: 'Account Interactions',
       type: 'graph',
       layout: 'force',
-      circular: {
-        rotateLabel: true,
-      },
       data: [
         {
           id: '',
@@ -63,16 +69,18 @@ const chartData = {
       force: {
         initLayout: 'circular',
         repulsion: 1000,
-        edgeLength: 200,
+        edgeLength: 75,
       },
       // label: {
       //   position: 'right',
       //   formatter: '{b}',
+      //   show: false,
       // },
       lineStyle: {
         color: 'source',
-        curveness: 0.2,
+        curveness: 0.0,
       },
+      height: 200,
     },
   ],
 };
@@ -94,30 +102,24 @@ interface Link {
 }
 
 interface NodesAndLinksProps {
+  nodeArray: Node[];
+  linkArray: Link[];
   data: TxRecent['results'];
   address: string;
   target?: string;
   skip?: boolean;
+  lastIndex: number;
 }
 
 const getNodesAndLinks = async ({
+  nodeArray,
+  linkArray,
   data,
   address,
   target = '0',
   skip = false,
+  lastIndex,
 }: NodesAndLinksProps) => {
-  // Create a nodeArray with the first entity being the current address
-  // By default the value will be length of txs (usually 100).
-  const nodeArray: Node[] = [
-    {
-      id: '0',
-      name: address,
-      symbolSize: new Big(data.length).div(2).toNumber(),
-      value: data.length,
-      category: 0,
-    },
-  ];
-  const linkArray: Link[] = [];
   try {
     // First, find any/all other address in the first 100 transactions
     const otherAddresses: string[] = [];
@@ -137,24 +139,29 @@ const getNodesAndLinks = async ({
     for (const addr of otherAddresses) {
       addressCounts[addr] = addressCounts[addr] ? addressCounts[addr] + 1 : 1;
     }
+    // console.log(`Address Counts for ${address}: `, addressCounts);
+    // Create a holder for the IDs of each node to pass as the target on second loop
+    const targetIds: string[] = [];
     // Now loop through this object's keys to update the node and link
-    Object.keys(addressCounts).forEach((addr, idx) => {
+    Object.keys(addressCounts).forEach((addr) => {
       nodeArray.push({
-        id: `${idx + 1}`,
+        id: `${lastIndex + 1}`,
         name: addr,
-        symbolSize: new Big(addressCounts[addr]).div(2).toNumber() < 25 ? 10 : 25,
+        symbolSize: 25, // new Big(addressCounts[addr]).div(2).toNumber() < 25 ? 10 : 25,
         value: addressCounts[addr],
         category: 1,
       });
+      targetIds.push(`${lastIndex + 1}`);
       for (let i = 0; i <= addressCounts[addr]; i++) {
         linkArray.push({
-          source: `${idx + 1}`,
+          source: `${lastIndex + 1}`,
           target,
           lineStyle: {
-            width: new Big(addressCounts[addr]).div(3).toNumber(),
+            width: new Big(addressCounts[addr]).div(5).toNumber(),
           },
         });
       }
+      lastIndex++;
     });
 
     const numNodes = Object.keys(addressCounts).length;
@@ -166,18 +173,22 @@ const getNodesAndLinks = async ({
           url: `${TXS_BY_ADDRESS_URL}/${addr}?count=100&page=1`,
         });
         const newNodes = await getNodesAndLinks({
+          nodeArray,
+          linkArray,
           data: newAddressTxs.data.results,
           address: addr,
-          target: String(i + 1),
+          target: targetIds[i],
           skip: true,
+          lastIndex,
         });
         nodeArray.concat(newNodes.nodeArray);
         linkArray.concat(newNodes.linkArray);
+        lastIndex = nodeArray.length;
         // console.log(newNodes);
       }
     }
   } catch (e) {
-    console.log('error');
+    new Error(`Error attempting to pull address ${address}`);
   }
 
   return Promise.resolve({
@@ -187,10 +198,15 @@ const getNodesAndLinks = async ({
   });
 };
 
-export const TxNodeLink = ({ address }: { address: string }) => {
+export const TxNodeLink = ({
+  address,
+  setAddress,
+}: {
+  address: string;
+  setAddress: Dispatch<SetStateAction<string>>;
+}) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
-  const theme = useTheme();
   const { getTxsByAddress, txsByAddress, txsByAddressLoading } = useTxs();
 
   // Dates for Tx Data (searching a full year, but only using 100 results)
@@ -214,27 +230,55 @@ export const TxNodeLink = ({ address }: { address: string }) => {
 
   // Build the chart data
   const buildChartData = useCallback(
-    (data: TxRecent['results']) => {
-      try {
-        // Format the tx array
-        getNodesAndLinks({
-          data,
-          address,
-        }).then((result) => {
-          chartData.series[0].data = result.nodeArray;
-          chartData.series[0].links = result.linkArray;
-        });
-        // Populate the chart data
-        // chartData.series[0].data = graphInfo.then(value => value.nodeArray);
-        // chartData.series[0].links = graphInfo.linkArray;
-        // Set theme colors
-        chartData.title.textStyle.color = theme.FONT_PRIMARY;
-        return chartData;
-      } catch (e) {
-        console.log('Errors!');
-      }
-    },
-    [address, theme]
+    (data: TxRecent['results']) =>
+      new Promise((resolve, reject) => {
+        try {
+          // Create a nodeArray with the first entity being the current address
+          // By default the value will be length of txs (usually 100).
+          const nodeArray: Node[] = [
+            {
+              id: '0',
+              name: address,
+              symbolSize: 50, //new Big(data.length).div(2).toNumber(),
+              value: 100, //data.length,
+              category: 0,
+            },
+          ];
+          const linkArray: Link[] = [];
+          const lastIndex = 0;
+          // Format the tx array
+          getNodesAndLinks({
+            nodeArray,
+            linkArray,
+            data,
+            address,
+            lastIndex,
+          }).then((result) => {
+            chartData.series[0].data = result.nodeArray;
+            chartData.series[0].links = result.linkArray;
+            // chartData.title.textStyle.color = theme.FONT_PRIMARY;
+            chartData.tooltip.formatter = (params: any) => {
+              if (params.data.name) {
+                return `
+                  <div>${maxLength(params.data.name, 14, '6')}</div>
+                  <div>Shared Txs: ${params.data.value}</div>
+                `;
+              }
+              return '';
+            };
+            resolve(chartData);
+          });
+          // Populate the chart data
+          // chartData.series[0].data = graphInfo.then(value => value.nodeArray);
+          // chartData.series[0].links = graphInfo.linkArray;
+          // Set theme colors
+          return chartData;
+        } catch (e) {
+          reject(e);
+          return e;
+        }
+      }),
+    [address]
   );
 
   // Build Chart with data
@@ -242,22 +286,32 @@ export const TxNodeLink = ({ address }: { address: string }) => {
     // On load, chartElementRef should get set and we can update the chart to be an echart
     // first try to get the initialized instance
     let chart: echarts.ECharts | undefined;
-    if (!txsByAddressLoading) {
-      if (chartElementRef.current) {
-        chart =
-          echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
-          echarts.init(chartElementRef.current as unknown as HTMLElement);
+    (async () => {
+      if (!txsByAddressLoading) {
+        if (chartElementRef.current) {
+          chart =
+            echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+            echarts.init(chartElementRef.current as unknown as HTMLElement);
+        }
+        // Update chart with the data
+        const currChartData: any = await buildChartData(txsByAddress);
+        chart?.setOption(currChartData as echarts.EChartsOption);
+        chart?.on('click', (params) => {
+          if (params.componentType === 'series') {
+            if (params.seriesType === 'graph') {
+              // Update the searched address if provided
+              // @ts-ignore
+              setAddress(params.data.name);
+            }
+          }
+        });
+        window.addEventListener('resize', () => {
+          chart && chart.resize();
+        });
       }
-      // Update chart with the data
-      buildChartData(txsByAddress);
-      console.log(chartData);
-      chart?.setOption(chartData as echarts.EChartsOption);
-      window.addEventListener('resize', () => {
-        chart && chart.resize();
-      });
-    }
+    })();
     return window.removeEventListener('resize', () => chart && chart.resize());
-  }, [setChart, chart, buildChartData, txsByAddress, txsByAddressLoading]);
+  }, [setChart, chart, buildChartData, txsByAddress, txsByAddressLoading, setAddress]);
 
   return !txsByAddressLoading ? <StyledChart ref={chartElementRef} /> : <Loading />;
 };
