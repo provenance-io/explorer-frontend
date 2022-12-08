@@ -15,6 +15,7 @@
 - Add standalone hash stats page #465
 - Remove standlone hash stats page margins #467
 - Added Transactions Dashboard #469
+- Hide node-link diagram #471
 
 ## Kurbat Ivanov
 
