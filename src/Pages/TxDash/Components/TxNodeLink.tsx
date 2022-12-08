@@ -18,28 +18,9 @@ const StyledChart = styled.div`
 `;
 // Set chart data
 const chartData = {
-  // title: {
-  //   text: 'Account Transactions Node Link Chart',
-  //   top: -5,
-  //   left: '5%',
-  //   textStyle: {
-  //     color: '',
-  //     fontWeight: 'normal',
-  //   },
-  // },
-  // grid: {
-  //   left: '15%',
-  //   right: '15%',
-  //   top: '25%',
-  //   bottom: '15%',
-  // },
   tooltip: {
     // eslint-disable-next-line
     formatter: ({}) => '',
-    position(point: any, params: any, dom: any, rect: any, size: any) {
-      // fixed at top
-      return [point[0], point[0]];
-    },
   },
   legend: [
     {
@@ -71,11 +52,16 @@ const chartData = {
         repulsion: 1000,
         edgeLength: 75,
       },
-      // label: {
-      //   position: 'right',
-      //   formatter: '{b}',
-      //   show: false,
-      // },
+      label: {
+        position: 'right',
+        formatter: '{b}',
+        show: false,
+      },
+      emphasis: {
+        label: {
+          show: false,
+        }
+      },
       lineStyle: {
         color: 'source',
         curveness: 0.0,
@@ -256,7 +242,6 @@ export const TxNodeLink = ({
           }).then((result) => {
             chartData.series[0].data = result.nodeArray;
             chartData.series[0].links = result.linkArray;
-            // chartData.title.textStyle.color = theme.FONT_PRIMARY;
             chartData.tooltip.formatter = (params: any) => {
               if (params.data.name) {
                 return `
@@ -268,10 +253,6 @@ export const TxNodeLink = ({
             };
             resolve(chartData);
           });
-          // Populate the chart data
-          // chartData.series[0].data = graphInfo.then(value => value.nodeArray);
-          // chartData.series[0].links = graphInfo.linkArray;
-          // Set theme colors
           return chartData;
         } catch (e) {
           reject(e);
@@ -299,7 +280,7 @@ export const TxNodeLink = ({
         chart?.on('click', (params) => {
           if (params.componentType === 'series') {
             if (params.seriesType === 'graph') {
-              // Update the searched address if provided
+              // Update the searched address if clicked
               // @ts-ignore
               setAddress(params.data.name);
             }
