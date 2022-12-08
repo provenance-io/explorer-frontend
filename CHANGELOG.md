@@ -14,6 +14,7 @@
 - Remove maintenance page from being the only displayed page #461
 - Add standalone hash stats page #465
 - Remove standlone hash stats page margins #467
+- Added Transactions Dashboard #469
 
 ## Kurbat Ivanov
 

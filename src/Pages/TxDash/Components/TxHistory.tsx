@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-// @ts-ignore
-import useToggle from 'react-tiny-hooks/use-toggle';
 import { format } from 'date-fns';
-import { Button, Content, Loading } from 'Components';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { Loading } from 'Components';
 import { subtractDays } from 'utils';
 import { useGetTxHistoryDataQuery, GranularityProps, TxHistoryProps } from 'redux/services';
-import { DownloadCsvModal, TxChart } from './Components';
+import { TxChart } from '../../Dashboard/Components/TxHistory/Components';
+
+const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 const RadioButtonGroup = styled.div`
   display: flex;
@@ -25,8 +27,8 @@ const Label = styled.label`
 
 const radioButtons = [
   {
-    label: '2 weeks',
-    value: 14,
+    label: '1 week',
+    value: 6,
   },
   {
     label: '2 months',
@@ -47,9 +49,9 @@ interface TxHistoryChartProps {
 
 export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
   // Modal controls
-  const [modalOpen, deactivateModalOpen, activateModalOpen] = useToggle(false);
   const defaultDateFormat = 'yyyy-MM-dd';
   const today = new Date();
+  // For the Tx Dashboard, we want to match the TxHeatmap which runs from the past Sunday - Saturday
   const dayTo = format(today, defaultDateFormat);
   const [daysFrom, setDaysFrom] = useState(radioButtons[0].value);
   const defaultGranularity = 'DAY';
@@ -67,9 +69,6 @@ export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
     address,
   });
 
-  const { matches: sizeSm } = useMediaQuery(breakpoints.down('sm'));
-  const { matches: sizeMd } = useMediaQuery(breakpoints.between('sm', 'md'));
-
   const handleChange = (e: React.ChangeEvent<any>) => {
     setDaysFrom(e.target.value);
     if (e.target.value === '365') {
@@ -80,16 +79,31 @@ export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
   };
 
   return (
-    <Content
-      alignItems="flex-start"
-      alignContent="flex-start"
-      size={size === '50%' ? (sizeMd || sizeSm ? '100%' : '50%') : size}
-      icon="INVENTORY"
-      title={`${txHistoryData && txHistoryData.length > 0 ? `${daysFrom}-Day` : ''} ${
-        sizeMd || sizeSm ? 'Tx' : 'Transaction'
-      } Activity`}
-      link={!address ? { to: '/txs', title: 'View All' } : {}}
-    >
+    <Wrapper>
+      {txHistoryDataLoading ? (
+        <Loading />
+      ) : (
+        <TxChart
+          txHistoryGran={txHistoryGran}
+          data={txHistoryData as TxHistoryProps[]}
+          span={daysFrom}
+          today={today}
+          showDayOfWeek={daysFrom === 6}
+          title={`${
+            daysFrom === 6
+              ? 'Weekly Tx Data'
+              : daysFrom === 60
+              ? '2 Month Tx Data'
+              : 'Yearly Tx Data'
+          }`}
+          grid={{
+            left: '10%',
+            right: '10%',
+            bottom: '17%',
+          }}
+          legendPadding={20}
+        />
+      )}
       {txHistoryData && !txHistoryDataError && (
         <RadioButtonGroup>
           {radioButtons.map((button) => (
@@ -108,21 +122,6 @@ export const TxHistory = ({ address, size = '50%' }: TxHistoryChartProps) => {
           ))}
         </RadioButtonGroup>
       )}
-      {txHistoryDataLoading ? (
-        <Loading />
-      ) : (
-        <TxChart
-          txHistoryGran={txHistoryGran}
-          data={txHistoryData as TxHistoryProps[]}
-          span={daysFrom}
-          today={today}
-          title=""
-        />
-      )}
-      {txHistoryData && !txHistoryDataError && (
-        <Button onClick={activateModalOpen}>Generate CSV</Button>
-      )}
-      <DownloadCsvModal modalOpen={modalOpen} onClose={deactivateModalOpen} address={address} />
-    </Content>
+    </Wrapper>
   );
 };

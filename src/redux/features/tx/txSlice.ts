@@ -70,7 +70,7 @@ interface TxMsgs {
   total: number;
 }
 
-interface TxRecent {
+export interface TxRecent {
   pages: number;
   results: {
     block: number;
@@ -90,9 +90,11 @@ interface TxRecent {
       msgCount: number;
     };
     signers: {
-      signers: string[];
-      threshold: number;
-    };
+      address: string;
+      idx: number;
+      sequence: number;
+      type: string;
+    }[];
     status: string;
     time: string;
     txHash: string;

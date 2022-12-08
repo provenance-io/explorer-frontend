@@ -24,6 +24,7 @@ export { default as Proposal } from './Proposal';
 export { default as Proposals } from './Proposals';
 export { default as TokenStats } from './TokenStats';
 export { default as Tx } from './Tx';
+export * from './TxDash';
 export { default as Txs } from './Txs';
 export { default as Upgrades } from './Upgrades';
 export { default as Validator } from './Validator';
