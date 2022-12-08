@@ -3,6 +3,7 @@ export * from './cookie';
 export * from './date';
 export * from './downloads';
 export * from './lang';
+export * from './nodeLink';
 export * from './number';
 export * from './string';
 export * from './table';
