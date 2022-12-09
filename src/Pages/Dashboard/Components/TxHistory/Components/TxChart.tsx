@@ -242,16 +242,21 @@ export const TxChart = ({
             value: txCount,
             name: new Date(date).toISOString(),
           });
+          // console.log(new Date(date).toISOString().slice(0, 10));
+          // console.log(parseISO(new Date(date).toISOString().slice(0, 10)));
           fees.push({
             value: feesPaidInUsd
               ? Number(feesPaidInUsd)
               : new Big(feeAmountInToken).times(currentPricing?.quote?.USD?.price || 0).toNumber(),
             name: new Date(date).toISOString(),
           });
+          // Add a day to calculated day of week to use UTC time. Note that Sunday is the 6th
+          // index, so if undefined just show Sunday
           return showDayOfWeek
-            ? days[new Date(date).getDay()]
-            : format(
-                parseISO(new Date(date).toISOString()),
+            ? days[new Date(new Date(date).toISOString().slice(0, 10)).getDay() + 1] || 'Sun'
+            : // Slice the date to preserve UTC time
+              format(
+                parseISO(new Date(date).toISOString().slice(0, 10)),
                 granIsDay ? 'MMM dd' : granIsMonth ? 'MMM' : 'MM/dd, hh:mm'
               );
         }
@@ -301,12 +306,10 @@ export const TxChart = ({
               : new Big(feeAmountInToken).times(currentPricing?.quote?.USD?.price || 0).toNumber(),
             name: new Date(date).toISOString(),
           });
-          return showDayOfWeek
-            ? days[new Date(date).getDay()]
-            : format(
-                parseISO(new Date(date).toISOString()),
-                granIsDay ? 'MMM dd' : granIsMonth ? 'MMM' : 'MM/dd, hh:mm'
-              );
+          return format(
+            parseISO(new Date(date).toISOString().slice(0, 10)),
+            granIsDay ? 'MMM dd' : granIsMonth ? 'MMM' : 'MM/dd, hh:mm'
+          );
         }
       );
     }

@@ -7,6 +7,7 @@
 - Revert Revert wcjs 2.0.0 changes #447
 - Use Fetch instead of Axios
 - Fix chaincodeId not coming in as JSON error #453
+- Fix Tx History chart #473
 
 ### Features
 - Add Figure test wallets to User Login component #445
