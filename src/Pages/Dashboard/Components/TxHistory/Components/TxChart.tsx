@@ -376,7 +376,7 @@ export const TxChart = ({
         idx++;
       });
       returnString = `<div>${format(
-        parseISO(params[0].data.name),
+        parseISO(params[0].data.name.slice(0, 10)),
         granIsDay ? 'MMM dd' : 'MMM-yyyy'
       )}</div> ${returnString}`;
       return returnString;
