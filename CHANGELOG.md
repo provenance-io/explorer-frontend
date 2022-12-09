@@ -3,23 +3,33 @@
 ## Unreleased
 
 ### Bug Fixes
-- Revert wcjs 2.0.0 changes #447
-- Revert Revert wcjs 2.0.0 changes #447
-- Use Fetch instead of Axios
-- Fix chaincodeId not coming in as JSON error #453
-- Fix Tx History chart #473
 
 ### Features
-- Add Figure test wallets to User Login component #445
-- Add maintenance page #371
-- Remove maintenance page from being the only displayed page #461
-- Add standalone hash stats page #465
-- Remove standlone hash stats page margins #467
-- Added Transactions Dashboard #469
-- Hide node-link diagram #471
-- Add snow #475
 
-## Kurbat Ivanov
+## 3.5.0
+
+### Release Name: Salomon August Andrée
+
+### Bug Fixes
+- Revert wcjs 2.0.0 changes [#447](https://github.com/provenance-io/explorer-frontend/issues/447)
+- Revert Revert wcjs 2.0.0 changes [#447](https://github.com/provenance-io/explorer-frontend/issues/447)
+- Use Fetch instead of Axios
+- Fix chaincodeId not coming in as JSON error [#453](https://github.com/provenance-io/explorer-frontend/issues/453)
+- Fix Tx History chart [#473](https://github.com/provenance-io/explorer-frontend/issues/473)
+
+### Features
+- Add Figure test wallets to User Login component [#445](https://github.com/provenance-io/explorer-frontend/issues/445)
+- Add maintenance page [#371](https://github.com/provenance-io/explorer-frontend/issues/371)
+- Remove maintenance page from being the only displayed page [#461](https://github.com/provenance-io/explorer-frontend/issues/461)
+- Add standalone hash stats page [#465](https://github.com/provenance-io/explorer-frontend/issues/465)
+- Remove standlone hash stats page margins [#467](https://github.com/provenance-io/explorer-frontend/issues/467)
+- Added Transactions Dashboard [#469](https://github.com/provenance-io/explorer-frontend/issues/469)
+- Hide node-link diagram [#471](https://github.com/provenance-io/explorer-frontend/issues/471)
+- Add snow [#475](https://github.com/provenance-io/explorer-frontend/issues/475)
+
+## 3.4.1
+
+### Release Name: Kurbat Ivanov
 
 ### Bug Fixes
 
