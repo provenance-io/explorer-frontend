@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Snow from 'let-it-snow';
+// import Snow from 'let-it-snow';
 
 const BaseStyling = styled.div`
   height: 100%;
@@ -40,7 +40,7 @@ const BaseStyling = styled.div`
 
 const BaseStyle = ({ children }) => (
   <BaseStyling data-testid="base-style">
-    <Snow />
+    {/* <Snow /> */}
     {children}
   </BaseStyling>
 );
