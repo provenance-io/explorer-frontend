@@ -262,12 +262,12 @@ const buildSummaryValue = (rowData: RowDataProps, theme: string) => {
   return finalValue;
 };
 
-const buildSummaryRow = (rowData: RowDataProps, theme: string) => {
+const buildSummaryRow = (rowData: RowDataProps, theme: string, index: number) => {
   const { isJson, nobreak = false, title, value, hover = '', table } = rowData;
   const valueMissing = value === undefined || value === null || value === '';
 
   return (
-    <SummaryRow key={title} isJson={isJson || false} nobreak={nobreak}>
+    <SummaryRow key={`${title} ${index}`} isJson={isJson || false} nobreak={nobreak}>
       <SummaryTitle>{title}:</SummaryTitle>
       {table && (
         <Table
@@ -308,5 +308,5 @@ export interface SummaryDataProps {
 
 export const Summary = ({ data }: SummaryDataProps) => {
   const { themeName } = useColorScheme();
-  return <>{data.map((rowData) => buildSummaryRow(rowData, themeName))}</>;
+  return <>{data.map((rowData, index) => buildSummaryRow(rowData, themeName, index))}</>;
 };

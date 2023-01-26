@@ -50,7 +50,7 @@ export const proposalValidations = (proposalType: string, blocksHeight: number) 
           )
           .test('fileSize', 'Files must be less than 1MB', checkMaxFileSize),
         address: yup.string().when(['accessType'], {
-          is: (accessType: string) => accessType === ACCESS_TYPES.ONLY_ADDRESS,
+          is: (accessType: string) => accessType === ACCESS_TYPES.ACCESS_TYPE_NOBODY,
           then: yup.string().required('Address is required for "address only" access type'),
         }),
         initialDeposit,

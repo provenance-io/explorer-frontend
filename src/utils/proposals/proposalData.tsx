@@ -74,13 +74,14 @@ export const proposalData = (proposalType: string) => {
           label: 'WASM Byte Code',
           field: 'file',
         },
-        {
-          type: 'dropdown',
-          dropdown: ACCESS_TYPES,
-          initialValue: ACCESS_TYPES.NOBODY,
-          label: 'access type',
-          field: 'accessType',
-        },
+        // TODO: Re-allow once proposals are discussed
+        // {
+        //   type: 'dropdown',
+        //   dropdown: ACCESS_TYPES,
+        //   initialValue: ACCESS_TYPES.ACCESS_TYPE_UNSPECIFIED,
+        //   label: 'access type',
+        //   field: 'accessType',
+        // },
         // This is conditional based on the access type ONLY_ADDRESS
         {
           type: 'text',

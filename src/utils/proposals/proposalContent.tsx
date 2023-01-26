@@ -18,10 +18,8 @@ export interface ContentProps {
   height?: number;
   info?: string;
   runAs?: string;
-  accessConfig?: {
-    type: string;
-    address: string | null;
-  };
+  accessType?: string;
+  address?: string;
   admin?: string;
   codeId?: number;
   label?: string;
@@ -42,7 +40,8 @@ export const proposalContent = ({
   height,
   info,
   runAs,
-  accessConfig,
+  accessType,
+  address,
   admin,
   codeId,
   label,
@@ -57,7 +56,8 @@ export const proposalContent = ({
     height ||
     info ||
     runAs ||
-    accessConfig ||
+    accessType ||
+    address ||
     admin ||
     codeId ||
     label ||
@@ -69,7 +69,10 @@ export const proposalContent = ({
           height,
           info,
           runAs,
-          accessConfig,
+          ...(accessType &&
+            accessType !== 'ACCESS_TYPE_UNSPECIFIED' && {
+              accessConfig: { type: accessType, address },
+            }),
           admin,
           codeId,
           label,
