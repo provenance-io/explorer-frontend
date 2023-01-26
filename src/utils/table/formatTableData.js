@@ -263,7 +263,8 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'votingTime.endTime': //fallthrough
         case 'votingTime.startTime': {
           const value = serverValue
-            ? getUTCTime(serverValue).slice(0, 4) !== '1901'
+            ? getUTCTime(serverValue).slice(0, 4) !== '1901' &&
+              getUTCTime(serverValue).slice(0, 4) !== '1970'
               ? `${getUTCTime(serverValue)}+UTC`
               : '--'
             : 'N/A';

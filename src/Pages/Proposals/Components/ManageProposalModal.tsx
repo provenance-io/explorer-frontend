@@ -120,6 +120,7 @@ const ManageProposalModal = ({
 
   const handleModalClose = () => {
     setSubmitted(false);
+
     onClose();
     setProposalType('text');
   };
@@ -189,6 +190,10 @@ const ManageProposalModal = ({
           // Set proposal type back to default
           setProposalType('text');
           // Clear the form
+          // Set initial deposit back to zero.
+          proposalContent(values as unknown as ContentProps).initialDeposit = [
+            { amount: '0', denom: 'nhash' },
+          ];
           resetForm();
         }}
       >

@@ -5,6 +5,7 @@
 ### Bug Fixes
 
 ### Features
+- Update wcjs and wallet utils versions #481
 
 ## 3.5.0
 
