@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useGetTxHeatmapDataQuery, DailyTotal } from 'redux/services';
-import { capitalize, formatDenom } from 'utils';
-// import { useMediaQuery } from 'redux/hooks';
-// import { breakpoints } from 'consts';
+import { useGetTxHeatmapDataQuery, DailyTotal } from '../../../redux/services';
+import { capitalize, formatDenom } from '../../../utils';
+// import { useMediaQuery } from '../../../redux/hooks';
+// import { breakpoints } from '../../../consts';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -63,10 +63,10 @@ export const TxDaysOfWeek = () => {
   // const { matches: isLg } = useMediaQuery(breakpoints.down('lg'));
   const { data: txHeatmapData, isLoading: txHeatmapDataLoading } = useGetTxHeatmapDataQuery();
   const buildChartData = useCallback(
-    (data) => {
+    (data?: DailyTotal[]) => {
       // Format data
       const seriesData: { value: number; name: string }[] = [];
-      data.forEach((item: DailyTotal) =>
+      data?.forEach((item: DailyTotal) =>
         seriesData.push({ value: item.numberTxs, name: capitalize(item.day) })
       );
       // Set chart data

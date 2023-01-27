@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { Table } from 'Components';
-import { useContracts } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useContracts } from '../../../redux/hooks';
 
 const ContractsByCodeListContainer = styled.div`
   width: 100%;
@@ -39,7 +39,7 @@ const ContractsList = () => {
     { displayName: 'Creation Height', dataName: 'creationHeight' },
     { displayName: 'Creator', dataName: 'creator' },
     { displayName: 'Code ID', dataName: 'codeId' },
-    { displayName: 'Admin', dataName: 'admin'},
+    { displayName: 'Admin', dataName: 'admin' },
     { displayName: 'Description', dataName: 'label' },
   ];
 

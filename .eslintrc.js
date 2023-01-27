@@ -8,6 +8,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-duplicate-imports': 'warn',
+    'no-unsafe-optional-chaining': 0,
     'no-var': 'warn',
     'object-shorthand': 'warn',
     'prefer-arrow-callback': 'warn',
@@ -20,7 +21,7 @@ module.exports = {
     'react/prop-types': 0,
     'react/require-default-props': 0,
   },
-  plugins: ['prettier', 'react-hooks', '@typescript-eslint'],
+  plugins: ['prettier', 'react-hooks'],
   env: {
     browser: true,
     jest: true,

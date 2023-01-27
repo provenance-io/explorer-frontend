@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'Components';
-import { useApp, useAssets } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useApp, useAssets } from '../../../redux/hooks';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
@@ -14,10 +14,10 @@ const AssetsList = () => {
     getAssetsList: getTableData,
   } = useAssets();
 
-  const tableData = assets.map(a => ({
+  const tableData = assets.map((a) => ({
     ...a,
-    displayDenom: assetMetadata.find(md => md.base === a.marker)?.display,
-    exponent: assetMetadata.find(md => md.base === a.marker)?.denomUnits[1].exponent,
+    displayDenom: assetMetadata.find((md) => md.base === a.marker)?.display,
+    exponent: assetMetadata.find((md) => md.base === a.marker)?.denomUnits[1].exponent,
   }));
 
   useEffect(() => {

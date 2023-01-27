@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { formatDenom } from 'utils';
+import { useMediaQuery } from '../../../../../redux/hooks';
+import { breakpoints } from '../../../../../consts';
+import { formatDenom } from '../../../../../utils';
 
 const StyledChart = styled.div`
   height: 600px;
@@ -30,7 +30,7 @@ const chartData = {
     right: '20%',
   },
   toolbox: {
-    right: "",
+    right: '',
     feature: {
       saveAsImage: { show: true },
     },
@@ -133,7 +133,7 @@ interface GasVolumeProps {
 interface ParamsArray {
   name: string;
   seriesName: string;
-  data: {value: string, name: string};
+  data: { value: string; name: string };
 }
 
 const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
@@ -160,7 +160,7 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
         name: date,
       }));
       const feeAmountData = dataVal.map(({ feeAmount, date }) => ({
-        value: parseFloat(feeAmount)/1e9,
+        value: parseFloat(feeAmount) / 1e9,
         name: date,
       }));
 
@@ -171,13 +171,13 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
       };
       // Set chart tooltip
       chartData.tooltip.formatter = (params: ParamsArray[]) => {
-        const day = params[0].name.slice(0,10);
-        let returnString = "";
+        const day = params[0].name.slice(0, 10);
+        let returnString = '';
         let idx = 0;
-        params.forEach(p => {
+        params.forEach((p) => {
           returnString += `
           <div style="display:flex;padding:2px;">
-            <div 
+            <div
               style="
                 height:10px;
                 width:10px;
@@ -189,16 +189,18 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
             >
             </div>
             <div style="text-align:center;">
-              ${p.seriesName}: ${p.seriesName === "Fee" ? 
-                `${formatDenom(parseFloat(p.data.value),'hash',{decimal:0})}` : 
-                `${formatDenom(parseFloat(p.data.value),'',{decimal:0})}`}
+              ${p.seriesName}: ${
+            p.seriesName === 'Fee'
+              ? `${formatDenom(parseFloat(p.data.value), 'hash', { decimal: 0 })}`
+              : `${formatDenom(parseFloat(p.data.value), '', { decimal: 0 })}`
+          }
             </div>
-            </div>`
-            idx++;
+            </div>`;
+          idx++;
         });
         returnString = `<div>${granIsDay ? day : params[0].data.name}</div> ${returnString}`;
         return returnString;
-      }
+      };
       // Set chart data items
       chartData.color = colors;
       // Set chart y-axis colors
@@ -225,7 +227,7 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
       };
       // Tool view
       chartData.toolbox = {
-        right: isLarge ? "5%" : "7%",
+        right: isLarge ? '5%' : '7%',
         feature: {
           saveAsImage: { show: isSmall ? false : true },
         },
@@ -241,16 +243,18 @@ const GasVolumeChart = ({ gasVolumeGran, data }: GasVolumeProps) => {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
+        chart =
+          echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+          echarts.init(chartElementRef.current as unknown as HTMLElement);
       }
       // Update the chart with the data
       buildChartData(data);
       chart?.setOption(chartData);
-      window.addEventListener('resize', () => {chart && chart.resize()});
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
-    return (
-      window.removeEventListener('resize', () => chart && chart.resize())
-    )
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, chart, data, buildChartData, gasVolumeCount]);
 
   return gasVolumeCount > 0 ? (

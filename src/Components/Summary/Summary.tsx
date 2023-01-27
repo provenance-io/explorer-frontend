@@ -2,14 +2,18 @@ import React, { Fragment, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { breakpoints } from 'consts';
-import { useColorScheme } from 'redux/hooks';
-import { maxLength } from 'utils';
-import { PopupNote } from 'Components/PopupNote';
-import { Table } from 'Components';
-import Sprite from '../Sprite';
-import CopyValue from '../CopyValue';
-import DataRow, { DataTitle as SummaryTitle, DataValue as SummaryValue } from '../DataRow';
+import { breakpoints } from '../../consts';
+import { useColorScheme } from '../../redux/hooks';
+import { maxLength } from '../../utils';
+import {
+  CopyValue,
+  DataRow,
+  DataTitle as SummaryTitle,
+  DataValue as SummaryValue,
+  PopupNote,
+  Sprite,
+  Table,
+} from '..';
 
 const SummaryRow = styled(DataRow)<{ nobreak: boolean; isJson: boolean }>`
   word-break: ${({ nobreak }) => (nobreak ? 'normal' : 'break-all')};

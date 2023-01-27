@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-import { getUTCTime } from 'utils';
 import { Link } from 'react-router-dom';
-import { useInterval, useBlocks, useMediaQuery } from 'redux/hooks';
-import { Content, TimeTicker, Loading } from 'Components';
-import { polling, breakpoints } from 'consts';
+import { getUTCTime } from '../../../utils';
+import { useInterval, useBlocks, useMediaQuery } from '../../../redux/hooks';
+import { Content, TimeTicker, Loading } from '../../../Components';
+import { polling, breakpoints } from '../../../consts';
 
 const RecentBlocksWrapper = styled.div`
   margin-top: 22px;
@@ -30,7 +29,10 @@ const RecentBlocks = () => {
 
   const totalBlocks = blocks.length;
   // Poll the API for new data every 10s
-  useInterval(() => !blocksRecentLoading && getBlocksRecent({ count: recentBlocksCount }), polling.recentBlocks);
+  useInterval(
+    () => !blocksRecentLoading && getBlocksRecent({ count: recentBlocksCount }),
+    polling.recentBlocks
+  );
   // Initial load, get most recent blocks
   useEffect(() => {
     setBlocksLoading(true);

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { capitalize, formatDenom } from 'utils';
+import { capitalize, formatDenom } from '../../../../../utils';
 
 const StyledChart = styled.div<{ width: string }>`
   height: 200px;
@@ -21,7 +21,7 @@ const chartData = {
   color: [''],
   title: {
     text: '',
-    left: 'center'
+    left: 'center',
   },
   tooltip: {
     trigger: 'item',
@@ -37,7 +37,7 @@ const chartData = {
     top: '-5%',
     textStyle: {
       color: '',
-    }
+    },
   },
   series: [
     {
@@ -47,30 +47,30 @@ const chartData = {
       data: [],
       label: {
         show: false,
-        position: 'center'
+        position: 'center',
       },
       labelLine: {
-        show: false
+        show: false,
       },
-    }
-  ]
+    },
+  ],
 };
 
-const addData = (data: { [key: string]: { amount: { amount: string} }}) => {
+const addData = (data: { [key: string]: { amount: { amount: string } } }) => {
   const legendData: string[] = [];
-  const seriesData: [{ value: string, name: string }] = [{ value: '', name: '' }];
-  const selectedData: {[key: string]: boolean;} = {};
+  const seriesData: [{ value: string; name: string }] = [{ value: '', name: '' }];
+  const selectedData: { [key: string]: boolean } = {};
   Object.keys(data).forEach((item) => {
-    if (item !== "total") {
+    if (item !== 'total') {
       let name = capitalize(item);
       if (item === 'noWithVeto') {
         name = 'No With Veto';
       }
       legendData.push(name);
-      seriesData.push({value: (parseInt(data[item].amount.amount)/1e9).toString(), name});
+      seriesData.push({ value: (parseInt(data[item].amount.amount) / 1e9).toString(), name });
       selectedData[name] = true;
-    };
-  })
+    }
+  });
   return { seriesData, legendData, selectedData };
 };
 
@@ -86,27 +86,34 @@ interface VotingChartProps {
   };
 }
 
-const VotingChart = ({voteData}: VotingChartProps) => {
+const VotingChart = ({ voteData }: VotingChartProps) => {
   const [chart, setChart] = useState(null);
   const chartElementRef = useRef(null);
   const theme = useTheme();
 
-  const width = window.innerWidth > 452 ? '452' : (window.innerWidth*.85).toString();
+  const width = window.innerWidth > 452 ? '452' : (window.innerWidth * 0.85).toString();
 
   const buildChartData = useCallback(
-    (seriesData, _legendData, _selectedData) => {
+    (
+      seriesData: { value: string; name: string }[],
+      _legendData: string[],
+      _selectedData: { [key: string]: boolean }
+    ) => {
       chartData.color = [
         theme.CHART_PIE_ABSTAIN, // abstain should be grey
         theme.CHART_PIE_G, // yes
         theme.CHART_PIE_NO, // no - red
         theme.CHART_PIE_NOWITHVETO, // noWithVeto - light blue
       ];
-      chartData.series[0].data = seriesData;
+      chartData.series[0].data = seriesData as never[];
       chartData.legend.textStyle = { color: theme.FONT_PRIMARY };
-      chartData.tooltip.formatter = (params: Params) => (
-        `${params.data.name}: ${formatDenom(parseFloat(params.data.value), '')} hash (${params.percent}%)`
-      );
-  }, [theme]);
+      chartData.tooltip.formatter = (params: Params) =>
+        `${params.data.name}: ${formatDenom(parseFloat(params.data.value), '')} hash (${
+          params.percent
+        }%)`;
+    },
+    [theme]
+  );
 
   // Render chart
   useEffect(() => {
@@ -115,22 +122,22 @@ const VotingChart = ({voteData}: VotingChartProps) => {
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       if (chartElementRef.current) {
-        chart = echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) || echarts.init(chartElementRef.current as unknown as HTMLElement);
+        chart =
+          echarts.getInstanceByDom(chartElementRef.current as unknown as HTMLElement) ||
+          echarts.init(chartElementRef.current as unknown as HTMLElement);
       }
       // Build the dataset
       const data = addData(voteData);
       buildChartData(data.seriesData, data.legendData, data.selectedData);
       chart && chart.setOption(chartData);
-      window.addEventListener('resize', () => {chart && chart.resize()});
+      window.addEventListener('resize', () => {
+        chart && chart.resize();
+      });
     }
-    return (
-      window.removeEventListener('resize', () => chart && chart.resize())
-    )
+    return window.removeEventListener('resize', () => chart && chart.resize());
   }, [setChart, chart, buildChartData, voteData]);
 
-  return (
-    <StyledChart ref={chartElementRef} width={width}/>
-  );
+  return <StyledChart ref={chartElementRef} width={width} />;
 };
 
 export default VotingChart;

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Sprite as BaseSprite } from 'Components';
-import { breakpoints } from 'consts';
-import { BuildPopupNote } from 'Components/PopupNote/BuildPopupNote';
+import { Sprite as BaseSprite, BuildPopupNote } from '..';
+import { breakpoints } from '../../consts';
 
 const DataCardContainer = styled.div<{ width?: string }>`
   width: ${({ width }) => (width ? width : '50%')};

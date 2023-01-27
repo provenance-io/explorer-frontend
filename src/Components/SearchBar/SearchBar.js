@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Sprite } from 'Components';
 import { useHistory } from 'react-router-dom';
-import { breakpoints } from 'consts';
+import { Sprite } from '..';
+import { breakpoints } from '../../consts';
 
 const SearchContainer = styled.div`
   display: flex;

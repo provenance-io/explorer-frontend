@@ -1,9 +1,9 @@
 /* This utility returns the formik information to render proposal submission forms
    Format is as follows:
-    type: Type of field for UI. Options are text, 
+    type: Type of field for UI. Options are text,
 */
 import * as yup from 'yup';
-import { ACCESS_TYPES, maxProposalFileSize } from 'consts';
+import { ACCESS_TYPES, maxProposalFileSize } from '../../consts';
 
 const checkMaxFileSize = (file?: File) => {
   let valid = true;

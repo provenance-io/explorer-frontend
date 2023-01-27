@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Formik, FormikProps } from 'formik';
 import styled, { useTheme } from 'styled-components';
-import { Button, Modal, Forms } from 'Components';
-import { isEmpty, votingData as data, votingValidations as validations } from 'utils';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { useGovernance, useAccounts } from 'redux/hooks';
+import { Button, Modal, Forms } from '../../../../Components';
+import { isEmpty, votingData as data, votingValidations as validations } from '../../../../utils';
+import { useGovernance, useAccounts } from '../../../../redux/hooks';
 import { VotingChart, Countdown } from './Components';
 
 const ModalContainer = styled.div<{ isOpen: boolean }>`

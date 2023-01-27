@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router';
 import styled, { useTheme } from 'styled-components';
-import { useGovernance } from 'redux/hooks';
-import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
-import { formatDenom, isEmpty } from 'utils';
+import { useGovernance } from '../../../redux/hooks';
+import { Content, Loading } from '../../../Components';
+import { formatDenom, isEmpty } from '../../../utils';
+import { GovernanceState } from '../../../redux/features/governance/governanceSlice';
 
 const StyledChart = styled.div`
   height: 200px;
@@ -158,7 +159,7 @@ export const ProposalQuorumChart = () => {
   const percentVoted = (100 * Number(total)) / Number(totalEligible);
 
   const buildChartData = useCallback(
-    (data) => {
+    (data: GovernanceState['tally']) => {
       // Build data
       const votes = getNumberInHash({
         amount: data.total.amount.amount,

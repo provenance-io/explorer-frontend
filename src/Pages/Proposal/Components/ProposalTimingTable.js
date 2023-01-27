@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table } from 'Components';
-import { useGovernance } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useGovernance } from '../../../redux/hooks';
 
 const ProposalTiming = () => {
   const { proposal, proposalLoading } = useGovernance();

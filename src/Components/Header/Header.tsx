@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 import CopyValue from '../CopyValue';
 
 const HeaderContainer = styled.div`
@@ -55,14 +55,7 @@ interface HeaderProps {
   children?: any;
 }
 
-const Header = ({ 
-  title, 
-  copyValue, 
-  copyTitle, 
-  value, 
-  valueLink, 
-  children 
-}: HeaderProps) => {
+const Header = ({ title, copyValue, copyTitle, value, valueLink, children }: HeaderProps) => {
   const showLine = value || children;
 
   const renderValueContainer = () => (

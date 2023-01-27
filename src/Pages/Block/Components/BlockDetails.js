@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Content, Loading, Summary } from 'Components';
 import { useParams } from 'react-router-dom';
-import { maxLength, getUTCTime, numberFormat } from 'utils';
-import { useBlocks } from 'redux/hooks';
+import { Content, Loading, Summary } from '../../../Components';
+import { maxLength, getUTCTime, numberFormat } from '../../../utils';
+import { useBlocks } from '../../../redux/hooks';
 
 const BlockDetails = () => {
   const [loaded, setLoaded] = useState(false);

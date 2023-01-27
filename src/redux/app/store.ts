@@ -1,6 +1,6 @@
 import { configureStore, PreloadedState, ThunkAction, Action } from '@reduxjs/toolkit';
-import { api } from 'redux/services/serviceApi';
 import { combineReducers } from 'redux';
+import { api } from '../services/serviceApi';
 import accountReducer from '../features/account/accountSlice';
 import assetReducer from '../features/asset/assetSlice';
 import appReducer from '../features/app/appSlice';

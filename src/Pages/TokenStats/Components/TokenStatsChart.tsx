@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { Header, Loading } from 'Components';
-import { isEmpty, formatDenom } from 'utils';
-import { NetworkTokenStats } from 'redux/features/network/networkSlice';
+import { Header, Loading } from '../../../Components';
+import { isEmpty, formatDenom } from '../../../utils';
+import { NetworkTokenStats } from '../../../redux/features/network/networkSlice';
 import { useNetwork } from '../../../redux/hooks';
 
 const StyledChart = styled.div`
@@ -107,7 +107,7 @@ const TokenStatsChart = () => {
 
   // Build dynamic chart data
   const buildChartData = useCallback(
-    (data, totalHash) => {
+    (data: { value: string; name: string }[], totalHash: number) => {
       // Build dynamic chart items
       chartData.color = [
         theme.CHART_PIE_CIRCULATION,
@@ -141,7 +141,7 @@ const TokenStatsChart = () => {
     let chart: echarts.ECharts | undefined;
     if (!isEmpty(networkTokenStats)) {
       // Calculate total Hash
-      const totalHash = (parseFloat(networkTokenStats.maxSupply.amount) / 1e9).toFixed(0);
+      const totalHash = Number((parseFloat(networkTokenStats.maxSupply.amount) / 1e9).toFixed(0));
       // On load, chartElementRef should get set and we can update the chart to be an echart
       // first try to get the initialized instance
       // if it isn't initialized then init

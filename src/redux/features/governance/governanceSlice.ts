@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from 'redux/app/store';
+import { RootState } from '../../app/store';
 import {
   GOVERNANCE_ADDRESS_URL,
   GOVERNANCE_PROPOSALS_URL,
@@ -8,7 +8,7 @@ import {
   GOVERNANCE_SUBMIT_PROPOSAL_URL,
   GOVERNANCE_PROPOSAL_TYPES_URL,
   GOVERNANCE_SUBMIT_VOTES_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 
 interface AddressVotes {
@@ -245,7 +245,7 @@ export interface ProposalTypes {
   INSTANTIATE_CONTRACT: InstantiateContractProposal;
 }
 
-interface GovernanceState {
+export interface GovernanceState {
   // addressVotes
   addressVotes: AddressVotes['results'];
   addressVotesLoading: boolean;

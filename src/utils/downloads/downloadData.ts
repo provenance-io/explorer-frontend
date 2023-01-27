@@ -1,4 +1,4 @@
-import { MyFieldsProps } from 'utils/proposals';
+import { MyFieldsProps } from '..//proposals';
 
 const GRANULARITY_TYPES = {
   DAY: 'DAY',

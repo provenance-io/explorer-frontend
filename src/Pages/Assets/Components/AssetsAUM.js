@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useBlocks, useInterval } from 'redux/hooks';
-import { Content } from 'Components';
-import { formatDenom } from 'utils';
-import { polling, breakpoints } from 'consts';
 import styled from 'styled-components';
+import { useBlocks, useInterval } from '../../../redux/hooks';
+import { Content } from '../../../Components';
+import { formatDenom } from '../../../utils';
+import { polling, breakpoints } from '../../../consts';
 
 const Item = styled.div`
   justify-content: flex-end;

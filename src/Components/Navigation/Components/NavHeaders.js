@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { Links, breakpoints } from 'consts';
-import { useMediaQuery } from 'redux/hooks';
+import { Links, breakpoints } from '../../../consts';
+import { useMediaQuery } from '../../../redux/hooks';
 // Direct import to prevent import order issues
-import Sprite from '../../Sprite';
+import { Sprite } from '../..';
 
 const NavigationWrapper = styled.div`
   display: flex;

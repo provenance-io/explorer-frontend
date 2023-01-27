@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { useNft } from 'redux/hooks';
-import { Table } from 'Components';
+import { useNft } from '../../../redux/hooks';
+import { Table } from '../../../Components';
 
 const NftList = () => {
   const { addr } = useParams();

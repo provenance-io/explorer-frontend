@@ -1,8 +1,8 @@
-import { Wrapper, Header, Section, Loading } from 'Components';
-import { useMediaQuery, useTxs } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { maxLength } from 'utils';
 import { useParams } from 'react-router-dom';
+import { Wrapper, Header, Section, Loading } from '../../Components';
+import { useMediaQuery, useTxs } from '../../redux/hooks';
+import { breakpoints } from '../../consts';
+import { maxLength } from '../../utils';
 import { TxInformation, TxMsgs, TxFees, TxJSON } from './Components';
 
 const Tx = () => {

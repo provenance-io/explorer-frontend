@@ -1,5 +1,5 @@
-import { GRANTS_AUTHZ_URL, GRANTS_FEEGRANT_URL } from 'consts';
 import qs from 'query-string';
+import { GRANTS_AUTHZ_URL, GRANTS_FEEGRANT_URL } from '../../consts';
 import { api } from './serviceApi';
 
 export interface AuthzProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
-import { ICON_NAMES } from 'consts';
+import { ICON_NAMES } from '../../consts';
 
 interface SvgProps {
   alt?: string;

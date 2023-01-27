@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Wrapper, Header, Section, Loading } from 'Components';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { useNotifications } from 'redux/hooks';
-import { isEmpty } from 'utils';
+import { Wrapper, Header, Section, Loading } from '../../Components';
+import { useNotifications } from '../../redux/hooks';
+import { isEmpty } from '../../utils';
 import { AnnouncementPagination } from './Components';
 
 const Title = styled.div`
   padding-top: 20px;
-  font-size: 3.0rem;
+  font-size: 3rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   align-self: center;
 `;
@@ -26,29 +26,27 @@ const Announcement = () => {
   const { announcementId } = useParams<ParamsProps>();
 
   useEffect(() => {
-    getAnnouncementInfo({id: announcementId});
+    getAnnouncementInfo({ id: announcementId });
   }, [getAnnouncementInfo, announcementId]);
 
   const { title, id, timestamp, body, nextId, prevId } = announcementInfo;
 
   return (
     <Wrapper>
-      <Header
-        title={`Announcement ${id}`}
-      >
-        <AnnouncementPagination nextId={nextId} prevId={prevId}/>
+      <Header title={`Announcement ${id}`}>
+        <AnnouncementPagination nextId={nextId} prevId={prevId} />
       </Header>
-      {announcementInfoLoading || isEmpty(announcementInfo) ? <Loading /> :
-      <>
-        <Section header>
-          <Title>{title}</Title>
-        </Section>
-        <Date>{`Posted on ${timestamp.slice(0,10)}`}</Date>
-        <ReactMarkdown>
-          {body}
-        </ReactMarkdown>
-      </>
-      }
+      {announcementInfoLoading || isEmpty(announcementInfo) ? (
+        <Loading />
+      ) : (
+        <>
+          <Section header>
+            <Title>{title}</Title>
+          </Section>
+          <Date>{`Posted on ${timestamp.slice(0, 10)}`}</Date>
+          <ReactMarkdown>{body}</ReactMarkdown>
+        </>
+      )}
     </Wrapper>
   );
 };

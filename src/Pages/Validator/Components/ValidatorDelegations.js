@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useMediaQuery, useValidators } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { Table } from '../../../Components';
+import { useMediaQuery, useValidators } from '../../../redux/hooks';
+import { breakpoints } from '../../../consts';
 
 const ValidatorDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

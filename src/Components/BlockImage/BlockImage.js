@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { maxLength, isEmpty } from 'utils';
-import { default as BaseSprite } from '../../Components/Sprite';
+import { maxLength, isEmpty } from '../../utils';
+import { Sprite as BaseSprite } from '../';
 
 const BlockImageContainer = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useApp, useTxs } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useApp, useTxs } from '../../../redux/hooks';
 
 const BlockTxs = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

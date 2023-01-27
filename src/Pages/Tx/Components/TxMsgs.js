@@ -10,10 +10,17 @@ import {
   isEmpty,
   isObject,
   maxLength,
-} from 'utils';
-import { Content, InfiniteScroll, Loading, Summary, Filters, DataMissing } from 'Components';
-import { useApp, useTxs } from 'redux/hooks';
-import { useGetChaincodePrefixesQuery } from 'redux/services';
+} from '../../../utils';
+import {
+  Content,
+  InfiniteScroll,
+  Loading,
+  Summary,
+  Filters,
+  DataMissing,
+} from '../../../Components';
+import { useApp, useTxs } from '../../../redux/hooks';
+import { useGetChaincodePrefixesQuery } from '../../../redux/services';
 
 const MsgContainer = styled.div`
   flex-basis: 100%;

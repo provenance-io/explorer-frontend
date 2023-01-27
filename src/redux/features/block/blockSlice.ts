@@ -1,13 +1,13 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from "redux/app/store";
-import { 
-  BLOCK_INFO_URL, 
-  BLOCKS_RECENT_URL, 
-  BLOCK_SPOTLIGHT_URL, 
-  BLOCK_HEIGHT_URL 
-} from 'consts';
-import { ajax } from "../api";
+import { RootState } from '../../app/store';
+import {
+  BLOCK_INFO_URL,
+  BLOCKS_RECENT_URL,
+  BLOCK_SPOTLIGHT_URL,
+  BLOCK_HEIGHT_URL,
+} from '../../../consts';
+import { ajax } from '../api';
 
 interface BlockInfo {
   height?: number;
@@ -25,29 +25,29 @@ interface BlockInfo {
     total: number;
   };
   txNum?: number;
-};
+}
 
 interface BlocksRecent {
   pages: number;
   results: BlockInfo[];
   rollupTotals: {};
   total: number;
-};
+}
 
 interface BlockSpotlight {
   avgBlockTime?: number;
   bondedTokens?: {
-    count: string,
-    denom: string,
-    total: string
+    count: string;
+    denom: string;
+    total: string;
   };
   latestBlock: {
-    hash?: string,
+    hash?: string;
     height?: number;
-    icon?: string,
-    moniker?: string,
-    proposerAddress?: string,
-    time?: string,
+    icon?: string;
+    moniker?: string;
+    proposerAddress?: string;
+    time?: string;
     txNum?: number;
     validatorCount?: {
       count: number;
@@ -59,26 +59,26 @@ interface BlockSpotlight {
     };
   };
   totalAum?: {
-    amount: string,
-    denom: string
+    amount: string;
+    denom: string;
   };
   totalTxCount?: number;
-};
+}
 
-interface BlockState {
-  blocksHeight: BlockInfo["height"];
+export interface BlockState {
+  blocksHeight: BlockInfo['height'];
   blocksHeightLoading: boolean;
   // Block Info
-  blockInfo: BlockInfo,
+  blockInfo: BlockInfo;
   blockInfoLoading: boolean;
   // Blocks Recent
-  blocks: BlocksRecent["results"];
+  blocks: BlocksRecent['results'];
   blockPages: number;
   blocksRecentLoading: boolean;
   // Spotlight
   blockSpotlightLoading: boolean;
   blockLatest: BlockSpotlight;
-  blockHeight: BlockSpotlight["latestBlock"]["height"];
+  blockHeight: BlockSpotlight['latestBlock']['height'];
   blockSpotlightFailed: boolean;
   recentBlocksCount: number;
 }
@@ -115,42 +115,30 @@ export const SET_RECENT_BLOCKS_COUNT = 'SET_RECENT_BLOCKS_COUNT';
 /* -----------------
 ** ACTIONS
 -------------------*/
-export const getBlocksHeight = createAsyncThunk(
-  GET_BLOCKS_HEIGHT,
-  () =>
-    ajax({
-      url: BLOCK_HEIGHT_URL,
-    })
+export const getBlocksHeight = createAsyncThunk(GET_BLOCKS_HEIGHT, () =>
+  ajax({
+    url: BLOCK_HEIGHT_URL,
+  })
 );
 
 export const getBlocksRecent = createAsyncThunk(
   GET_BLOCKS_RECENT,
-  ({
-    count = 10,
-    page = 1,
-  }: {
-    count: number,
-    page: number,
-  }) => 
+  ({ count = 10, page = 1 }: { count: number; page: number }) =>
     ajax({
       url: `${BLOCKS_RECENT_URL}?${qs.stringify({ page, count })}`,
     })
 );
 
-export const getBlockInfo = createAsyncThunk(
-  GET_BLOCK_INFO,
-  (blockHeight: number) =>
-    ajax({
-      url: `${BLOCK_INFO_URL}/${blockHeight}`,
-    })
+export const getBlockInfo = createAsyncThunk(GET_BLOCK_INFO, (blockHeight: number) =>
+  ajax({
+    url: `${BLOCK_INFO_URL}/${blockHeight}`,
+  })
 );
 
-export const getBlockSpotlight = createAsyncThunk(
-  GET_BLOCK_SPOTLIGHT,
-  () =>
-    ajax({
-      url: BLOCK_SPOTLIGHT_URL,
-    })
+export const getBlockSpotlight = createAsyncThunk(GET_BLOCK_SPOTLIGHT, () =>
+  ajax({
+    url: BLOCK_SPOTLIGHT_URL,
+  })
 );
 
 /* -----------------
@@ -229,16 +217,14 @@ export const blockSlice = createSlice({
 /* -----------------
 BUILD ACTIONS
 -------------------*/
-export const {
-  setRecentBlocksCount
-} = blockSlice.actions;
+export const { setRecentBlocksCount } = blockSlice.actions;
 
 export const blockActions = {
   getBlockInfo,
   getBlockSpotlight,
   getBlocksHeight,
   getBlocksRecent,
-  ...blockSlice.actions
+  ...blockSlice.actions,
 };
 /* -----------------
 SELECTORS

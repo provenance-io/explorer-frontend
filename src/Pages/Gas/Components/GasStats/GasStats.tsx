@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Loading, Filters, Section } from 'Components';
-import { useNetwork, useMediaQuery, useTxs } from 'redux/hooks';
-import { breakpoints, GAS_GRANULARITY_OPTIONS } from 'consts';
-import { getUTCTime, subtractDays, capitalize, isEmpty } from 'utils';
+import { Content, Loading, Filters, Section } from '../../../../Components';
+import { useNetwork, useMediaQuery, useTxs } from '../../../../redux/hooks';
+import { breakpoints, GAS_GRANULARITY_OPTIONS } from '../../../../consts';
+import { getUTCTime, subtractDays, capitalize, isEmpty } from '../../../../utils';
 import { GasStatsChart } from './Components';
 
 const FiltersWrapper = styled.div`
@@ -129,8 +129,8 @@ const GasStats = () => {
     gasTxTypes.transfer.isDefault = true;
     if (gasTxTypes.transfer.options) {
       gasTxTypes.transfer.options.send.isDefault = true;
-    };
-  };
+    }
+  }
 
   const filterData = [
     {
@@ -202,7 +202,7 @@ const GasStats = () => {
       title={`${gasStatsDayRange}-Day ${
         sizeMd || sizeSm
           ? ' Gas Stats'
-          : `Gas Stats for 
+          : `Gas Stats for
             ${filterType ? capitalize(filterType) : 'All'} Messages`
       } `}
     >

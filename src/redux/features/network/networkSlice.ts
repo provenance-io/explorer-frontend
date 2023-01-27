@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'redux/app/store';
+import { RootState } from '../../app/store';
 import {
   NETWORK_UPGRADES_URL,
   NETWORK_PARAMS_URL,
@@ -8,7 +8,7 @@ import {
   NETWORK_TOKEN_STATS_URL,
   Skips,
   NETWORK_TOTAL_SUPPLY_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 
 interface NetworkUpgrades {
@@ -156,7 +156,7 @@ export interface NetworkVolumeStats {
   gasWanted: number;
 }
 
-interface NetworkState {
+export interface NetworkState {
   // Upgrade Info
   networkUpgrades: NetworkUpgrades[];
   networkUpgradesLoading: boolean;

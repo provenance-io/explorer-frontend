@@ -1,6 +1,6 @@
 import React from 'react';
-import { Wrapper, Section, Header } from 'Components';
-import { useBlocks } from 'redux/hooks';
+import { Wrapper, Section, Header } from '../../Components';
+import { useBlocks } from '../../redux/hooks';
 import { BlocksList } from './Components';
 
 const Blocks = () => {
@@ -8,7 +8,11 @@ const Blocks = () => {
 
   return (
     <Wrapper>
-      <Header title="Latest Block Height" value={blocksHeight || '--'} valueLink={blocksHeight ? `/block/${blocksHeight}` : null} />
+      <Header
+        title="Latest Block Height"
+        value={blocksHeight || '--'}
+        valueLink={blocksHeight ? `/block/${blocksHeight}` : null}
+      />
       <Section header>
         <BlocksList />
       </Section>

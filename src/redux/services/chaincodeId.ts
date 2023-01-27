@@ -1,4 +1,4 @@
-import { CHAINCODE_ID_URL, CHAINCODE_PREFIXES_URL } from 'consts';
+import { CHAINCODE_ID_URL, CHAINCODE_PREFIXES_URL } from '../../consts';
 import { api } from './serviceApi';
 
 interface ChaincodePrefix {

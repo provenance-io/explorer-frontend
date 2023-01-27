@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Wrapper, Section, Header, MultiTable } from 'Components';
-import { useContracts } from 'redux/hooks';
+import { Wrapper, Section, Header, MultiTable } from '../../Components';
+import { useContracts } from '../../redux/hooks';
 import { ContractsList, CodesList } from './Components';
 
 const Contracts = () => {
@@ -16,7 +16,7 @@ const Contracts = () => {
       )}
       <Section header>
         <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
-          <ContractsList key="Contracts"/>
+          <ContractsList key="Contracts" />
           <CodesList key="Codes" />
         </MultiTable>
       </Section>

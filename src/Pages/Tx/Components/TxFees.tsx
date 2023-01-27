@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { isEmpty, formatDenom } from 'utils';
-import styled, { useTheme } from 'styled-components';
-import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
-import { useTxs } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import styled, { useTheme } from 'styled-components';
+import { isEmpty, formatDenom } from '../../../utils';
+import { Content, Loading } from '../../../Components';
+import { useTxs } from '../../../redux/hooks';
+import { breakpoints } from '../../../consts';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -89,12 +89,14 @@ interface AdjustedFeeProps {
   roundAmount: number;
 }
 
+type Series = { value: number; name: string; amount: string };
+
 // Populates the chart data
 const addData = (fees: AdjustedFeeProps[]) => {
   // Legend data shows the fees and their color on the right
   const legendData: string[] = [];
   // Series data, this is the information in the actual drawn-out chart
-  const seriesData: { value: number; name: string; amount: string }[] = [];
+  const seriesData: Series[] = [];
   // Track selected fees (able to toggle them on/off in the legend)
   const selectedData: { [key: string]: boolean } = {};
   fees.forEach(({ type, value, amount, roundAmount }) => {
@@ -129,17 +131,17 @@ const TxFees = () => {
 
   // Function to build the variable chart elements
   const buildChartData = useCallback(
-    (seriesData, legendData, selectedData) => {
+    (seriesData: Series[], legendData: string[], selectedData: { [key: string]: boolean }) => {
       chartData.color = [
         theme.CHART_PIE_C,
         theme.CHART_PIE_K,
         theme.CHART_PIE_I,
         theme.CHART_PIE_L,
       ];
-      chartData.legend.data = legendData;
+      chartData.legend.data = legendData as never[];
       chartData.legend.textStyle = { color: theme.FONT_PRIMARY };
       chartData.legend.selected = selectedData;
-      chartData.series[0].data = seriesData;
+      chartData.series[0].data = seriesData as never[];
     },
     [theme]
   );

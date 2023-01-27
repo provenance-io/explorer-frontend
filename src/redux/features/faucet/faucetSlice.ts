@@ -1,18 +1,18 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "redux/app/store";
-import { FAUCET_URL } from "consts";
-import { ajax } from "../api";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
+import { FAUCET_URL } from '../../../consts';
+import { ajax } from '../api';
 
 /* -----------------
 ** TYPES
 -------------------*/
 interface SendFaucetAddressData {
   address: string;
-};
+}
 
-interface FaucetRequestStatus {
+export interface FaucetRequestStatus {
   faucetRequestStatus: string;
-};
+}
 
 export const initialState: FaucetRequestStatus = {
   faucetRequestStatus: 'none',
@@ -34,12 +34,15 @@ export const faucetSlice = createSlice({
   initialState,
   reducers: {
     sendFaucetAddress(state, action: PayloadAction<string>) {
-      state.faucetRequestStatus = action.payload === 'pending' ?
-        'loading' : action.payload === 'fulfilled' ? 'success' : 
-        'failure';
+      state.faucetRequestStatus =
+        action.payload === 'pending'
+          ? 'loading'
+          : action.payload === 'fulfilled'
+          ? 'success'
+          : 'failure';
     },
   },
-})
+});
 /* -----------------
 SELECTORS
 -------------------*/

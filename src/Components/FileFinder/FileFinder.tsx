@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import TreeMenu, { ItemComponent } from 'react-simple-tree-menu';
-import { Content, Button } from 'Components';
+import { Content, Button } from '..';
 
 const Div = styled.div<{ info: boolean }>`
   display: ${({ info }) => (info ? 'grid' : 'inherit')};

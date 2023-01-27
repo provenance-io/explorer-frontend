@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { MultiTable, Section as BaseSection } from 'Components';
-import { breakpoints } from 'consts';
-import { useMediaQuery } from 'redux/hooks';
+import { MultiTable, Section as BaseSection } from '../../../../Components';
+import { breakpoints } from '../../../../consts';
+import { useMediaQuery } from '../../../../redux/hooks';
 import {
   AccountAssets,
   AccountDelegations,

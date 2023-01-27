@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { breakpoints } from 'consts';
-import { TxHistoryProps } from 'redux/services';
-import { formatDenom, isEmpty, subtractDays } from 'utils';
 import Big from 'big.js';
+import { breakpoints } from '../../../../../consts';
+import { TxHistoryProps } from '../../../../../redux/services';
+import { formatDenom, isEmpty, subtractDays } from '../../../../../utils';
 import { useMediaQuery, useOrderbook } from '../../../../../redux/hooks';
 
 // To convert day of week
@@ -351,7 +351,7 @@ export const TxChart = ({
       params.forEach((p) => {
         returnString += `
         <div style="display:flex;padding:2px;">
-          <div 
+          <div
             style="
               height:10px;
               width:10px;

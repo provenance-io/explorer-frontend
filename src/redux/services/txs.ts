@@ -1,5 +1,5 @@
-import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from 'consts';
 import qs from 'query-string';
+import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from '../../consts';
 import { api } from './serviceApi';
 
 export type GranularityProps = 'MONTH' | 'DAY' | 'HOUR';

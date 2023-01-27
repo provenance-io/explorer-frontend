@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Loading } from 'Components';
-import { subtractDays } from 'utils';
-import { useGetTxHistoryDataQuery, GranularityProps, TxHistoryProps } from 'redux/services';
+import { Loading } from '../../../Components';
+import { subtractDays } from '../../../utils';
+import {
+  useGetTxHistoryDataQuery,
+  GranularityProps,
+  TxHistoryProps,
+} from '../../../redux/services';
 import { TxChart } from '../../Dashboard/Components/TxHistory/Components';
 
 const Wrapper = styled.div`

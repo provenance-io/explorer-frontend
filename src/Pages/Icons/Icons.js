@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Sprite, Wrapper } from 'Components';
-import { breakpoints, ICON_NAMES } from 'consts';
-import { Colors as Color } from 'theme/Colors/Colors';
+import { Sprite, Wrapper } from '../../Components';
+import { breakpoints, ICON_NAMES } from '../../consts';
+import { Colors as Color } from '../../theme/Colors/Colors';
 
 const Form = styled.form`
   display: flex;

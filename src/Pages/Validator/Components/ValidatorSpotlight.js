@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams, Link } from 'react-router-dom';
-import { useValidators } from 'redux/hooks';
+import { useValidators } from '../../../redux/hooks';
 import {
   BlockImage,
   Content,
@@ -12,9 +12,9 @@ import {
   PopupNote,
   Sprite,
   Loading,
-} from 'Components';
-import { capitalize, getFormattedDate, maxLength, numberFormat } from 'utils';
-import { breakpoints } from 'consts';
+} from '../../../Components';
+import { capitalize, getFormattedDate, maxLength, numberFormat } from '../../../utils';
+import { breakpoints } from '../../../consts';
 
 const ImageContainer = styled.div`
   display: flex;

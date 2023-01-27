@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Table, Filters } from 'Components';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
-import { TRANSACTION_STATUS_OPTIONS, breakpoints } from 'consts';
-import { useContracts } from 'redux/hooks';
-import { getUTCTime } from 'utils';
+import { Table, Filters } from '../../../Components';
+import { TRANSACTION_STATUS_OPTIONS, breakpoints } from '../../../consts';
+import { useContracts } from '../../../redux/hooks';
+import { getUTCTime } from '../../../utils';
 
 const TxListContainer = styled.div`
   width: 100%;
@@ -45,7 +45,6 @@ const CodeTxs = () => {
     getCodeTxs: getTableData,
   } = useContracts();
   const { codeId } = useParams<ParamsProps>();
-
 
   const filterToDateClean = filterTo.replace(/-/g, '/');
   const filterFromDateClean = filterFrom.replace(/-/g, '/');

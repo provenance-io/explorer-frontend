@@ -1,5 +1,5 @@
 import Big from 'big.js';
-import { HashDataProps } from 'redux/services';
+import { HashDataProps } from '../../redux/services';
 
 // Returns totals of all hash values in the account by type
 

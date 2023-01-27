@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Button as BaseButton } from 'Components';
-import { useNotifications, useInterval, useApp } from 'redux/hooks';
-import { polling } from 'consts';
-import { subtractDays } from 'utils';
+import { Content, Button as BaseButton } from '..';
+import { useNotifications, useInterval, useApp } from '../../redux/hooks';
+import { polling } from '../../consts';
+import { subtractDays } from '../../utils';
 import { Banner } from './Components';
 
 const NotificationWrapper = styled.div<{ show: boolean }>`
-  display: ${({ show }) => show ? '' : 'none'};
+  display: ${({ show }) => (show ? '' : 'none')};
   width: 100%;
   margin-bottom: 20px;
 `;
@@ -23,8 +23,8 @@ const Button = styled(BaseButton)`
 
 const Notification = () => {
   const theme = useTheme();
-  const { 
-    setProposalNotifications, 
+  const {
+    setProposalNotifications,
     proposalNotifications,
     setUpgradeNotifications,
     upgradeNotifications,
@@ -69,21 +69,21 @@ const Notification = () => {
     setProposalNotifications(false);
     if (!upgradeNotifications && !announcementNotifications) {
       setShowNotifications(false);
-    };
+    }
   };
 
   const handleCloseUpgrades = () => {
     setUpgradeNotifications(false);
     if (!proposalNotifications && !announcementNotifications) {
       setShowNotifications(false);
-    };
+    }
   };
 
   const handleCloseAnnouncement = () => {
     setAnnouncementNotifications(false);
     if (!upgradeNotifications && !proposalNotifications) {
       setShowNotifications(false);
-    };
+    }
   };
 
   const handleCloseAll = () => {
@@ -104,17 +104,13 @@ const Notification = () => {
 
   type StateProps = (arg: boolean) => void;
 
-  const checkNotifications = (
-    data: DataProps[],
-    type: TypeProps, 
-    state: StateProps,
-    ) => {
+  const checkNotifications = (data: DataProps[], type: TypeProps, state: StateProps) => {
     // First, get whatever is saved for proposal Notifications
-    const currentString = localStorage.getItem(type+'Notifications');
+    const currentString = localStorage.getItem(type + 'Notifications');
     // Change to an object
     const currentObj = currentString ? JSON.parse(currentString) : {};
     // Iterate through the current data
-    data.forEach(item => {
+    data.forEach((item) => {
       // If the current data doesn't have a value in local storage object
       // that means we have a new item and should open notifications
       if (!currentObj[item.id]) {
@@ -123,56 +119,40 @@ const Notification = () => {
         // Show notifications
         setShowNotifications(true);
         // Add item to currentObj so we don't reshow it later
-        currentObj[item.id] = 'set for '+type+' '+item.title;
-      };
+        currentObj[item.id] = 'set for ' + type + ' ' + item.title;
+      }
     });
     // Add updated object back to local storage
-    localStorage.setItem(type+'Notifications',JSON.stringify(currentObj));
+    localStorage.setItem(type + 'Notifications', JSON.stringify(currentObj));
   };
 
   checkNotifications(openProposals, 'proposal', setProposalNotifications);
   checkNotifications(scheduledUpgrades, 'upgrade', setUpgradeNotifications);
   checkNotifications(openAnnouncements, 'announcement', setAnnouncementNotifications);
 
-  const getNotifications = (
-    data: DataProps[], 
-    type: TypeProps, 
-    onClick: () => void,
-    ) => (
-    <Banner 
+  const getNotifications = (data: DataProps[], type: TypeProps, onClick: () => void) => (
+    <Banner
       onClick={onClick}
       NotifyProps={{
-        data, 
+        data,
         type,
       }}
     />
   );
 
-  const closeAnnouncements =
-    <Button
-      onClick={handleCloseAll}
-      color="PRIMARY"
-    >
+  const closeAnnouncements = (
+    <Button onClick={handleCloseAll} color="PRIMARY">
       Close All
     </Button>
-  ;
-
+  );
   return (
-    <NotificationWrapper 
+    <NotificationWrapper
       show={
         showNotifications &&
-        (
-          (
-            openProposals.length > 0 ||
-            scheduledUpgrades.length > 0 ||
-            openAnnouncements.length > 0
-          ) &&
-          (
-            proposalNotifications ||
-            upgradeNotifications ||
-            announcementNotifications
-          )
-        )
+        (openProposals.length > 0 ||
+          scheduledUpgrades.length > 0 ||
+          openAnnouncements.length > 0) &&
+        (proposalNotifications || upgradeNotifications || announcementNotifications)
       }
     >
       <Content
@@ -185,15 +165,15 @@ const Notification = () => {
         headerContent={closeAnnouncements}
         color={theme.FONT_NAV}
       >
-        {openProposals.length > 0 && proposalNotifications && 
-          getNotifications(openProposals, 'proposal', handleCloseProposal)
-        }
-        {scheduledUpgrades.length > 0 && upgradeNotifications &&
-          getNotifications(scheduledUpgrades, 'upgrade', handleCloseUpgrades)
-        }
-        {openAnnouncements.length > 0 && announcementNotifications &&
-          getNotifications(openAnnouncements, 'announcement', handleCloseAnnouncement)
-        }
+        {openProposals.length > 0 &&
+          proposalNotifications &&
+          getNotifications(openProposals, 'proposal', handleCloseProposal)}
+        {scheduledUpgrades.length > 0 &&
+          upgradeNotifications &&
+          getNotifications(scheduledUpgrades, 'upgrade', handleCloseUpgrades)}
+        {openAnnouncements.length > 0 &&
+          announcementNotifications &&
+          getNotifications(openAnnouncements, 'announcement', handleCloseAnnouncement)}
       </Content>
     </NotificationWrapper>
   );

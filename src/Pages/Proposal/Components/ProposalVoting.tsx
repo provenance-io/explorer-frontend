@@ -1,6 +1,6 @@
 import React from 'react';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { Loading } from 'Components';
+import { Loading } from '../../../Components';
 import { useVoting, useGovernance, useApp } from '../../../redux/hooks';
 import ManageVotingModal from './ManageVotingModal';
 

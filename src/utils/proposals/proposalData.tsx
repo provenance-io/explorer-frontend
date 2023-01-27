@@ -1,9 +1,9 @@
 /* This utility returns the formik information to render proposal submission forms
    Format is as follows:
-    type: Type of field for UI. Options are text, 
+    type: Type of field for UI. Options are text,
 */
 
-import { ACCESS_TYPES, VOTING_TYPES } from 'consts';
+import { ACCESS_TYPES, VOTING_TYPES } from '../../consts';
 
 export interface MyFieldsProps {
   type: string;

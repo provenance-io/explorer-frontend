@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { useApp, useAccounts } from 'redux/hooks';
-import OgButton from 'Components/Button';
-import { BroadcastResults } from '@provenanceio/walletconnect-js/lib/types';
+import { BroadcastResult } from '@provenanceio/walletconnect-js/lib/types';
+import { useApp, useAccounts } from '../hooks';
+import OgButton from '../../Components/Button';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -32,13 +32,13 @@ export const useVoting = () => {
   // Event listeners for wallet messages
   useEffect(() => {
     // Success message for transaction messages
-    const submitSuccess = (result: BroadcastResults) => {
+    const submitSuccess = (result: BroadcastResult) => {
       setVoted(true);
     };
     wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
 
     // Fail message for transaction messages
-    const submitFailure = (result: BroadcastResults) => {
+    const submitFailure = (result: BroadcastResult) => {
       setVoted(false);
       deactivateModalOpen();
     };

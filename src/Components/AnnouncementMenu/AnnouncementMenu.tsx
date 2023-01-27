@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
-import { breakpoints, ICON_NAMES } from 'consts';
-import { useApp, useMediaQuery } from 'redux/hooks';
-import { PopupNote } from 'Components/PopupNote';
-import Button from '../Button';
-import Sprite from '../Sprite';
+import { breakpoints, ICON_NAMES } from '../../consts';
+import { useApp, useMediaQuery } from '../../redux/hooks';
+import { Button, PopupNote, Sprite } from '../';
 
 const Container = styled.div`
   position: relative;

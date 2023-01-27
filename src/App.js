@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { useAssets, useColorScheme, useApp } from 'redux/hooks';
-import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
-import { GlobalStyle } from 'theme';
-import { isProd } from 'consts';
-import { isEmpty } from 'utils';
+import { useAssets, useColorScheme, useApp } from './redux/hooks';
+import { Navigation, Footer, SpriteSheet, BaseStyle } from './Components';
+import { GlobalStyle } from './theme';
+import { isProd } from './consts';
+import { isEmpty } from './utils';
 import {
   Accounts,
   Announcement,
@@ -38,7 +38,7 @@ import {
   Upgrades,
   Validator,
   Validators,
-} from 'Pages';
+} from './Pages';
 
 const App = () => {
   const {
@@ -99,7 +99,7 @@ const App = () => {
             <Route path="/network/upgrades" component={Upgrades} />
             <Route path="/network/params" component={Params} />
             <Route path="/tx/:txHash" component={Tx} />
-            <Route path='/txdash' component={TxDash} />
+            <Route path="/txdash" component={TxDash} />
             <Route path="/txs" component={Txs} />
             <Route path="/validator/:validatorId" component={Validator} />
             <Route path="/validators" component={Validators} />

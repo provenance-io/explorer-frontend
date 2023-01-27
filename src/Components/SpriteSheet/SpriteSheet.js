@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ICON_NAMES } from 'consts';
+import { ICON_NAMES } from '../../consts';
 
 const Svg = styled.svg`
   display: none;

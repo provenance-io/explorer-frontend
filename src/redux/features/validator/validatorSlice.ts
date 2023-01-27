@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'redux/app/store';
+import { RootState } from '../../app/store';
 import {
   VALIDATOR_INFO_URL,
   VALIDATORS_RECENT_URL,
   VALIDATORS_GET_ALL_URL,
   BLOCK_VALIDATORS_URL,
   TX_INFO_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 import { TransactionsModule } from '../asset/assetSlice';
 
@@ -196,7 +196,7 @@ interface ValidatorUnbondingDelegations {
 interface ValidatorDelegationTxs extends TransactionsModule {}
 interface ValidatorTxs extends TransactionsModule {}
 
-interface ValidatorState {
+export interface ValidatorState {
   // All validators
   allValidators: AllValidators['results'];
   allValidatorsPages: AllValidators['pages'];

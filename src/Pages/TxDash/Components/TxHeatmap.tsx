@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useGetTxHeatmapDataQuery, DayOfData } from 'redux/services';
-import { formatDenom } from 'utils';
+import { useGetTxHeatmapDataQuery, DayOfData } from '../../../redux/services';
+import { formatDenom } from '../../../utils';
 
 const StyledChart = styled.div`
   height: 600px;
@@ -134,12 +134,12 @@ export const TxHeatmap = () => {
 
   // Build the dynamic chart content
   const buildChartData = useCallback(
-    (data) => {
+    (data?: DayOfData[]) => {
       // Mutate the data into the format we need, and store in seriesData
       const seriesData: any = [];
       // Also find the max number of transactions to set max in chart
       let maxTxs = 0;
-      data.forEach((dayData: DayOfData) => {
+      data?.forEach((dayData: DayOfData) => {
         dayData.data.forEach((day, index) => {
           seriesData.push([day.hour, Math.abs(dayData.dow - 6), day.numberTxs || '-']);
           if (day.numberTxs > maxTxs) {

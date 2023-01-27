@@ -1,18 +1,16 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectAsset as selector,
+  AssetState,
   assetActions as actionsList,
-} from 'redux/features/asset/assetSlice';
+} from '../features/asset/assetSlice';
 
 export const useAssets = () => {
   const dispatch = useAppDispatch();
-  const state = useAppSelector(selector);
-  const actions = useMemo(
-    () => bindActionCreators(actionsList, dispatch),
-    [dispatch]
-  );
+  const state: AssetState = useAppSelector(selector);
+  const actions = useMemo(() => bindActionCreators(actionsList, dispatch), [dispatch]);
 
   return { ...state, ...actions };
-}
+};

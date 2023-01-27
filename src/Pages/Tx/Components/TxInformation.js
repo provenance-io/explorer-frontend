@@ -1,9 +1,9 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { maxLength, getUTCTime, capitalize, isEmpty, formatDenom } from 'utils';
-import { Content, DataMissing, Loading, Summary } from 'Components';
-import { useTxs } from 'redux/hooks';
+import { maxLength, getUTCTime, capitalize, isEmpty, formatDenom } from '../../../utils';
+import { Content, DataMissing, Loading, Summary } from '../../../Components';
+import { useTxs } from '../../../redux/hooks';
 
 const MsgContainer = styled.div`
   flex-wrap: no-wrap;

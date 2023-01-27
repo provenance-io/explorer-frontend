@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback} from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { Content, Loading, InfiniteScroll } from 'Components';
-import { useNotifications, useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { Content, Loading, InfiniteScroll } from '../../../Components';
+import { useNotifications, useMediaQuery } from '../../../redux/hooks';
+import { breakpoints } from '../../../consts';
 
 const TextWrapper = styled.div`
   display: flex;
@@ -82,20 +82,17 @@ const AnnouncementsList = () => {
     history.push(path);
   };
 
-  const {
-    allAnnouncements,
-    allAnnouncementsLoading,
-    allAnnouncementsPages,
-    getAnnouncementsAll,
-  } = useNotifications();
+  const { allAnnouncements, allAnnouncementsLoading, allAnnouncementsPages, getAnnouncementsAll } =
+    useNotifications();
 
   const loadAnnouncements = useCallback(
-    page => {
-      getAnnouncementsAll({ 
+    (page: number) => {
+      getAnnouncementsAll({
         fromDate: '',
         page,
-        count: 30, });
-      },
+        count: 30,
+      });
+    },
     [getAnnouncementsAll]
   );
 
@@ -105,38 +102,35 @@ const AnnouncementsList = () => {
 
   const getAnnouncementsList = () => {
     if (allAnnouncementsLoading) {
-      return <Loading />
+      return <Loading />;
+    } else {
+      return allAnnouncements.map((item: ItemProps) => {
+        const title = item.title;
+        const id = item.id;
+        const time = item.timestamp.slice(0, 10);
+        const children = (
+          <ButtonContent>
+            <ButtonNum>{`${id}.`}</ButtonNum>
+            <ButtonTitle>{title}</ButtonTitle>
+            <ButtonDate>{isMed ? '' : time}</ButtonDate>
+          </ButtonContent>
+        );
+        return (
+          <Button key={id} onClick={() => routeChange(id)}>
+            {children}
+          </Button>
+        );
+      });
     }
-    else {
-      return (
-        allAnnouncements.map((item: ItemProps) => {
-          const title = item.title;
-          const id = item.id;
-          const time = item.timestamp.slice(0,10);
-          const children = (
-            <ButtonContent>
-              <ButtonNum>{`${id}.`}</ButtonNum>
-              <ButtonTitle>{title}</ButtonTitle>
-              <ButtonDate>
-                {isMed ? '' : time}
-              </ButtonDate>
-            </ButtonContent>
-          );
-          return (
-              <Button key={id} onClick={() => routeChange(id)}>{children}</Button>
-          );
-        })
-      );
-    };
   };
 
   return (
     <>
       {!allAnnouncementsLoading && allAnnouncements.length > 0 ? (
         <Content>
-          <InfiniteScroll 
-            loading={allAnnouncementsLoading} 
-            onLoadMore={loadAnnouncements} 
+          <InfiniteScroll
+            loading={allAnnouncementsLoading}
+            onLoadMore={loadAnnouncements}
             totalPages={allAnnouncementsPages}
           >
             {({ sentryRef, hasNextPage }) => (
@@ -147,21 +141,17 @@ const AnnouncementsList = () => {
             )}
           </InfiniteScroll>
         </Content>
+      ) : allAnnouncementsLoading ? (
+        <Loading />
       ) : (
-        allAnnouncementsLoading ? (
-          <Loading />
-         ) : (
-          <TextWrapper>
-            <InfoText>
-              {`
+        <TextWrapper>
+          <InfoText>
+            {`
                 There aren't any announcements yet, but check back soon!
               `}
-            </InfoText>
-          </TextWrapper>
-         )
-      )
-
-      }
+          </InfoText>
+        </TextWrapper>
+      )}
     </>
   );
 };

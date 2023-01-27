@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'redux/app/store';
+import { RootState } from '../../app/store';
 import {
   STAKING_DELEGATE_URL,
   STAKING_REDELEGATE_URL,
   STAKING_UNDELEGATE_URL,
   STAKING_WITHDRAW_COMMISSION_URL,
   STAKING_WITHDRAW_REWARDS_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 
 interface StakingState {}

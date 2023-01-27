@@ -1,22 +1,12 @@
 import React from 'react';
-import { Content, Summary, Loading } from 'Components';
-import { useContracts } from 'redux/hooks';
-import { maxLength } from 'utils';
+import { Content, Summary, Loading } from '../../../Components';
+import { useContracts } from '../../../redux/hooks';
+import { maxLength } from '../../../utils';
 
 const ContractDetails = () => {
-  const { 
-    contractDetails, 
-    contractDetailsLoading 
-  } = useContracts();
+  const { contractDetails, contractDetailsLoading } = useContracts();
 
-  const {
-    contractAddress,
-    creationHeight,
-    codeId,
-    creator,
-    admin,
-    label,
-  } = contractDetails;
+  const { contractAddress, creationHeight, codeId, creator, admin, label } = contractDetails;
 
   const summaryData = [
     {

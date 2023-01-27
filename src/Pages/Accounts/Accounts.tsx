@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Section, Wrapper, Header, Content } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useMediaQuery, useAccounts } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { maxLength } from 'utils';
-import { TxHistory } from 'Pages/Dashboard/Components';
-import { AccountCharts, AccountSpotlight } from './Components';
-import { AccountTables } from './Components/AccountTables/AccountTables';
+import { useMediaQuery, useAccounts } from '../../redux/hooks';
+import { breakpoints } from '../../consts';
+import { maxLength } from '../../utils';
+import { Section, Wrapper, Header, Content } from '../../Components';
+import { AccountCharts, AccountSpotlight, AccountTables } from './Components';
+import { TxHistory } from '../../Pages/Dashboard/Components';
 import { NoMatch404 } from '..';
 
 const Group = styled.div<{ isMdSm?: boolean }>`

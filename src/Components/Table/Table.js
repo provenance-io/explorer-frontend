@@ -3,6 +3,7 @@ import styled, { useTheme } from 'styled-components';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import {
+  BlockImage as OgBlockImage,
   Content,
   Loading,
   Pagination as BasePagination,
@@ -10,9 +11,8 @@ import {
   TimeTicker,
   CopyValue,
   PercentBar,
-} from 'Components';
-import OgBlockImage from 'Components/BlockImage';
-import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
+} from '..';
+import { capitalize, getUTCTime, formatTableData, isEmpty } from '../../utils';
 import { Skips } from '../../consts';
 
 const TableContainer = styled.div`

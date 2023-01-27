@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from 'redux/app/store';
+import { RootState } from '../../app/store';
 import {
   TX_INFO_URL,
   TXS_RECENT_URL,
@@ -8,8 +8,8 @@ import {
   TXS_BY_BLOCK_URL,
   TXS_BY_ADDRESS_URL,
   TX_TYPES_URL,
-} from 'consts';
-import { isEmpty, capitalize } from 'utils';
+} from '../../../consts';
+import { isEmpty, capitalize } from '../../../utils';
 import { ajax } from '../api';
 
 export interface TxInfo {
@@ -143,7 +143,7 @@ export interface TxByAddress extends TxRecent {}
 interface TxByModule extends TxRecent {}
 interface TxByNft extends TxRecent {}
 
-interface TxState {
+export interface TxState {
   // Txs
   txInfo: TxInfo;
   txsInfoLoading: boolean;

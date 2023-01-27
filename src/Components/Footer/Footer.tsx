@@ -7,11 +7,12 @@ import {
   SOCIAL_PROVENANCE_URL,
   SOCIAL_DISCORD_URL,
   isProd,
-} from 'consts';
-import { useGetChaincodeIdQuery } from 'redux/services';
-import Loading from 'Components/Loading';
-import Sprite from '../Sprite';
-import { version } from '../../../package.json';
+} from '../../consts';
+import { useGetChaincodeIdQuery } from '../../redux/services';
+import { Loading, Sprite } from '..';
+import packageInfo from '../../../package.json';
+
+const { version } = packageInfo;
 
 const FooterContainer = styled.footer`
   padding: 20px 50px;

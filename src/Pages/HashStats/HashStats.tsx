@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Section } from 'Components';
-import { HashDashboard, PriceHistory } from 'Pages/Dashboard/Components';
+import { Section } from '../../Components';
+import { HashDashboard, PriceHistory } from '../Dashboard/Components';
 
 const Background = styled.div`
   position: fixed;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 
 export default styled.div`
   display: flex;

@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { useGovernance } from 'redux/hooks';
-import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
-import { formatDenom, isEmpty } from 'utils';
 import Big from 'big.js';
+import { useGovernance } from '../../../redux/hooks';
+import { Content, Loading } from '../../../Components';
+import { formatDenom, isEmpty } from '../../../utils';
 
 const StyledChart = styled.div`
   height: 200px;
@@ -47,7 +47,7 @@ const chartData = {
   },
   yAxis: {
     type: 'category',
-    show: false,    
+    show: false,
   },
   series: [
     {
@@ -183,8 +183,8 @@ export const ProposalDepositsChart = () => {
 
   return (
     <Content title={proposalLoading ? '' : `Deposits: ${formatDenom(current, denom)} (${getPercentage(current, needed)}%)`}>
-      {proposalLoading ? 
-        <Loading /> 
+      {proposalLoading ?
+        <Loading />
         :
         <StyledChart ref={chartElementRef}/>
       }

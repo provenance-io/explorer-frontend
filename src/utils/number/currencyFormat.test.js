@@ -1,4 +1,4 @@
-import { setCookie } from 'utils/cookie';
+import { setCookie } from '..//cookie';
 import { currencyFormat } from './currencyFormat';
 
 // assetMetadata cookie

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { Content, Loading, Filters } from 'Components';
-import { useOrderbook } from 'redux/hooks';
-import { subtractDays } from 'utils';
 import styled from 'styled-components';
-import { breakpoints } from 'consts';
+import { Content, Loading, Filters } from '../../../../Components';
+import { useOrderbook } from '../../../../redux/hooks';
+import { subtractDays } from '../../../../utils';
+import { breakpoints } from '../../../../consts';
 import { PriceChart } from './Components';
 
 const FiltersWrapper = styled.div`

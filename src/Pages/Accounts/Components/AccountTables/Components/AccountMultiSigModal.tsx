@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Modal } from 'Components';
-import { AccountInfo } from 'redux/features/account/accountSlice';
 import { Link } from 'react-router-dom';
+import { Modal } from '../../../../../Components';
+import { AccountInfo } from '../../../../../redux/features/account/accountSlice';
 
 const Title = styled.div`
   text-align: center;

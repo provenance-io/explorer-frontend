@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { HistoricalPricing } from 'redux/features/orderbook/orderbookSlice';
 import { format, parseISO } from 'date-fns';
+import { useMediaQuery } from '../../../../../redux/hooks';
+import { breakpoints } from '../../../../../consts';
+import { HistoricalPricing } from '../../../../../redux/features/orderbook/orderbookSlice';
 
 const StyledChart = styled.div`
   height: 300px;
@@ -129,7 +129,7 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
 
   // Build dynamic chart data
   const buildChartData = useCallback(
-    (data, startDate, endDate) => {
+    (data: HistoricalPricing[], startDate: string, endDate: string) => {
       const seriesData = data.map((item: HistoricalPricing) => [
         format(parseISO(item.time_close), 'yyyy-MM-dd'),
         item.quote.USD.close,
@@ -197,7 +197,7 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
       chartData.yAxis.max = (obj: any) => obj.max;
       chartData.yAxis.min = (obj: any) => obj.min;
       chartData.color = theme.CHART_LINE_MAIN;
-      chartData.series[0].data = seriesData;
+      chartData.series[0].data = seriesData as never[];
       chartData.series[0].areaStyle = {
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
           {

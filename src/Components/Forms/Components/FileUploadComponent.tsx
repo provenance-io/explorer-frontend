@@ -1,9 +1,8 @@
+import { useCallback, useState } from 'react';
 import { FieldInputProps } from 'formik';
 import styled from 'styled-components';
-import Sprite from 'Components/Sprite';
-import { useCallback, useState } from 'react';
-import { bytesToFileSize } from 'utils';
-import Loading from 'Components/Loading';
+import { Loading, Sprite } from '../..';
+import { bytesToFileSize } from '../../../utils';
 
 const Container = styled.div<{ dragActive: boolean }>`
   margin-top: 10px;

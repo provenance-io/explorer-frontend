@@ -1,5 +1,5 @@
 import Big from 'big.js';
-import { getCookie } from 'utils';
+import { getCookie } from '../';
 
 export const currencyFormat = (value = 0, initialDenom: string, toBase = false) => {
   // Get the metadata from the cookie set by assetReducer

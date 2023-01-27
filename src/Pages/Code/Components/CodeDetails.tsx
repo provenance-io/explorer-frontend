@@ -1,7 +1,7 @@
 import React from 'react';
-import { Content, Summary, Loading } from 'Components';
-import { useContracts } from 'redux/hooks';
-import { maxLength } from 'utils';
+import { Content, Summary, Loading } from '../../../Components';
+import { useContracts } from '../../../redux/hooks';
+import { maxLength } from '../../../utils';
 
 export interface SummaryDataProps {
   data: [
@@ -15,22 +15,14 @@ export interface SummaryDataProps {
       externalLink?: string;
       copy?: string;
       splitOnSpace?: boolean;
-    },
+    }
   ];
-};
+}
 
 const CodeDetails = () => {
-  const { 
-    contractCode, 
-    contractCodeLoading,
-  } = useContracts();
+  const { contractCode, contractCodeLoading } = useContracts();
 
-  const {
-    codeId,
-    creationHeight,
-    creator,
-    dataHash,
-  } = contractCode;
+  const { codeId, creationHeight, creator, dataHash } = contractCode;
 
   const summaryData = [
     {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Table, Section as BaseSection, Loading } from 'Components';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { isEmpty } from 'utils';
+import { Table, Section as BaseSection, Loading } from '../../../Components';
+import { isEmpty } from '../../../utils';
 import { ManageProposalModal } from '.';
 import { useApp, useGovernance, useProposal } from '../../../redux/hooks';
 

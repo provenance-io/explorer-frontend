@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from 'redux/app/store';
-import { UTILITY_TOKEN_CURRENT_URL, UTILITY_TOKEN_HISTORICAL_URL } from 'consts';
+import { RootState } from '../../app/store';
+import { UTILITY_TOKEN_CURRENT_URL, UTILITY_TOKEN_HISTORICAL_URL } from '../../../consts';
 import { ajax } from '../api';
 
 export interface HistoricalPricing {
@@ -65,7 +65,7 @@ interface CurrentPricing {
   tvl_ratio: number;
 }
 
-interface OrderbookState {
+export interface OrderbookState {
   historicalPricing: HistoricalPricing[];
   historicalPricingLoading: boolean;
   historicalPricingFailed: boolean;

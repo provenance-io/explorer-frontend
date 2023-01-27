@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Content, Loading, Summary, Table as OgTable } from 'Components';
-import { useAssets } from 'redux/hooks';
-import { capitalize } from 'utils';
+import { Content, Loading, Summary, Table as OgTable } from '../../../Components';
+import { useAssets } from '../../../redux/hooks';
+import { capitalize } from '../../../utils';
 
 const Table = styled(OgTable)`
   & > div {

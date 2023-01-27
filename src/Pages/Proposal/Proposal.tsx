@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Wrapper, Header, Section, Loading } from 'Components';
-import { isEmpty } from 'utils';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import { Wrapper, Header, Section, Loading } from '../../Components';
+import { isEmpty } from '../../utils';
 import { useGovernance, useAccounts, useApp } from '../../redux/hooks';
 import {
   ProposalDeposits,

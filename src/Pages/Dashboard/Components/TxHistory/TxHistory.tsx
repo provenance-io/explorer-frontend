@@ -3,11 +3,15 @@ import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { format } from 'date-fns';
-import { Button, Content, Loading } from 'Components';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { subtractDays } from 'utils';
-import { useGetTxHistoryDataQuery, GranularityProps, TxHistoryProps } from 'redux/services';
+import { Button, Content, Loading } from '../../../../Components';
+import { useMediaQuery } from '../../../../redux/hooks';
+import { breakpoints } from '../../../../consts';
+import { subtractDays } from '../../../../utils';
+import {
+  useGetTxHistoryDataQuery,
+  GranularityProps,
+  TxHistoryProps,
+} from '../../../../redux/services';
 import { DownloadCsvModal, TxChart } from './Components';
 
 const RadioButtonGroup = styled.div`

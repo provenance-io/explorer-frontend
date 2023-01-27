@@ -1,4 +1,4 @@
-import { Themes } from 'theme';
+import { Themes } from '../../theme';
 import { useApp, useMediaQuery } from '.';
 
 export const useColorScheme = () => {

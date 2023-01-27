@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAssets, useAccounts } from 'redux/hooks';
-import { Table } from 'Components';
+import { useAssets, useAccounts } from '../../../../../redux/hooks';
+import { Table } from '../../../../../Components';
 
 export const AccountAssets = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

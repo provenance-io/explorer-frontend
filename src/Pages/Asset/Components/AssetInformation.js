@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { Content, Summary, Loading } from 'Components';
-import { capitalize, currencyFormat, formatDenom, numberFormat } from 'utils';
-import { useAssets } from 'redux/hooks';
+import { Content, Summary, Loading } from '../../../Components';
+import { capitalize, currencyFormat, formatDenom, numberFormat } from '../../../utils';
+import { useAssets } from '../../../redux/hooks';
 
 const ConversionWrapper = styled.div`
   white-space: nowrap;

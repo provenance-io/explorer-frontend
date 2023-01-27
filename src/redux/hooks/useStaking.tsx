@@ -1,18 +1,18 @@
 import { useEffect, useState, useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
+import { BroadcastResult } from '@provenanceio/walletconnect-js/lib/types';
+// @ts-ignore
+import useToggle from 'react-tiny-hooks/use-toggle';
+import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectStaking as selector,
   stakingActions as actionsList,
   noDispatchActions,
-} from 'redux/features/staking/stakingSlice';
-import styled from 'styled-components';
-import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
-// @ts-ignore
-import useToggle from 'react-tiny-hooks/use-toggle';
-import { useApp, useAccounts } from 'redux/hooks';
-import OgButton from 'Components/Button';
-import { BroadcastResults } from '@provenanceio/walletconnect-js/lib/types';
+} from '../features/staking/stakingSlice';
+import { useApp, useAccounts } from '../hooks';
+import OgButton from '../../Components/Button';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -96,14 +96,14 @@ export const useStaking = () => {
   // Event listeners for wallet messages
   useEffect(() => {
     // Success message for transaction messages
-    const submitSuccess = (result: BroadcastResults) => {
+    const submitSuccess = (result: BroadcastResult) => {
       setShouldPull(true);
       deactivateModalOpen();
     };
     wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
 
     // Fail message for transaction messages
-    const submitFailure = (result: BroadcastResults) => {
+    const submitFailure = (result: BroadcastResult) => {
       setShouldPull(false);
     };
     wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);

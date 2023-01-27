@@ -1,5 +1,5 @@
-import { Header, Section, Wrapper } from 'Components';
 import { useParams } from 'react-router';
+import { Header, Section, Wrapper } from '../../Components';
 import { NftRecords, NftSpotlight, NftTxs } from './Components';
 
 const Nft = () => {

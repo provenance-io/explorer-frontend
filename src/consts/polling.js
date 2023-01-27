@@ -1,4 +1,4 @@
-import { isProd } from 'consts';
+import { isProd } from '.';
 
 export const polling = {
   blockSpotlight: 5000,

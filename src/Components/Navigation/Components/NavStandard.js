@@ -1,14 +1,9 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Path } from 'consts';
-import { useApp, useColorScheme } from 'redux/hooks';
-// Direct import to prevent import order issues
-import Sprite from '../../Sprite';
-import SearchBar from '../../SearchBar';
-import Toggle from '../../Toggle';
-import UserAccount from '../../UserAccount';
-import AnnouncementMenu from '../../AnnouncementMenu';
+import { Path } from '../../../consts';
+import { useApp, useColorScheme } from '../../../redux/hooks';
+import { Sprite, SearchBar, Toggle, UserAccount, AnnouncementMenu } from '../..';
 import NavHeaders from './NavHeaders';
 
 const NavigationWrapper = styled.div`

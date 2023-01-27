@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useGetTxHeatmapDataQuery, HourlyTotal } from 'redux/services';
+import { useGetTxHeatmapDataQuery, HourlyTotal } from '../../../redux/services';
 // import { breakpoints } from 'consts';
 // import { useMediaQuery } from 'redux/hooks';
 
@@ -102,12 +102,12 @@ export const TxByHour = () => {
   const { data: txHeatmapData, isLoading: txHeatmapDataLoading } = useGetTxHeatmapDataQuery();
 
   const buildChartData = useCallback(
-    (data) => {
+    (data?: HourlyTotal[]) => {
       // Format data
       const seriesData: any = [];
       const yAxisData: any = [];
       data
-        .slice()
+        ?.slice()
         .reverse()
         .forEach((item: HourlyTotal) => {
           seriesData.push(item.numberTxs);

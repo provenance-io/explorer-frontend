@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { bech32 } from 'bech32';
 import {
   Section,
   Content,
@@ -8,10 +9,9 @@ import {
   PopupNote,
   Loading as BaseLoading,
   Button as BaseButton,
-} from 'Components';
-import { useFaucet } from 'redux/hooks';
-import { bech32 } from 'bech32';
-import { breakpoints, isProd } from 'consts';
+} from '../../Components';
+import { useFaucet } from '../../redux/hooks';
+import { breakpoints, isProd } from '../../consts';
 
 const rotate = keyframes`
   0% {
@@ -293,7 +293,7 @@ const Faucet = () => {
                 <TextInput
                   disabled={formDisabled}
                   onChange={editAddress}
-                  onKeyPress={e => {
+                  onKeyPress={(e) => {
                     if (e.key === 'Enter' && !formDisabled) {
                       submitAddress();
                     }

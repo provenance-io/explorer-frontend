@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useValidators, useAccounts } from 'redux/hooks';
-import { Table } from 'Components';
-import { formatDenom } from 'utils';
+import { useValidators, useAccounts } from '../../../../../redux/hooks';
+import { Table } from '../../../../../Components';
+import { formatDenom } from '../../../../../utils';
 
 export const AccountDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

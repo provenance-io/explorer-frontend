@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from "redux/app/store";
+import { RootState } from '../../app/store';
 import {
   IBC_CHAIN_URL,
   IBC_CHANNEL_URL,
@@ -8,15 +8,15 @@ import {
   IBC_RELAYERS_URL,
   IBC_CHANNEL_STATUS_URL,
   IBC_DENOMS_ALL_URL,
-} from 'consts';
-import { ajax } from "../api";
+} from '../../../consts';
+import { ajax } from '../api';
 
 interface ChainBalances {
   balances: {
     balanceIn: {
       amount: string;
       denom: string;
-    },
+    };
     balanceOut: {
       amount: string;
       denom: string;
@@ -27,36 +27,36 @@ interface ChainBalances {
   }[];
   dstChainId: string;
   lastTx: string;
-};
+}
 
 interface ChannelBalances {
   channels: {
     balances: {
-        balanceIn: {
-          amount: string;
-          denom: string;
-        },
-        balanceOut: {
-          amount: string;
-          denom: string;
-        },
+      balanceIn: {
+        amount: string;
         denom: string;
-        denomTrace: string;
-        lastTx: string;
-      }[];
+      };
+      balanceOut: {
+        amount: string;
+        denom: string;
+      };
+      denom: string;
+      denomTrace: string;
+      lastTx: string;
+    }[];
     dstChannel: {
       channel: string;
       port: string;
-    },
+    };
     lastTx: string;
     srcChannel: {
       channel: string;
       port: string;
-    }
+    };
   }[];
   dstChainId: string;
   lastTx: string;
-};
+}
 
 interface DenomBalances {
   balanceIn: {
@@ -70,13 +70,13 @@ interface DenomBalances {
   denom: string;
   denomTrace: string;
   lastTx: string;
-};
+}
 
 interface ChannelRelayers {
   address: string;
   lastTimestamp: string;
   txCount: number;
-};
+}
 
 interface ChannelStatus {
   channels: {
@@ -91,7 +91,7 @@ interface ChannelStatus {
     status: string;
   }[];
   dstChainId: string;
-};
+}
 
 interface DenomsAll {
   pages: number;
@@ -107,9 +107,9 @@ interface DenomsAll {
     };
   };
   total: number;
-};
+}
 
-interface IbcState {
+export interface IbcState {
   // Chain balances
   chainBalances: ChainBalances[];
   chainBalancesFailed: boolean;
@@ -131,12 +131,12 @@ interface IbcState {
   channelStatusFailed: boolean;
   channelStatusLoading: boolean;
   // Denoms all
-  denomsAll: DenomsAll["results"];
+  denomsAll: DenomsAll['results'];
   denomsAllFailed: boolean;
   denomsAllLoading: boolean;
-  denomsPages: DenomsAll["pages"];
-  denomsTotal: DenomsAll["total"];
-};
+  denomsPages: DenomsAll['pages'];
+  denomsTotal: DenomsAll['total'];
+}
 
 export const initialState: IbcState = {
   // Chain balances
@@ -180,54 +180,46 @@ export const GET_DENOMS_ALL = 'IBC::GET_DENOMS_ALL';
 /* -----------------
 ** ACTIONS
 -------------------*/
-export const getChainBalances = createAsyncThunk(
-  GET_CHAIN_BALANCES,
-  () => 
-    ajax({
-      url: IBC_CHAIN_URL,
-    })
+export const getChainBalances = createAsyncThunk(GET_CHAIN_BALANCES, () =>
+  ajax({
+    url: IBC_CHAIN_URL,
+  })
 );
 
-export const getChannelBalances = createAsyncThunk(
-  GET_CHANNEL_BALANCES,
-  () => 
-    ajax({
-      url: IBC_CHANNEL_URL,
-    })
+export const getChannelBalances = createAsyncThunk(GET_CHANNEL_BALANCES, () =>
+  ajax({
+    url: IBC_CHANNEL_URL,
+  })
 );
 
-export const getDenomBalances = createAsyncThunk(
-  GET_DENOM_BALANCES,
-  () => 
-    ajax({
-      url: IBC_BALANCES_DENOM_URL,
-    })
+export const getDenomBalances = createAsyncThunk(GET_DENOM_BALANCES, () =>
+  ajax({
+    url: IBC_BALANCES_DENOM_URL,
+  })
 );
 
 export const getChannelRelayers = createAsyncThunk(
   GET_CHANNEL_RELAYERS,
-  ({
-    srcPort,
-    srcChannel,
-  } : {
-    srcPort: string,
-    srcChannel: string,
-  }) => 
+  ({ srcPort, srcChannel }: { srcPort: string; srcChannel: string }) =>
     ajax({
       url: `${IBC_RELAYERS_URL}${srcPort}/src_channel/${srcChannel}/relayers`,
     })
 );
 
 interface StatusProps {
-  status: "STATE_CLOSED" | "STATE_INIT" | "STATE_OPEN" | "STATE_TRYOPEN" |
-                   "STATE_UNINITIALIZED_UNSPECIFIED" | "UNRECOGNIZED" | "";
-};
+  status:
+    | 'STATE_CLOSED'
+    | 'STATE_INIT'
+    | 'STATE_OPEN'
+    | 'STATE_TRYOPEN'
+    | 'STATE_UNINITIALIZED_UNSPECIFIED'
+    | 'UNRECOGNIZED'
+    | '';
+}
 
 export const getChannelStatus = createAsyncThunk(
   GET_CHANNEL_STATUS,
-  ({
-    status = "" 
-  } : StatusProps) =>
+  ({ status = '' }: StatusProps) =>
     ajax({
       url: `${IBC_CHANNEL_STATUS_URL}${status && `/?status=${status}`}`,
     })
@@ -235,13 +227,7 @@ export const getChannelStatus = createAsyncThunk(
 
 export const getDenomsAll = createAsyncThunk(
   GET_DENOMS_ALL,
-  ({
-    page = 1,
-    count = 1,
-  } : {
-    page: number,
-    count: number,
-  }) => 
+  ({ page = 1, count = 1 }: { page: number; count: number }) =>
     ajax({
       url: `${IBC_DENOMS_ALL_URL}/all?${qs.stringify({ page, count })}`,
     })
@@ -264,106 +250,106 @@ export const ibcSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-    /* -----------------
+      /* -----------------
     GET_CHAIN_BALANCES
     -------------------*/
-    .addCase(getChainBalances.pending, (state) => {
-      state.chainBalancesLoading = true;
-      state.chainBalancesFailed = false;
-    })
-    .addCase(getChainBalances.fulfilled, (state, { payload }) => {
-      state.chainBalancesLoading = false;
-      state.chainBalances = payload.data;
-      state.chainBalancesFailed = false;
-    })
-    .addCase(getChainBalances.rejected, (state) => {
-      state.chainBalancesLoading = false;
-      state.chainBalancesFailed = true;
-    })
-    /* -----------------
+      .addCase(getChainBalances.pending, (state) => {
+        state.chainBalancesLoading = true;
+        state.chainBalancesFailed = false;
+      })
+      .addCase(getChainBalances.fulfilled, (state, { payload }) => {
+        state.chainBalancesLoading = false;
+        state.chainBalances = payload.data;
+        state.chainBalancesFailed = false;
+      })
+      .addCase(getChainBalances.rejected, (state) => {
+        state.chainBalancesLoading = false;
+        state.chainBalancesFailed = true;
+      })
+      /* -----------------
     GET_CHANNEL_BALANCES
     -------------------*/
-    .addCase(getChannelBalances.pending, (state) => {
-      state.channelBalancesLoading = true;
-      state.channelBalancesFailed = false;
-    })
-    .addCase(getChannelBalances.fulfilled, (state, { payload }) => {
-      state.channelBalancesLoading = false;
-      state.channelBalances = payload.data;
-      state.channelBalancesFailed = false;
-    })
-    .addCase(getChannelBalances.rejected, (state) => {
-      state.channelBalancesLoading = false;
-      state.channelBalancesFailed = true;
-    })
-    /* -----------------
+      .addCase(getChannelBalances.pending, (state) => {
+        state.channelBalancesLoading = true;
+        state.channelBalancesFailed = false;
+      })
+      .addCase(getChannelBalances.fulfilled, (state, { payload }) => {
+        state.channelBalancesLoading = false;
+        state.channelBalances = payload.data;
+        state.channelBalancesFailed = false;
+      })
+      .addCase(getChannelBalances.rejected, (state) => {
+        state.channelBalancesLoading = false;
+        state.channelBalancesFailed = true;
+      })
+      /* -----------------
     GET_DENOM_BALANCES
     -------------------*/
-    .addCase(getDenomBalances.pending, (state) => {
-      state.denomBalancesLoading = true;
-      state.denomBalancesFailed = false;
-    })
-    .addCase(getDenomBalances.fulfilled, (state, { payload }) => {
-      state.denomBalancesLoading = false;
-      state.denomBalances = payload.data;
-      state.denomBalancesFailed = false;
-    })
-    .addCase(getDenomBalances.rejected, (state) => {
-      state.denomBalancesLoading = false;
-      state.denomBalancesFailed = true;
-    })
-    /* -----------------
+      .addCase(getDenomBalances.pending, (state) => {
+        state.denomBalancesLoading = true;
+        state.denomBalancesFailed = false;
+      })
+      .addCase(getDenomBalances.fulfilled, (state, { payload }) => {
+        state.denomBalancesLoading = false;
+        state.denomBalances = payload.data;
+        state.denomBalancesFailed = false;
+      })
+      .addCase(getDenomBalances.rejected, (state) => {
+        state.denomBalancesLoading = false;
+        state.denomBalancesFailed = true;
+      })
+      /* -----------------
     GET_CHANNEL_RELAYERS
     -------------------*/
-    .addCase(getChannelRelayers.pending, (state) => {
-      state.channelRelayersLoading = true;
-      state.channelRelayersFailed = false;
-    })
-    .addCase(getChannelRelayers.fulfilled, (state, { payload }) => {
-      state.channelRelayersLoading = false;
-      state.channelRelayers = payload.data;
-      state.channelRelayersFailed = false;
-    })
-    .addCase(getChannelRelayers.rejected, (state) => {
-      state.channelRelayersLoading = false;
-      state.channelRelayersFailed = true;
-    })
-    /* -----------------
+      .addCase(getChannelRelayers.pending, (state) => {
+        state.channelRelayersLoading = true;
+        state.channelRelayersFailed = false;
+      })
+      .addCase(getChannelRelayers.fulfilled, (state, { payload }) => {
+        state.channelRelayersLoading = false;
+        state.channelRelayers = payload.data;
+        state.channelRelayersFailed = false;
+      })
+      .addCase(getChannelRelayers.rejected, (state) => {
+        state.channelRelayersLoading = false;
+        state.channelRelayersFailed = true;
+      })
+      /* -----------------
     GET_CHANNEL_STATUS
     -------------------*/
-    .addCase(getChannelStatus.pending, (state) => {
-      state.channelStatusLoading = true;
-      state.channelStatusFailed = false;
-    })
-    .addCase(getChannelStatus.fulfilled, (state, { payload }) => {
-      state.channelStatusLoading = false;
-      state.channelStatus = payload.data;
-      state.channelStatusFailed = false;
-    })
-    .addCase(getChannelStatus.rejected, (state) => {
-      state.channelStatusLoading = false;
-      state.channelStatusFailed = true;
-    })
-    /* -----------------
+      .addCase(getChannelStatus.pending, (state) => {
+        state.channelStatusLoading = true;
+        state.channelStatusFailed = false;
+      })
+      .addCase(getChannelStatus.fulfilled, (state, { payload }) => {
+        state.channelStatusLoading = false;
+        state.channelStatus = payload.data;
+        state.channelStatusFailed = false;
+      })
+      .addCase(getChannelStatus.rejected, (state) => {
+        state.channelStatusLoading = false;
+        state.channelStatusFailed = true;
+      })
+      /* -----------------
     GET_DENOMS_ALL
     -------------------*/
-    .addCase(getDenomsAll.pending, (state) => {
-      state.denomsAllLoading = true;
-      state.denomsAllFailed = false;
-    })
-    .addCase(getDenomsAll.fulfilled, (state, { payload }) => {
-      state.denomsAllLoading = false;
-      state.denomsAll = payload.data.results;
-      state.denomsPages = payload.data.pages;
-      state.denomsTotal = payload.data.total;
-      state.denomsAllFailed = false;
-    })
-    .addCase(getDenomsAll.rejected, (state) => {
-      state.denomsAllLoading = false;
-      state.denomsAllFailed = true;
-    })
-  }
-})
+      .addCase(getDenomsAll.pending, (state) => {
+        state.denomsAllLoading = true;
+        state.denomsAllFailed = false;
+      })
+      .addCase(getDenomsAll.fulfilled, (state, { payload }) => {
+        state.denomsAllLoading = false;
+        state.denomsAll = payload.data.results;
+        state.denomsPages = payload.data.pages;
+        state.denomsTotal = payload.data.total;
+        state.denomsAllFailed = false;
+      })
+      .addCase(getDenomsAll.rejected, (state) => {
+        state.denomsAllLoading = false;
+        state.denomsAllFailed = true;
+      });
+  },
+});
 
 /* -----------------
 SELECTORS

@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router';
 import styled, { useTheme } from 'styled-components';
-import { useGovernance } from 'redux/hooks';
-import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
-import { formatDenom, isEmpty } from 'utils';
+import { useGovernance } from '../../../redux/hooks';
+import { Content, Loading } from '../../../Components';
+import { formatDenom, isEmpty } from '../../../utils';
+import { GovernanceState } from '../../../redux/features/governance/governanceSlice';
 
 const StyledChart = styled.div`
   height: 200px;
@@ -200,7 +201,7 @@ export const ProposalVotingChart = () => {
   }
 
   const buildChartData = useCallback(
-    (data) => {
+    (data: GovernanceState['tally']) => {
       // Build data
       const yesVotes = getNumberInHash({
         amount: data.yes.amount.amount,
@@ -280,7 +281,7 @@ export const ProposalVotingChart = () => {
         params.forEach((param) => {
           returnString += `
             <div style="display:flex;padding:2px;">
-              <div 
+              <div
                 style="
                   height:10px;
                   width:10px;

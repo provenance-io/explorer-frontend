@@ -1,9 +1,9 @@
 import React from 'react';
-import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { maxLength } from 'utils';
+import { Section, Wrapper, Header } from '../../Components';
+import { useMediaQuery } from '../../redux/hooks';
+import { breakpoints } from '../../consts';
+import { maxLength } from '../../utils';
 import {
   ValidatorCommission,
   ValidatorDelegations,

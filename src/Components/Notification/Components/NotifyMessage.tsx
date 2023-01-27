@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
-import { useMediaQuery } from 'redux/hooks';
-import { capitalize } from 'utils';
-import { breakpoints } from 'consts';
+import { useMediaQuery } from '../../../redux/hooks';
+import { capitalize } from '../../../utils';
+import { breakpoints } from '../../../consts';
 
 const Message = styled.div`
   font-size: 1.4rem;
@@ -15,8 +15,7 @@ const Message = styled.div`
   padding-top: 5px;
 `;
 
-const List = styled.li`
-`;
+const List = styled.li``;
 
 const UList = styled.ul`
   margin-bottom: 0;
@@ -31,7 +30,7 @@ const Bold = styled.span`
 `;
 
 const Link = styled(BaseLink)`
-  color: ${({ theme }) => theme.FONT_PRIMARY}; 
+  color: ${({ theme }) => theme.FONT_PRIMARY};
   font-size: 1.4rem;
   &&& {
     :hover {
@@ -57,15 +56,12 @@ interface DataProps {
 export type NotifyMessageProps = {
   data: DataProps[];
   type: string;
-}
+};
 
-export const NotifyMessage = ({
-  data,
-  type,
-}: NotifyMessageProps) => {
+export const NotifyMessage = ({ data, type }: NotifyMessageProps) => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('sm'));
-  let link = "";
-  let message = "";
+  let link = '';
+  let message = '';
 
   switch (type) {
     case 'proposal':
@@ -81,41 +77,39 @@ export const NotifyMessage = ({
       break;
     default:
       link = '/announcement/';
-      message = `${data.length > 1 ? 'We have some new announcements! ' : 'We have an announcement! '}
-      Click on the below link${data.length > 1 ? 's' : ''} to see what's in store for the Provenance community.`;
+      message = `${
+        data.length > 1 ? 'We have some new announcements! ' : 'We have an announcement! '
+      }
+      Click on the below link${
+        data.length > 1 ? 's' : ''
+      } to see what's in store for the Provenance community.`;
       break;
-  };
+  }
 
-  const getMessage = (data: DataProps[], type: string) => (
-    data.map(item => {
+  const getMessage = (data: DataProps[], type: string) =>
+    data.map((item) => {
       const title = item.title;
       const id = item.id;
       const softwareUpgrade = item.isUpgrade ? 'SOFTWARE UPGRADE - ' : '';
       return (
         <List key={id}>
-          <Link 
-            to={type === 'upgrade' ? link : `${link}${id}`} 
-          >
-            {softwareUpgrade ?
-              <Bold>{`${softwareUpgrade} PROPOSAL ${id}: ${title}`}</Bold> :
-              isSmall ? title : `${capitalize(type)} ${id}: ${title}`
-            }
+          <Link to={type === 'upgrade' ? link : `${link}${id}`}>
+            {softwareUpgrade ? (
+              <Bold>{`${softwareUpgrade} PROPOSAL ${id}: ${title}`}</Bold>
+            ) : isSmall ? (
+              title
+            ) : (
+              `${capitalize(type)} ${id}: ${title}`
+            )}
           </Link>
         </List>
       );
-    })
-  );
+    });
 
   return (
     <>
-    {!isSmall &&
-      <Message>
-        {message}
-      </Message>
-    }
-    <UList>
-      {getMessage(data, type)}
-    </UList>
+      {!isSmall && <Message>{message}</Message>}
+      <UList>{getMessage(data, type)}</UList>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Sprite from 'Components/Sprite';
+import { Sprite } from '../';
 
 interface ButtonProps {
   className?: string;

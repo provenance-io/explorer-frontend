@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery /*retry*/ } from '@reduxjs/toolkit/query/react';
-import { RootState } from 'redux/app/store';
+import { RootState } from '../../redux/app/store';
 
 /*
 Created using:

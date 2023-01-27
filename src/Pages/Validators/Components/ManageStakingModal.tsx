@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Button, DropdownBtn, Forms, Loading, Modal, SelectFolders, Sprite } from 'Components';
-import { CurrentValidator, useAccounts, useStaking, useValidators } from 'redux/hooks';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from 'utils';
-import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from 'consts';
+import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import Big from 'big.js';
+import {
+  Button,
+  DropdownBtn,
+  Forms,
+  Loading,
+  Modal,
+  SelectFolders,
+  Sprite,
+} from '../../../Components';
+import { CurrentValidator, useAccounts, useStaking, useValidators } from '../../../redux/hooks';
+import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from '../../../utils';
+import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from '../../../consts';
 import {
   DelegateProps,
   RedelegateProps,
   UndelegateProps,
   WithdrawRewardsProps,
-} from 'redux/features/staking/stakingSlice';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import Big from 'big.js';
+} from '../../../redux/features/staking/stakingSlice';
 
 // Styled Components
 const SpotlightContainer = styled.div`

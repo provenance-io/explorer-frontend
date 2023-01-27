@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useValidators, useApp } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useValidators, useApp } from '../../../redux/hooks';
 
 const BlockValidators = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { Links, Path } from 'consts';
-// Direct import to prevent import order issues
-import SearchBar from '../../SearchBar';
-import Sprite from '../../Sprite';
-import UserAccount from '../../UserAccount';
-import AnnouncementMenu from '../../AnnouncementMenu';
+import { Links, Path } from '../../../consts';
+import { AnnouncementMenu, SearchBar, Sprite, UserAccount } from '../..';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -120,7 +116,7 @@ const NavMini = () => {
           {isSubMenu ? <DropSprite icon="CHEVRON" height="10px" spin={270} /> : null}
         </Link>
         <DropdownContainer show={linkName === showSubMenu} onClick={handleSubMenuClick}>
-          {Object.keys(subMenu).map(subName =>
+          {Object.keys(subMenu).map((subName) =>
             buildLink(subName, Links[linkName].subMenu[subName], true)
           )}
         </DropdownContainer>
@@ -128,7 +124,8 @@ const NavMini = () => {
     );
   };
 
-  const buildLinks = () => Object.keys(Links).map(linkName => buildLink(linkName, Links[linkName]));
+  const buildLinks = () =>
+    Object.keys(Links).map((linkName) => buildLink(linkName, Links[linkName]));
 
   const toggleMenu = () => {
     showMenu ? setShowMenu(false) : openDropdown('menu');
@@ -136,7 +133,7 @@ const NavMini = () => {
   const toggleSearch = () => {
     showSearch ? setShowSearch(false) : openDropdown('search');
   };
-  const openDropdown = type => {
+  const openDropdown = (type) => {
     if (type === 'menu') {
       setShowSearch(false);
       setShowMenu(true);

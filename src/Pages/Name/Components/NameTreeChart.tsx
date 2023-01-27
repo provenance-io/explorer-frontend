@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import * as echarts from 'echarts';
-import { Loading, Filters, Content } from 'Components';
-import { useName } from 'redux/hooks';
-import { isEmpty } from 'utils';
-import { Colors } from 'theme/Colors';
+import { Loading, Filters, Content } from '../../../Components';
+import { useName } from '../../../redux/hooks';
+import { isEmpty } from '../../../utils';
+import { Colors } from '../../../theme/Colors';
+import { NameTree } from '../../../redux/features/name/nameSlice';
 
 const StyledChart = styled.div`
   height: 800px;
@@ -183,13 +184,13 @@ export const NameTreeChart = () => {
   }, [getNameTree]);
 
   const buildChartData = useCallback(
-    (data) => {
+    (data: NameTree[]) => {
       chartData.series[0].data = data;
       chartData.series[0].leafDepth = level;
       chartData.tooltip.formatter = (info: any) => {
         const thisLabel = info.data.label && info.data.label.match(/^([^.]+)/);
         return `
-          <div style="border-bottom:1px solid black;text-align:center;font-weight:bold"> 
+          <div style="border-bottom:1px solid black;text-align:center;font-weight:bold">
             Name: ${thisLabel && thisLabel.length > 0 ? thisLabel[0] : 'Attribute Name Tree'}
           </div>
           <div> Total Children: ${info.data.children.length} </div>

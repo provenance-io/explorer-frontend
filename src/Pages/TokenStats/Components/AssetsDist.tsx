@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
-import { Table } from 'Components';
-import { useAssets } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useAssets } from '../../../redux/hooks';
 
 const AssetsDist = () => {
-  const {
-    assetsDist,
-    assetsDistLoading: tableLoading,
-    getAssetsDist: getTableData,
-  } = useAssets();
+  const { assetsDist, assetsDistLoading: tableLoading, getAssetsDist: getTableData } = useAssets();
 
   useEffect(() => {
     getTableData();
@@ -28,8 +24,10 @@ const AssetsDist = () => {
   return (
     <Table
       tableHeaders={tableHeaders}
-      tableData={tableData.sort((a: RangeProps, b: RangeProps) =>
-        Number(a.range.match(/(?:\d+\.)?\d+/g)![0] || 0) - Number(b.range.match(/(?:\d+\.)?\d+/g)![0])
+      tableData={tableData.sort(
+        (a: RangeProps, b: RangeProps) =>
+          Number(a.range.match(/(?:\d+\.)?\d+/g)![0] || 0) -
+          Number(b.range.match(/(?:\d+\.)?\d+/g)![0])
       )}
       isLoading={tableLoading}
       title="Asset Distribution"

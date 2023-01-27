@@ -1,24 +1,25 @@
-import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
-import { store } from 'redux/app/store';
-// eslint-disable-next-line
-import { Maintenance } from 'Pages';
+import { store } from './redux/app/store';
+// import { Maintenance } from './Pages';
 import App from './App';
 
 /* Note: during maintenance cycles, update the tests in package.json
          to only run the linter. Show Maintenance component here
          instead of the App component.
 */
-
-ReactDOM.render(
-  <Provider store={store()}>
-    <WalletConnectContextProvider>
-      <App />
-      {/* <Maintenance /> */}
-    </WalletConnectContextProvider>
-  </Provider>,
-  document.getElementById('root')
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(
+  <React.StrictMode>
+    <Provider store={store()}>
+      <WalletConnectContextProvider>
+        <App />
+        {/* <Maintenance /> */}
+      </WalletConnectContextProvider>
+    </Provider>
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

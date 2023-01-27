@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 
 const PageWrapper = styled.div<{ noHeader: boolean }>`
   padding: 131px 10%;

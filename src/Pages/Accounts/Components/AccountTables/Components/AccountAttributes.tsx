@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAccounts } from 'redux/hooks';
-import { Table } from 'Components';
+import { useAccounts } from '../../../../../redux/hooks';
+import { Table } from '../../../../../Components';
 
 export const AccountAttributes = () => {
   const { accountInfo, accountInfoLoading: tableLoading, getAccountInfo } = useAccounts();
