@@ -3,9 +3,11 @@
 ## Unreleased
 
 ### Bug Fixes
+- Fix signers link in Txs Information block #484
 
 ### Features
 - Update wcjs and wallet utils versions #481
+- Update icons to new logo #486
 
 ## 3.5.0
 
