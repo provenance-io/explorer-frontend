@@ -98,7 +98,7 @@ const TxInformation = () => {
       {
         title: signers.length === 1 ? 'Signer' : 'Signer(s)',
         value: signers.length === 1 && maxLength(signers[0].address, 12, '4'),
-        link: signers.length === 1 && `/accounts/${feepayer.address}`,
+        link: signers.length === 1 && `/accounts/${signers[0].address}`,
         copy: signers.length === 1 && signers[0].address,
         table:
           signers.length > 1
