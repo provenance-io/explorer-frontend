@@ -8,6 +8,7 @@
 ### Features
 - Update wcjs and wallet utils versions #481
 - Update icons to new logo #486
+- Update hash icon #488
 
 ## 3.5.0
 
