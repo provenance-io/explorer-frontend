@@ -488,6 +488,7 @@ export const formatTableData = (data = [], tableHeaders) => {
         case 'contractCount': // fallthrough
         case 'creationHeight': // fallthrough
         case 'hashBucket': // fallthrough
+        case 'metric': // fallthrough
         case 'label': // fallthrough
         case 'percentTotal': // fallthrough
         case 'amountHash': // fallthrough

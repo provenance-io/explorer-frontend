@@ -40,7 +40,6 @@ const TextInput = ({
   min = '',
   max = '',
 }: TextInputProps) => {
-
   if (list.length > 0) {
     return (
       <>
@@ -52,10 +51,12 @@ const TextInput = ({
           value={value}
         />
         <datalist id="mylist">
-          {list.map(item => <option key={item} value={item} />)}
+          {list.map((item) => (
+            <option key={item} value={item} />
+          ))}
         </datalist>
       </>
-    )
+    );
   }
   return (
     <Input
@@ -64,7 +65,7 @@ const TextInput = ({
       min={min}
       max={max}
       onChange={(e) => action(e.target.value)}
-      value={value}
+      // value={value}
     />
   );
 };
