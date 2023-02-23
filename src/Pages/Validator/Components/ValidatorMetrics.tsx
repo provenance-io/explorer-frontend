@@ -121,6 +121,14 @@ export const ValidatorMetrics = () => {
         .round(2)
         .toString()}%`,
     },
+    {
+      metric: 'Is Verified',
+      value: `${validatorMetrics?.isVerified}`,
+    },
+    {
+      metric: 'Is Active',
+      value: `${validatorMetrics?.isActive}`,
+    },
   ];
   return (
     <div>
