@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useValidators } from 'redux/hooks';
-import { BlockImage, Content, Loading, Summary as BaseSummary } from 'Components';
+import { BlockImage, Content, Loading, PopupDataProps, Summary as BaseSummary } from 'Components';
 import { capitalize, getFormattedDate, maxLength, numberFormat } from 'utils';
 import { breakpoints } from 'consts';
 import { ValidatorMetrics } from './ValidatorMetrics';
@@ -64,7 +64,7 @@ const Description = styled.div`
   margin-top: 10px;
 `;
 
-const Status = styled.div`
+const Status = styled.div<{ status: string }>`
   background: ${({ theme, status }) => theme[`CHIP_${status?.toUpperCase()}`]};
   color: ${({ theme }) => theme.FONT_WHITE};
   padding: 3px 10px;
@@ -76,14 +76,14 @@ const Status = styled.div`
 const ValidatorSpotlight = () => {
   const [showOperatorAddressPopup, setShowOperatorAddressPopup] = useState(false);
   const { getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } = useValidators();
-  const { validatorId } = useParams();
+  const { validatorId } = useParams<{ validatorId: string }>();
 
   useEffect(() => {
     getValidatorSpotlight(validatorId);
   }, [getValidatorSpotlight, validatorId]);
 
   const {
-    blockCount = {},
+    blockCount = { count: 0, total: 0 },
     bondHeight = '--',
     consensusPubKey,
     description,
@@ -105,7 +105,7 @@ const ValidatorSpotlight = () => {
   const votingPowerPercent = numberFormat((votingPowerCount / votingPowerTotal) * 100, 2);
   const { count: missedBlocksCount, total: missedBlocksTotal } = blockCount;
 
-  const operatorAddressPopupNote = {
+  const operatorAddressPopupNote: PopupDataProps = {
     visibility: { visible: showOperatorAddressPopup, setVisible: setShowOperatorAddressPopup },
     noteMinWidth: '300px',
     position: 'left',
@@ -115,7 +115,7 @@ const ValidatorSpotlight = () => {
     data: [
       {
         hideTitle: true,
-        title: '',
+        title: 'Explanation',
         value:
           'The address you used to create a validator, delegate, withdraw delegator reward, etc',
       },
@@ -125,19 +125,19 @@ const ValidatorSpotlight = () => {
   const summaryData = [
     {
       title: 'Operator Address',
-      value: maxLength(operatorAddress, 11, 3),
+      value: maxLength(operatorAddress, 11, '3'),
       copy: operatorAddress,
       popupNote: operatorAddressPopupNote,
     },
     {
       title: 'Owner Address',
-      value: maxLength(ownerAddress, 11, 3),
+      value: maxLength(ownerAddress, 11, '3'),
       copy: ownerAddress,
       link: `/accounts/${ownerAddress}`,
     },
     {
       title: 'Withdraw Address',
-      value: maxLength(withdrawalAddress, 11, 3),
+      value: maxLength(withdrawalAddress, 11, '3'),
       copy: withdrawalAddress,
       link: `/accounts/${withdrawalAddress}`,
     },
@@ -172,7 +172,7 @@ const ValidatorSpotlight = () => {
         ]),
     {
       title: 'Consensus Pubkey',
-      value: maxLength(consensusPubKey, 11, 3),
+      value: maxLength(consensusPubKey, 11, '3'),
       copy: consensusPubKey,
     },
   ];

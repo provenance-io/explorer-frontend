@@ -79,6 +79,7 @@ export interface ValidatorSpotlight {
   status: string;
   unbondingHeight: number;
   uptime: number;
+  url?: string;
   votingPower: {
     count: number;
     total: number;

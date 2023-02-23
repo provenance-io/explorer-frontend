@@ -1,4 +1,4 @@
-import React, { Fragment, MouseEventHandler } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
@@ -56,10 +56,16 @@ const ListElement = styled.div`
   display: flex;
 `;
 
+interface BuildPopupRowProps {
+  title: string;
+  value: string;
+  hideTitle?: boolean;
+}
+
 export interface PopupDataProps {
   visibility: {
     visible: boolean;
-    setVisible: (arg: boolean) => MouseEventHandler<HTMLDivElement>;
+    setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   };
   icon: {
     name: string;
@@ -67,9 +73,9 @@ export interface PopupDataProps {
   };
   method: string[];
   fontColor: string;
-  data: [];
-  position: 'above' | 'below' | 'left' | 'right';
-  titleMinWidth: string;
+  data: BuildPopupRowProps[];
+  position?: 'above' | 'below' | 'left' | 'right';
+  titleMinWidth?: string;
   noteMinWidth: string;
 }
 
@@ -87,12 +93,6 @@ const buildPopupNote = (popupData: PopupDataProps) => {
   const showOnHover = method.includes('hover');
   const showOnClick = method.includes('click');
   const { visible, setVisible } = visibility;
-
-  interface BuildPopupRowProps {
-    title: string;
-    value: string;
-    hideTitle?: boolean;
-  }
 
   const buildPopupRow = ({ title, value, hideTitle = false }: BuildPopupRowProps) => (
     <NoteRow key={title}>

@@ -40,43 +40,26 @@ export const ValidatorMetrics = () => {
     useGetValidatorMetricPeriodsQuery({
       address: validatorId,
     });
-  /** This tricky function reduces the array of available
-   * periods from it's existing format into an object. It
-   * formats the years into acceptable format for the dropdown
-   * the Filter component expects. It also adds an object
-   * that stores the valid quarters for each year. We then
-   * use the quarters array to build the dropdown for quarters
-   * in that filter */
-  const yearsDropdown = availableMetricPeriods?.reduce(
+  // Format periods into a dropdown object
+  const periods = availableMetricPeriods?.reduce(
     (
       acc: {
-        [key: number]: {
+        [key: string]: {
           title: string;
           isDefault: boolean;
-          validQuarters: {
-            [key: number]: {
-              title: string;
-              isDefault?: boolean;
-            };
-          };
+          year: number;
+          quarter: number;
         };
       },
-      cur
+      cur,
+      index
     ) => {
-      if (acc[cur.year]) {
-        acc[cur.year].validQuarters[cur.quarter] = {
-          title: String(cur.quarter),
-        };
-      } else {
-        acc[cur.year] = {
-          title: String(cur.year),
-          isDefault: currYear === cur.year,
-          validQuarters: {
-            // Just set default on the first one
-            [cur.quarter]: { title: String(cur.quarter), isDefault: true },
-          },
-        };
-      }
+      acc[cur.label] = {
+        title: cur.label,
+        isDefault: index === 0,
+        year: cur.year,
+        quarter: cur.quarter,
+      };
       return acc;
     },
     {}
@@ -84,18 +67,13 @@ export const ValidatorMetrics = () => {
   // Data to populate filters
   const filterData = [
     {
-      title: 'Year',
+      title: 'Period',
       type: 'dropdown',
-      options: yearsDropdown,
-      action: (newYear: number) => setDesiredYear(newYear),
-    },
-    {
-      title: 'Quarter',
-      type: 'dropdown',
-      options: (yearsDropdown && yearsDropdown[desiredYear].validQuarters) || {
-        1: { title: '1', isDefault: true },
+      options: periods,
+      action: (period: number) => {
+        setDesiredQuarter(periods ? (periods[period].quarter as 1 | 2 | 3 | 4) : 1);
+        setDesiredYear(periods ? periods[period].year : 2023);
       },
-      action: (newQuarter: 1 | 2 | 3 | 4) => setDesiredQuarter(newQuarter),
     },
   ];
   const applyFilters = () => {
