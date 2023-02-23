@@ -242,8 +242,6 @@ export const TxChart = ({
             value: txCount,
             name: new Date(date).toISOString(),
           });
-          // console.log(new Date(date).toISOString().slice(0, 10));
-          // console.log(parseISO(new Date(date).toISOString().slice(0, 10)));
           fees.push({
             value: feesPaidInUsd
               ? Number(feesPaidInUsd)

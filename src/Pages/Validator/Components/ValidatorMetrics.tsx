@@ -2,7 +2,7 @@ import Big from 'big.js';
 import { Filters, Loading, Table } from 'Components';
 import { useState } from 'react';
 import { useParams } from 'react-router';
-import { useGetValidatorMetricsQuery } from 'redux/services';
+import { useGetValidatorMetricsQuery, useGetValidatorMetricPeriodsQuery } from 'redux/services';
 import styled from 'styled-components';
 
 const ErrorMessage = styled.div`
@@ -35,23 +35,65 @@ export const ValidatorMetrics = () => {
     year,
     quarter,
   });
+  // Get initial periods for dropdown
+  const { data: availableMetricPeriods, isLoading: periodsLoading } =
+    useGetValidatorMetricPeriodsQuery({
+      address: validatorId,
+    });
+  /** This tricky function reduces the array of available
+   * periods from it's existing format into an object. It
+   * formats the years into acceptable format for the dropdown
+   * the Filter component expects. It also adds an object
+   * that stores the valid quarters for each year. We then
+   * use the quarters array to build the dropdown for quarters
+   * in that filter */
+  const yearsDropdown = availableMetricPeriods?.reduce(
+    (
+      acc: {
+        [key: number]: {
+          title: string;
+          isDefault: boolean;
+          validQuarters: {
+            [key: number]: {
+              title: string;
+              isDefault?: boolean;
+            };
+          };
+        };
+      },
+      cur
+    ) => {
+      if (acc[cur.year]) {
+        acc[cur.year].validQuarters[cur.quarter] = {
+          title: String(cur.quarter),
+        };
+      } else {
+        acc[cur.year] = {
+          title: String(cur.year),
+          isDefault: currYear === cur.year,
+          validQuarters: {
+            // Just set default on the first one
+            [cur.quarter]: { title: String(cur.quarter), isDefault: true },
+          },
+        };
+      }
+      return acc;
+    },
+    {}
+  );
   // Data to populate filters
   const filterData = [
     {
       title: 'Year',
-      type: 'number',
-      min: 2020,
-      max: currYear,
+      type: 'dropdown',
+      options: yearsDropdown,
       action: (newYear: number) => setDesiredYear(newYear),
     },
     {
       title: 'Quarter',
       type: 'dropdown',
-      options: {
-        1: { title: '1', isDefault: getQuarter() === 1 },
-        2: { title: '2', isDefault: getQuarter() === 2 },
-        3: { title: '3', isDefault: getQuarter() === 3 },
-        4: { title: '4', isDefault: getQuarter() === 4 },
+      options: (yearsDropdown && yearsDropdown[desiredYear].validQuarters) || {
+        1: { title: '1', isDefault: true },
       },
       action: (newQuarter: 1 | 2 | 3 | 4) => setDesiredQuarter(newQuarter),
     },
@@ -85,14 +127,16 @@ export const ValidatorMetrics = () => {
       {isError && (
         <ErrorMessage>{`Data does not exist for quarter ${quarter}, ${year}`}</ErrorMessage>
       )}
-      <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />
-      {validatorMetrics ? (
-        <Table
-          tableHeaders={tableHeaders}
-          tableData={tableData}
-          isLoading={metricsLoading}
-          title="Validator Metrics"
-        />
+      {validatorMetrics && !metricsLoading && !periodsLoading ? (
+        <>
+          <Filters filterData={filterData} mustApply={{ title: 'Apply', action: applyFilters }} />
+          <Table
+            tableHeaders={tableHeaders}
+            tableData={tableData}
+            isLoading={metricsLoading}
+            title="Validator Metrics"
+          />
+        </>
       ) : (
         <Loading />
       )}

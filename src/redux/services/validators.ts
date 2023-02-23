@@ -18,6 +18,12 @@ export interface ValidatorMetricsProps {
   };
 }
 
+export type ValidatorMetricPeriodsProps = {
+  label: string;
+  year: number;
+  quarter: number;
+}[];
+
 export const validatorsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getValidatorMetrics: builder.query<
@@ -31,9 +37,17 @@ export const validatorsApi = api.injectEndpoints({
       query: ({ address, year, quarter }) =>
         `${VALIDATORS_V3_URL}/${address}/metrics?year=${year}&quarter=${quarter}`,
     }),
+    getValidatorMetricPeriods: builder.query<
+      ValidatorMetricPeriodsProps,
+      {
+        address: string;
+      }
+    >({
+      query: ({ address }) => `${VALIDATORS_V3_URL}/${address}/metrics/periods`,
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetValidatorMetricsQuery } = validatorsApi;
+export const { useGetValidatorMetricsQuery, useGetValidatorMetricPeriodsQuery } = validatorsApi;

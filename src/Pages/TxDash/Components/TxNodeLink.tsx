@@ -60,7 +60,7 @@ const chartData = {
       emphasis: {
         label: {
           show: false,
-        }
+        },
       },
       lineStyle: {
         color: 'source',
@@ -125,7 +125,6 @@ const getNodesAndLinks = async ({
     for (const addr of otherAddresses) {
       addressCounts[addr] = addressCounts[addr] ? addressCounts[addr] + 1 : 1;
     }
-    // console.log(`Address Counts for ${address}: `, addressCounts);
     // Create a holder for the IDs of each node to pass as the target on second loop
     const targetIds: string[] = [];
     // Now loop through this object's keys to update the node and link
@@ -170,7 +169,6 @@ const getNodesAndLinks = async ({
         nodeArray.concat(newNodes.nodeArray);
         linkArray.concat(newNodes.linkArray);
         lastIndex = nodeArray.length;
-        // console.log(newNodes);
       }
     }
   } catch (e) {
