@@ -5,3 +5,4 @@ export { default as ValidatorGovernance } from './ValidatorGovernance';
 export { default as ValidatorSpotlight } from './ValidatorSpotlight';
 export { default as ValidatorUnbondingDelegations } from './ValidatorUnbondingDelegations';
 export { default as ValidationTxs } from './ValidationTxs';
+export * from './ValidatorMetrics';

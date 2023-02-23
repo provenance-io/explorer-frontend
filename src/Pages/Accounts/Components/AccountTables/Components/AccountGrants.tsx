@@ -74,10 +74,8 @@ const AllGrants = ({ grant, type, currentPage, changePage }: GrantsProps) => {
         <Summary
           data={Object.keys(item.allowance).map((key) => ({
             title: key,
-            value: item.allowance[key as keyof typeof item.allowance],
-            list: Array.isArray(item.allowance[key as keyof typeof item.allowance])
-              ? item.allowance[key as keyof typeof item.allowance]
-              : undefined,
+            value: JSON.stringify(item.allowance[key as keyof typeof item.allowance]),
+            isJson: true,
           }))}
         />
       )}
