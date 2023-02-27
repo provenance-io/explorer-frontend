@@ -88,7 +88,7 @@ export const ValidatorMetrics = () => {
 
   const tableData = [
     {
-      metric: 'Voting',
+      metric: 'Proposal Voting',
       value: `${validatorMetrics?.votingMetric.count}/${validatorMetrics?.votingMetric.total}`,
     },
     {
@@ -100,12 +100,8 @@ export const ValidatorMetrics = () => {
         .toString()}%`,
     },
     {
-      metric: 'Is Verified',
-      value: `${validatorMetrics?.isVerified}`,
-    },
-    {
-      metric: 'Is Active',
-      value: `${validatorMetrics?.isActive}`,
+      metric: 'KYC Completed',
+      value: `${validatorMetrics?.isVerified ? 'Yes' : 'No'}`,
     },
   ];
   return (
