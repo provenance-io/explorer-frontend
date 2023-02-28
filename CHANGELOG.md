@@ -4,11 +4,15 @@
 
 ### Bug Fixes
 - Fix signers link in Txs Information block #484
+- Fix feegranter display #492
+- Fix wasm params #495
 
 ### Features
 - Update wcjs and wallet utils versions #481
 - Update icons to new logo #486
-- Update hash icon #488
+- Update hash icon #487
+- Replace hash icons #489
+- Update validator metrics #494
 
 ## 3.5.0
 

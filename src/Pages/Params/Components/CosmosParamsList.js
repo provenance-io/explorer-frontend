@@ -11,7 +11,7 @@ const getTable = (data, type, tableData = [], tableLoading) => {
     { displayName: 'Value', dataName: 'value' },
   ];
   if (tableData.length === 0) {
-    tableData = Object.keys(data[type]).map(item => {
+    tableData = Object.keys(data[type]).map((item) => {
       const tempObj = {};
       tempObj.value = data[type][item].toString();
       tempObj.param_name = item;
@@ -41,21 +41,27 @@ const CosmosParamsList = () => {
 
   // Function to get special case data for cosmos
   // assuming we are already at gov/ibc level
-  const getTableData = data => {
+  const getTableData = (data) => {
     const tableData = [];
-    data.forEach(item => {
-      Object.keys(item).forEach(subItem => {
+    data.forEach((item) => {
+      Object.keys(item).forEach((subItem) => {
         const tempObj = {};
-        if (subItem !== 'min_deposit' && subItem !== 'allowed_clients') {
-          tempObj.value = item[subItem].toString();
-        } else {
-          if (subItem === 'min_deposit') {
+        switch (subItem) {
+          case 'min_deposit': {
             const amount = item[subItem][0].amount;
             const denom = item[subItem][0].denom;
             tempObj.value = formatDenom(amount, denom, { decimal: 2 });
-          } else if (subItem === 'allowed_clients') {
-            tempObj.value = item[subItem].join(', ');
+            break;
           }
+          case 'allowed_clients':
+            tempObj.value = item[subItem].join(', ');
+            break;
+          case 'code_upload_access':
+            tempObj.value = item[subItem].permission;
+            break;
+          default:
+            tempObj.value = item[subItem].toString();
+            break;
         }
         tempObj.param_name = subItem;
         tableData.push(tempObj);
@@ -65,13 +71,13 @@ const CosmosParamsList = () => {
   };
 
   // Generate tables from cosmosTableData
-  const getCosmosTables = data => {
-    const table = Object.keys(data).map(item => {
+  const getCosmosTables = (data) => {
+    const table = Object.keys(data).map((item) => {
       // special cases
-      if (item !== 'gov' && item !== 'ibc') {
+      if (item !== 'gov' && item !== 'ibc' && item !== 'wasm') {
         return getTable(data, item, [], tableLoading);
       } else {
-        const subData = Object.keys(data[item]).map(subItem => data[item][subItem]);
+        const subData = Object.keys(data[item]).map((subItem) => data[item][subItem]);
         return getTable(data, item, getTableData(subData), tableLoading);
       }
     });
