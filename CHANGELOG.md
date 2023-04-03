@@ -13,6 +13,7 @@
 - Update hash icon #487
 - Replace hash icons #489
 - Update validator metrics #494
+- Add assetMetadata to local storage #501
 
 ## 3.5.0
 
