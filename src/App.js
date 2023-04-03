@@ -99,7 +99,7 @@ const App = () => {
             <Route path="/network/upgrades" component={Upgrades} />
             <Route path="/network/params" component={Params} />
             <Route path="/tx/:txHash" component={Tx} />
-            <Route path='/txdash' component={TxDash} />
+            <Route path="/txdash" component={TxDash} />
             <Route path="/txs" component={Txs} />
             <Route path="/validator/:validatorId" component={Validator} />
             <Route path="/validators" component={Validators} />

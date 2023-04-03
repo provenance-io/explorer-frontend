@@ -59,7 +59,7 @@ const Link = styled(BaseLink)`
 const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
   const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const { connected, address } = walletConnectState;
+  const { status, address } = walletConnectState;
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
@@ -69,8 +69,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   useOnEscape(deactivateShowPopup);
 
   useEffect(() => {
-    setIsLoggedIn(connected);
-  }, [connected, setIsLoggedIn]);
+    setIsLoggedIn(status === 'connected');
+  }, [status, setIsLoggedIn]);
 
   const handleLogout = () => {
     setWalletUrl('');
@@ -119,13 +119,14 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
         title="Scan the QRCode with your mobile Provenance Blockchain Wallet."
         className="QR-Code-Modal"
         devWallets={[
-          'figure_web',
-          'figure_web_test',
           'figure_mobile_test',
+          'figure_hosted_test',
+          // @ts-ignore
           'provenance_extension',
+          // @ts-ignore
           'provenance_mobile',
         ]}
-        hideWallets={isProd ? ['figure_web_test', 'figure_mobile_test'] : ['figure_web']}
+        hideWallets={isProd ? ['figure_hosted_test'] : ['figure_hosted']}
       />
     </Container>
   );

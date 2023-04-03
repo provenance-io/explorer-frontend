@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
-import { BroadcastResults } from '@provenanceio/walletconnect-js/lib/types';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useApp } from 'redux/hooks';
@@ -28,25 +27,21 @@ export const useProposal = () => {
 
   // Event listeners for wallet messages
   useEffect(() => {
-    // Success message for transaction messages
-    const submitSuccess = (result: BroadcastResults) => {
+    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, (result) => {
       setShouldPull(true);
       setSubmitted(true);
-    };
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
+    });
 
     // Fail message for transaction messages
-    const submitFailure = (result: BroadcastResults) => {
+    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, (result) => {
       setSubmitted(false);
       deactivateModalOpen();
-    };
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
+    });
 
     // Remove event listeners when no longer needed
     return () => {
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
-      wcs.removeAllListeners();
+      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, () => {});
+      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, () => {});
     };
   }, [wcs, deactivateModalOpen]);
 

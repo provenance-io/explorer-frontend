@@ -1,19 +1,14 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
-import { RootState } from "redux/app/store";
-import { 
-  ASSET_DETAIL_URL, 
-  ASSETS_LIST_URL, 
-  TX_INFO_URL, 
-  ASSETS_DIST_URL
-} from "consts";
+import { RootState } from 'redux/app/store';
+import { ASSET_DETAIL_URL, ASSETS_LIST_URL, TX_INFO_URL, ASSETS_DIST_URL } from 'consts';
 import { formatDenom, setCookie } from 'utils';
-import { ajax } from "../api";
+import { ajax } from '../api';
 
 interface AssetInfo {
   attributes?: {
-      attribute: string;
-      data: string;
+    attribute: string;
+    data: string;
   }[];
   holderCount?: number;
   holdingAccount?: string;
@@ -51,7 +46,7 @@ interface AssetInfo {
     nonFungibleCount: number;
   };
   txnCount?: number;
-};
+}
 
 export interface TransactionsModule {
   pages: number;
@@ -73,12 +68,12 @@ export interface TransactionsModule {
     signers: {
       signers: string[];
       threshold: number | null;
-    },
+    };
     status?: string;
     feepayer?: {
       type: string;
       address: string;
-    }
+    };
   }[];
   total: number;
   rollupTotals?: {
@@ -87,7 +82,7 @@ export interface TransactionsModule {
       denom: string;
     };
   };
-};
+}
 
 interface AssetHolders {
   pages: number;
@@ -106,7 +101,7 @@ interface AssetHolders {
     };
   };
   total: number;
-};
+}
 
 interface AllAssets {
   pages: number;
@@ -137,7 +132,7 @@ interface AllAssets {
     };
   };
   total: number;
-};
+}
 
 interface AssetMetadata {
   description: string;
@@ -149,7 +144,7 @@ interface AssetMetadata {
   display: string;
   name: string;
   symbol: string;
-};
+}
 
 interface AssetDist {
   amount: {
@@ -160,7 +155,7 @@ interface AssetDist {
   percentTotal?: string;
   percent: string;
   range: string;
-};
+}
 
 interface AssetState {
   // Asset Information
@@ -169,19 +164,19 @@ interface AssetState {
   totalBalancePrice: string;
   assetInfoLoading: boolean;
   // Asset Transactions (Admin)
-  assetAdminTransactions: TransactionsModule["results"];
+  assetAdminTransactions: TransactionsModule['results'];
   assetAdminTransactionsLoading: boolean;
-  assetAdminTransactionsPages: TransactionsModule["pages"];
+  assetAdminTransactionsPages: TransactionsModule['pages'];
   // Asset Transactions (Transfer)
-  assetTransferTransactions: TransactionsModule["results"];
+  assetTransferTransactions: TransactionsModule['results'];
   assetTransferTransactionsLoading: boolean;
-  assetTransferTransactionsPages: TransactionsModule["pages"];
+  assetTransferTransactionsPages: TransactionsModule['pages'];
   // Asset Holders
-  assetHolders: AssetHolders["results"];
+  assetHolders: AssetHolders['results'];
   assetHoldersLoading: boolean;
-  assetHoldersPages: AssetHolders["pages"];
+  assetHoldersPages: AssetHolders['pages'];
   // Assets List
-  assets: AllAssets["results"][];
+  assets: AllAssets['results'][];
   assetsPages: number;
   assetsLoading: boolean;
   // Asset Metadata
@@ -191,13 +186,13 @@ interface AssetState {
   // Assets distribution
   assetsDist: AssetDist[];
   assetsDistLoading: boolean;
-};
+}
 
 export const initialState: AssetState = {
   // Asset Information
   assetInfo: {},
-  pricePerToken: "",
-  totalBalancePrice: "",
+  pricePerToken: '',
+  totalBalancePrice: '',
   assetInfoLoading: false,
   // Asset Transactions (Admin)
   assetAdminTransactions: [],
@@ -238,23 +233,15 @@ export const GET_ASSETS_DIST = 'GET_ASSETS_DIST';
 /* -----------------
 ** ACTIONS
 -------------------*/
-export const getAssetInfo = createAsyncThunk(
-  GET_ASSET_INFO,
-  (id: string) =>
-    ajax({
-      url: `${ASSET_DETAIL_URL}/detail/${id}`,
-    })
+export const getAssetInfo = createAsyncThunk(GET_ASSET_INFO, (id: string) =>
+  ajax({
+    url: `${ASSET_DETAIL_URL}/detail/${id}`,
+  })
 );
 
 export const getAssetsList = createAsyncThunk(
   GET_ASSETS_LIST,
-  ({
-    page = 1,
-    count = 10,
-  }: {
-    page?: number,
-    count?: number,
-  }) => 
+  ({ page = 1, count = 10 }: { page?: number; count?: number }) =>
     ajax({
       url: `${ASSETS_LIST_URL}?${qs.stringify({ page, count })}`,
     })
@@ -262,15 +249,7 @@ export const getAssetsList = createAsyncThunk(
 
 export const getAssetHolders = createAsyncThunk(
   GET_ASSET_HOLDERS,
-  ({
-    assetId,
-    page = 1,
-    count = 10,
-  }: {
-    assetId: string,
-    page?: number,
-    count?: number,
-  }) => 
+  ({ assetId, page = 1, count = 10 }: { assetId: string; page?: number; count?: number }) =>
     ajax({
       url: `${ASSET_DETAIL_URL}/holders?${qs.stringify({ id: assetId, page, count })}`,
     })
@@ -278,15 +257,7 @@ export const getAssetHolders = createAsyncThunk(
 
 export const getAssetAdminTransactions = createAsyncThunk(
   GET_ASSET_ADMIN_TRANSACTIONS,
-  ({
-    denom,
-    page = 1,
-    count = 10,
-  }: {
-    denom: string,
-    page?: number,
-    count?: number,
-  }) => 
+  ({ denom, page = 1, count = 10 }: { denom: string; page?: number; count?: number }) =>
     ajax({
       url: `${TX_INFO_URL}/module/ASSET?${qs.stringify({ denom, page, count })}`,
     })
@@ -294,34 +265,22 @@ export const getAssetAdminTransactions = createAsyncThunk(
 
 export const getAssetTransferTransactions = createAsyncThunk(
   GET_ASSET_TRANSFER_TRANSACTIONS,
-  ({
-    denom,
-    page = 1,
-    count = 10,
-  }: {
-    denom: string,
-    page?: number,
-    count?: number,
-  }) => 
+  ({ denom, page = 1, count = 10 }: { denom: string; page?: number; count?: number }) =>
     ajax({
       url: `${TX_INFO_URL}/module/TRANSFER?${qs.stringify({ denom, page, count })}`,
     })
 );
 
-export const getAssetMetadata = createAsyncThunk(
-  GET_ASSET_METADATA,
-  () =>
-    ajax({
-      url: `${ASSET_DETAIL_URL}/metadata`,
-    })
+export const getAssetMetadata = createAsyncThunk(GET_ASSET_METADATA, () =>
+  ajax({
+    url: `${ASSET_DETAIL_URL}/metadata`,
+  })
 );
 
-export const getAssetsDist = createAsyncThunk(
-  GET_ASSETS_DIST,
-  () =>
-    ajax({
-      url: `${ASSETS_DIST_URL}`,
-    })
+export const getAssetsDist = createAsyncThunk(GET_ASSETS_DIST, () =>
+  ajax({
+    url: `${ASSETS_DIST_URL}`,
+  })
 );
 
 export const assetActions = {
@@ -393,7 +352,7 @@ export const assetSlice = createSlice({
       })
       .addCase(getAssetsList.fulfilled, (state, { payload }) => {
         state.assetsLoading = false;
-        state.assets = payload.data.results.map((result: AllAssets["results"]) => ({
+        state.assets = payload.data.results.map((result: AllAssets['results']) => ({
           ...result,
           lastTxTimestamp: result.lastTxTimestamp === 'null' ? null : result.lastTxTimestamp,
           pricePerToken: result.supply?.pricePerToken
@@ -403,7 +362,7 @@ export const assetSlice = createSlice({
                 {
                   decimal: 2,
                   minimumFractionDigits: 2,
-                },
+                }
               )}`
             : '-- --',
           totalBalancePrice: result.supply?.totalBalancePrice
@@ -430,18 +389,18 @@ export const assetSlice = createSlice({
         state.assetInfo = payload.data;
         state.pricePerToken = payload.data.supply.pricePerToken
           ? formatDenom(
-            payload.data.supply.pricePerToken.amount,
-            payload.data.supply.pricePerToken.denom,
-            { decimal: 2, minimumFractionDigits: 2 }
-          )
+              payload.data.supply.pricePerToken.amount,
+              payload.data.supply.pricePerToken.denom,
+              { decimal: 2, minimumFractionDigits: 2 }
+            )
           : '-- --';
         state.totalBalancePrice = payload.data.supply.totalBalancePrice
-        ? formatDenom(
-            payload.data.supply.totalBalancePrice.amount,
-            payload.data.supply.totalBalancePrice.denom,
-            { decimal: 2, minimumFractionDigits: 2 }
-          )
-        : '-- --';
+          ? formatDenom(
+              payload.data.supply.totalBalancePrice.amount,
+              payload.data.supply.totalBalancePrice.denom,
+              { decimal: 2, minimumFractionDigits: 2 }
+            )
+          : '-- --';
       })
       .addCase(getAssetInfo.rejected, (state) => {
         state.assetInfoLoading = false;
@@ -456,6 +415,7 @@ export const assetSlice = createSlice({
       .addCase(getAssetMetadata.fulfilled, (state, { payload }) => {
         // Used by currencyFormat
         setCookie('assetMetadata', JSON.stringify(payload.data), 5);
+        window.localStorage.setItem('assetMetadata', JSON.stringify(payload.data));
         state.assetMetadataLoading = false;
         state.assetMetadata = payload.data;
       })
