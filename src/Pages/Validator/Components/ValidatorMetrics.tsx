@@ -99,10 +99,10 @@ export const ValidatorMetrics = () => {
         .round(2)
         .toString()}%`,
     },
-    {
-      metric: 'KYC Completed',
-      value: `${validatorMetrics?.isVerified ? 'Yes' : 'No'}`,
-    },
+    // {
+    //   metric: 'KYC Completed',
+    //   value: `${validatorMetrics?.isVerified ? 'Yes' : 'No'}`,
+    // },
   ];
   return (
     <div>
