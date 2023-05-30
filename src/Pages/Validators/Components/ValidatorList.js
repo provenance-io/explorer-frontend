@@ -20,6 +20,8 @@ const ValidatorList = () => {
   const [tableFilterStatus, setTableFilterStatus] = useState('active');
   const [myValTableFilterStatus, setMyValTableFilterStatus] = useState(STAKING_TYPES.DELEGATE);
   const [myValTableData, setMyValTableData] = useState([]);
+  const [validatorPower, setValidatorPower] = useState(0);
+
   const {
     allValidators,
     allValidatorsLoading,
@@ -28,8 +30,11 @@ const ValidatorList = () => {
     validatorsRecentLoading: tableLoading,
     getAllValidators,
     getValidatorsRecent: getTableData,
+    validatorsTotal = 1,
   } = useValidators();
+
   const { isDelegate, ManageStakingBtn, modalFns, validator } = useStaking();
+
   const {
     accountDelegations,
     accountDelegationsLoading,
@@ -41,6 +46,7 @@ const ValidatorList = () => {
     accountUnbonding,
     accountUnbondingLoading,
   } = useAccounts();
+
   const { tableCount, isLoggedIn } = useApp();
 
   const currentVals = useMemo(() => {
@@ -56,9 +62,10 @@ const ValidatorList = () => {
     }
   }, [myValTableFilterStatus, accountDelegations, accountRedelegations, accountUnbonding]);
 
+  const isActive = tableFilterStatus === 'active';
   const isJailed = tableFilterStatus === 'jailed';
   const isDelegateFilter = myValTableFilterStatus === STAKING_TYPES.DELEGATE;
-  const isCandidate = tableFilterStatus === 'candidate';
+  // const isCandidate = tableFilterStatus === 'candidate';
 
   useEffect(() => {
     // pulling first 100 validators with status=all
@@ -96,6 +103,17 @@ const ValidatorList = () => {
     setMyValTableCurrentPage(1);
   }, [accountRewards, allValidators, currentVals, isDelegateFilter, setMyValTableData]);
 
+  useEffect(() => {
+    const percentFormatter = new Intl.NumberFormat('en-US', {
+      style: 'percent',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    const num = (1 / validatorsTotal) * 5.5;
+    const formattedNum = percentFormatter.format(num);
+    setValidatorPower(formattedNum);
+  }, [validatorsTotal]);
+
   const myValTableHeaders = [
     isDelegateFilter && { displayName: 'Staking', dataName: 'manageStaking' },
     { displayName: 'Moniker', dataName: 'moniker' },
@@ -114,8 +132,8 @@ const ValidatorList = () => {
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Bonded Tokens', dataName: 'bondedTokens' },
-    !isJailed && !isCandidate && { displayName: 'Voting Power', dataName: 'votingPower' },
-    !isJailed && !isCandidate && { displayName: '24Hr Power Change', dataName: 'hr24Change' },
+    !isActive && { displayName: 'Voting Power*', dataName: 'votingPower' },
+    !isActive && { displayName: '24Hr Power Change', dataName: 'hr24Change' },
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
   ] // Remove the nulls
@@ -164,7 +182,6 @@ const ValidatorList = () => {
             />
           </Fragment>
         )}
-
       <Filters filterData={filterData} />
       <Table
         tableHeaders={tableHeaders}
@@ -183,6 +200,7 @@ const ValidatorList = () => {
         onClose={modalFns.deactivateModalOpen}
         validator={validator || {}}
       />
+      {isActive && <p>*Maximum voting power is currently {validatorPower}</p>}
     </ValidatorListContainer>
   );
 };
