@@ -132,8 +132,8 @@ const ValidatorList = () => {
     { displayName: 'Address', dataName: 'addressId' },
     { displayName: 'Commission', dataName: 'commission' },
     { displayName: 'Bonded Tokens', dataName: 'bondedTokens' },
-    !isActive && { displayName: 'Voting Power*', dataName: 'votingPower' },
-    !isActive && { displayName: '24Hr Power Change', dataName: 'hr24Change' },
+    isActive && { displayName: 'Voting Power*', dataName: 'votingPower' },
+    isActive && { displayName: '24Hr Power Change', dataName: 'hr24Change' },
     !isJailed && { displayName: 'Delegators', dataName: 'delegators' },
     isJailed && { displayName: 'Unbonding Height', dataName: 'unbondingHeight' },
   ] // Remove the nulls
