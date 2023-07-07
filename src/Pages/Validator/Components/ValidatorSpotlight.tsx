@@ -5,7 +5,7 @@ import { useValidators } from 'redux/hooks';
 import { BlockImage, Content, Loading, PopupDataProps, Summary as BaseSummary } from 'Components';
 import { capitalize, getFormattedDate, maxLength, numberFormat } from 'utils';
 import { breakpoints } from 'consts';
-import { ValidatorMetrics } from './ValidatorMetrics';
+// import { ValidatorMetrics } from './ValidatorMetrics';
 
 const Summary = styled(BaseSummary)`
   border: 10px solid white;
@@ -44,7 +44,8 @@ const Grid = styled.div`
 const SpotlightContainer = styled.div`
   grid-column: auto;
   @media ${breakpoints.up('sm')} {
-    grid-column: span 2;
+    /* For remove validator metrics */
+    /* grid-column: span 2; */
   }
   @media ${breakpoints.up('lg')} {
     grid-column: auto;
@@ -213,7 +214,7 @@ const ValidatorSpotlight = () => {
               <Status status={status}>{capitalize(status)}</Status>
               <Summary data={summaryData} />
             </div>
-            <ValidatorMetrics />
+            {/* <ValidatorMetrics /> */}
           </Grid>
         </>
       )}
