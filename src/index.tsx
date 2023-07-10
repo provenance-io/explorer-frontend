@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
 import { store } from 'redux/app/store';
 import ReactGA from 'react-ga4';
+import TagManager from 'react-gtm-module';
 // eslint-disable-next-line
 import { Maintenance } from 'Pages';
 import { isProd } from 'consts';
@@ -13,8 +14,10 @@ import App from './App';
          instead of the App component.
 */
 
-const trackingId = isProd && process.env.REACT_APP_PROD_GTM_ID;
+const trackingId = isProd && process.env.REACT_APP_PROD_GA4_ID;
+const gtmId = isProd && process.env.REACT_APP_PROD_GTM_ID;
 if (trackingId) ReactGA.initialize(trackingId);
+if (gtmId) TagManager.initialize({ gtmId });
 
 ReactDOM.render(
   <Provider store={store()}>
