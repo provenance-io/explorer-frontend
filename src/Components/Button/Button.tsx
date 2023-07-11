@@ -9,6 +9,7 @@ interface ButtonProps {
   iconSize?: string;
   iconColor?: string;
   iconOptions?: object; // see Components/Sprite for available options
+  id?: string;
   onClick?: (arg?: any) => void;
   children: React.ReactNode;
   disabled?: boolean;
@@ -58,12 +59,14 @@ const Button = ({
   iconSize = '2.2rem',
   iconColor = 'ICON_WHITE',
   iconOptions,
+  id,
   onClick = (arg?: any) => {},
   children,
   disabled = false,
   type,
 }: ButtonProps) => (
   <StyledButton
+    id={id}
     className={className}
     onClick={onClick}
     color={color.toUpperCase()}
