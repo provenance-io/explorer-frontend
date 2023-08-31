@@ -11,8 +11,8 @@
   "private": false,
   "sideEffects": false,
   "dependencies": {
-    "@provenanceio/wallet-utils": "2.6.0",
-    "@provenanceio/walletconnect-js": "2.1.1-develop.2",
+    "@provenanceio/wallet-utils": "2.9.0",
+    "@provenanceio/walletconnect-js": "3.6.0",
     "@reduxjs/toolkit": "1.8.1",
     "bech32": "2.0.0",
     "big.js": "6.1.1",

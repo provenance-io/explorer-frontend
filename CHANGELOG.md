@@ -13,6 +13,7 @@
 - Update hash icon #487
 - Replace hash icons #489
 - Update validator metrics #494
+- Update to wcjs 3.0.0 #499
 - Add assetMetadata to local storage #501
 
 ## 3.5.0
