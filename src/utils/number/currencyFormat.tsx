@@ -4,6 +4,7 @@ import { getCookie } from 'utils';
 export const currencyFormat = (value = 0, initialDenom: string, toBase = false) => {
   // Get the metadata from the cookie set by assetReducer
   let assetMetadata = JSON.parse(getCookie('assetMetadata', true) || '[]');
+
   if (assetMetadata.length === 0) {
     assetMetadata = window.localStorage.getItem('assetMetadata');
     if (assetMetadata) assetMetadata = JSON.parse(assetMetadata);

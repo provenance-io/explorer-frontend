@@ -1,8 +1,4 @@
 # CODEOWNERS: https://help.github.com/articles/about-codeowners/
 
-# Secondary repo maintainers, substitutes of the primary
-# maintainers when they become MIA
-*       @channa-figure
-
 # Primary repo maintainers
-*       @VigM-Figure @webbushka @minxylynx @jarrydallison
+*       @webbushka @jarrydallison @provenance-io/blockchain-core

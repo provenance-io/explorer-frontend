@@ -87,10 +87,11 @@ export const ValidatorMetrics = () => {
   ];
 
   const tableData = [
-    {
-      metric: 'Proposal Voting',
-      value: `${validatorMetrics?.votingMetric.count}/${validatorMetrics?.votingMetric.total}`,
-    },
+    // TODO: Uncomment when metrics are updated
+    // {
+    //   metric: 'Proposal Voting',
+    //   value: `${validatorMetrics?.votingMetric.count}/${validatorMetrics?.votingMetric.total}`,
+    // },
     {
       metric: 'Uptime',
       value: `${new Big(validatorMetrics?.uptimeMetrics.count || 0)

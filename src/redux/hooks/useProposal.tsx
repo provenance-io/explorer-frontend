@@ -65,7 +65,9 @@ export const useProposal = () => {
 
   const ManageProposalBtn = () =>
     !isLoggedIn ? null : (
-      <Button onClick={() => handleManageProposalClick()}>Submit New Proposal</Button>
+      <Button id="gov-create" onClick={() => handleManageProposalClick()}>
+        Submit New Proposal
+      </Button>
     );
 
   return {

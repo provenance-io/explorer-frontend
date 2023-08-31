@@ -414,6 +414,7 @@ export const assetSlice = createSlice({
       })
       .addCase(getAssetMetadata.fulfilled, (state, { payload }) => {
         // Used by currencyFormat
+        window.localStorage.setItem('assetMetadata', JSON.stringify(payload.data));
         setCookie('assetMetadata', JSON.stringify(payload.data), 5);
         window.localStorage.setItem('assetMetadata', JSON.stringify(payload.data));
         state.assetMetadataLoading = false;

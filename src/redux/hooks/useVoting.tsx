@@ -56,7 +56,11 @@ export const useVoting = () => {
   };
 
   const ManageVotingBtn = ({ title }: { title: string }) =>
-    !isLoggedIn ? null : <Button onClick={() => handleManageVotingClick()}>Vote on {title}</Button>;
+    !isLoggedIn ? null : (
+      <Button id="gov-voting" onClick={handleManageVotingClick}>
+        Vote on {title}
+      </Button>
+    );
 
   ManageVotingBtn.propTypes = {
     title: PropTypes.string.isRequired,
