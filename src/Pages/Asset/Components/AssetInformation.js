@@ -39,7 +39,7 @@ const AssetInformation = () => {
   const assetMetadata = allMetadata.find((md) => md.base === marker);
   const displayDenom = assetMetadata?.display || marker;
   const exponent =
-    assetMetadata?.denomUnits.find((d) => d.denom === assetMetadata?.display)?.exponent || 0;
+    assetMetadata?.denomUnits?.find((d) => d.denom === assetMetadata?.display)?.exponent || 0;
 
   const { amount: conversionAmount, denom: conversionDenom } = currencyFormat(
     1,
