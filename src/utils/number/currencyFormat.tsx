@@ -16,10 +16,12 @@ export const currencyFormat = (value = 0, initialDenom: string, toBase = false) 
   );
 
   // If the value isn't a number,
-  // the initial and final denoms don't match a known conversion or
-  // the initial and final denoms are the same string,
+  // the initial and final denoms don't match a known conversion,
+  // the initial and final denoms are the same string or
+  // the denom units don't exist
   // just return the value
-  if (isNaN(value) || !denomInfo) return { amount: value, denom: initialDenom };
+  if (isNaN(value) || !denomInfo || !denomInfo?.denomUnits)
+    return { amount: value, denom: initialDenom };
 
   // pull the needed denom info
   const { base, display, denomUnits } = denomInfo;
