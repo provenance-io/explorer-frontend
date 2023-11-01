@@ -29,7 +29,7 @@ export const AccountAssets = () => {
   const tableData = accountAssets.map((a) => ({
     ...a,
     displayDenom: assetMetadata.find((md) => md.base === a.denom)?.display,
-    exponent: assetMetadata.find((md) => md.base === a.denom)?.denomUnits[1].exponent,
+    exponent: assetMetadata.find((md) => md.base === a.denom)?.denomUnits?.[1].exponent,
   }));
 
   // Table header values in order
