@@ -14,10 +14,12 @@ const AssetsList = () => {
     getAssetsList: getTableData,
   } = useAssets();
 
-  const tableData = assets.map(a => ({
+  const tableData = assets.map((a) => ({
     ...a,
-    displayDenom: assetMetadata.find(md => md.base === a.marker)?.display,
-    exponent: assetMetadata.find(md => md.base === a.marker)?.denomUnits[1].exponent,
+    displayDenom: assetMetadata.find((md) => md.base === a.marker)?.display,
+    exponent:
+      assetMetadata.find((md) => md.base === a.marker)?.denomUnits?.find((du) => !!du.exponent)
+        ?.exponent || 0,
   }));
 
   useEffect(() => {
