@@ -31,7 +31,7 @@ jobs:
 
       - name: Get Branch Name
         id: get-branch-name
-        run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed 's/refs\/heads\//-/')"
+        run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed -E 's/refs\/heads\///; s/[^a-zA-Z0-9]+/-/g')"
 
       - name: Build and push privatenet
         uses: docker/build-push-action@v2
