@@ -18,24 +18,24 @@ import {
   Code,
   Contract,
   Contracts,
-  Dashboard,
+  // Dashboard,
   Faucet,
-  Gas,
+  // Gas,
   HashStats,
-  Ibc,
+  // Ibc,
   Icons,
   NameTree,
   Nft,
   Nfts,
   NoMatch404,
-  Params,
+  // Params,
   Proposal,
   Proposals,
-  TokenStats,
+  // TokenStats,
   Tx,
   TxDash,
   Txs,
-  Upgrades,
+  // Upgrades,
   Validator,
   Validators,
 } from 'Pages';
@@ -48,14 +48,30 @@ const App = () => {
 
   const { setAuthToken } = useApp();
 
-  const { assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed } =
-    useAssets();
+  const {
+    assetMetadata,
+    assetMetadataLoading,
+    getAssetMetadata,
+    assetMetadataTried,
+    assetMetadataFailed,
+  } = useAssets();
 
   useEffect(() => {
-    if (isEmpty(assetMetadata) && !assetMetadataLoading && !assetMetadataFailed) {
+    if (
+      isEmpty(assetMetadata) &&
+      !assetMetadataLoading &&
+      !assetMetadataFailed &&
+      assetMetadataTried < 10
+    ) {
       getAssetMetadata();
     }
-  }, [assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed]);
+  }, [
+    assetMetadata,
+    assetMetadataLoading,
+    getAssetMetadata,
+    assetMetadataTried,
+    assetMetadataFailed,
+  ]);
 
   useEffect(() => {
     if (signedJWT) {
@@ -72,7 +88,7 @@ const App = () => {
           <Navigation />
           <Switch>
             <Route exact path="/">
-              <Redirect to="/dashboard" />
+              <Redirect to="/txs" />
             </Route>
             <Route path="/accounts/:addressId" component={Accounts} />
             <Route path="/announcement/:announcementId" component={Announcement} />
@@ -84,20 +100,20 @@ const App = () => {
             <Route path="/code/:codeId" component={Code} />
             <Route path="/contract/:contractId" component={Contract} />
             <Route path="/contracts" component={Contracts} />
-            <Route exact path="/dashboard" component={Dashboard} />
+            {/* <Route exact path="/dashboard" component={Dashboard} /> */}
             <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
             <Route path="/hashstats" component={HashStats} />
-            <Route path="/ibc" component={Ibc} />
+            {/* <Route path="/ibc" component={Ibc} /> */}
             <Route path="/icons">{isProd ? <Redirect to="/dashboard" /> : <Icons />}</Route>
             <Route path="/network/name-tree" component={NameTree}></Route>
             <Route path="/nft/:addr" component={Nft} />
             <Route path="/nfts/:addr" component={Nfts} />
             <Route path="/proposal/:proposalId" component={Proposal} />
             <Route path="/proposals" component={Proposals} />
-            <Route path="/network/token-stats" component={TokenStats} />
+            {/* <Route path="/network/token-stats" component={TokenStats} />
             <Route path="/network/gas" component={Gas} />
             <Route path="/network/upgrades" component={Upgrades} />
-            <Route path="/network/params" component={Params} />
+            <Route path="/network/params" component={Params} /> */}
             <Route path="/tx/:txHash" component={Tx} />
             <Route path="/txdash" component={TxDash} />
             <Route path="/txs" component={Txs} />
