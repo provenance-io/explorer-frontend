@@ -183,6 +183,7 @@ interface AssetState {
   assetMetadata: AssetMetadata[];
   assetMetadataLoading: boolean;
   assetMetadataFailed: boolean;
+  assetMetadataTried: number;
   // Assets distribution
   assetsDist: AssetDist[];
   assetsDistLoading: boolean;
@@ -214,6 +215,7 @@ export const initialState: AssetState = {
   assetMetadata: [],
   assetMetadataLoading: false,
   assetMetadataFailed: false,
+  assetMetadataTried: 0,
   // Assets distribution
   assetsDist: [],
   assetsDistLoading: false,
@@ -411,6 +413,7 @@ export const assetSlice = createSlice({
       .addCase(getAssetMetadata.pending, (state) => {
         state.assetMetadataLoading = true;
         state.assetMetadataFailed = false;
+        state.assetMetadataTried = state.assetMetadataTried + 1;
       })
       .addCase(getAssetMetadata.fulfilled, (state, { payload }) => {
         // Used by currencyFormat

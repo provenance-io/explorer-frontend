@@ -2,8 +2,6 @@ name: build
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   build:
@@ -22,12 +20,6 @@ jobs:
         env:
           CI: true
 
-      - name: Run Tests
-        uses: cypress-io/github-action@v2
-        with:
-          install: false
-          command: npm run test:all
-
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
@@ -37,29 +29,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push testnet
-        uses: docker/build-push-action@v2
-        with:
-          target: runner
-          file: Dockerfile-prod
-          context: .
-          push: true
-          tags: provenanceio/explorer-frontend:latest
+      - name: Get Branch Name
+        id: get-branch-name
+        run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed -E 's/refs\/heads\///; s/[^a-zA-Z0-9]+/-/g')"
 
-      - name: Build and push mainnet
-        uses: docker/build-push-action@v2
-        with:
-          target: runner
-          file: Dockerfile-prod
-          context: .
-          push: true
-          tags: provenanceio/explorer-frontend:production
-          build-args: REACT_APP_ENV=production
-
-      - name: Build and push compose
+      - name: Build and push privatenet
         uses: docker/build-push-action@v2
         with:
           file: Dockerfile
           context: .
           push: true
-          tags: provenanceio/explorer-frontend-generic:latest
+          tags: provenanceio/explorer-frontend-generic:${{ steps.get-branch-name.outputs.branch }}
