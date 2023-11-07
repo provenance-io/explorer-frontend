@@ -31,13 +31,12 @@ jobs:
 
       - name: Get Branch Name
         id: get-branch-name
-        run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed 's/refs\/heads\///')"
+        run: echo "::set-output name=branch::$(echo $GITHUB_REF | sed 's/refs\/heads\//-/')"
 
       - name: Build and push privatenet
         uses: docker/build-push-action@v2
         with:
-          target: runner
           file: Dockerfile
           context: .
           push: true
-          tags: provenanceio/explorer-frontend-${{ steps.get-branch-name.outputs.branch }}:latest
+          tags: provenanceio/explorer-frontend-generic:${{ steps.get-branch-name.outputs.branch }}
