@@ -3,7 +3,7 @@ name: build
 on:
   push:
     branches:
-      - main
+      - '*'
 
 jobs:
   build:
@@ -44,22 +44,4 @@ jobs:
           file: Dockerfile-prod
           context: .
           push: true
-          tags: provenanceio/explorer-frontend:latest
-
-      - name: Build and push mainnet
-        uses: docker/build-push-action@v2
-        with:
-          target: runner
-          file: Dockerfile-prod
-          context: .
-          push: true
-          tags: provenanceio/explorer-frontend:production
-          build-args: REACT_APP_ENV=production
-
-      - name: Build and push compose
-        uses: docker/build-push-action@v2
-        with:
-          file: Dockerfile
-          context: .
-          push: true
-          tags: provenanceio/explorer-frontend-generic:latest
+          tags: provenanceio/explorer-frontend-${{ steps.get-branch-name.outputs.branch }}:latest
