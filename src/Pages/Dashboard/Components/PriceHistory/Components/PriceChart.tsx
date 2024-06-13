@@ -132,10 +132,10 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
     (data, startDate, endDate) => {
       const seriesData = data.map((item: HistoricalPricing) => [
         format(parseISO(item.time_close), 'yyyy-MM-dd'),
-        item.quote.USD.close,
-        item.quote.USD.high,
-        item.quote.USD.low,
-        item.quote.USD.volume,
+        parseFloat(item.quote.USD.close.toFixed(3)),
+        parseFloat(item.quote.USD.high.toFixed(3)),
+        parseFloat(item.quote.USD.low.toFixed(3)),
+        parseFloat(item.quote.USD.volume.toFixed(3)),
       ]);
       // Build dynamic chart items
       chartData.grid = { bottom: isLg ? 90 : 75 };
