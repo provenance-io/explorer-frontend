@@ -130,13 +130,22 @@ const PriceChart = ({ startDate, endDate, data }: PriceChartProps) => {
   // Build dynamic chart data
   const buildChartData = useCallback(
     (data, startDate, endDate) => {
-      const seriesData = data.map((item: HistoricalPricing) => [
-        format(parseISO(item.time_close), 'yyyy-MM-dd'),
-        parseFloat(item.quote.USD.close.toFixed(3)),
-        parseFloat(item.quote.USD.high.toFixed(3)),
-        parseFloat(item.quote.USD.low.toFixed(3)),
-        parseFloat(item.quote.USD.volume.toFixed(3)),
-      ]);
+      const seriesData = data.map((item: HistoricalPricing) => {
+        const timeClose = format(parseISO(item.time_close), 'yyyy-MM-dd');
+        const close = parseFloat(item.quote.USD.close.toFixed(3));
+        const high = parseFloat(item.quote.USD.high.toFixed(3));
+        const low = parseFloat(item.quote.USD.low.toFixed(3));
+      
+      
+        return [
+          timeClose,
+          close,
+          high,
+          low,
+          item.quote.USD.volume,
+        ];
+      });
+      
       // Build dynamic chart items
       chartData.grid = { bottom: isLg ? 90 : 75 };
       chartData.tooltip.axisPointer = { lineStyle: { color: theme.CHART_LINE_MAIN, width: '1' } };
