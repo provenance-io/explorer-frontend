@@ -11,13 +11,13 @@ interface LinksProps {
       };
     };
   };
-};
+}
 
 export const Links: LinksProps = {
-  dashboard: {
-    url: Path.DASHBOARD_URL,
-    title: 'Dashboard',
-  },
+  // dashboard: {
+  //   url: Path.DASHBOARD_URL,
+  //   title: 'Dashboard',
+  // },
   staking: {
     url: Path.STAKING_URL,
     title: 'Validators',
@@ -34,39 +34,39 @@ export const Links: LinksProps = {
     url: Path.GOV_URL,
     title: 'Gov',
   },
-  ibc: {
-    url: Path.IBC_URL,
-    title: 'IBC',
-  },
+  // ibc: {
+  //   url: Path.IBC_URL,
+  //   title: 'IBC',
+  // },
   contracts: {
     url: Path.CONTRACTS_URL,
     title: 'Contracts',
   },
   // Dropdown menu
-  network: {
-    url: '',
-    title: 'Network',
-    subMenu: {
-      versions: {
-        url: Path.UPGRADES_URL,
-        title: 'Upgrades',
-      },
-      params: {
-        url: Path.PARAMS_URL,
-        title: 'Chain Parameters',
-      },
-      gas: {
-        url: Path.GAS_URL,
-        title: 'Gas Statistics',
-      },
-      token_stats: {
-        url: Path.TOKEN_STATS_URL,
-        title: 'Token Statistics',
-      },
-      name_tree: {
-        url: Path.NAME_TREE_URL,
-        title: 'Name Tree',
-      },
-    },
-  },
+  // network: {
+  //   url: '',
+  //   title: 'Network',
+  //   subMenu: {
+  //     versions: {
+  //       url: Path.UPGRADES_URL,
+  //       title: 'Upgrades',
+  //     },
+  //     params: {
+  //       url: Path.PARAMS_URL,
+  //       title: 'Chain Parameters',
+  //     },
+  //     gas: {
+  //       url: Path.GAS_URL,
+  //       title: 'Gas Statistics',
+  //     },
+  //     token_stats: {
+  //       url: Path.TOKEN_STATS_URL,
+  //       title: 'Token Statistics',
+  //     },
+  //     name_tree: {
+  //       url: Path.NAME_TREE_URL,
+  //       title: 'Name Tree',
+  //     },
+  //   },
+  // },
 };
