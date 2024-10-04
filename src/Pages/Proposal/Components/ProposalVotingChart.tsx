@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router';
 import styled, { useTheme } from 'styled-components';

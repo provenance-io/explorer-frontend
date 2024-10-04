@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import ClientClass, { SIGN_CLIENT_EVENTS } from '@walletconnect/sign-client';
+// import Logger from 'pino';
+// import { getAppMetadata } from '@walletconnect/utils';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
@@ -13,6 +16,8 @@ import { breakpoints, ICON_NAMES, isProd } from 'consts';
 import { useApp } from 'redux/hooks';
 import { maxLength } from 'utils';
 import { PopupNote } from 'Components/PopupNote';
+// import type ClientType from '@walletconnect/sign-client';
+// import type { PairingTypes, SessionTypes, ProposalTypes, SignClientTypes, CoreTypes } from '@walletconnect/types';
 import Button from '../Button';
 import Sprite from '../Sprite';
 
@@ -42,6 +47,13 @@ const LogoutButton = styled(Button)`
   float: right;
 `;
 
+export const DEFAULT_APP_METADATA = {
+  name: 'WalletConnect 2.0 Demo',
+  description: 'Dapp Demo for WalletConnect',
+  url: 'https://test.figure.com/walletconnect-demo',
+  icons: ['https://test.figure.com/walletconnect-demo/favicon.png'],
+};
+
 const Link = styled(BaseLink)`
   &&& {
     :hover {
@@ -56,6 +68,46 @@ const Link = styled(BaseLink)`
   }
 `;
 
+export const WC_PAIRING_EVENTS = {
+  pairing_create: 'pairing_create',
+  pairing_delete: 'pairing_delete',
+  pairing_expire: 'pairing_expire',
+  pairing_ping: 'pairing_ping',
+} as const;
+
+// const subscribeToEvents = async (client: ClientType) => {
+//   for (const event in SIGN_CLIENT_EVENTS) {
+//     // EventData is @wc BaseEventArgs type
+//     client.on(event as SignClientTypes.Event, async (eventData) => console.log(eventData));
+//   }
+//   // Create pairing events
+//   for (const event in WC_PAIRING_EVENTS) {
+//     client.core.pairing.events.on(event, async (eventData) => console.log(eventData));
+//   }
+// };
+
+export const createSignClient = async () => {
+  // const { relayerRegion, projectId } = stateMgmt.getPrivateState();
+
+  try {
+    // Not sure what this was doing, pasted over from wc2.0 docs demo app
+    const claimedOrigin = localStorage.getItem('wallet_connect_dapp_origin') || window.origin;
+    const client = await ClientClass.init({
+      projectId: '6451479b4eb6d2967465521cb99ff677',
+      // logger: Logger({ level: 'silent' }),
+      metadata: {
+        // ...(getAppMetadata() || DEFAULT_APP_METADATA),
+        ...DEFAULT_APP_METADATA,
+        url: claimedOrigin,
+      },
+    });
+
+    // await subscribeToEvents(client);
+  } catch (error) {
+    console.log({ isError: true, message: 'Wallet-Bridge | Connection Resume Error: ', data: error });
+  }
+};
+
 const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
   const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
@@ -63,6 +115,7 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
+
 
   const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);

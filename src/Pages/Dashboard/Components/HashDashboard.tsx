@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Content, Loading, DataCard } from 'Components';

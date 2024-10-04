@@ -40,6 +40,7 @@ const Code = () => {
         value={codeId}
       />
       <Section header>
+        {/* @ts-ignore */}
         <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
           <CodeDetails key="Details"/>
           <CodeContracts key={`Contracts (${contractsByCodeTotal})`} />

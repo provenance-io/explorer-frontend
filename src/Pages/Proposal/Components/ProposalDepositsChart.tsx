@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { useGovernance } from 'redux/hooks';

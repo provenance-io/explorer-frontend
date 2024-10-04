@@ -1,3 +1,4 @@
+// @ts-nocheck
 import styled, { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'theme';

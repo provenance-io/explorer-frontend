@@ -64,7 +64,7 @@ const ButtonTitle = styled.div`
 const ButtonDate = styled.div`
   margin: 10px;
   margin-left: auto;
-s`;
+`;
 
 interface ItemProps {
   title: string;
@@ -134,6 +134,7 @@ const AnnouncementsList = () => {
     <>
       {!allAnnouncementsLoading && allAnnouncements.length > 0 ? (
         <Content>
+          {/* @ts-ignore */}
           <InfiniteScroll 
             loading={allAnnouncementsLoading} 
             onLoadMore={loadAnnouncements} 

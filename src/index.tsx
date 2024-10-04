@@ -7,6 +7,7 @@ import TagManager from 'react-gtm-module';
 // eslint-disable-next-line
 import { Maintenance } from 'Pages';
 import { isProd } from 'consts';
+import { AppKitProvider } from 'Providers';
 import App from './App';
 
 /* Note: during maintenance cycles, update the tests in package.json
@@ -21,10 +22,12 @@ if (gtmId) TagManager.initialize({ gtmId });
 
 ReactDOM.render(
   <Provider store={store()}>
-    <WalletConnectContextProvider>
-      <App />
-      {/* <Maintenance /> */}
-    </WalletConnectContextProvider>
+    {/* <AppKitProvider> */}
+      <WalletConnectContextProvider>
+        <App />
+        {/* <Maintenance /> */}
+      </WalletConnectContextProvider>
+    {/* </AppKitProvider> */}
   </Provider>,
   document.getElementById('root')
 );

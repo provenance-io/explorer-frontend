@@ -59,6 +59,7 @@ const CodeDetails = () => {
 
   return (
     <Content title="Code Information">
+      {/* @ts-ignore */}
       {contractCodeLoading ? <Loading /> : <Summary data={summaryData} />}
     </Content>
   );

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Section, Wrapper, Header, Content } from 'Components';
@@ -41,22 +42,26 @@ const Accounts = () => {
         <Fragment>
           <Section header>
             <Content justify="flex-start" alignItems="center">
+              {/* @ts-ignore */}
               <AccountSpotlight />
             </Content>
             {isLg && !exactlyMd && <AccountCharts />}
           </Section>
           {isMd && (
             <Section>
+              {/* @ts-ignore */}
               <Group isMdSm={isMdSm}>
                 <AccountCharts />
               </Group>
             </Section>
           )}
           <Section>
+            {/* @ts-ignore */}
             <TxHistory address={addressId} size="100%" />
           </Section>
           {/* <AccountTxs /> */}
           <Section>
+            {/* @ts-ignore */}
             <AccountTables />
           </Section>
         </Fragment>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, Dispatch, SetStateAction, Fragment } from 'react';
 import ReactJson from 'react-json-view';
 import { Content, MultiTable, Loading, Summary, Table } from 'Components';

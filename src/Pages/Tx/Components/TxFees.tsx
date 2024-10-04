@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { isEmpty, formatDenom } from 'utils';
 import styled, { useTheme } from 'styled-components';

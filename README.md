@@ -68,3 +68,7 @@ Visit our [Docker Hub](https://hub.docker.com/u/provenanceio) to grab an image a
 
 The Provenance Blockchain Explorer is under heavy development. The upcoming public blockchain is the evolution of the private Provenance network blockchain started in 2018.
 Current development is being supported by [Figure Technologies](https://figure.com).
+
+## Helpful tips
+- The explorer maintenance is currently suspended. Therefore, prior to starting the local server, you may need to downgrade your SSL settings:
+`export NODE_OPTIONS=--openssl-legacy-provider`

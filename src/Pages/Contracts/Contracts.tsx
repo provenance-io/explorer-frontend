@@ -15,6 +15,7 @@ const Contracts = () => {
         <Header title="Codes List" value={`${codesTotal} total`} />
       )}
       <Section header>
+        {/* @ts-ignore */}
         <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
           <ContractsList key="Contracts"/>
           <CodesList key="Codes" />

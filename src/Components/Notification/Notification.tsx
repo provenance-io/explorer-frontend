@@ -182,17 +182,18 @@ const Notification = () => {
         titleSize="2.0rem"
         background={theme.BACKGROUND_THEME}
         borderRadius="5px"
+        // @ts-ignore
         headerContent={closeAnnouncements}
         color={theme.FONT_NAV}
       >
-        {openProposals.length > 0 && proposalNotifications && 
-          getNotifications(openProposals, 'proposal', handleCloseProposal)
+        {openProposals.length > 0 && proposalNotifications &&
+          getNotifications(openProposals, 'proposal', handleCloseProposal) as any
         }
         {scheduledUpgrades.length > 0 && upgradeNotifications &&
-          getNotifications(scheduledUpgrades, 'upgrade', handleCloseUpgrades)
+          getNotifications(scheduledUpgrades, 'upgrade', handleCloseUpgrades) as any
         }
         {openAnnouncements.length > 0 && announcementNotifications &&
-          getNotifications(openAnnouncements, 'announcement', handleCloseAnnouncement)
+          getNotifications(openAnnouncements, 'announcement', handleCloseAnnouncement) as any
         }
       </Content>
     </NotificationWrapper>

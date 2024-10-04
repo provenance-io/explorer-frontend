@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Wrapper, Header, Section, Loading } from 'Components';

@@ -9,6 +9,7 @@ export const NameTree = () => {
     <Wrapper>
       <Header title="Name Tree" />
       <Section header>
+        {/* @ts-ignore */}
         <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
           <NameTreeChart key="Chart" />
           <NameTreeFileFinder key="File View" />

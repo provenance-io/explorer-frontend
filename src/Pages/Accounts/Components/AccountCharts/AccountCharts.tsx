@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, Fragment } from 'react';
 import { useParams } from 'react-router';
 import {

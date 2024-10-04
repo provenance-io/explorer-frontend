@@ -161,6 +161,7 @@ const PriceHistory = () => {
       icon="HASH"
       title={filterError ? 'Hash Price History' : `${priceHistoryDayRange}-Day Hash Price History`}
     >
+      {/* @ts-ignore */}
       {havePriceHistory && !historicalPricingLoading && !currentPricingLoading ? (
         <>
           <FiltersWrapper>

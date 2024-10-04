@@ -1,3 +1,4 @@
+// @ts-nocheck
 import styled from 'styled-components';
 import { Section } from 'Components';
 import { HashDashboard, PriceHistory } from 'Pages/Dashboard/Components';

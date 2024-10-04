@@ -18,5 +18,6 @@
     "jsx": "react-jsx",
     "downlevelIteration": true,
   },
-  "include": ["src", "./cypress/**/*.js"]
+  "include": ["src", "./cypress/**/*.js"],
+  "exclude": ["node_modules"]
 }

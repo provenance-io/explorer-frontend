@@ -14,6 +14,7 @@
     "@provenanceio/wallet-utils": "2.9.0",
     "@provenanceio/walletconnect-js": "3.6.0",
     "@reduxjs/toolkit": "1.8.1",
+    "@walletconnect/sign-client": "2.17.0",
     "bech32": "2.0.0",
     "big.js": "6.1.1",
     "date-fns": "2.22.1",
@@ -23,6 +24,7 @@
     "formik": "2.2.9",
     "query-string": "7.0.1",
     "react": "17.0.2",
+    "react-app-polyfill": "3.0.0",
     "react-datepicker": "4.1.1",
     "react-dom": "17.0.2",
     "react-ga4": "2.1.0",
@@ -45,6 +47,8 @@
     "yup": "0.32.9"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
+    "@babel/plugin-transform-nullish-coalescing-operator": "7.25.7",
     "@cypress/code-coverage": "3.9.12",
     "@cypress/instrument-cra": "1.4.0",
     "@provenance-io/frontend-scripts": "1.0.2",
@@ -130,18 +134,11 @@
     "proremove": "pro remove",
     "script:linkify": "python3 ./scripts/linkify.py ./CHANGELOG.md"
   },
-  "browserslist": {
-    "production": [
+  "browserslist": [
       ">0.2%",
       "not dead",
       "not op_mini all"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "jest": {
     "coveragePathIgnorePatterns": [
       "src/serviceWorker.js",

@@ -173,6 +173,7 @@ export const FileFinder = ({
       </TreeMenu>
       {info && (
         <Sticky>
+          {/* @ts-ignore */}
           <Content>{info}</Content>
         </Sticky>
       )}

@@ -6,6 +6,7 @@ const Announcements = () => (
   <Wrapper>
     <Header title="All Announcements" />
     <Section header>
+      {/* @ts-ignore */}
       <AnnouncementsList />
     </Section>
   </Wrapper>

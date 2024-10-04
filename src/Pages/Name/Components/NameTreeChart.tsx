@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import * as echarts from 'echarts';

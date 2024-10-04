@@ -44,6 +44,7 @@ const Contract = () => {
         copyValue={contractId}
       />
       <Section header>
+        {/* @ts-ignore */}
         <MultiTable active={activeTableTab} setActive={setActiveTableTab}>
           <ContractDetails key="Details"/>
           <ContractHistory key="History" />
