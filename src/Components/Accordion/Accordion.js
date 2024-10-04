@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
-import { Sprite } from 'Components';
-import { ICON_NAMES } from 'consts';
+import { Sprite } from '../../Components';
+import { ICON_NAMES } from '../../consts';
 
 const Wrapper = styled.div`
   width: 100%;

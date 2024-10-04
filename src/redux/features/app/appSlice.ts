@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/app/store';
-import { getCookie, setCookie } from 'utils';
+import { getCookie, setCookie } from '../../../utils';
 import { xhrSetToken } from '../api';
 
 export interface AppState {

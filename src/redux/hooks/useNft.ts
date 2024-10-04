@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectNft as selector,
   nftActions as actionsList,
-} from 'redux/features/nft/nftSlice';
+} from '../features/nft/nftSlice';
 
 export const useNft = () => {
   const dispatch = useAppDispatch();

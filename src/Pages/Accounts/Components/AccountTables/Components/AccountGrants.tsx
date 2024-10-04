@@ -1,9 +1,9 @@
 import { useState, Dispatch, SetStateAction, Fragment } from 'react';
 import ReactJson from 'react-json-view';
-import { Content, MultiTable, Loading, Summary, Table } from 'Components';
+import { Content, MultiTable, Loading, Summary, Table } from '../../../../../Components';
 import { useParams } from 'react-router';
-import { AuthzProps, FeeGrantProps, useGetGrantsQuery } from 'redux/services';
-import { capitalize, formatDenom, isEmpty } from 'utils';
+import { AuthzProps, FeeGrantProps, useGetGrantsQuery } from '../../../../../redux/services';
+import { capitalize, formatDenom, isEmpty } from '../../../../../utils';
 
 interface GrantsProps {
   grant: 'authz' | 'feegrant';

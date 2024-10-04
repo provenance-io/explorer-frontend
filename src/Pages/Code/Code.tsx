@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Wrapper, Header, Section, MultiTable } from 'Components';
+import { Wrapper, Header, Section, MultiTable } from '../../Components';
 import { useContracts } from '../../redux/hooks';
 import { CodeDetails, CodeContracts, CodeTxs } from './Components';
 

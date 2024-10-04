@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'Components';
-import { useApp, useAssets } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useApp, useAssets } from '../../../redux/hooks';
 
 const AssetsList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

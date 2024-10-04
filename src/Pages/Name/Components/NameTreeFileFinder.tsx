@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useName } from 'redux/hooks';
-import { FileFinder, CopyValue } from 'Components';
-import { NameTree } from 'redux/features/name/nameSlice';
-import { maxLength, capitalize } from 'utils';
-import { breakpoints } from 'consts';
+import { useName } from '../../../redux/hooks';
+import { FileFinder, CopyValue } from '../../../Components';
+import { NameTree } from '../../../redux/features/name/nameSlice';
+import { maxLength, capitalize } from '../../../utils';
+import { breakpoints } from '../../../consts';
 
 const Title = styled.div`
   font-size: 1.6rem;

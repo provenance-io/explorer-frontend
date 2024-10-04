@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { Content, Loading, InfiniteScroll } from 'Components';
-import { useNotifications, useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { Content, Loading, InfiniteScroll } from '../../../Components';
+import { useNotifications, useMediaQuery } from '../../../redux/hooks';
+import { breakpoints } from '../../../consts';
 
 const TextWrapper = styled.div`
   display: flex;
@@ -64,7 +64,7 @@ const ButtonTitle = styled.div`
 const ButtonDate = styled.div`
   margin: 10px;
   margin-left: auto;
-s`;
+`;
 
 interface ItemProps {
   title: string;

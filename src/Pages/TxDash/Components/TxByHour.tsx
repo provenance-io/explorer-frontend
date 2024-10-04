@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useGetTxHeatmapDataQuery, HourlyTotal } from 'redux/services';
+import { useGetTxHeatmapDataQuery, HourlyTotal } from '../../../redux/services';
 // import { breakpoints } from 'consts';
 // import { useMediaQuery } from 'redux/hooks';
 

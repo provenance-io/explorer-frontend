@@ -1,12 +1,12 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
-import { store } from 'redux/app/store';
+import { store } from '../src/redux/app/store';
+import { AppKitProvider } from './Providers';
 import ReactGA from 'react-ga4';
 import TagManager from 'react-gtm-module';
 // eslint-disable-next-line
 import { Maintenance } from 'Pages';
-import { isProd } from 'consts';
+import { isProd } from '../src/consts';
 import App from './App';
 
 /* Note: during maintenance cycles, update the tests in package.json
@@ -14,17 +14,17 @@ import App from './App';
          instead of the App component.
 */
 
-const trackingId = isProd && process.env.REACT_APP_PROD_GA4_ID;
-const gtmId = isProd && process.env.REACT_APP_PROD_GTM_ID;
+const trackingId = isProd && import.meta.env.VITE_APP_PROD_GA4_ID;
+const gtmId = isProd && import.meta.env.VITE_APP_PROD_GTM_ID;
 if (trackingId) ReactGA.initialize(trackingId);
 if (gtmId) TagManager.initialize({ gtmId });
 
 ReactDOM.render(
   <Provider store={store()}>
-    <WalletConnectContextProvider>
+    <AppKitProvider>
       <App />
       {/* <Maintenance /> */}
-    </WalletConnectContextProvider>
+    </AppKitProvider>
   </Provider>,
   document.getElementById('root')
 );

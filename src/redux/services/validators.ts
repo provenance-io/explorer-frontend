@@ -1,4 +1,4 @@
-import { VALIDATORS_V3_URL } from 'consts';
+import { VALIDATORS_V3_URL } from '../../consts';
 import { api } from './serviceApi';
 
 export interface ValidatorMetricsProps {

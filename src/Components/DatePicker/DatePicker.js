@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 // Components
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 
 /* prettier-ignore */
 const inputStyling = css `
@@ -69,7 +69,17 @@ const StyledDatePicker = styled(ReactDatePicker)`
   ${inputStyling}
 `;
 
-const DatePicker = ({ label, maxDate, selected, onChange, minDate, placeholderText, dateFormat, className, ...rest }) => (
+const DatePicker = ({
+  label,
+  maxDate,
+  selected,
+  onChange,
+  minDate,
+  placeholderText,
+  dateFormat,
+  className,
+  ...rest
+}) => (
   <DatepickContainer className={className} {...rest}>
     {label && <StyledLabel>{label}</StyledLabel>}
     <StyledDatePicker

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { useApp } from 'redux/hooks';
-import OgButton from 'Components/Button';
+import { useApp } from '../hooks';
+import OgButton from '../../Components/Button';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -12,8 +11,10 @@ const Button = styled(OgButton)`
 
 export const useProposal = () => {
   const [shouldPull, setShouldPull] = useState(true);
-  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const { address } = walletConnectState;
+  // const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
+  // const { address } = walletConnectState;
+  // TODO: Update this
+  const address = '';
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page
@@ -26,30 +27,32 @@ export const useProposal = () => {
   }, [address, setIsLoggedIn]);
 
   // Event listeners for wallet messages
+  // TODO: Update this if needed
+  // useEffect(() => {
+  //   wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, (result) => {
+  //     setShouldPull(true);
+  //     setSubmitted(true);
+  //   });
+
+  //   // Fail message for transaction messages
+  //   wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, (result) => {
+  //     setSubmitted(false);
+  //     deactivateModalOpen();
+  //   });
+
+  //   // Remove event listeners when no longer needed
+  //   return () => {
+  //     wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, () => {});
+  //     wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, () => {});
+  //   };
+  // }, [wcs, deactivateModalOpen]);
+
+  // useEffect(() => {
+  //   setShouldPull(true);
+  // }, [isLoggedIn]);
+
   useEffect(() => {
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, (result) => {
-      setShouldPull(true);
-      setSubmitted(true);
-    });
-
-    // Fail message for transaction messages
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, (result) => {
-      setSubmitted(false);
-      deactivateModalOpen();
-    });
-
-    // Remove event listeners when no longer needed
-    return () => {
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, () => {});
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, () => {});
-    };
-  }, [wcs, deactivateModalOpen]);
-
-  useEffect(() => {
-    setShouldPull(true);
-  }, [isLoggedIn]);
-
-  useEffect(() => {
+    // @ts-ignore
     let timeout: NodeJS.Timeout;
     if (shouldPull) {
       timeout = setTimeout(() => {

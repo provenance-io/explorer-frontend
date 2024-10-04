@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Content as BaseContent, Summary, Loading } from 'Components';
-import { maxLength, camelToSentence, formatDenom } from 'utils';
-import { breakpoints } from 'consts';
+import { Content as BaseContent, Summary, Loading } from '../../../Components';
+import { maxLength, camelToSentence, formatDenom } from '../../../utils';
+import { breakpoints } from '../../../consts';
 import { useContracts, useMediaQuery } from '../../../redux/hooks';
 
 const Content = styled(BaseContent)`

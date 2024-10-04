@@ -1,5 +1,5 @@
 import React from 'react';
-import { Section, Header, Wrapper } from 'Components';
+import { Section, Header, Wrapper } from '../../Components';
 import { UpgradesList } from './Components';
 
 const Upgrades = () => (

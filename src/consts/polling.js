@@ -1,4 +1,5 @@
-import { isProd } from 'consts';
+const IS_PROD =
+  window.location.host === 'www.figuremarkets.com' || window.location.host === 'figuremarkets.com';
 
 export const polling = {
   blockSpotlight: 5000,
@@ -8,5 +9,5 @@ export const polling = {
   recentTxs: 30000,
   totalAum: 1000000,
   // Pull every 15 min in prod, 1 min in test
-  notifications: isProd ? 900000 : 60000,
+  notifications: IS_PROD ? 900000 : 60000,
 };

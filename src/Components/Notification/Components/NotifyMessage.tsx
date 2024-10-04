@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
-import { useMediaQuery } from 'redux/hooks';
-import { capitalize } from 'utils';
-import { breakpoints } from 'consts';
+import { useMediaQuery } from '../../../redux/hooks';
+import { capitalize } from '../../../utils';
+import { breakpoints } from '../../../consts';
 
 const Message = styled.div`
   font-size: 1.4rem;

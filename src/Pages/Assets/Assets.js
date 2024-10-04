@@ -1,5 +1,5 @@
 import React from 'react';
-import { Section, Wrapper, Header } from 'Components';
+import { Section, Wrapper, Header } from '../../Components';
 import { AssetsList, AssetsAUM } from './Components';
 
 const Assets = () => (

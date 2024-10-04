@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { breakpoints } from 'consts';
-import { Content, Section, Accordion, Table, BlockImage } from 'Components';
 import styled, { useTheme } from 'styled-components';
-import { useIbc, useMediaQuery } from 'redux/hooks';
-import { getUTCTime, capitalize } from 'utils';
+import { breakpoints } from '../../../consts';
+import { Content, Section, Accordion, Table, BlockImage } from '../../../Components';
+import { useIbc, useMediaQuery } from '../../../redux/hooks';
+import { getUTCTime, capitalize } from '../../../utils';
 
 const HeaderInfo = styled.span`
   display: grid;

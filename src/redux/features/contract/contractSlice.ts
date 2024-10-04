@@ -8,7 +8,7 @@ import {
   CONTRACTS_ALL_URL,
   CONTRACT_TRANSACTIONS_URL, 
   CONTRACT_LABELS_URL,
-} from 'consts';
+} from '../../../consts';
 import { TransactionsModule } from '../asset/assetSlice';
 import { ajax } from "../api";
 

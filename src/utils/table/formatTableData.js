@@ -1,4 +1,4 @@
-import { currencyFormat } from 'utils/number';
+import { currencyFormat } from '../number';
 import { maxLength } from '../string/maxLength';
 import { numberFormat } from '../number/numberFormat';
 import { formatDenom } from '../number/formatDenom';

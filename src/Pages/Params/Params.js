@@ -1,5 +1,5 @@
 import React from 'react';
-import { Section, Wrapper } from 'Components';
+import { Section, Wrapper } from '../../Components';
 import { CosmosParamsList, ProvParamsList } from './Components';
 
 const Params = () => (

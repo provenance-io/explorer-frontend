@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Wrapper, Header, Section, Loading } from 'Components';
-import { isEmpty } from 'utils';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import { Wrapper, Header, Section, Loading } from '../../Components';
+import { isEmpty } from '../../utils';
 import { useGovernance, useAccounts, useApp } from '../../redux/hooks';
 import {
   ProposalDeposits,
@@ -25,8 +24,8 @@ const Proposal = () => {
   const { timings } = proposal;
   const { accountAssets, getAccountAssets } = useAccounts();
   const { isLoggedIn } = useApp();
-  const { walletConnectState } = useWalletConnect();
-  const { address } = walletConnectState;
+  // const { walletConnectState } = useWalletConnect();
+  // const { address } = walletConnectState;
   const hashBalance: { amount: string; denom: string } = accountAssets?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
@@ -43,16 +42,17 @@ const Proposal = () => {
 
   const canVote = !isEmpty(timings) && votingIsOpen && isLoggedIn && hasHash;
 
-  useEffect(() => {
-    if (address) {
-      // TODO: Need an endpoint that only returns a users hash value
-      getAccountAssets({ address, count: 100 });
-    }
-  }, [getAccountAssets, address]);
+  // TODO: Update this to return assets
+  // useEffect(() => {
+  //   if (address) {
+  //     // TODO: Need an endpoint that only returns a users hash value
+  //     getAccountAssets({ address, count: 100 });
+  //   }
+  // }, [getAccountAssets, address]);
 
-  useEffect(() => {
-    getProposal(proposalId);
-  }, [getProposal, proposalId]);
+  // useEffect(() => {
+  //   getProposal(proposalId);
+  // }, [getProposal, proposalId]);
 
   return !proposalLoading ? (
     <Wrapper>

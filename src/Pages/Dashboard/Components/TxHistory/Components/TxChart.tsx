@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { breakpoints } from 'consts';
-import { TxHistoryProps } from 'redux/services';
-import { formatDenom, isEmpty, subtractDays } from 'utils';
+import { breakpoints } from '../../../../../consts';
+import { TxHistoryProps } from '../../../../../redux/services';
+import { formatDenom, isEmpty, subtractDays } from '../../../../../utils';
 import Big from 'big.js';
 import { useMediaQuery, useOrderbook } from '../../../../../redux/hooks';
 

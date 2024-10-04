@@ -10,9 +10,9 @@ import {
   TimeTicker,
   CopyValue,
   PercentBar,
-} from 'Components';
-import OgBlockImage from 'Components/BlockImage';
-import { capitalize, getUTCTime, formatTableData, isEmpty } from 'utils';
+} from '../../Components';
+import OgBlockImage from '../../Components/BlockImage';
+import { capitalize, getUTCTime, formatTableData, isEmpty } from '../../utils';
 import { Skips } from '../../consts';
 
 const TableContainer = styled.div`

@@ -2,8 +2,8 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 // @ts-ignore
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
-import { breakpoints } from 'consts';
-import OgSprite from 'Components/Sprite';
+import { breakpoints } from '../../consts';
+import OgSprite from '../../Components/Sprite';
 
 const Wrapper = styled.div<{ isOpen: boolean }>`
   display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};

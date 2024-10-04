@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Content, Section, Accordion } from 'Components';
-import { useNetwork } from 'redux/hooks';
-import { isEmpty, capitalize, formatDenom } from 'utils';
+import { Table, Content, Section, Accordion } from '../../../Components';
+import { useNetwork } from '../../../redux/hooks';
+import { isEmpty, capitalize, formatDenom } from '../../../utils';
 
 // Function to generate a simple table
 const getTable = (data, type, tableLoading) => {
@@ -10,7 +10,7 @@ const getTable = (data, type, tableLoading) => {
     { displayName: 'Param Name', dataName: 'param_name' },
     { displayName: 'Value', dataName: 'value' },
   ];
-  const tableData = Object.keys(data[type]).map(item => {
+  const tableData = Object.keys(data[type]).map((item) => {
     const tempObj = {};
     if (item === 'max_total_supply') {
       tempObj.value = formatDenom(data[type][item], '', { decimal: 0 });
@@ -41,8 +41,8 @@ const ProvParamsList = () => {
 
   // Params fetch is done by CosmosParamsList
 
-  const getProvTables = data => {
-    const table = Object.keys(data).map(item => getTable(data, item, [], tableLoading));
+  const getProvTables = (data) => {
+    const table = Object.keys(data).map((item) => getTable(data, item, [], tableLoading));
     return table;
   };
 

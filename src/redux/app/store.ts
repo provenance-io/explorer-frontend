@@ -1,5 +1,5 @@
 import { configureStore, PreloadedState, ThunkAction, Action } from '@reduxjs/toolkit';
-import { api } from 'redux/services/serviceApi';
+import { api } from '../services';
 import { combineReducers } from 'redux';
 import accountReducer from '../features/account/accountSlice';
 import assetReducer from '../features/asset/assetSlice';
@@ -40,7 +40,7 @@ export const rootReducer = combineReducers({
 
 export const store = (preloadedState?: PreloadedState<RootState>) =>
   configureStore({
-    devTools: process.env.REACT_APP_ENV === 'local',
+    devTools: import.meta.env.VITE_APP_ENV === 'local',
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

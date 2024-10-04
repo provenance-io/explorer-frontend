@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Wrapper, Header, Section, Loading } from 'Components';
+import { Wrapper, Header, Section, Loading } from '../../Components';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import { useNotifications } from 'redux/hooks';
-import { isEmpty } from 'utils';
+import { useNotifications } from '../../redux/hooks';
+import { isEmpty } from '../../utils';
 import { AnnouncementPagination } from './Components';
 
 const Title = styled.div`

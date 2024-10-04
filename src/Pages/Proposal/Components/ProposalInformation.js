@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
-import { useGovernance } from 'redux/hooks';
-import { Content, DataMissing, Loading, Summary } from 'Components';
-import { camelToSentence, capitalize, formatDenom, maxLength } from 'utils';
+import { useGovernance } from '../../../redux/hooks';
+import { Content, DataMissing, Loading, Summary } from '../../../Components';
+import { camelToSentence, capitalize, formatDenom, maxLength } from '../../../utils';
 
 const Key = styled.div`
   font-weight: bold;

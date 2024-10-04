@@ -1,7 +1,7 @@
 import React from 'react';
-import { Content, Summary, Loading } from 'Components';
-import { useContracts } from 'redux/hooks';
-import { maxLength } from 'utils';
+import { Content, Summary, Loading } from '../../../Components';
+import { useContracts } from '../../../redux/hooks';
+import { maxLength } from '../../../utils';
 
 const ContractDetails = () => {
   const { 

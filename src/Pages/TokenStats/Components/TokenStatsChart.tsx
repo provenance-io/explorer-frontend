@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { Header, Loading } from 'Components';
-import { isEmpty, formatDenom } from 'utils';
-import { NetworkTokenStats } from 'redux/features/network/networkSlice';
+import { Header, Loading } from '../../../Components';
+import { isEmpty, formatDenom } from '../../../utils';
+import { NetworkTokenStats } from '../../../redux/features/network/networkSlice';
 import { useNetwork } from '../../../redux/hooks';
 
 const StyledChart = styled.div`

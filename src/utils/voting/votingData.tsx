@@ -1,5 +1,5 @@
-import { VOTING_TYPES } from "consts";
-import { MyFieldsProps } from "utils/proposals";
+import { VOTING_TYPES } from "../../consts";
+import { MyFieldsProps } from "../../utils/proposals";
 
 export const votingData = (votingType: string) => {
   let myFields: MyFieldsProps[] = [];

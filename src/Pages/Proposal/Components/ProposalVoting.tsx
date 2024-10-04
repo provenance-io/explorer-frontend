@@ -1,6 +1,5 @@
 import React from 'react';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { Loading } from 'Components';
+import { Loading } from '../../../Components';
 import { useVoting, useGovernance, useApp } from '../../../redux/hooks';
 import ManageVotingModal from './ManageVotingModal';
 
@@ -8,13 +7,15 @@ const ProposalVoting = () => {
   const { ManageVotingBtn, modalFns, voted, setVoted } = useVoting();
   const { proposal, proposalVotesLoading } = useGovernance();
   const { isLoggedIn } = useApp();
-  const { walletConnectState } = useWalletConnect();
+  // const { walletConnectState } = useWalletConnect();
 
   const {
     header: { description, proposalId, title },
   } = proposal;
 
-  const { address } = walletConnectState;
+  // TODO: Update this
+  const address = '';
+  // const { address } = walletConnectState;
 
   return (
     <>

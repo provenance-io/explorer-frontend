@@ -1,4 +1,4 @@
-import { GRANTS_AUTHZ_URL, GRANTS_FEEGRANT_URL } from 'consts';
+import { GRANTS_AUTHZ_URL, GRANTS_FEEGRANT_URL } from '../../consts';
 import qs from 'query-string';
 import { api } from './serviceApi';
 

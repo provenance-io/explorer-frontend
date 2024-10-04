@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Table } from 'Components';
-import { useNetwork } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useNetwork } from '../../../redux/hooks';
 
 const UpgradesListContainer = styled.div`
   width: 100%;
@@ -20,7 +20,7 @@ const Upgrades = () => {
   }, [getTableData]);
 
   // Only display skipped notes if something is skipped
-  const skipped = tableData.find(v => v.skipped && !v.scheduled) ? 'skipped' : '';
+  const skipped = tableData.find((v) => v.skipped && !v.scheduled) ? 'skipped' : '';
 
   // Table header values in order
   const tableHeaders = [

@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectValidator as selector,
   validatorActions as actionsList,
-} from 'redux/features/validator/validatorSlice';
+} from '../features/validator/validatorSlice';
 
 export const useValidators = () => {
   const dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Wrapper, Section, Header, MultiTable } from 'Components';
-import { useContracts } from 'redux/hooks';
+import { Wrapper, Section, Header, MultiTable } from '../../Components';
+import { useContracts } from '../../redux/hooks';
 import { ContractsList, CodesList } from './Components';
 
 const Contracts = () => {

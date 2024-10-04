@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Formik, Field as BaseField } from 'formik';
 import styled from 'styled-components';
-import { Button, Modal, Forms } from 'Components';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import { Button, Modal, Forms } from '../../../Components';
 import {
   capitalize,
   proposalData,
   proposalValidations,
   proposalContent,
   ContentProps,
-} from 'utils';
-import { PROPOSAL_TYPES } from 'consts';
-import { useApp, useBlocks, useGovernance } from 'redux/hooks';
+} from '../../../utils';
+import { PROPOSAL_TYPES } from '../../../consts';
+import { useApp, useBlocks, useGovernance } from '../../../redux/hooks';
 import { Countdown } from '../../Proposal/Components/ManageVotingModal/Components';
 
 const Title = styled.div`
@@ -102,7 +101,7 @@ const ManageProposalModal = ({
   const { blocksHeight, getBlocksHeight } = useBlocks();
   const [proposalType, setProposalType] = useState('text');
   const { submitProposal } = useGovernance();
-  const { walletConnectService: wcs } = useWalletConnect();
+  // const { walletConnectService: wcs } = useWalletConnect();
   const { authToken } = useApp();
 
   useEffect(() => {
@@ -183,10 +182,11 @@ const ManageProposalModal = ({
           });
 
           // Submit via walletconnect-js
-          wcs.sendMessage({
-            description: 'Submit Proposal',
-            message: data.base64,
-          });
+          // TODO: Update this to send a proposal
+          // wcs.sendMessage({
+          //   description: 'Submit Proposal',
+          //   message: data.base64,
+          // });
           // Set proposal type back to default
           setProposalType('text');
           // Clear the form

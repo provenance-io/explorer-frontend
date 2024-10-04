@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useGetTxHeatmapDataQuery, DailyTotal } from 'redux/services';
-import { capitalize, formatDenom } from 'utils';
+import { useGetTxHeatmapDataQuery, DailyTotal } from '../../../redux/services';
+import { capitalize, formatDenom } from '../../../utils';
 // import { useMediaQuery } from 'redux/hooks';
 // import { breakpoints } from 'consts';
 

@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { FormikProps, FieldArray } from 'formik';
 import styled from 'styled-components';
-import { Button as BaseButton } from 'Components';
-import { capitalize, MyFieldsProps } from 'utils';
+import { Button as BaseButton } from '../../Components';
+import { capitalize, MyFieldsProps } from '../../utils';
 import { FormBuilder } from './Components';
 
 const ThisField = styled.div`

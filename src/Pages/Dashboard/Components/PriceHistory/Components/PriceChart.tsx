@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { HistoricalPricing } from 'redux/features/orderbook/orderbookSlice';
+import { useMediaQuery } from '../../../../../redux/hooks';
+import { breakpoints } from '../../../../../consts';
+import { HistoricalPricing } from '../../../../../redux/features/orderbook/orderbookSlice';
 import { format, parseISO } from 'date-fns';
 
 const StyledChart = styled.div`

@@ -8,7 +8,7 @@ import {
   GOVERNANCE_SUBMIT_PROPOSAL_URL,
   GOVERNANCE_PROPOSAL_TYPES_URL,
   GOVERNANCE_SUBMIT_VOTES_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 
 interface AddressVotes {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Content, Summary, Loading } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useValidators } from 'redux/hooks';
-import { numberFormat, formatDenom } from 'utils';
+import { Content, Summary, Loading } from '../../../Components';
+import { useValidators } from '../../../redux/hooks';
+import { numberFormat, formatDenom } from '../../../utils';
 
 const ValidatorCommission = () => {
   const [showBondedPopup, setShowBondedPopup] = useState(false);

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 
 const ProgressBar = styled.div`
   position: relative;

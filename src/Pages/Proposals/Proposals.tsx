@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wrapper, Header } from 'Components';
+import { Wrapper, Header } from '../../Components';
 import { ProposalsList } from './Components';
 
 const Proposals = () => (

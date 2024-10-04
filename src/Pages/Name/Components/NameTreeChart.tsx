@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import * as echarts from 'echarts';
-import { Loading, Filters, Content } from 'Components';
-import { useName } from 'redux/hooks';
-import { isEmpty } from 'utils';
-import { Colors } from 'theme/Colors';
+import { Loading, Filters, Content } from '../../../Components';
+import { useName } from '../../../redux/hooks';
+import { isEmpty } from '../../../utils';
+import { Colors } from '../../../theme/Colors';
 
 const StyledChart = styled.div`
   height: 800px;

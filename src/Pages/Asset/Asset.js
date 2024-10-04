@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Section, Wrapper, Header } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useAssets } from 'redux/hooks';
+import { Section, Wrapper, Header } from '../../Components';
+import { useAssets } from '../../redux/hooks';
 import { AssetHolders, AssetInformation, AssetTxsList, ManagingAccounts } from './Components';
 
 const Assets = () => {
@@ -12,7 +12,7 @@ const Assets = () => {
     getAssetMetadata();
   }, [getAssetMetadata]);
 
-  const assetName = assetMetadata.find(md => md.base === assetId)?.display || assetId;
+  const assetName = assetMetadata.find((md) => md.base === assetId)?.display || assetId;
 
   return (
     <Wrapper>

@@ -2,9 +2,9 @@
 import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { Button, /*Loading*/ Wrapper } from 'Components';
+import { Button, /*Loading*/ Wrapper } from '../../Components';
 // import { useTxs } from 'redux/hooks';
-import { DownloadCsvModal } from 'Pages/Dashboard/Components/TxHistory/Components';
+import { DownloadCsvModal } from '../../Pages/Dashboard/Components/TxHistory/Components';
 import { TxByHour, TxDaysOfWeek, TxHeatmap, TxHistory /*TxNodeLink*/ } from './Components';
 
 const MainTitle = styled.div`

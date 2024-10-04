@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Table } from 'Components';
-import { useAssets } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useAssets } from '../../../redux/hooks';
 
 const AssetsDist = () => {
   const {

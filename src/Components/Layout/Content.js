@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link as BaseLink } from 'react-router-dom';
-import { Sprite as BaseSprite } from 'Components';
+import { Sprite as BaseSprite } from '../../Components';
 
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 
 const ContentWrapper = styled.div`
   max-width: ${({ size }) => (size ? size : '100%')};

@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Button, DropdownBtn, Forms, Loading, Modal, SelectFolders, Sprite } from 'Components';
-import { CurrentValidator, useAccounts, useStaking, useValidators } from 'redux/hooks';
+import { Button, DropdownBtn, Forms, Loading, Modal, SelectFolders, Sprite } from '../../../Components';
+import { CurrentValidator, useAccounts, useStaking, useValidators } from '../../../redux/hooks';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from 'utils';
-import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from 'consts';
+import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from '../../../utils';
+import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from '../../../consts';
 import {
   DelegateProps,
   RedelegateProps,
   UndelegateProps,
   WithdrawRewardsProps,
 } from 'redux/features/staking/stakingSlice';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
 import Big from 'big.js';
 
 // Styled Components
@@ -144,8 +143,10 @@ export const ManageStakingModal = ({
   const { accountAssets } = useAccounts();
   const { delegateAction, redelegateAction, undelegateAction, withdrawRewardsAction } =
     useStaking();
-  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const { address: delegatorAddress } = walletConnectState;
+  // const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
+  // const { address: delegatorAddress } = walletConnectState;
+  // TODO: Update this
+  const delegatorAddress = '';
   // State variables
   const [isOpen, setIsOpen] = useState(false); // Is the modal open
   const [stakingType, setStakingType] = useState(''); // Sets staking type for managing delegations
@@ -208,10 +209,11 @@ export const ManageStakingModal = ({
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
     // Submit via walletconnect-js
-    wcs.sendMessage({
-      description: 'Submit Delegation',
-      message: data.base64,
-    });
+    // TODO: Update this to send the staking message
+    // wcs.sendMessage({
+    //   description: 'Submit Delegation',
+    //   message: data.base64,
+    // });
   };
   // Close Modal
   const handleModalClose = () => {

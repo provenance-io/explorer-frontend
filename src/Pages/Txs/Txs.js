@@ -1,6 +1,6 @@
 import React from 'react';
-import { Wrapper, Section, Header } from 'Components';
-import { useTxs } from 'redux/hooks';
+import { Wrapper, Section, Header } from '../../Components';
+import { useTxs } from '../../redux/hooks';
 import { TxList } from './Components';
 
 const Txs = () => {

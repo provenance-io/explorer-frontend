@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ReactJson from 'react-json-view';
-import { Content, Loading } from 'Components';
-import { useTxs } from 'redux/hooks';
+import { Content, Loading } from '../../../Components';
+import { useTxs } from '../../../redux/hooks';
 
 const FullTxInfoContainer = styled.div`
   color: ${({ theme }) => theme.FONT_LINK};

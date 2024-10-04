@@ -1,10 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
-import { useBlocks, useInterval, useMediaQuery } from 'redux/hooks';
 import { Link as BaseLink } from 'react-router-dom';
-import { BlockImage, Content, Loading, Sprite as BaseSprite, DataCard } from 'Components';
-import { maxLength, getUTCTime, numberFormat, formatSeconds, formatDenom } from 'utils';
-import { polling, breakpoints } from 'consts';
+import { useBlocks, useInterval, useMediaQuery } from '../../../redux/hooks';
+import { BlockImage, Content, Loading, Sprite as BaseSprite, DataCard } from '../../../Components';
+import { maxLength, getUTCTime, numberFormat, formatSeconds, formatDenom } from '../../../utils';
+import { polling, breakpoints } from '../../../consts';
 
 const Group = styled.div`
   display: flex;

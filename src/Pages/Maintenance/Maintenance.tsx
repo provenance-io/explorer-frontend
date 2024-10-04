@@ -1,8 +1,8 @@
 import styled, { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import { GlobalStyle } from 'theme';
-import { useColorScheme } from 'redux/hooks';
-import { Section, Content, Wrapper, Footer, SpriteSheet, BaseStyle } from 'Components';
+import { GlobalStyle } from '../../theme';
+import { useColorScheme } from '../../redux/hooks';
+import { Section, Content, Wrapper, Footer, SpriteSheet, BaseStyle } from '../../Components';
 
 const TextWrapper = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ export const Maintenance = () => {
   const { activeTheme } = useColorScheme();
   return (
     <>
-      <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
+      <BrowserRouter basename={import.meta.env.PUBLIC_URL || ''}>
         <GlobalStyle theme={activeTheme} />
         <SpriteSheet />
         <ThemeProvider theme={activeTheme}>

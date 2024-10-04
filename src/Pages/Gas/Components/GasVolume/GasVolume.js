@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Loading, Filters } from 'Components';
-import { useNetwork, useMediaQuery } from 'redux/hooks';
-import { breakpoints, GAS_GRANULARITY_OPTIONS } from 'consts';
-import { getUTCTime, subtractDays } from 'utils';
+import { Content, Loading, Filters } from '../../../../Components';
+import { useNetwork, useMediaQuery } from '../../../../redux/hooks';
+import { breakpoints, GAS_GRANULARITY_OPTIONS } from '../../../../consts';
+import { getUTCTime, subtractDays } from '../../../../utils';
 import { GasVolumeChart } from './Components';
 
 const FiltersWrapper = styled.div`
@@ -98,7 +98,7 @@ const GasVolume = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select From Date',
-        onChange: date => date && setGasVolumeFrom(format(date, defaultDateFormat)),
+        onChange: (date) => date && setGasVolumeFrom(format(date, defaultDateFormat)),
         selected: endDate,
         dateFormat: defaultDateFormat,
         maxDate: subtractDays(startDate, 1), // 15 Days from the start day is the max length of time
@@ -110,7 +110,7 @@ const GasVolume = () => {
       type: 'datepicker',
       options: {
         placeholderText: 'Select To Date',
-        onChange: date => date && setGasVolumeTo(format(date, defaultDateFormat)),
+        onChange: (date) => date && setGasVolumeTo(format(date, defaultDateFormat)),
         selected: startDate,
         dateFormat: defaultDateFormat,
         maxDate: today,

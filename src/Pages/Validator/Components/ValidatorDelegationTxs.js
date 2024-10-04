@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useValidators } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useValidators } from '../../../redux/hooks';
 
 const ValidatorDelegationTxs = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

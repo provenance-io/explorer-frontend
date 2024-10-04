@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { formatDenom } from 'utils';
-import { Table } from 'Components';
 import { useParams } from 'react-router-dom';
-import { useMediaQuery, useValidators } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { formatDenom } from '../../../utils';
+import { Table } from '../../../Components';
+import { useMediaQuery, useValidators } from '../../../redux/hooks';
+import { breakpoints } from '../../../consts';
 
 const ValidatorUnbondingDelegations = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

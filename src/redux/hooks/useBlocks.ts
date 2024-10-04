@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectBlock as selector,
   blockActions as actionsList,
-} from 'redux/features/block/blockSlice';
+} from '../features/block/blockSlice';
 
 export const useBlocks = () => {
   const dispatch = useAppDispatch();

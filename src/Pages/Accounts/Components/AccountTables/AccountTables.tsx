@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { MultiTable, Section as BaseSection } from 'Components';
-import { breakpoints } from 'consts';
-import { useMediaQuery } from 'redux/hooks';
+import { MultiTable, Section as BaseSection } from '../../../../Components';
+import { breakpoints } from '../../../../consts';
+import { useMediaQuery } from '../../../../redux/hooks';
 import {
   AccountAssets,
   AccountDelegations,
@@ -23,11 +22,13 @@ const Section = styled(BaseSection)`
 
 export const AccountTables = () => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('lg'));
-  const { walletConnectState: wcs } = useWalletConnect();
+  // const { walletConnectState: wcs } = useWalletConnect();
   const { addressId } = useParams<{ addressId: string }>();
   const [activeTableTab, setActiveTableTab] = useState(0);
 
-  const isOwnAccount = addressId === wcs.address;
+  // TODO: Update this
+  const isOwnAccount = true;
+  // const isOwnAccount = addressId === wcs.address;
 
   return (
     <Section>

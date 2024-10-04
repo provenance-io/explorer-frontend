@@ -1,10 +1,10 @@
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { isEmpty } from 'utils';
-import { VestingInfo } from 'redux/services';
+import { useMediaQuery } from '../../../../../redux/hooks';
+import { breakpoints } from '../../../../../consts';
+import { isEmpty } from '../../../../../utils';
+import { VestingInfo } from '../../../../../redux/services';
 import Big from 'big.js';
 
 const StyledChart = styled.div<{ height?: string }>`

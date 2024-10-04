@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { formatDenom } from 'utils';
+import { useMediaQuery } from '../../../../../redux/hooks';
+import { breakpoints } from '../../../../../consts';
+import { formatDenom } from '../../../../../utils';
 
 const StyledChart = styled.div`
   height: 600px;
@@ -326,7 +326,7 @@ const GasStatsChart = ({ gasStatsGran, data, msgType, plotType }: GasStatsProps)
         color: theme.FONT_PRIMARY,
       };
       // Set tooltip data
-      chartData.tooltip.formatter = params => (`
+      chartData.tooltip.formatter = (params: any) => (`
         <table>
           <div style="text-align:center;"><b>${granIsDay ? params[0].data.name.slice(0,10) : params[0].data.name}</b></div>
           <div>Message Type: <b>${!msgType ? 'All Types Average' : msgType}</b></div>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { formatDenom, isEmpty } from 'utils';
-import { useValidators, useAccounts, useFrontendPagination } from 'redux/hooks';
-import { Table } from 'Components';
+import { formatDenom, isEmpty } from '../../../../../utils';
+import { useValidators, useAccounts, useFrontendPagination } from '../../../../../redux/hooks';
+import { Table } from '../../../../../Components';
 
 export const AccountRewards = () => {
   const [tableData, setTableData] = useState<any[]>([]);

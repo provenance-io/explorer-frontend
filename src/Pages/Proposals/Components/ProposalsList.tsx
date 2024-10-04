@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Table, Section as BaseSection, Loading } from 'Components';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { isEmpty } from 'utils';
+import { Table, Section as BaseSection, Loading } from '../../../Components';
+import { isEmpty } from '../../../utils';
 import { ManageProposalModal } from '.';
 import { useApp, useGovernance, useProposal } from '../../../redux/hooks';
 
@@ -19,7 +18,7 @@ const ProposalsList = () => {
     proposalsLoading: tableLoading,
     proposalsPages: tablePages,
   } = useGovernance();
-  const { walletConnectState } = useWalletConnect();
+  // const { walletConnectState } = useWalletConnect();
   const { isLoggedIn } = useApp();
   const { ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
   const [proposalMax, setProposalMax] = useState(1);
@@ -31,7 +30,9 @@ const ProposalsList = () => {
     }
   }, [proposals, proposalMax]);
 
-  const { address } = walletConnectState;
+  // const { address } = walletConnectState;
+  // TODO: Update this
+  const address = '';
 
   const tableData = proposals.map((d: { header: object; timings: object }) => ({
     ...d.header,

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import qs from 'query-string';
 import { RootState } from "redux/app/store";
-import { NFT_URL } from "consts";
+import { NFT_URL } from "../../../consts";
 import { ajax } from "../api";
 
 interface NftDetail {

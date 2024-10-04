@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wrapper } from 'Components';
+import { Wrapper } from '../../Components';
 import { TokenStatsChart, AssetsDist } from './Components';
 
 const TokenStats = () => (

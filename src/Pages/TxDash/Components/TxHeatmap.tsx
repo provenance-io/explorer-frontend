@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { useGetTxHeatmapDataQuery, DayOfData } from 'redux/services';
-import { formatDenom } from 'utils';
+import { useGetTxHeatmapDataQuery, DayOfData } from '../../../redux/services';
+import { formatDenom } from '../../../utils';
 
 const StyledChart = styled.div`
   height: 600px;

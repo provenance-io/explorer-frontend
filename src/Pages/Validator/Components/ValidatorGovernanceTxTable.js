@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useTxs, useValidators } from 'redux/hooks';
-import { Table } from 'Components';
+import { useTxs, useValidators } from '../../../redux/hooks';
+import { Table } from '../../../Components';
 
 const ValidatorGovernanceTxTable = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

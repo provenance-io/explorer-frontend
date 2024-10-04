@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { useValidators } from 'redux/hooks';
-import { BlockImage, Content, Loading, PopupDataProps, Summary as BaseSummary } from 'Components';
-import { capitalize, getFormattedDate, maxLength, numberFormat } from 'utils';
-import { breakpoints } from 'consts';
+import { useValidators } from '../../../redux/hooks';
+import { BlockImage, Content, Loading, PopupDataProps, Summary as BaseSummary } from '../../../Components';
+import { capitalize, getFormattedDate, maxLength, numberFormat } from '../../../utils';
+import { breakpoints } from '../../../consts';
 // import { ValidatorMetrics } from './ValidatorMetrics';
 
 const Summary = styled(BaseSummary)`

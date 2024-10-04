@@ -6,7 +6,7 @@ import {
   STAKING_UNDELEGATE_URL,
   STAKING_WITHDRAW_COMMISSION_URL,
   STAKING_WITHDRAW_REWARDS_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 
 interface StakingState {}
