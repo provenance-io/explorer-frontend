@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
+import { useChain } from '@cosmos-kit/react';
 import { useApp, useAccounts } from '../hooks';
 import OgButton from '../../Components/Button';
+import { CHAIN_NAME } from '../../config';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
 `;
 
 export const useVoting = () => {
-  // const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
+  // const { walletConnectService: wcs } = useWalletConnect();
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page
@@ -20,9 +22,7 @@ export const useVoting = () => {
   const [voted, setVoted] = useState(false);
 
   // Get the address
-  // const { address } = walletConnectState;
-  // TODO: Update this
-  const address = ''
+  const { address } = useChain(CHAIN_NAME);
 
   // Yep we need the wallet
   useEffect(() => {
@@ -53,7 +53,7 @@ export const useVoting = () => {
   // }, [wcs, deactivateModalOpen]);
 
   const handleManageVotingClick = () => {
-    getAccountDelegations({ address });
+    getAccountDelegations({ address: String(address) });
     activateModalOpen();
   };
 

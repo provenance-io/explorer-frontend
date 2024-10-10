@@ -1,13 +1,13 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from '../src/redux/app/store';
-import { AppKitProvider } from './Providers';
 import ReactGA from 'react-ga4';
 import TagManager from 'react-gtm-module';
 // eslint-disable-next-line
 import { Maintenance } from 'Pages';
+import { store } from '../src/redux/app/store';
 import { isProd } from '../src/consts';
 import App from './App';
+import { CosmosProvider } from './Providers';
 
 /* Note: during maintenance cycles, update the tests in package.json
          to only run the linter. Show Maintenance component here
@@ -21,10 +21,10 @@ if (gtmId) TagManager.initialize({ gtmId });
 
 ReactDOM.render(
   <Provider store={store()}>
-    <AppKitProvider>
+    <CosmosProvider>
       <App />
       {/* <Maintenance /> */}
-    </AppKitProvider>
+      </CosmosProvider>
   </Provider>,
   document.getElementById('root')
 );

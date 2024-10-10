@@ -1,32 +1,21 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
-import { Link as BaseLink } from 'react-router-dom';
 // @ts-ignore
 import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
 // @ts-ignore
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { breakpoints, ICON_NAMES, isProd } from '../../consts';
+import { useChain } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '../../config';
+import { ICON_NAMES } from '../../consts';
 import { useApp } from '../../redux/hooks';
-import { maxLength } from '../../utils';
 import { PopupNote } from '../../Components/PopupNote';
 import Button from '../Button';
 import Sprite from '../Sprite';
-import { Connector, useConnect } from 'wagmi';
-import { Modal } from '../../Components';
 
 const Container = styled.div`
   position: relative;
-`;
-
-const PopupTxt = styled.p`
-  text-align: center;
-
-  @media ${breakpoints.up('md')} {
-    white-space: nowrap;
-  }
 `;
 
 const AccountBtn = styled(Button)<{ isLoggedIn?: boolean }>`
@@ -39,57 +28,28 @@ const AccountBtn = styled(Button)<{ isLoggedIn?: boolean }>`
   animation-iteration-count: ${({ isLoggedIn }) => (isLoggedIn ? 0 : 2)};
 `;
 
-const LogoutButton = styled(Button)`
-  float: right;
-`;
-
-const Link = styled(BaseLink)`
-  &&& {
-    :hover {
-      opacity: 1;
-      text-decoration: underline;
-    }
-    :visited {
-      color: ${({ theme }) => theme.FONT_NAV_VISITED};
-    }
-
-    color: ${({ theme }) => theme.FONT_NAV};
-  }
-`;
-
 const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
-  const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
-  const { connectors, connect } = useConnect();
-  // const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  // const { status, address } = walletConnectState;
+  const { isLoggedIn, setIsLoggedIn, setWalletAddress } = useApp();
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
 
-  const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
+  const [, , , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
-  useEffect(() => {
-    setIsLoggedIn(status === 'connected');
-  }, [status, setIsLoggedIn]);
+  const { status, connect, address } = useChain(CHAIN_NAME);
 
-  const handleLogout = () => {
-    setWalletUrl('');
-    // TODO: Disconnect here
-    // wcs.disconnect();
-    // Don't show Login prompt again
-    setVisible(false);
-  };
+  useEffect(() => {
+    setIsLoggedIn(status === 'Connected');
+    if (address) {
+      setWalletAddress(address);
+    }
+  }, [status, setIsLoggedIn, address, setWalletAddress]);
 
   const handleLoginClick = () => {
-    toggleShowPopup();
-    // connect({ connector })
-    // TODO: Connect here
-    // wcs.connect();
+    connect();
   };
-
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Container
@@ -100,50 +60,15 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
       <PopupNote show={!isLoggedIn && visible} position={position} zIndex="201">
         Login
       </PopupNote>
-      <w3m-button />
-
-      {isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
-          <PopupTxt>You are currently logged in as</PopupTxt>
-          <PopupTxt>
-            {/* <Link to={`/accounts/${address}`}>
-              {isMobile ? maxLength(address, 11, '3') : address}
-            </Link> */}
-          </PopupTxt>
-          <LogoutButton color="secondary" onClick={handleLogout} icon={ICON_NAMES.LOGOUT}>
-            Sign Out
-          </LogoutButton>
-        </PopupNote>
-      )}
-      {!isLoggedIn && (
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} largeModal={true}>
-          <></>
-        </Modal>
-      )}
-      {/* <QRCodeModal
-        walletConnectService={wcs}
-        title="Scan the QRCode with your mobile Provenance Blockchain Wallet."
-        className="QR-Code-Modal"
-        devWallets={[
-          'figure_mobile_test',
-          'figure_hosted_test',
-          // @ts-ignore
-          'provenance_extension',
-          // @ts-ignore
-          'provenance_mobile',
-        ]}
-        hideWallets={isProd ? ['figure_hosted_test'] : ['figure_hosted']}
-      /> */}
+      <AccountBtn onClick={handleLoginClick} isLoggedIn={isLoggedIn}>
+        <Sprite
+          icon={isLoggedIn ? ICON_NAMES.ACCOUNT : ICON_NAMES.KEY}
+          color={theme.FONT_NAV}
+          size="20px"
+        />
+      </AccountBtn>
     </Container>
   );
-};
-
-UserAccount.propTypes = {
-  isMobile: PropTypes.bool,
-};
-
-UserAccount.defaultProps = {
-  isMobile: false,
 };
 
 export default UserAccount;

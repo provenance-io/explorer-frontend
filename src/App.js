@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { useChain, useWalletClient } from '@cosmos-kit/react';
+import { signJWT } from './utils/jwt';
 import { useAssets, useColorScheme, useApp } from '../src/redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from '../src/Components';
 import { GlobalStyle } from '../src/theme';
@@ -38,17 +40,60 @@ import {
   Validator,
   Validators,
 } from '../src/Pages';
+import { CHAIN_NAME } from './config';
 
 const App = () => {
-  // const {
-  //   walletConnectState: { signedJWT },
-  // } = useWalletConnect();
-  // TODO: Get this from the new integration
-  const signedJWT = '';
+  const signedJWT = localStorage.getItem('provenanceJWT');
+
+  useEffect(() => {
+    if (signedJWT) {
+      setAuthToken(signedJWT);
+    }
+  });
+
+  const { address, status, chain } = useChain(CHAIN_NAME);
+  const { setAuthToken, authToken } = useApp();
+  const { client } = useWalletClient('keplr-extension');
+  const [publicKey, setPublicKey] = useState();
+  const [signature, setSignature] = useState();
+  useEffect(() => {
+    if (!authToken && !signedJWT && status === 'Connected' && address) {
+      if (!publicKey || !signature) {
+        client
+          .signArbitrary(
+            chain.chain_id,
+            'tp1w5c4l67q9w4cv6gcyuggw5cgefdsuyapep4lt2',
+            'Approve the connection to Provenance'
+          )
+          .then((c) => {
+            setPublicKey(c.pub_key.value);
+            setSignature(c.signature);
+          });
+      }
+      if (publicKey && signature) {
+        signJWT({
+          address,
+          signature,
+          publicKey,
+        }).then((res) => {
+          localStorage.setItem('provenanceJWT', res.result.signedJWT);
+          setAuthToken(res.result.signedJWT);
+        });
+      }
+    }
+  }, [
+    address,
+    chain.chain_id,
+    client,
+    publicKey,
+    signature,
+    status,
+    setAuthToken,
+    authToken,
+    signedJWT,
+  ]);
 
   const { activeTheme } = useColorScheme();
-
-  const { setAuthToken } = useApp();
 
   const { assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed } =
     useAssets();
@@ -58,12 +103,6 @@ const App = () => {
       getAssetMetadata();
     }
   }, [assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed]);
-
-  useEffect(() => {
-    if (signedJWT) {
-      setAuthToken(signedJWT);
-    }
-  }, [setAuthToken, signedJWT]);
 
   return (
     <BrowserRouter basename={import.meta.env.PUBLIC_URL || ''}>

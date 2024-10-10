@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { useChain } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '../../../../config';
 import { MultiTable, Section as BaseSection } from '../../../../Components';
 import { breakpoints } from '../../../../consts';
 import { useMediaQuery } from '../../../../redux/hooks';
@@ -22,13 +24,12 @@ const Section = styled(BaseSection)`
 
 export const AccountTables = () => {
   const { matches: isSmall } = useMediaQuery(breakpoints.down('lg'));
-  // const { walletConnectState: wcs } = useWalletConnect();
+  const { address } = useChain(CHAIN_NAME);
   const { addressId } = useParams<{ addressId: string }>();
   const [activeTableTab, setActiveTableTab] = useState(0);
 
   // TODO: Update this
-  const isOwnAccount = true;
-  // const isOwnAccount = addressId === wcs.address;
+  const isOwnAccount = addressId === address;
 
   return (
     <Section>

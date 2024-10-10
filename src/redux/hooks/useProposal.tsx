@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
+import { useChain } from '@cosmos-kit/react';
 import { useApp } from '../hooks';
 import OgButton from '../../Components/Button';
+import { CHAIN_NAME } from '../../config';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -11,10 +13,8 @@ const Button = styled(OgButton)`
 
 export const useProposal = () => {
   const [shouldPull, setShouldPull] = useState(true);
-  // const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  // const { address } = walletConnectState;
-  // TODO: Update this
-  const address = '';
+  // const { walletConnectService: wcs } = useWalletConnect();
+  const { address } = useChain(CHAIN_NAME);
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
   // Only show if account has hash and is logged in - has hash determine by Proposal main page

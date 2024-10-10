@@ -1,14 +1,16 @@
 import { useEffect, useState, useMemo } from 'react';
 import { bindActionCreators } from 'redux';
+import styled from 'styled-components';
+// @ts-ignore
+import useToggle from 'react-tiny-hooks/use-toggle';
+import { useChain } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '../../config';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectStaking as selector,
   stakingActions as actionsList,
   noDispatchActions,
 } from '../features/staking/stakingSlice';
-import styled from 'styled-components';
-// @ts-ignore
-import useToggle from 'react-tiny-hooks/use-toggle';
 import { useApp, useAccounts } from '../hooks';
 import OgButton from '../../Components/Button';
 
@@ -75,10 +77,8 @@ export const useStaking = () => {
   const [shouldPull, setShouldPull] = useState(true);
   const [isDelegate, setIsDelegate] = useState(false);
   const [validator, setValidator] = useState<CurrentValidator>();
-  // const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  // const { address: delegatorAddress } = walletConnectState;
-  // TODO: Update this
-  const delegatorAddress = "";
+  // const { walletConnectService: wcs } = useWalletConnect();
+  const { address: delegatorAddress } = useChain(CHAIN_NAME);
   const {
     getAccountDelegations,
     getAccountAssets,
@@ -120,7 +120,7 @@ export const useStaking = () => {
   useEffect(() => {
     (async () => {
       try {
-        if (shouldPull && isLoggedIn) {
+        if (shouldPull && isLoggedIn && delegatorAddress) {
           getAccountAssets({ address: delegatorAddress, count: 100, page: 1 });
           getAccountDelegations({ address: delegatorAddress, count: 100, page: 1 });
           getAccountRedelegations(delegatorAddress);

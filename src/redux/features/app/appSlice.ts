@@ -9,6 +9,7 @@ export interface AppState {
   validatorCount: number;
   theme: string;
   walletUrl: string;
+  walletAddress: string;
   isLoggedIn: boolean;
   proposalNotifications: boolean;
   upgradeNotifications: boolean;
@@ -27,6 +28,7 @@ export const initialState: AppState = {
   validatorCount: 100,
   theme: getCookie('theme') || '',
   walletUrl: getCookie('walletUrl', true) || '',
+  walletAddress: localStorage.getItem('walletAddress') || '',
   isLoggedIn: false,
   // Notification states
   proposalNotifications: localStorage.getItem('proposalNotificationsOn') === 'true' || false,
@@ -66,6 +68,11 @@ export const appSlice = createSlice({
       state.walletUrl = action.payload;
     },
 
+    setWalletAddress(state, action: PayloadAction<string>) {
+      localStorage.setItem('walletAddress', action.payload.toString());
+      state.walletAddress = action.payload;
+    },
+
     setIsLoggedIn(state, action: PayloadAction<boolean>) {
       state.isLoggedIn = action.payload;
     },
@@ -103,6 +110,7 @@ export const appSlice = createSlice({
 const {
   setTheme,
   setWalletUrl,
+  setWalletAddress,
   setIsLoggedIn,
   setProposalNotifications,
   setAnnouncementNotifications,
@@ -113,6 +121,7 @@ const {
 export const appActions = {
   setTheme,
   setWalletUrl,
+  setWalletAddress,
   setIsLoggedIn,
   setProposalNotifications,
   setAnnouncementNotifications,
