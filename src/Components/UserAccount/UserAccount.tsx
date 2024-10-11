@@ -51,6 +51,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
     if (status === 'Disconnected') {
       setAuthToken('');
       localStorage.removeItem('provenanceJWT');
+      setPublicKey('');
+      setSignature('');
       setWalletAddress('');
     }
   }, [setAuthToken, setWalletAddress, status]);
@@ -58,8 +60,11 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   useEffect(() => {
     if (jwtInfo && jwtInfo.expires < Date.now() / 1000) {
       localStorage.removeItem('provenanceJWT');
+      setPublicKey('');
+      setSignature('');
+      setWalletAddress('');
     }
-  });
+  }, [jwtInfo, setWalletAddress]);
 
   useEffect(() => {
     if (signedJWT) {
