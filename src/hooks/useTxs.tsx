@@ -45,7 +45,6 @@ export class TxResult {
 
 export function useTx(chainName: string) {
   const { address, getSigningStargateClient, estimateFee } = useChain(chainName);
-  
 
   async function tx(msgs: Msg[], options: TxOptions = {}) {
     if (!address) {
@@ -56,7 +55,7 @@ export function useTx(chainName: string) {
       const txRaw = cosmos.tx.v1beta1.TxRaw;
       const gas = options.gas || await estimateFee(msgs);
       const client = await getSigningStargateClient();
-      const signed = await client.sign(address, msgs, gas, '');
+      const signed = await client.sign(address, msgs, gas, 'This is a string for you homie');
 
       if (!client) return new TxResult({ error: new TxError('Invalid stargate client') });
       if (!signed) return new TxResult({ error: new TxError('Invalid transaction') });

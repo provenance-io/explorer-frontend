@@ -1,13 +1,8 @@
 import base64url from 'base64url';
 // import { convertUtf8ToHex } from '@walletconnect/utils';
 // import { createHash } from 'crypto';
+import { Buffer } from 'buffer';
 import { ecdsaVerify } from 'secp256k1';
-// import type {
-//   BroadcastEventData,
-//   WCSSetState,
-//   WalletConnectClientType,
-//   WalletId,
-// } from '../../types';
 
 interface SignJWT {
   address: string;
@@ -122,7 +117,7 @@ export const signJWT = async ({
     // verify signature
     // Removed signature verification for now
     // valid = await verifySignature(hexJWT, signatureBuffer, pubKeyB64);
-    valid = true
+    valid = true;
     const signedPayloadEncoded = base64url(signature);
     const signedJWT = `${headerEncoded}.${payloadEncoded}.${signedPayloadEncoded}`;
     return {

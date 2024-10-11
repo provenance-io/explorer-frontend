@@ -10,6 +10,7 @@ const Validators = () => {
     <Wrapper>
       <Header title="Validators List" value={`${validatorsTotal} total`} />
       <Section header>
+        {/* @ts-ignore */}
         <ValidatorList />
       </Section>
     </Wrapper>

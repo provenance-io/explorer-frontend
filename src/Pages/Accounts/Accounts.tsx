@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Section, Wrapper, Header, Content } from '../../Components';
 import { useParams } from 'react-router-dom';
+import { Section, Wrapper, Header, Content } from '../../Components';
 import { useMediaQuery, useAccounts } from '../../redux/hooks';
 import { breakpoints } from '../../consts';
 import { maxLength } from '../../utils';

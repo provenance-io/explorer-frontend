@@ -24,6 +24,7 @@ import {
 import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from '../../../utils';
 import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from '../../../consts';
 import { useTx } from '../../../hooks/useTxs';
+import { CreateDelegateMessage } from './functions';
 
 // Styled Components
 const SpotlightContainer = styled.div`
@@ -218,27 +219,25 @@ export const ManageStakingModal = ({
   const handleSubmit = async (amount?: number) => {
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
-    // Submit via walletconnect-js
-    // TODO: Update this to send the staking message
-    const res = await tx(
-      data.json.messages.map((m) => {
-        const typeUrl = m['@type'];
-        delete m['@type'];
-        return { ...m, typeUrl };
-      }),
+    await tx(
+      [
+        {
+          typeUrl: data.json.messages[0]['@type'],
+          value: data.base64[0],
+        },
+      ],
       {
         gas: {
           amount: [
             {
-              amount: '100000000000',
+              amount: '1000000000',
               denom: 'nhash',
             },
           ],
-          gas: '81000',
+          gas: '200000',
         },
       }
     );
-    console.log(res);
   };
   // Close Modal
   const handleModalClose = () => {
@@ -295,7 +294,7 @@ export const ManageStakingModal = ({
                     .number()
                     .min(minAmount, 'Min delegation amount is 1e-9 hash')
                     .max(
-                      new Big(hashAmount).toNumber(),
+                      new Big(hashAmount || 0).toNumber(),
                       `Maximum delegation amount is ${hashAmount} hash`
                     )
                     .required('A delegation amount is required')
@@ -304,7 +303,7 @@ export const ManageStakingModal = ({
                     .number()
                     .min(minAmount, 'Minimum undelegation amount is 1e-9 hash')
                     .max(
-                      new Big(delegation).toNumber(),
+                      new Big(delegation || 0).toNumber(),
                       `Maximum amount is ${numberFormat(delegation, decimal)} hash`
                     )
                     .required('Please specify an amount to undelegate')
@@ -313,7 +312,7 @@ export const ManageStakingModal = ({
                     .number()
                     .min(minAmount, 'Minimum redelegation amount is 1e-9 hash')
                     .max(
-                      new Big(delegation).toNumber(),
+                      new Big(delegation || 0).toNumber(),
                       `Maximum amount is ${numberFormat(delegation, decimal)} hash`
                     )
                     .required('Please specify an amount to redelegate')
@@ -415,7 +414,7 @@ export const ManageStakingModal = ({
                   </Disclaimer>
                   {/* Pops a warning if you'll only have 5 hash left, otherwise you might get stuck */}
                   {new Big(formik.values.amount || 0).gt(
-                    new Big(hashAmount).minus(MIN_HASH_AFTER_STAKING).toNumber()
+                    new Big(hashAmount || 0).minus(MIN_HASH_AFTER_STAKING).toNumber()
                   ) && (
                     <Disclaimer color={theme.FONT_ERROR}>
                       <DisclaimerIcon>

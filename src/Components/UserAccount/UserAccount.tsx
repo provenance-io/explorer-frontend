@@ -7,6 +7,7 @@ import useOnEscape from 'react-tiny-hooks/use-on-escape';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useChain } from '@cosmos-kit/react';
+import { signJWT } from '../../utils/jwt';
 import { CHAIN_NAME } from '../../config';
 import { ICON_NAMES } from '../../consts';
 import { useApp } from '../../redux/hooks';
@@ -33,19 +34,77 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
+  const [publicKey, setPublicKey] = useState<string>();
+  const [signature, setSignature] = useState<string>();
 
   const [, , , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
-  const { status, connect, address } = useChain(CHAIN_NAME);
+  const { status, connect, address, signArbitrary } = useChain(CHAIN_NAME);
+  const { setAuthToken, authToken } = useApp();
+  const provJWT = localStorage.getItem('provenanceJWT');
+  const jwtInfo = provJWT ? JSON.parse(provJWT) : '';
+  const signedJWT = jwtInfo.expires < Date.now() / 1000 ? '' : jwtInfo.jwt;
+
+  useEffect(() => {
+    if (status === 'Disconnected') {
+      setAuthToken('');
+      localStorage.removeItem('provenanceJWT');
+      setWalletAddress('');
+    }
+  }, [setAuthToken, setWalletAddress, status]);
+
+  useEffect(() => {
+    if (jwtInfo && jwtInfo.expires < Date.now() / 1000) {
+      localStorage.removeItem('provenanceJWT');
+    }
+  });
+
+  useEffect(() => {
+    if (signedJWT) {
+      setAuthToken(signedJWT);
+    }
+  });
 
   useEffect(() => {
     setIsLoggedIn(status === 'Connected');
     if (address) {
       setWalletAddress(address);
     }
-  }, [status, setIsLoggedIn, address, setWalletAddress]);
+    if (!authToken && !signedJWT && status === 'Connected' && address) {
+      if (!publicKey || !signature) {
+        signArbitrary(address, 'Approve the connection to Provenance').then((c) => {
+          setPublicKey(c.pub_key.value);
+          setSignature(c.signature);
+        });
+      }
+      if (publicKey && signature) {
+        signJWT({
+          address,
+          signature,
+          publicKey,
+        }).then((res) => {
+          localStorage.setItem(
+            'provenanceJWT',
+            JSON.stringify({ jwt: res.result.signedJWT, expires: res.result.expires })
+          );
+          setAuthToken(res.result.signedJWT);
+        });
+      }
+    }
+  }, [
+    status,
+    setIsLoggedIn,
+    address,
+    setWalletAddress,
+    authToken,
+    signedJWT,
+    publicKey,
+    signature,
+    signArbitrary,
+    setAuthToken,
+  ]);
 
   const handleLoginClick = () => {
     connect();

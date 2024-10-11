@@ -1,7 +1,7 @@
 import '@interchain-ui/react/styles';
 
 import { SignerOptions } from 'cosmos-kit';
-import { wallets } from '@cosmos-kit/keplr';
+import { wallets } from '@cosmos-kit/leap-extension';
 import { ChainProvider } from '@cosmos-kit/react';
 import { assets, chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
@@ -54,7 +54,6 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ChainProvider
       chains={[...chains, CHAIN_CONFIG]}
-      // @ts-ignore
       assetLists={[...assets, CHAIN_ASSETS]}
       wallets={wallets}
       endpointOptions={{

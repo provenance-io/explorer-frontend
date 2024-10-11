@@ -1,4 +1,4 @@
-import { Chain } from '@chain-registry/types';
+import { AssetList, Chain } from '@chain-registry/types';
 
 export const TestnetChainConfig: Chain = {
   chain_type: 'cosmos',
@@ -9,6 +9,14 @@ export const TestnetChainConfig: Chain = {
   pretty_name: 'Provenance Testnet',
   bech32_prefix: 'tp',
   slip44: 505,
+  key_algos: ['secp256k1'],
+  staking: {
+    staking_tokens: [
+      {
+        denom: 'nhash',
+      },
+    ],
+  },
   fees: {
     fee_tokens: [
       {
@@ -32,7 +40,7 @@ export const TestnetChainConfig: Chain = {
   ],
 };
 
-export const TestnetChainAssets = {
+export const TestnetChainAssets: AssetList = {
   chain_name: 'provenancetestnet',
   assets: [
     {
@@ -60,8 +68,12 @@ export const TestnetChainAssets = {
         {
           png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/provenance/images/prov.png',
           svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/provenance/images/prov.svg',
+          theme: {
+            primary_color_hex: '#4c7cdc',
+          },
         },
       ],
+      type_asset: 'sdk.coin',
     },
   ],
 };
