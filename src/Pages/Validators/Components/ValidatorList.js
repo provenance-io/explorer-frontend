@@ -1,9 +1,13 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Table, Filters } from 'Components';
-import { formatDenom } from 'utils';
-import { useValidators, useApp, useAccounts, useStaking } from 'redux/hooks';
-import { MY_VALIDATOR_STATUS_OPTIONS, STAKING_TYPES, VALIDATOR_STATUS_OPTIONS } from 'consts';
+import { Table, Filters } from '../../../Components';
+import { formatDenom } from '../../../utils';
+import { useValidators, useApp, useAccounts, useStaking } from '../../../redux/hooks';
+import {
+  MY_VALIDATOR_STATUS_OPTIONS,
+  STAKING_TYPES,
+  VALIDATOR_STATUS_OPTIONS,
+} from '../../../consts';
 import { ManageStakingModal } from './ManageStakingModal';
 
 const ValidatorListContainer = styled.div`

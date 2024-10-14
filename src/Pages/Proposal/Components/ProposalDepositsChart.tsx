@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { useGovernance } from 'redux/hooks';
-import { Content, Loading } from 'Components';
+import { useGovernance } from '../../../redux/hooks';
+import { Content, Loading } from '../../../Components';
 import * as echarts from 'echarts';
-import { formatDenom, isEmpty } from 'utils';
+import { formatDenom, isEmpty } from '../../../utils';
 import Big from 'big.js';
 
 const StyledChart = styled.div`

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { DataCard as BaseDataCard } from 'Components';
-import { capitalize } from 'utils';
+import { DataCard as BaseDataCard } from '../../../Components';
+import { capitalize } from '../../../utils';
 import { NotifyMessage, NotifyMessageProps } from '.';
 
 const DataCard = styled(BaseDataCard)<{ show: boolean }>`

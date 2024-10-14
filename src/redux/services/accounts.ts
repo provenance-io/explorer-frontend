@@ -1,5 +1,5 @@
-import { ACCOUNT_INFO_URL, ACCOUNT_INFO_V3_URL } from 'consts';
-import { AccountInfo } from 'redux/features/account/accountSlice';
+import { ACCOUNT_INFO_URL, ACCOUNT_INFO_V3_URL } from '../../consts';
+import { AccountInfo } from '../features/account/accountSlice';
 import { api } from './serviceApi';
 
 export interface VestingInfo {

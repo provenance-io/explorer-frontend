@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Sprite } from 'Components';
+import { Sprite } from '../../../Components';
 import { useHistory, useParams } from 'react-router-dom';
 
 const BlockPaginationContainer = styled.div`

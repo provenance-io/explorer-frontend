@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectTx as selector,
   txActions as actionsList,
-} from 'redux/features/tx/txSlice';
+} from '../features/tx/txSlice';
 
 export const useTxs = () => {
   const dispatch = useAppDispatch();

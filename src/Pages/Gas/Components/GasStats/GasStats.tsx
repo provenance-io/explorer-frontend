@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Loading, Filters, Section } from 'Components';
-import { useNetwork, useMediaQuery, useTxs } from 'redux/hooks';
-import { breakpoints, GAS_GRANULARITY_OPTIONS } from 'consts';
-import { getUTCTime, subtractDays, capitalize, isEmpty } from 'utils';
+import { Content, Loading, Filters, Section } from '../../../../Components';
+import { useNetwork, useMediaQuery, useTxs } from '../../../../redux/hooks';
+import { breakpoints, GAS_GRANULARITY_OPTIONS } from '../../../../consts';
+import { getUTCTime, subtractDays, capitalize, isEmpty } from '../../../../utils';
 import { GasStatsChart } from './Components';
 
 const FiltersWrapper = styled.div`

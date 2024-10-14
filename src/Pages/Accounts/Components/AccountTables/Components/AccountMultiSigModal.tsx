@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Modal } from 'Components';
-import { AccountInfo } from 'redux/features/account/accountSlice';
+import { Modal } from '../../../../../Components';
+import { AccountInfo } from '../../../../../redux/features/account/accountSlice';
 import { Link } from 'react-router-dom';
 
 const Title = styled.div`

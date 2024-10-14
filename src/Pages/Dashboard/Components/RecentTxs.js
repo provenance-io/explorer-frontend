@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { maxLength, getUTCTime, capitalize, formatDenom } from 'utils';
 import { Link } from 'react-router-dom';
-import { useInterval, useTxs, useMediaQuery } from 'redux/hooks';
-import { Content, TimeTicker, Loading } from 'Components';
-import { polling, breakpoints } from 'consts';
+import { maxLength, getUTCTime, capitalize, formatDenom } from '../../../utils';
+import { useInterval, useTxs, useMediaQuery } from '../../../redux/hooks';
+import { Content, TimeTicker, Loading } from '../../../Components';
+import { polling, breakpoints } from '../../../consts';
 
 const RecentTxsWrapper = styled.div`
   margin-top: 22px;

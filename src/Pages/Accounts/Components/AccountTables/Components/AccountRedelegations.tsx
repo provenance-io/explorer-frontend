@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useValidators, useAccounts, useFrontendPagination } from 'redux/hooks';
-import { Table } from 'Components';
-import { formatDenom } from 'utils';
+import { useValidators, useAccounts, useFrontendPagination } from '../../../../../redux/hooks';
+import { Table } from '../../../../../Components';
+import { formatDenom } from '../../../../../utils';
 
 export const AccountRedelegations = () => {
   const [tableData, setTableData] = useState<any[]>([]);

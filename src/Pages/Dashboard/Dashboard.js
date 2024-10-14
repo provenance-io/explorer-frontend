@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Helmet from 'react-helmet';
-import { Section, Wrapper, Notification } from 'Components';
+import { Section, Wrapper, Notification } from '../../Components';
 import {
   BlockSpotlight,
   TopValidators,

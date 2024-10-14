@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "redux/app/store";
-import { FAUCET_URL } from "consts";
+import { FAUCET_URL } from "../../../consts";
 import { ajax } from "../api";
 
 /* -----------------

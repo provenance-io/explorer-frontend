@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "redux/app/store";
 import {
   NAME_TREE_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from "../api";
 
 export interface NameTree {

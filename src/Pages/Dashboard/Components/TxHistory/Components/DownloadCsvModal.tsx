@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef, Ref } from 'react';
 import { Formik, FormikProps } from 'formik';
 import styled from 'styled-components';
-import { Button as Basebutton, Modal, Forms } from 'Components';
-import { downloadData as data, downloadValidations as validations, maxLength } from 'utils';
-import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from 'consts';
+import { Button as Basebutton, Modal, Forms } from '../../../../../Components';
+import { downloadData as data, downloadValidations as validations, maxLength } from '../../../../../utils';
+import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from '../../../../../consts';
 import qs from 'query-string';
-import { GranularityProps } from 'redux/services';
+import { GranularityProps } from '../../../../../redux/services';
 
 const Button = styled(Basebutton)`
   margin-top: 10px;

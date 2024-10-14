@@ -7,9 +7,9 @@ import {
   SOCIAL_PROVENANCE_URL,
   SOCIAL_DISCORD_URL,
   isProd,
-} from 'consts';
-import { useGetChaincodeIdQuery } from 'redux/services';
-import Loading from 'Components/Loading';
+} from '../../consts';
+import { useGetChaincodeIdQuery } from '../../redux/services';
+import Loading from '../../Components/Loading';
 import Sprite from '../Sprite';
 import { version } from '../../../package.json';
 

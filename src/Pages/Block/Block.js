@@ -1,5 +1,5 @@
 import React from 'react';
-import { Section, Wrapper, Header } from 'Components';
+import { Section, Wrapper, Header } from '../../Components';
 import { BlockDetails, BlockPagination, BlockValidators, BlockTxs } from './Components';
 
 const Block = () => (

@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectAsset as selector,
   assetActions as actionsList,
-} from 'redux/features/asset/assetSlice';
+} from '../features/asset/assetSlice';
 
 export const useAssets = () => {
   const dispatch = useAppDispatch();

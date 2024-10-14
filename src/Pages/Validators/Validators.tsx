@@ -1,6 +1,6 @@
 import React from 'react';
-import { Wrapper, Section, Header } from 'Components';
-import { useValidators } from 'redux/hooks';
+import { Wrapper, Section, Header } from '../../Components';
+import { useValidators } from '../../redux/hooks';
 import { ValidatorList } from './Components';
 
 const Validators = () => {
@@ -10,6 +10,7 @@ const Validators = () => {
     <Wrapper>
       <Header title="Validators List" value={`${validatorsTotal} total`} />
       <Section header>
+        {/* @ts-ignore */}
         <ValidatorList />
       </Section>
     </Wrapper>

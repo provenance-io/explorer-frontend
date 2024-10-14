@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, MultiTable } from 'Components';
-import { useApp, useAssets } from 'redux/hooks';
+import { Table, MultiTable } from '../../../Components';
+import { useApp, useAssets } from '../../../redux/hooks';
 
 const AssetTxsList = () => {
   const [tableCurrentPageA, setTableCurrentPageA] = useState(1);
@@ -45,12 +45,12 @@ const AssetTxsList = () => {
     }
   }, [getTableDataB, assetId, tableCount, tableCurrentPageB, activeTableTab, tablesLoaded]);
 
-  const changePageA = page => {
-    setTablesLoaded(tablesLoaded.filter(t => t !== 0));
+  const changePageA = (page) => {
+    setTablesLoaded(tablesLoaded.filter((t) => t !== 0));
     setTableCurrentPageA(page);
   };
-  const changePageB = page => {
-    setTablesLoaded(tablesLoaded.filter(t => t !== 1));
+  const changePageB = (page) => {
+    setTablesLoaded(tablesLoaded.filter((t) => t !== 1));
     setTableCurrentPageB(page);
   };
 

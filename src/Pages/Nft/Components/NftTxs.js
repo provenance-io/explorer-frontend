@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { useTxs } from 'redux/hooks';
-import { Table } from 'Components';
+import { useTxs } from '../../../redux/hooks';
+import { Table } from '../../../Components';
 
 const NftTxs = () => {
   const { addr } = useParams();

@@ -6,7 +6,7 @@ import {
   BLOCKS_RECENT_URL, 
   BLOCK_SPOTLIGHT_URL, 
   BLOCK_HEIGHT_URL 
-} from 'consts';
+} from '../../../consts';
 import { ajax } from "../api";
 
 interface BlockInfo {

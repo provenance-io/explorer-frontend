@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { maxLength, numberFormat } from 'utils';
 import styled, { useTheme } from 'styled-components';
-import { Content, Loading } from 'Components';
 import * as echarts from 'echarts';
-import { useApp, useValidators, useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { maxLength, numberFormat } from '../../../utils';
+import { Content, Loading } from '../../../Components';
+import { useApp, useValidators, useMediaQuery } from '../../../redux/hooks';
+import { breakpoints } from '../../../consts';
 
 const StyledChart = styled.div`
   display: flex;

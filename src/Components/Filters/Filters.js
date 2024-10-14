@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { SelectFolders, DatePicker, Button } from 'Components';
+import { SelectFolders, DatePicker, Button } from '../../Components';
 import { TextInput } from './Components';
 
 const FilterContainer = styled.div`

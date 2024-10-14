@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { Table, Content, Section, Accordion } from 'Components';
-import { useNetwork } from 'redux/hooks';
-import { isEmpty, capitalize, formatDenom } from 'utils';
+import { Table, Content, Section, Accordion } from '../../../Components';
+import { useNetwork } from '../../../redux/hooks';
+import { isEmpty, capitalize, formatDenom } from '../../../utils';
 
 // Function to generate a simple table
 const getTable = (data, type, tableData = [], tableLoading) => {

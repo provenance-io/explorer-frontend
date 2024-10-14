@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Table, Section as BaseSection, Loading } from 'Components';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { isEmpty } from 'utils';
+import { useChain } from '@cosmos-kit/react';
+import { Table, Section as BaseSection, Loading } from '../../../Components';
+import { isEmpty } from '../../../utils';
 import { ManageProposalModal } from '.';
 import { useApp, useGovernance, useProposal } from '../../../redux/hooks';
+import { CHAIN_NAME } from '../../../config';
 
 const Section = styled(BaseSection)`
   display: flex;
@@ -19,7 +20,7 @@ const ProposalsList = () => {
     proposalsLoading: tableLoading,
     proposalsPages: tablePages,
   } = useGovernance();
-  const { walletConnectState } = useWalletConnect();
+  const { address } = useChain(CHAIN_NAME);
   const { isLoggedIn } = useApp();
   const { ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
   const [proposalMax, setProposalMax] = useState(1);
@@ -30,8 +31,6 @@ const ProposalsList = () => {
       setProposalMax(proposals[0].header.proposalId + 1);
     }
   }, [proposals, proposalMax]);
-
-  const { address } = walletConnectState;
 
   const tableData = proposals.map((d: { header: object; timings: object }) => ({
     ...d.header,
@@ -62,7 +61,7 @@ const ProposalsList = () => {
             modalOpen={modalFns.modalOpen}
             onClose={modalFns.deactivateModalOpen}
             proposalId={`${proposalMax}`}
-            proposerId={address}
+            proposerId={String(address)}
             submitted={submitted}
             setSubmitted={setSubmitted}
           />

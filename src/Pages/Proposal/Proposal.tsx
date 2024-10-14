@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Wrapper, Header, Section, Loading } from 'Components';
-import { isEmpty } from 'utils';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import { useChain } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '../../config';
+import { Wrapper, Header, Section, Loading } from '../../Components';
+import { isEmpty } from '../../utils';
 import { useGovernance, useAccounts, useApp } from '../../redux/hooks';
 import {
   ProposalDeposits,
@@ -25,8 +26,7 @@ const Proposal = () => {
   const { timings } = proposal;
   const { accountAssets, getAccountAssets } = useAccounts();
   const { isLoggedIn } = useApp();
-  const { walletConnectState } = useWalletConnect();
-  const { address } = walletConnectState;
+  const { address } = useChain(CHAIN_NAME);
   const hashBalance: { amount: string; denom: string } = accountAssets?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
@@ -66,34 +66,43 @@ const Proposal = () => {
         <>
           {
             <Section header>
+              {/* @ts-ignore */}
               <ProposalVoting />
             </Section>
           }
           <Section>
+            {/* @ts-ignore */}
             <ProposalInformation />
           </Section>
         </>
       ) : (
         <Section header>
+          {/* @ts-ignore */}
           <ProposalInformation />
         </Section>
       )}
       <Section>
+        {/* @ts-ignore */}
         <ProposalTimingTable />
       </Section>
       <Section>
+        {/* @ts-ignore */}
         <ProposalDepositsChart />
       </Section>
       <Section>
+        {/* @ts-ignore */}
         <ProposalDeposits />
       </Section>
       <Section>
+        {/* @ts-ignore */}
         <ProposalQuorumChart />
       </Section>
       <Section>
+        {/* @ts-ignore */}
         <ProposalVotingChart />
       </Section>
       <Section>
+        {/* @ts-ignore */}
         <ProposalVotingTable />
       </Section>
     </Wrapper>

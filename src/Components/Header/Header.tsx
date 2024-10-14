@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { breakpoints } from 'consts';
+import { breakpoints } from '../../consts';
 import CopyValue from '../CopyValue';
 
 const HeaderContainer = styled.div`

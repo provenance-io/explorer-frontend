@@ -2,13 +2,13 @@ import { useState, useRef, useEffect, useCallback, SetStateAction, Dispatch } fr
 import styled from 'styled-components';
 import { format } from 'date-fns';
 import * as echarts from 'echarts';
-import { useTxs } from 'redux/hooks';
-import { maxLength, subtractDays } from 'utils';
-import { TxRecent } from 'redux/features/tx/txSlice';
-import { Loading } from 'Components';
+import { useTxs } from '../../../redux/hooks';
+import { maxLength, subtractDays } from '../../../utils';
+import { TxRecent } from '../../../redux/features/tx/txSlice';
+import { Loading } from '../../../Components';
 import Big from 'big.js';
-import { ajax } from 'redux/features/api';
-import { TXS_BY_ADDRESS_URL } from 'consts';
+import { ajax } from '../../../redux/features/api';
+import { TXS_BY_ADDRESS_URL } from '../../../consts';
 
 // TODO: Need to clean up how nodes are generated
 

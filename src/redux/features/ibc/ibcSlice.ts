@@ -8,7 +8,7 @@ import {
   IBC_RELAYERS_URL,
   IBC_CHANNEL_STATUS_URL,
   IBC_DENOMS_ALL_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from "../api";
 
 interface ChainBalances {

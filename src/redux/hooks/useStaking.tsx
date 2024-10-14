@@ -1,17 +1,18 @@
 import { useEffect, useState, useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import styled from 'styled-components';
+// @ts-ignore
+import useToggle from 'react-tiny-hooks/use-toggle';
+import { useChain } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '../../config';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectStaking as selector,
   stakingActions as actionsList,
   noDispatchActions,
-} from 'redux/features/staking/stakingSlice';
-import styled from 'styled-components';
-import { useWalletConnect, WINDOW_MESSAGES } from '@provenanceio/walletconnect-js';
-// @ts-ignore
-import useToggle from 'react-tiny-hooks/use-toggle';
-import { useApp, useAccounts } from 'redux/hooks';
-import OgButton from 'Components/Button';
+} from '../features/staking/stakingSlice';
+import { useApp, useAccounts } from '../hooks';
+import OgButton from '../../Components/Button';
 
 const Button = styled(OgButton)`
   text-transform: capitalize;
@@ -76,8 +77,8 @@ export const useStaking = () => {
   const [shouldPull, setShouldPull] = useState(true);
   const [isDelegate, setIsDelegate] = useState(false);
   const [validator, setValidator] = useState<CurrentValidator>();
-  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const { address: delegatorAddress } = walletConnectState;
+  // const { walletConnectService: wcs } = useWalletConnect();
+  const { address: delegatorAddress } = useChain(CHAIN_NAME);
   const {
     getAccountDelegations,
     getAccountAssets,
@@ -99,26 +100,27 @@ export const useStaking = () => {
       setShouldPull(true);
       deactivateModalOpen();
     };
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
+    // TODO: Re-add this back in for staking stuff
+    // wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
 
     // Fail message for transaction messages
     const submitFailure = () => {
       setShouldPull(false);
     };
-    wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
+    // wcs.addListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
 
     // Remove event listeners when no longer needed
     return () => {
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
-      wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
+      // wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_COMPLETE, submitSuccess);
+      // wcs.removeListener(WINDOW_MESSAGES.SEND_MESSAGE_FAILED, submitFailure);
     };
-  }, [wcs, deactivateModalOpen]);
+  }, /*[wcs, deactivateModalOpen]*/);
 
   // TODO: Need to improve flexibility to not have to pull 100+ delegators and assets
   useEffect(() => {
     (async () => {
       try {
-        if (shouldPull && isLoggedIn) {
+        if (shouldPull && isLoggedIn && delegatorAddress) {
           getAccountAssets({ address: delegatorAddress, count: 100, page: 1 });
           getAccountDelegations({ address: delegatorAddress, count: 100, page: 1 });
           getAccountRedelegations(delegatorAddress);
@@ -147,6 +149,7 @@ export const useStaking = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
+    //@ts-ignore
     let timeout: NodeJS.Timeout;
     if (shouldPull) {
       timeout = setTimeout(() => {

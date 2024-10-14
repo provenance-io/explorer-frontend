@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table } from 'Components';
-import { useApp, useAssets } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useApp, useAssets } from '../../../redux/hooks';
 
 const AssetHolders = () => {
   const { tableCount } = useApp();

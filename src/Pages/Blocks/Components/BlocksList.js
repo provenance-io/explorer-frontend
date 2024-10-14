@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'Components';
-import { useApp, useBlocks } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useApp, useBlocks } from '../../../redux/hooks';
 
 const BlocksList = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

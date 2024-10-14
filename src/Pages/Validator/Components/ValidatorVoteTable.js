@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useGovernance, useValidators } from 'redux/hooks';
-import { Table } from 'Components';
+import { useGovernance, useValidators } from '../../../redux/hooks';
+import { Table } from '../../../Components';
 
 const ValidatorVoteTable = () => {
   const [tableCurrentPage, setTableCurrentPage] = useState(1);

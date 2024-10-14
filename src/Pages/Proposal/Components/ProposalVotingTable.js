@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Table } from 'Components';
-import { useGovernance } from 'redux/hooks';
+import { Table } from '../../../Components';
+import { useGovernance } from '../../../redux/hooks';
 
 const ProposalTiming = () => {
   const { proposalId } = useParams();

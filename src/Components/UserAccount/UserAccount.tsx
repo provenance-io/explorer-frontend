@@ -1,31 +1,22 @@
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled, { useTheme } from 'styled-components';
-import { Link as BaseLink } from 'react-router-dom';
-import { QRCodeModal, useWalletConnect } from '@provenanceio/walletconnect-js';
 // @ts-ignore
 import useOnClickOutside from 'react-tiny-hooks/use-on-click-outside';
 // @ts-ignore
 import useOnEscape from 'react-tiny-hooks/use-on-escape';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { breakpoints, ICON_NAMES, isProd } from 'consts';
-import { useApp } from 'redux/hooks';
-import { maxLength } from 'utils';
-import { PopupNote } from 'Components/PopupNote';
+import { useChain } from '@cosmos-kit/react';
+import { signJWT } from '../../utils/jwt';
+import { CHAIN_NAME } from '../../config';
+import { ICON_NAMES } from '../../consts';
+import { useApp } from '../../redux/hooks';
+import { PopupNote } from '../../Components/PopupNote';
 import Button from '../Button';
 import Sprite from '../Sprite';
 
 const Container = styled.div`
   position: relative;
-`;
-
-const PopupTxt = styled.p`
-  text-align: center;
-
-  @media ${breakpoints.up('md')} {
-    white-space: nowrap;
-  }
 `;
 
 const AccountBtn = styled(Button)<{ isLoggedIn?: boolean }>`
@@ -38,50 +29,90 @@ const AccountBtn = styled(Button)<{ isLoggedIn?: boolean }>`
   animation-iteration-count: ${({ isLoggedIn }) => (isLoggedIn ? 0 : 2)};
 `;
 
-const LogoutButton = styled(Button)`
-  float: right;
-`;
-
-const Link = styled(BaseLink)`
-  &&& {
-    :hover {
-      opacity: 1;
-      text-decoration: underline;
-    }
-    :visited {
-      color: ${({ theme }) => theme.FONT_NAV_VISITED};
-    }
-
-    color: ${({ theme }) => theme.FONT_NAV};
-  }
-`;
-
 const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
-  const { isLoggedIn, setWalletUrl, setIsLoggedIn } = useApp();
-  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const { status, address } = walletConnectState;
+  const { isLoggedIn, setIsLoggedIn, setWalletAddress } = useApp();
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
+  const [publicKey, setPublicKey] = useState<string>();
+  const [signature, setSignature] = useState<string>();
 
-  const [showPopup, toggleShowPopup, , deactivateShowPopup] = useToggle();
+  const [, , , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
-  useEffect(() => {
-    setIsLoggedIn(status === 'connected');
-  }, [status, setIsLoggedIn]);
+  const { status, connect, address, signArbitrary } = useChain(CHAIN_NAME);
+  const { setAuthToken, authToken } = useApp();
+  const provJWT = localStorage.getItem('provenanceJWT');
+  const jwtInfo = provJWT ? JSON.parse(provJWT) : '';
+  const signedJWT = jwtInfo.expires < Date.now() / 1000 ? '' : jwtInfo.jwt;
 
-  const handleLogout = () => {
-    setWalletUrl('');
-    wcs.disconnect();
-    // Don't show Login prompt again
-    setVisible(false);
-  };
+  useEffect(() => {
+    if (status === 'Disconnected') {
+      setAuthToken('');
+      localStorage.removeItem('provenanceJWT');
+      setPublicKey('');
+      setSignature('');
+      setWalletAddress('');
+    }
+  }, [setAuthToken, setWalletAddress, status]);
+
+  useEffect(() => {
+    if (jwtInfo && jwtInfo.expires < Date.now() / 1000) {
+      localStorage.removeItem('provenanceJWT');
+      setPublicKey('');
+      setSignature('');
+      setWalletAddress('');
+    }
+  }, [jwtInfo, setWalletAddress]);
+
+  useEffect(() => {
+    if (signedJWT) {
+      setAuthToken(signedJWT);
+    }
+  });
+
+  useEffect(() => {
+    setIsLoggedIn(status === 'Connected');
+    if (address) {
+      setWalletAddress(address);
+    }
+    if (!authToken && !signedJWT && status === 'Connected' && address) {
+      if (!publicKey || !signature) {
+        signArbitrary(address, 'Approve the connection to Provenance').then((c) => {
+          setPublicKey(c.pub_key.value);
+          setSignature(c.signature);
+        });
+      }
+      if (publicKey && signature) {
+        signJWT({
+          address,
+          signature,
+          publicKey,
+        }).then((res) => {
+          localStorage.setItem(
+            'provenanceJWT',
+            JSON.stringify({ jwt: res.result.signedJWT, expires: res.result.expires })
+          );
+          setAuthToken(res.result.signedJWT);
+        });
+      }
+    }
+  }, [
+    status,
+    setIsLoggedIn,
+    address,
+    setWalletAddress,
+    authToken,
+    signedJWT,
+    publicKey,
+    signature,
+    signArbitrary,
+    setAuthToken,
+  ]);
 
   const handleLoginClick = () => {
-    toggleShowPopup();
-    wcs.connect();
+    connect();
   };
 
   return (
@@ -100,44 +131,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
           size="20px"
         />
       </AccountBtn>
-
-      {isLoggedIn && (
-        <PopupNote show={showPopup} position={position} delay={0} zIndex="201">
-          <PopupTxt>You are currently logged in as</PopupTxt>
-          <PopupTxt>
-            <Link to={`/accounts/${address}`}>
-              {isMobile ? maxLength(address, 11, '3') : address}
-            </Link>
-          </PopupTxt>
-          <LogoutButton color="secondary" onClick={handleLogout} icon={ICON_NAMES.LOGOUT}>
-            Sign Out
-          </LogoutButton>
-        </PopupNote>
-      )}
-      <QRCodeModal
-        walletConnectService={wcs}
-        title="Scan the QRCode with your mobile Provenance Blockchain Wallet."
-        className="QR-Code-Modal"
-        devWallets={[
-          'figure_mobile_test',
-          'figure_hosted_test',
-          // @ts-ignore
-          'provenance_extension',
-          // @ts-ignore
-          'provenance_mobile',
-        ]}
-        hideWallets={isProd ? ['figure_hosted_test'] : ['figure_hosted']}
-      />
     </Container>
   );
-};
-
-UserAccount.propTypes = {
-  isMobile: PropTypes.bool,
-};
-
-UserAccount.defaultProps = {
-  isMobile: false,
 };
 
 export default UserAccount;

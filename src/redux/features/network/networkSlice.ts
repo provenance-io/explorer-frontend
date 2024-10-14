@@ -8,7 +8,7 @@ import {
   NETWORK_TOKEN_STATS_URL,
   Skips,
   NETWORK_TOTAL_SUPPLY_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 
 interface NetworkUpgrades {

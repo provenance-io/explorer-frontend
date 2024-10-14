@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { useApp, useGovernance } from 'redux/hooks';
-import { Table } from 'Components';
+import { useApp, useGovernance } from '../../../redux/hooks';
+import { Table } from '../../../Components';
 
 const ProposalDeposits = () => {
   const { tableCount } = useApp();
@@ -29,7 +29,7 @@ const ProposalDeposits = () => {
     { displayName: 'Timestamp', dataName: 'txTimestamp' },
   ];
 
-  const tableData = proposalDeposits.map(d => ({
+  const tableData = proposalDeposits.map((d) => ({
     ...d,
     depositType: d.type,
   }));

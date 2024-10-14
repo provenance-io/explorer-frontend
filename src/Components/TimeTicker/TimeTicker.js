@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useInterval } from 'redux/hooks';
-import { getTimeSince } from 'utils';
+import { useInterval } from '../../redux/hooks';
+import { getTimeSince } from '../../utils';
 
 const TimeContainer = styled.div``;
 

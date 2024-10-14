@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectNetwork as selector,
   networkActions as actionsList,
-} from 'redux/features/network/networkSlice';
+} from '../features/network/networkSlice';
 
 export const useNetwork = () => {
   const dispatch = useAppDispatch();

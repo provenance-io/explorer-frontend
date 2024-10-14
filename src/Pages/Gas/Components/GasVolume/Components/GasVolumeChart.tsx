@@ -2,9 +2,9 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { format, parseISO } from 'date-fns';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
-import { formatDenom } from 'utils';
+import { useMediaQuery } from '../../../../../redux/hooks';
+import { breakpoints } from '../../../../../consts';
+import { formatDenom } from '../../../../../utils';
 
 const StyledChart = styled.div`
   height: 600px;

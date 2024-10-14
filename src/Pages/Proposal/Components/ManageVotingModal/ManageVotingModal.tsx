@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Formik, FormikProps } from 'formik';
 import styled, { useTheme } from 'styled-components';
-import { Button, Modal, Forms } from 'Components';
-import { isEmpty, votingData as data, votingValidations as validations } from 'utils';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { useGovernance, useAccounts } from 'redux/hooks';
+import { Button, Modal, Forms } from '../../../../Components';
+import { isEmpty, votingData as data, votingValidations as validations } from '../../../../utils';
+import { useGovernance, useAccounts } from '../../../../redux/hooks';
 import { VotingChart, Countdown } from './Components';
 
 const ModalContainer = styled.div<{ isOpen: boolean }>`
@@ -138,7 +137,7 @@ const ManageVotingModal = ({
   // Delegations are pulled when the vote button is clicked
   const hasDelegations = parseInt(accountDelegationsTotal.amount) > 0;
   const [voteAnyway, setVoteAnyway] = useState(false);
-  const { walletConnectService: wcs } = useWalletConnect();
+  // const { walletConnectService: wcs } = useWalletConnect();
 
   useEffect(() => {
     setIsOpen(isLoggedIn && modalOpen);
@@ -241,10 +240,11 @@ const ManageVotingModal = ({
                 voter: voterId,
                 votes,
               });
-              wcs.sendMessage({
-                description: 'Submit Proposal',
-                message: data.base64,
-              });
+              // TODO: Update this to send vote message
+              // wcs.sendMessage({
+              //   description: 'Submit Proposal',
+              //   message: data.base64,
+              // });
             }
             // Clear the form
             resetForm();

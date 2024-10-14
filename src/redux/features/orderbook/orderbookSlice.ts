@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'redux/app/store';
-import { UTILITY_TOKEN_CURRENT_URL, UTILITY_TOKEN_HISTORICAL_URL } from 'consts';
+import { UTILITY_TOKEN_CURRENT_URL, UTILITY_TOKEN_HISTORICAL_URL } from '../../../consts';
 import { ajax } from '../api';
 
 export interface HistoricalPricing {

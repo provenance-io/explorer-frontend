@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PopupNote, Sprite } from 'Components';
+import { PopupNote, Sprite } from '../../Components';
 import { Link } from 'react-router-dom';
 
 const NoteContainer = styled.div<{ fontColor: string }>`

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Path } from 'consts';
-import { useApp, useColorScheme } from 'redux/hooks';
+import { Path } from '../../../consts';
+import { useApp, useColorScheme } from '../../../redux/hooks';
 // Direct import to prevent import order issues
 import Sprite from '../../Sprite';
 import SearchBar from '../../SearchBar';

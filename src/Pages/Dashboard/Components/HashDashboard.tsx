@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Content, Loading, DataCard } from 'Components';
-import { formatDenom } from 'utils';
-import { useInterval, useMediaQuery, useOrderbook } from 'redux/hooks';
-import { breakpoints, polling } from 'consts';
+import { Content, Loading, DataCard } from '../../../Components';
+import { formatDenom } from '../../../utils';
+import { useInterval, useMediaQuery, useOrderbook } from '../../../redux/hooks';
+import { breakpoints, polling } from '../../../consts';
 
 const HashSpan = styled.p`
   margin: 0;

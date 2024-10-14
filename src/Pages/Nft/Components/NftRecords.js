@@ -1,9 +1,9 @@
 import { Fragment, useEffect } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
-import { useNft } from 'redux/hooks';
-import { Accordion, Content, Loading, Summary } from 'Components';
-import { capitalize } from 'utils';
+import { useNft } from '../../../redux/hooks';
+import { Accordion, Content, Loading, Summary } from '../../../Components';
+import { capitalize } from '../../../utils';
 
 const AccordionHeader = styled.div`
   display: grid;
@@ -27,7 +27,7 @@ const NftRecords = () => {
     }
   }, [addr, getNftRecords]);
 
-  const getRecordItems = record => {
+  const getRecordItems = (record) => {
     if (!record.record) return [];
 
     const { lastModified, recordAddr, recordSpecAddr, responsibleParties } = record.record;
@@ -47,7 +47,7 @@ const NftRecords = () => {
     ];
   };
 
-  const getSpecListItems = item => {
+  const getSpecListItems = (item) => {
     const { contractSpecAddr, recordSpecAddr, responsibleParties } = item;
 
     return [
@@ -63,7 +63,7 @@ const NftRecords = () => {
         <Loading />
       ) : (
         <Fragment>
-          {nftRecords.map(record => (
+          {nftRecords.map((record) => (
             <Accordion
               key={record.recordName}
               showChevron
@@ -91,7 +91,7 @@ const NftRecords = () => {
               {record.specList && (
                 <Fragment>
                   <Divider />
-                  {record.specList.map(item => (
+                  {record.specList.map((item) => (
                     <Fragment key={item.contractSpecAddr}>
                       <Summary data={getSpecListItems(item)} />
                       <Divider noBorder />

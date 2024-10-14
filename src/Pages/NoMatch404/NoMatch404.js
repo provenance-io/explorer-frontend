@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { useHistory } from 'react-router-dom';
-import { Section, Content, Wrapper } from 'Components';
+import { Section, Content, Wrapper } from '../../Components';
 
 const TextWrapper = styled.div`
   display: flex;

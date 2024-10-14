@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
-import { capitalize, formatDenom } from 'utils';
+import { capitalize, formatDenom } from '../../../../../utils';
 
 const StyledChart = styled.div<{ width: string }>`
   height: 200px;

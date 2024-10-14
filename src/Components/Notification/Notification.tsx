@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { format } from 'date-fns';
-import { Content, Button as BaseButton } from 'Components';
-import { useNotifications, useInterval, useApp } from 'redux/hooks';
-import { polling } from 'consts';
-import { subtractDays } from 'utils';
+import { Content, Button as BaseButton } from '../../Components';
+import { useNotifications, useInterval, useApp } from '../../redux/hooks';
+import { polling } from '../../consts';
+import { subtractDays } from '../../utils';
 import { Banner } from './Components';
 
 const NotificationWrapper = styled.div<{ show: boolean }>`

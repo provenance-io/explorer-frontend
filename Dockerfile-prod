@@ -1,8 +1,8 @@
 FROM node:14.6.0 as build
-ARG REACT_APP_ENV=test
+ARG VITE_APP_ENV=test
 WORKDIR /usr/src/app
 COPY . ./
-ENV REACT_APP_ENV=$REACT_APP_ENV
+ENV VITE_APP_ENV=$VITE_APP_ENV
 RUN ["npm", "run", "build"]
 
 # Stage - Production

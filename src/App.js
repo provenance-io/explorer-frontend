@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
-import { useAssets, useColorScheme, useApp } from 'redux/hooks';
-import { Navigation, Footer, SpriteSheet, BaseStyle } from 'Components';
-import { GlobalStyle } from 'theme';
-import { isProd } from 'consts';
-import { isEmpty } from 'utils';
+import { useAssets, useColorScheme } from '../src/redux/hooks';
+import { Navigation, Footer, SpriteSheet, BaseStyle } from '../src/Components';
+import { GlobalStyle } from '../src/theme';
+import { isProd } from '../src/consts';
+import { isEmpty } from '../src/utils';
 import {
   Accounts,
   Announcement,
@@ -38,15 +37,10 @@ import {
   Upgrades,
   Validator,
   Validators,
-} from 'Pages';
+} from '../src/Pages';
 
 const App = () => {
-  const {
-    walletConnectState: { signedJWT },
-  } = useWalletConnect();
   const { activeTheme } = useColorScheme();
-
-  const { setAuthToken } = useApp();
 
   const { assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed } =
     useAssets();
@@ -57,14 +51,8 @@ const App = () => {
     }
   }, [assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed]);
 
-  useEffect(() => {
-    if (signedJWT) {
-      setAuthToken(signedJWT);
-    }
-  }, [setAuthToken, signedJWT]);
-
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL || ''}>
+    <BrowserRouter basename={import.meta.env.PUBLIC_URL || ''}>
       <GlobalStyle theme={activeTheme} />
       <SpriteSheet />
       <ThemeProvider theme={activeTheme}>

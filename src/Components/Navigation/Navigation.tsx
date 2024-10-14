@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
+import { useMediaQuery } from '../../redux/hooks';
+import { breakpoints } from '../../consts';
 import { NavStandard, NavMini } from './Components';
 
 const NavigationWrapper = styled.div`

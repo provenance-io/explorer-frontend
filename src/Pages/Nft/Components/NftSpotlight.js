@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { useNft } from 'redux/hooks';
-import { Content, Loading, Summary } from 'Components';
+import { useNft } from '../../../redux/hooks';
+import { Content, Loading, Summary } from '../../../Components';
 
 const NftSpotlight = () => {
   const { addr } = useParams();
@@ -13,7 +13,7 @@ const NftSpotlight = () => {
     }
   }, [addr, getNftDetail]);
 
-  const getValue = val => ({ value: val || '--' });
+  const getValue = (val) => ({ value: val || '--' });
 
   const summaryData = [
     { title: 'Name', ...getValue(nftDetail?.description?.name) },

@@ -1,5 +1,5 @@
-import { Table } from 'Components';
-import { AccountHashTotals } from 'utils';
+import { Table } from '../../../../../Components';
+import { AccountHashTotals } from '../../../../../utils';
 
 export const AccountHashTable = ({
   hashData,

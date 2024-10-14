@@ -1,4 +1,4 @@
-import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from 'consts';
+import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from '../../consts';
 import qs from 'query-string';
 import { api } from './serviceApi';
 

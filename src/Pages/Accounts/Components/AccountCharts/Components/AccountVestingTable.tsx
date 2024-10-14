@@ -1,6 +1,6 @@
-import { Table } from 'Components';
-import { VestingInfo } from 'redux/services';
-import { formatDenom } from 'utils';
+import { Table } from '../../../../../Components';
+import { VestingInfo } from '../../../../../redux/services';
+import { formatDenom } from '../../../../../utils';
 
 export const AccountVestingTable = ({
   data,

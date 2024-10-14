@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectContract as selector,
   contractActions as actionsList,
-} from 'redux/features/contract/contractSlice';
+} from '../features/contract/contractSlice';
 
 export const useContracts = () => {
   const dispatch = useAppDispatch();

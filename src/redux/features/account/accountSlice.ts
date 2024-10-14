@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
 import { RootState } from 'redux/app/store';
-import { ACCOUNT_INFO_URL } from 'consts';
+import { ACCOUNT_INFO_URL } from '../../../consts';
 import { ajax } from '../api';
 
 export interface AccountInfo {

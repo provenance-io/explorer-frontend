@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MultiTable } from 'Components';
+import { MultiTable } from '../../../Components';
 import ValidatorGovernanceTxTable from './ValidatorGovernanceTxTable';
 import ValidatorVoteTable from './ValidatorVoteTable';
 

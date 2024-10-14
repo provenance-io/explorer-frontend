@@ -1,4 +1,4 @@
-import { TX_HEATMAP_URL } from 'consts';
+import { TX_HEATMAP_URL } from '../../consts';
 import { api } from './serviceApi';
 
 export interface DayOfData {

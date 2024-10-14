@@ -4,11 +4,11 @@ import {
   HashDataProps,
   useGetHashDataQuery,
   useGetVestingDataQuery,
-} from 'redux/services/accounts';
-import { Content, MultiTable, Loading } from 'Components';
-import { accountHashTotals } from 'utils';
-import { useMediaQuery } from 'redux/hooks';
-import { breakpoints } from 'consts';
+} from '../../../../redux/services/accounts';
+import { Content, MultiTable, Loading } from '../../../../Components';
+import { accountHashTotals } from '../../../../utils';
+import { useMediaQuery } from '../../../../redux/hooks';
+import { breakpoints } from '../../../../consts';
 import {
   AccountVestingChart,
   AccountVestingTable,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Sprite from 'Components/Sprite';
+import Sprite from '../../Components/Sprite';
 
 const ToggleContainer = styled.div`
   display: flex;

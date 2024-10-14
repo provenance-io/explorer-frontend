@@ -3,10 +3,10 @@ import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { Link, useParams } from 'react-router-dom';
-import { useAccounts } from 'redux/hooks';
-import { DataCard, CopyValue, Button as BaseButton } from 'Components';
-import { PopupDataProps } from 'Components/Summary/Summary';
-import { maxLength, formatDenom } from 'utils';
+import { useAccounts } from '../../../redux/hooks';
+import { DataCard, CopyValue, Button as BaseButton } from '../../../Components';
+import { PopupDataProps } from '../../../Components/Summary/Summary';
+import { maxLength, formatDenom } from '../../../utils';
 import { AccountMultiSigModal } from './AccountTables/Components';
 
 const Button = styled(BaseButton)`

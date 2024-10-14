@@ -54,7 +54,7 @@ jobs:
           context: .
           push: true
           tags: provenanceio/explorer-frontend:production
-          build-args: REACT_APP_ENV=production
+          build-args: VITE_APP_ENV=production
 
       - name: Build and push compose
         uses: docker/build-push-action@v2

@@ -5,7 +5,7 @@ import {
   UPGRADE_NOTIFICATIONS_URL,
   ANNOUNCEMENT_NOTIFICATIONS_URL,
   ANNOUNCEMENT_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from "../api";
 
 interface Notification {

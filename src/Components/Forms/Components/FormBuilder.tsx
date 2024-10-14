@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Field as BaseField, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
-import { capitalize } from 'utils';
+import { capitalize } from '../../../utils';
 import FileUploadComponent from './FileUploadComponent';
 
 const Option = styled.option`

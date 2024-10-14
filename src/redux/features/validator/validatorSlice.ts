@@ -6,7 +6,7 @@ import {
   VALIDATORS_GET_ALL_URL,
   BLOCK_VALIDATORS_URL,
   TX_INFO_URL,
-} from 'consts';
+} from '../../../consts';
 import { ajax } from '../api';
 import { TransactionsModule } from '../asset/assetSlice';
 

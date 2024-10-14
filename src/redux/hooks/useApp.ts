@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { bindActionCreators } from 'redux';
-import { useAppDispatch, useAppSelector } from 'redux/app/hooks';
-import { selectApp as selector, appActions as actionsList } from 'redux/features/app/appSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { selectApp as selector, appActions as actionsList } from '../features/app/appSlice';
 
 export const useApp = () => {
   const dispatch = useAppDispatch();

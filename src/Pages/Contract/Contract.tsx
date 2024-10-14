@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Wrapper, Header, Section, MultiTable } from 'Components';
-import { breakpoints } from 'consts';
-import { maxLength } from 'utils';
+import { Wrapper, Header, Section, MultiTable } from '../../Components';
+import { breakpoints } from '../../consts';
+import { maxLength } from '../../utils';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery, useContracts } from '../../redux/hooks';
 import { ContractDetails, ContractHistory, ContractTxs } from './Components';

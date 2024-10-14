@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Section, Wrapper, Header, MultiTable } from 'Components';
+import { Section, Wrapper, Header, MultiTable } from '../../Components';
 import { NameTreeChart, NameTreeFileFinder } from './Components';
 
 export const NameTree = () => {

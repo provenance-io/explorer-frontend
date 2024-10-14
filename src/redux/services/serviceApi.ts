@@ -17,7 +17,6 @@ const baseQuery = fetchBaseQuery({
   baseUrl: '',
   prepareHeaders: (headers, { getState }) => {
     // By default, if we have a token in the store, let's use that for authenticated requests
-    // @ts-ignore
     // TODO: REMOVE THIS ONCE wcjs IS INTEGRATED
     const token = (getState() as RootState).app.authToken;
     if (token) {

@@ -1,8 +1,8 @@
 import Big from 'big.js';
-import { Filters, Loading, Table } from 'Components';
+import { Filters, Loading, Table } from '../../../Components';
 import { useState } from 'react';
 import { useParams } from 'react-router';
-import { useGetValidatorMetricsQuery, useGetValidatorMetricPeriodsQuery } from 'redux/services';
+import { useGetValidatorMetricsQuery, useGetValidatorMetricPeriodsQuery } from '../../../redux/services';
 import styled from 'styled-components';
 
 const ErrorMessage = styled.div`

@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import qs from 'query-string';
 import { RootState } from 'redux/app/store';
-import { ASSET_DETAIL_URL, ASSETS_LIST_URL, TX_INFO_URL, ASSETS_DIST_URL } from 'consts';
-import { formatDenom, setCookie } from 'utils';
+import { ASSET_DETAIL_URL, ASSETS_LIST_URL, TX_INFO_URL, ASSETS_DIST_URL } from '../../../consts';
+import { formatDenom, setCookie } from '../../../utils';
 import { ajax } from '../api';
 
 interface AssetInfo {

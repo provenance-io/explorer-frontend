@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { Button, DropdownBtn, Forms, Loading, Modal, SelectFolders, Sprite } from 'Components';
-import { CurrentValidator, useAccounts, useStaking, useValidators } from 'redux/hooks';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from 'utils';
-import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from 'consts';
 import {
   DelegateProps,
   RedelegateProps,
   UndelegateProps,
   WithdrawRewardsProps,
 } from 'redux/features/staking/stakingSlice';
-import { useWalletConnect } from '@provenanceio/walletconnect-js';
 import Big from 'big.js';
+import { useChain } from '@cosmos-kit/react';
+import { CHAIN_NAME } from '../../../config';
+import { CurrentValidator, useAccounts, useStaking, useValidators } from '../../../redux/hooks';
+import {
+  Button,
+  DropdownBtn,
+  Forms,
+  Loading,
+  Modal,
+  SelectFolders,
+  Sprite,
+} from '../../../Components';
+import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from '../../../utils';
+import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from '../../../consts';
+import { useTx } from '../../../hooks/useTxs';
+import { CreateDelegateMessage } from './functions';
 
 // Styled Components
 const SpotlightContainer = styled.div`
@@ -138,14 +149,15 @@ export const ManageStakingModal = ({
   validator,
 }: StakingModalProps) => {
   // Hooks
+  const { tx } = useTx(CHAIN_NAME);
   const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } =
     useValidators();
   const theme = useTheme();
   const { accountAssets } = useAccounts();
   const { delegateAction, redelegateAction, undelegateAction, withdrawRewardsAction } =
     useStaking();
-  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const { address: delegatorAddress } = walletConnectState;
+  // const { walletConnectService: wcs } = useWalletConnect();
+  const { address: delegatorAddress } = useChain(CHAIN_NAME);
   // State variables
   const [isOpen, setIsOpen] = useState(false); // Is the modal open
   const [stakingType, setStakingType] = useState(''); // Sets staking type for managing delegations
@@ -174,7 +186,7 @@ export const ManageStakingModal = ({
         amount: String(delAmount),
         denom,
       },
-      delegator: delegatorAddress,
+      delegator: String(delegatorAddress),
       validator: validator.addressId,
     };
     switch (stakingType) {
@@ -187,14 +199,14 @@ export const ManageStakingModal = ({
             amount: String(delAmount),
             denom,
           },
-          delegator: delegatorAddress,
+          delegator: String(delegatorAddress),
           validatorDst: redelegateAddress,
           validatorSrc: validator.addressId,
         };
         return { action: redelegateAction, data };
       case STAKING_TYPES.CLAIM:
         data = {
-          delegator: delegatorAddress,
+          delegator: String(delegatorAddress),
           validator: validator.addressId,
         };
         return { action: withdrawRewardsAction, data };
@@ -207,11 +219,25 @@ export const ManageStakingModal = ({
   const handleSubmit = async (amount?: number) => {
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
-    // Submit via walletconnect-js
-    wcs.sendMessage({
-      description: 'Submit Delegation',
-      message: data.base64,
-    });
+    await tx(
+      [
+        {
+          typeUrl: data.json.messages[0]['@type'],
+          value: data.base64[0],
+        },
+      ],
+      {
+        gas: {
+          amount: [
+            {
+              amount: '1000000000',
+              denom: 'nhash',
+            },
+          ],
+          gas: '200000',
+        },
+      }
+    );
   };
   // Close Modal
   const handleModalClose = () => {
@@ -268,7 +294,7 @@ export const ManageStakingModal = ({
                     .number()
                     .min(minAmount, 'Min delegation amount is 1e-9 hash')
                     .max(
-                      new Big(hashAmount).toNumber(),
+                      new Big(hashAmount || 0).toNumber(),
                       `Maximum delegation amount is ${hashAmount} hash`
                     )
                     .required('A delegation amount is required')
@@ -277,7 +303,7 @@ export const ManageStakingModal = ({
                     .number()
                     .min(minAmount, 'Minimum undelegation amount is 1e-9 hash')
                     .max(
-                      new Big(delegation).toNumber(),
+                      new Big(delegation || 0).toNumber(),
                       `Maximum amount is ${numberFormat(delegation, decimal)} hash`
                     )
                     .required('Please specify an amount to undelegate')
@@ -286,7 +312,7 @@ export const ManageStakingModal = ({
                     .number()
                     .min(minAmount, 'Minimum redelegation amount is 1e-9 hash')
                     .max(
-                      new Big(delegation).toNumber(),
+                      new Big(delegation || 0).toNumber(),
                       `Maximum amount is ${numberFormat(delegation, decimal)} hash`
                     )
                     .required('Please specify an amount to redelegate')
@@ -388,7 +414,7 @@ export const ManageStakingModal = ({
                   </Disclaimer>
                   {/* Pops a warning if you'll only have 5 hash left, otherwise you might get stuck */}
                   {new Big(formik.values.amount || 0).gt(
-                    new Big(hashAmount).minus(MIN_HASH_AFTER_STAKING).toNumber()
+                    new Big(hashAmount || 0).minus(MIN_HASH_AFTER_STAKING).toNumber()
                   ) && (
                     <Disclaimer color={theme.FONT_ERROR}>
                       <DisclaimerIcon>

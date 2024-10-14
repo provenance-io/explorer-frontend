@@ -8,8 +8,8 @@ import {
   TXS_BY_BLOCK_URL,
   TXS_BY_ADDRESS_URL,
   TX_TYPES_URL,
-} from 'consts';
-import { isEmpty, capitalize } from 'utils';
+} from '../../../consts';
+import { isEmpty, capitalize } from '../../../utils';
 import { ajax } from '../api';
 
 export interface TxInfo {
