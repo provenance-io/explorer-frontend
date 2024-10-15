@@ -10,6 +10,9 @@
 /cypress/videos
 /cypress/screenshots
 
+# dist
+/dist
+
 # production
 /build
 

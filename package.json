@@ -120,7 +120,8 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "tsc": "tsc",
     "preview": "vite preview",
     "cy:install": "cypress install",
     "cy:run": "cypress run",
