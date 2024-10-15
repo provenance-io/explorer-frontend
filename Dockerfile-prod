@@ -1,9 +1,10 @@
 FROM node:18.17.1 as build
 ARG VITE_APP_ENV=test
+ARG CI=true
 WORKDIR /usr/src/app
 COPY . ./
 ENV VITE_APP_ENV=$VITE_APP_ENV
-RUN ["npm", "i", "@rollup/rollup-linux-x64-gnu"]
+RUN ["npm", "i"]
 RUN ["npm", "run", "build"]
 
 # Stage - Production

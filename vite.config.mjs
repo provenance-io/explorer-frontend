@@ -2,7 +2,7 @@ import { defineConfig, transformWithEsbuild } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
-// import { nodePolyfills } from 'vite-plugin-node-polyfills';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
   // depending on your application, base can also be "/"
@@ -29,7 +29,7 @@ export default defineConfig({
       },
     },
     viteTsconfigPaths,
-    // nodePolyfills(),
+    nodePolyfills(),
     react(),
   ],
   dedupe: ['react-dom', 'styled-components', 'react'],
