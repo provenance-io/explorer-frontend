@@ -1,4 +1,4 @@
-FROM node:14.6.0 as build
+FROM node:18.17.1 as build
 ARG VITE_APP_ENV=test
 WORKDIR /usr/src/app
 COPY . ./
