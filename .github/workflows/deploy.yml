@@ -11,10 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Use Node.js 14.6.0
+      - name: Use Node.js 18.17.1
         uses: actions/setup-node@v1
         with:
-          node-version: '14.6.0'
+          node-version: '18.17.1'
 
       - name: Install npm packages
         run: |
