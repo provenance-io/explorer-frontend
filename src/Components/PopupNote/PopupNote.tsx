@@ -30,7 +30,7 @@ const PopupContainer = styled.div<{
   border-radius: 5px;
   background: ${({ theme }) => theme.BACKGROUND_THEME};
   color: ${({ theme }) => theme.FONT_WHITE};
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
   transition: ${({ delay }) => `opacity ${delay}ms ease-in-out`};
   &.show {
@@ -137,7 +137,7 @@ export const PopupNote = ({
       minWidth={minWidth}
       zIndex={zIndex}
     >
-      {carat ? <Caret icon="CARET" size="1.8rem" position={position} /> : null}
+      {carat ? <Caret icon="CARET" size="1.125rem" position={position} /> : null}
       {children}
     </PopupContainer>
   ) : null;

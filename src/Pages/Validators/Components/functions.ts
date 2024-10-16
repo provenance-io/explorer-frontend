@@ -45,7 +45,7 @@ export function CreateAcceptPaymentMessage(
 
 export function CreateDelegateMessage(msg: MsgDelegate) {
   const typeUrl = cosmos.staking.v1beta1.MsgDelegate.typeUrl;
-  return { typeUrl, value: cosmos.staking.v1beta1.MsgDelegate.encode(msg) };
+  return { typeUrl, value: cosmos.staking.v1beta1.MsgDelegate.toAmino(msg) };
 }
 
 export function CreateRejectPaymentMessage(source: string, target: string, externalId: string) {

@@ -31,7 +31,7 @@ const Title = styled.h2`
   && {
     margin: 0;
     padding: 0;
-    font-size: 1.4rem;
+    font-size: 0.875rem;
     font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   }
 `;

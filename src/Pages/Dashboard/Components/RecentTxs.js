@@ -24,19 +24,19 @@ const TxLineRow = styled.div`
 const Type = styled.div`
   text-transform: capitalize;
   @media ${breakpoints.down('sm')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
     max-width: 50%;
   }
 `;
 const FeeLine = styled.div`
   @media ${breakpoints.down('sm')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 const FeeTitle = styled.div`
   display: inline-block;
   @media ${breakpoints.down('sm')} {
-    font-size: 1rem;
+    font-size: 0.625rem;
   }
 `;
 

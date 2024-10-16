@@ -198,7 +198,7 @@ const SelectFolders = ({ allOptions, action, maxHeight, setDefaults }) => {
         <SelectInputValue>{activeFilterTitle}</SelectInputValue>
         <Sprite
           icon="CHEVRON"
-          size="1.0rem"
+          size="0.625rem"
           color="ICON_PRIMARY"
           spin={menuOpen ? '90' : '-90'}
           onClick={toggleMenu}
@@ -206,7 +206,7 @@ const SelectFolders = ({ allOptions, action, maxHeight, setDefaults }) => {
       </SelectInputValueContainer>
       {menuOpen && (
         <SelectFoldersContainer>
-          <Caret icon="CARET" size="1.8rem" flipY color="INPUT_BG_LIGHT" />
+          <Caret icon="CARET" size="1.125rem" flipY color="INPUT_BG_LIGHT" />
           <OptionsContainer maxHeight={maxHeight}>{buildOptions(allOptions)}</OptionsContainer>
         </SelectFoldersContainer>
       )}

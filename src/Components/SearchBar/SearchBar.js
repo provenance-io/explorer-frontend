@@ -32,8 +32,8 @@ const TextInput = styled.input`
   border-radius: 4px;
   padding: 6px 40px 6px 90px;
   width: 100%;
-  font-size: 1.4rem;
-  line-height: 2.2rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
   &:focus {
     outline: none;
     box-shadow: 0 0 1px 1px ${({ theme }) => theme.INPUT_OUTLINE_DARK};
@@ -76,7 +76,7 @@ const Select = styled.select`
   height: 30px;
   color: ${({ theme }) => theme.INPUT_BTN_DARK_TEXT};
   border: none;
-  font-size: 1rem;
+  font-size: 0.625rem;
   position: relative;
   width: 100%;
   border-radius: 4px;
@@ -170,11 +170,11 @@ const SearchBar = () => {
           <option value="validator">Validator</option>
         </Select>
         <SelectArrow>
-          <Sprite icon="CARET" size="0.9rem" color="ICON_WHITE" />
+          <Sprite icon="CARET" size="0.563rem" color="ICON_WHITE" />
         </SelectArrow>
       </SelectContainer>
       <SearchIcon onClick={runSearch}>
-        <Sprite icon="SEARCH" size="2.2rem" color="ICON_WHITE" />
+        <Sprite icon="SEARCH" size="1.375rem" color="ICON_WHITE" />
       </SearchIcon>
     </SearchContainer>
   );

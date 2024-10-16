@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Table, Filters } from '../../../../../Components';
 import { format } from 'date-fns';
 import { useParams } from 'react-router-dom';
+import { Table, Filters } from '../../../../../Components';
 import { TRANSACTION_STATUS_OPTIONS, breakpoints } from '../../../../../consts';
 import { useTxs, useApp } from '../../../../../redux/hooks';
 import { getUTCTime } from '../../../../../utils';
@@ -21,7 +21,7 @@ const FilterError = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_ERROR};
   @media ${breakpoints.between('sm', 'md')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Modal } from '../../../../../Components';
 import { AccountInfo } from '../../../../../redux/features/account/accountSlice';
-import { Link } from 'react-router-dom';
 
 const Title = styled.div`
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   margin: 30px 0 20px 0;
 `;

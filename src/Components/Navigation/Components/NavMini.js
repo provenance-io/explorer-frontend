@@ -37,7 +37,7 @@ const LinkWrapper = styled.div`
 `;
 
 const Link = styled(BaseLink)`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   color: ${({ theme }) => theme.FONT_NAV};
   opacity: 0.9;
   :hover {
@@ -154,7 +154,7 @@ const NavMini = () => {
           <Sprite
             icon="MENU"
             onClick={toggleMenu}
-            size="3.0rem"
+            size="1.875rem"
             color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
           />
         </Hamburger>
@@ -164,7 +164,7 @@ const NavMini = () => {
         <Sprite
           icon="SEARCH"
           onClick={toggleSearch}
-          size="3.0rem"
+          size="1.875rem"
           color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
         />
       </InnerWrapper>
@@ -175,7 +175,7 @@ const NavMini = () => {
           onClick={() => {
             setShowMenu(false);
           }}
-          size="1.4rem"
+          size="0.875rem"
           color="ICON_WHITE"
         />
         {buildLinks()}
@@ -189,7 +189,7 @@ const NavMini = () => {
           onClick={() => {
             setShowSearch(false);
           }}
-          size="1.4rem"
+          size="0.875rem"
           color="ICON_WHITE"
         />
         <SearchBar />

@@ -7,8 +7,8 @@ const Input = styled.input`
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: 1.4rem;
-  line-height: 2.2rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
 
   &:focus {

@@ -24,7 +24,6 @@ import {
 import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from '../../../utils';
 import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from '../../../consts';
 import { useTx } from '../../../hooks/useTxs';
-import { CreateDelegateMessage } from './functions';
 
 // Styled Components
 const SpotlightContainer = styled.div`
@@ -38,7 +37,7 @@ const ImageContainer = styled.div`
   justify-content: center;
   border-radius: 100%;
   background: ${({ theme }) => theme.BACKGROUND_LIGHT};
-  margin-right: 1.5rem;
+  margin-right: 0.938rem;
   height: 75px;
   width: 75px;
   min-width: 75px;
@@ -46,7 +45,7 @@ const ImageContainer = styled.div`
 `;
 
 const ImageLetter = styled.span`
-  font-size: 4rem;
+  font-size: 2.5rem;
   color: ${({ theme }) => theme.FONT_PRIMARY};
   text-transform: uppercase;
 `;
@@ -54,7 +53,7 @@ const ImageLetter = styled.span`
 const Title = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   margin: 5px 0;
-  font-size: 1.7rem;
+  font-size: 1.063rem;
 `;
 
 const Description = styled.div`
@@ -66,11 +65,11 @@ const Description = styled.div`
 `;
 
 const Info = styled.div`
-  margin: 1.6rem 0;
+  margin: 1rem 0;
 `;
 
 const Pair = styled.div`
-  padding-bottom: 1.6rem;
+  padding-bottom: 1rem;
 `;
 
 const PairInline = styled.div`
@@ -79,32 +78,32 @@ const PairInline = styled.div`
 `;
 
 const PairTitle = styled.div`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
 `;
 
 const PairValue = styled.div`
   display: flex;
-  font-size: 1.6rem;
+  font-size: 1rem;
   line-height: 1.75;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: 0.625rem;
   margin-top: 40px;
 `;
 
 const Disclaimer = styled.div<{ help?: boolean }>`
   display: flex;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1rem;
   padding: 20px;
   border: ${({ theme, help, color }) =>
       color ? color : help ? theme.BORDER_THEME : theme.WARNING_BORDER}
     1px solid;
-  border-radius: 0.6rem;
+  border-radius: 0.375rem;
   color: ${({ theme, help, color }) =>
     color ? color : help ? theme.FONT_THEME : theme.FONT_WARNING};
 `;
@@ -116,16 +115,16 @@ const DisclaimerIcon = styled.div`
 const DisclaimerTitle = styled.h3`
   && {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 0.938rem;
     font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
-    line-height: 2.4rem;
+    line-height: 1.5rem;
   }
 `;
 
 const DisclaimerText = styled.p`
   margin: 0;
   padding: 0;
-  line-height: 2.2rem;
+  line-height: 1.375rem;
   list-style-type: '– ';
 `;
 
@@ -150,13 +149,12 @@ export const ManageStakingModal = ({
 }: StakingModalProps) => {
   // Hooks
   const { tx } = useTx(CHAIN_NAME);
-  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } =
+  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading, getAllValidators } =
     useValidators();
   const theme = useTheme();
   const { accountAssets } = useAccounts();
   const { delegateAction, redelegateAction, undelegateAction, withdrawRewardsAction } =
     useStaking();
-  // const { walletConnectService: wcs } = useWalletConnect();
   const { address: delegatorAddress } = useChain(CHAIN_NAME);
   // State variables
   const [isOpen, setIsOpen] = useState(false); // Is the modal open
@@ -219,25 +217,27 @@ export const ManageStakingModal = ({
   const handleSubmit = async (amount?: number) => {
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
-    await tx(
+    const typeUrl = data.json.messages[0]['@type'];
+    delete data.json.messages[0]['@type'];
+    const value = data.json.messages[0];
+    const response = await tx(
       [
         {
-          typeUrl: data.json.messages[0]['@type'],
-          value: data.base64[0],
+          typeUrl,
+          value,
         },
       ],
-      {
-        gas: {
-          amount: [
-            {
-              amount: '1000000000',
-              denom: 'nhash',
-            },
-          ],
-          gas: '200000',
-        },
-      }
     );
+    if (response.isSuccess) {
+      // Wait a few seconds until refreshing the validators list
+      setTimeout(() => {
+        getAllValidators({
+          page: 1,
+          count: 100,
+          status: 'all',
+        });
+      }, 3000)
+    }
   };
   // Close Modal
   const handleModalClose = () => {
@@ -330,7 +330,7 @@ export const ManageStakingModal = ({
               <SpotlightContainer>
                 <ImageContainer>
                   {imgUrl ? (
-                    <img src={imgUrl} alt={moniker} title={moniker} width="75rem" />
+                    <img src={imgUrl} alt={moniker} title={moniker} width="46.875rem" />
                   ) : (
                     <ImageLetter>{moniker ? moniker[0] : '?'}</ImageLetter>
                   )}
@@ -402,7 +402,7 @@ export const ManageStakingModal = ({
                 <Info>
                   <Disclaimer>
                     <DisclaimerIcon>
-                      <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_WARNING} />
+                      <Sprite icon="WARNING" size="2rem" color={theme.FONT_WARNING} />
                     </DisclaimerIcon>
                     <div>
                       <DisclaimerTitle>Staking will lock your funds for 21+ days</DisclaimerTitle>
@@ -418,7 +418,7 @@ export const ManageStakingModal = ({
                   ) && (
                     <Disclaimer color={theme.FONT_ERROR}>
                       <DisclaimerIcon>
-                        <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_ERROR} />
+                        <Sprite icon="WARNING" size="2rem" color={theme.FONT_ERROR} />
                       </DisclaimerIcon>
                       <div>
                         <DisclaimerTitle>Warning: Account will lock</DisclaimerTitle>
@@ -466,7 +466,7 @@ export const ManageStakingModal = ({
                 <Info>
                   <Disclaimer>
                     <DisclaimerIcon>
-                      <Sprite icon="WARNING" size="3.2rem" color={theme.FONT_WARNING} />
+                      <Sprite icon="WARNING" size="2rem" color={theme.FONT_WARNING} />
                     </DisclaimerIcon>
                     <div>
                       <DisclaimerTitle>Once the unbonding period begins you will:</DisclaimerTitle>
@@ -480,7 +480,7 @@ export const ManageStakingModal = ({
 
                   <Disclaimer help>
                     <DisclaimerIcon>
-                      <Sprite icon="HELP" size="3.2rem" color={theme.FONT_THEME} />
+                      <Sprite icon="HELP" size="2rem" color={theme.FONT_THEME} />
                     </DisclaimerIcon>
                     <div>
                       <DisclaimerTitle>Trying to switch validators?</DisclaimerTitle>
@@ -517,7 +517,7 @@ export const ManageStakingModal = ({
                     <PairTitle>Redelegate to:</PairTitle>
                     <PairValue>
                       <SelectFolders
-                        maxHeight="21rem"
+                        maxHeight="13.125rem"
                         action={handleRedelegateSelection}
                         allOptions={allValidators.reduce(
                           (agg, curr) => {

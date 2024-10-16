@@ -15,7 +15,7 @@ const DataContent = styled.div`
   margin: 10px;
   border-radius: 5px;
   @media ${breakpoints.down('md')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 const Sprite = styled(BaseSprite)`
@@ -27,7 +27,7 @@ const TitleRow = styled.div<{ titleMargin?: string; titleSize?: string }>`
   margin: ${({ titleMargin }) => (titleMargin ? titleMargin : '0 0 30px 0')};
 `;
 const Title = styled.div<{ titleSize?: string }>`
-  font-size: ${({ titleSize }) => (titleSize ? titleSize : '1.4rem')};
+  font-size: ${({ titleSize }) => (titleSize ? titleSize : '0.875rem')};
 `;
 const DataContainer = styled.div`
   display: flex;
@@ -38,7 +38,7 @@ const DataItem = styled.div`
   margin-bottom: 10px;
   &:first-of-type {
     font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
-    font-size: 1.8rem;
+    font-size: 1.125rem;
   }
   &:last-of-type {
     margin-bottom: 0;
@@ -79,10 +79,10 @@ export const DataCard = ({
   <DataCardContainer className={className} width={width}>
     <DataContent>
       <TitleRow titleMargin={titleMargin}>
-        {icon && <Sprite icon={icon} size="1.8rem" color={iconColor} />}
+        {icon && <Sprite icon={icon} size="1.125rem" color={iconColor} />}
         <Title titleSize={titleSize}>{title}</Title>
         {handleClose && (
-          <CloseIcon icon="CLOSE" onClick={handleClose} size="1.4rem" color="ICON_WHITE" />
+          <CloseIcon icon="CLOSE" onClick={handleClose} size="0.875rem" color="ICON_WHITE" />
         )}
         {popup && BuildPopupNote(popup)}
       </TitleRow>

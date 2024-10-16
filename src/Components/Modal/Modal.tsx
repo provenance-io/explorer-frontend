@@ -28,14 +28,14 @@ const Dialog = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  margin: 0.5rem;
+  margin: 0.313rem;
   width: 100%;
   /* animate.css @keyframe */
   animation: flipInX;
   animation-duration: 0.8s;
 
   @media ${breakpoints.up('sm')} {
-    margin: 1.75rem auto;
+    margin: 1.094rem auto;
     max-width: 500px;
   }
 `;
@@ -46,7 +46,7 @@ const Content = styled.div<{ largeModal: boolean }>`
   flex-direction: column;
   max-height: ${({ largeModal }) => largeModal && '70vh'};
   overflow-y: ${({ largeModal }) => largeModal && 'auto'};
-  padding: 2.4rem;
+  padding: 1.5rem;
   width: 100%;
   border-radius: 4px;
   box-shadow: 0 15px 35px rgb(50 50 93 / 20%), 0 5px 15px rgb(0 0 0 / 17%);
@@ -56,8 +56,8 @@ const Content = styled.div<{ largeModal: boolean }>`
 
 const Sprite = styled(OgSprite)`
   position: absolute;
-  top: 1.6rem;
-  right: 1.6rem;
+  top: 1rem;
+  right: 1rem;
   cursor: pointer;
 `;
 
@@ -82,7 +82,7 @@ const Modal = React.memo(
         <Overlay />
         <Dialog>
           <Content largeModal={largeModal}>
-            <Sprite icon="CLOSE" color={theme.FONT_PRIMARY} size="2rem" onClick={onClose} />
+            <Sprite icon="CLOSE" color={theme.FONT_PRIMARY} size="1.25rem" onClick={onClose} />
             <Body>{children}</Body>
           </Content>
         </Dialog>

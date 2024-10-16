@@ -6,11 +6,11 @@ import { capitalize, MyFieldsProps } from '../../utils';
 import { FormBuilder } from './Components';
 
 const ThisField = styled.div`
-  padding-top: 1.6rem;
+  padding-top: 1rem;
 `;
 
 const Label = styled.label<{ $issub: boolean }>`
-  font-size: ${({ $issub }) => ($issub ? '1.4rem' : '1.6rem')};
+  font-size: ${({ $issub }) => ($issub ? '0.875rem' : '1rem')};
   font-weight: ${({ theme, $issub }) => !$issub && theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
 `;
@@ -25,7 +25,7 @@ const RemoveButton = styled(BaseButton)`
 `;
 
 const SubTitle = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
 `;
 

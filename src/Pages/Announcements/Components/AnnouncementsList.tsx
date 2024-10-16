@@ -14,7 +14,7 @@ const TextWrapper = styled.div`
 `;
 
 const InfoText = styled.div`
-  font-size: 2rem;
+  font-size: 1.25rem;
   color: ${({ theme }) => theme.FONT_PRIMARY};
   margin: 40px 0;
   flex-basis: 100%;
@@ -48,7 +48,7 @@ const Button = styled.button`
 
 const ButtonContent = styled.div`
   display: flex;
-  font-size: 1.4rem;
+  font-size: 0.875rem;
 `;
 
 const ButtonNum = styled.div`
@@ -134,7 +134,7 @@ const AnnouncementsList = () => {
     <>
       {!allAnnouncementsLoading && allAnnouncements.length > 0 ? (
         <Content>
-          <InfiniteScroll 
+          {<InfiniteScroll 
             loading={allAnnouncementsLoading} 
             onLoadMore={loadAnnouncements} 
             totalPages={allAnnouncementsPages}
@@ -145,7 +145,7 @@ const AnnouncementsList = () => {
                 {(hasNextPage || allAnnouncementsLoading) && <Loading ref={sentryRef} />}
               </>
             )}
-          </InfiniteScroll>
+          </InfiniteScroll> as any}
         </Content>
       ) : (
         allAnnouncementsLoading ? (

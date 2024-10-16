@@ -45,7 +45,7 @@ const StyledButton = styled.button<ButtonProps>`
   }
 `;
 const ButtonContent = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
 `;
 const ButtonIcon = styled.div`
   margin-left: 10px;
@@ -56,7 +56,7 @@ const Button = ({
   className,
   color = 'primary',
   icon,
-  iconSize = '2.2rem',
+  iconSize = '1.375rem',
   iconColor = 'ICON_WHITE',
   iconOptions,
   id,

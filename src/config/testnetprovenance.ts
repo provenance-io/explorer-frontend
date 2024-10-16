@@ -32,6 +32,20 @@ export const TestnetChainConfig: Chain = {
     png: '/prov.png',
     svg: '/prov.svg',
   },
+  apis: {
+    rest: [
+      {
+        address: 'https://api.test.provenance.io',
+        provider: 'Provenance',
+      },
+    ],
+    rpc: [
+      {
+        address: 'https://rpc.test.provenance.io:443',
+        provider: 'Provenance',
+      },
+    ],
+  },
   images: [
     {
       png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/provenance/images/prov.png',

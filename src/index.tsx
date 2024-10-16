@@ -9,7 +9,7 @@ import { isProd } from '../src/consts';
 import App from './App';
 import { CosmosProvider } from './Providers';
 
-import "@interchain-ui/react/styles"
+import '@interchain-ui/react/styles'
 
 /* Note: during maintenance cycles, update the tests in package.json
          to only run the linter. Show Maintenance component here

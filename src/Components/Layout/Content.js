@@ -43,7 +43,7 @@ const Sprite = styled(BaseSprite)`
   margin-right: 10px;
 `;
 const Title = styled.div`
-  font-size: ${({ titleSize }) => (titleSize ? titleSize : '1.6rem')};
+  font-size: ${({ titleSize }) => (titleSize ? titleSize : '1rem')};
 `;
 const Link = styled(BaseLink)`
   justify-content: flex-end;
@@ -82,7 +82,7 @@ const Content = ({
 
   const buildHeader = () => (
     <Header headerMargin={headerMargin}>
-      {icon && <Sprite icon={icon} size="2rem" color={iconColor} />}
+      {icon && <Sprite icon={icon} size="1.25rem" color={iconColor} />}
       {title && <Title titleSize={titleSize}>{title}</Title>}
       {linkTo && linkTitle && <Link to={link.to}>{link.title}</Link>}
       {headerContent}

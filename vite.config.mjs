@@ -29,10 +29,11 @@ export default defineConfig({
       },
     },
     viteTsconfigPaths,
+    // Note, for local development, comment this out. For prod, uncomment it
     nodePolyfills(),
     react(),
   ],
-  dedupe: ['react-dom', 'styled-components', 'react'],
+  dedupe: ['react-dom', 'styled-components', 'react', '@interchain-ui/react'],
   optimizeDeps: {
     force: true,
     esbuildOptions: {

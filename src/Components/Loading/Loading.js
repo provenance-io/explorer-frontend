@@ -32,7 +32,7 @@ Loading.propTypes = {
 
 Loading.defaultProps = {
   className: '',
-  size: '5rem',
+  size: '3.125rem',
 };
 
 export default Loading;

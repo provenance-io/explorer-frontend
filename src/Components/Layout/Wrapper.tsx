@@ -6,7 +6,7 @@ const PageWrapper = styled.div<{ noHeader: boolean }>`
   padding: 131px 10%;
   position: relative;
   background-color: transparent;
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   @media ${breakpoints.down('lg')} {
     padding: ${({ noHeader }) => (noHeader ? '126px 4%' : '110px 4%')};
   }

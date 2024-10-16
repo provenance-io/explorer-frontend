@@ -41,21 +41,20 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
-  const { status, connect, address, signArbitrary } = useChain(CHAIN_NAME);
+  const { status, connect, address, signArbitrary, isWalletDisconnected } = useChain(CHAIN_NAME);
   const { setAuthToken, authToken } = useApp();
   const provJWT = localStorage.getItem('provenanceJWT');
   const jwtInfo = provJWT ? JSON.parse(provJWT) : '';
   const signedJWT = jwtInfo.expires < Date.now() / 1000 ? '' : jwtInfo.jwt;
 
   useEffect(() => {
-    if (status === 'Disconnected') {
-      setAuthToken('');
-      localStorage.removeItem('provenanceJWT');
+    if (isWalletDisconnected) {
+      setIsLoggedIn(false);
       setPublicKey('');
       setSignature('');
       setWalletAddress('');
     }
-  }, [setAuthToken, setWalletAddress, status]);
+  }, [setAuthToken, setWalletAddress, status, isWalletDisconnected, setIsLoggedIn]);
 
   useEffect(() => {
     if (jwtInfo && jwtInfo.expires < Date.now() / 1000) {
@@ -70,46 +69,41 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
     if (signedJWT) {
       setAuthToken(signedJWT);
     }
-  });
+  }, [setAuthToken, signedJWT]);
 
   useEffect(() => {
     setIsLoggedIn(status === 'Connected');
     if (address) {
       setWalletAddress(address);
     }
-    if (!authToken && !signedJWT && status === 'Connected' && address) {
-      if (!publicKey || !signature) {
-        signArbitrary(address, 'Approve the connection to Provenance').then((c) => {
-          setPublicKey(c.pub_key.value);
-          setSignature(c.signature);
-        });
+  }, [status, address, setIsLoggedIn, setWalletAddress]);
+
+  useEffect(() => {
+    const initialSigningEvent = async () => {
+      if (!authToken && !signedJWT && status === 'Connected' && address) {
+        if ((!publicKey || !signature) && !authToken) {
+          const response = await signArbitrary(address, 'Approve the connection to Provenance');
+          setPublicKey(response.pub_key.value);
+          setSignature(response.signature);
+        }
+        if (publicKey && signature && !localStorage.getItem('provenanceJWT')) {
+          signJWT({
+            address,
+            signature,
+            publicKey,
+          }).then((res) => {
+            localStorage.setItem(
+              'provenanceJWT',
+              JSON.stringify({ jwt: res.result.signedJWT, expires: res.result.expires })
+            );
+            setAuthToken(res.result.signedJWT);
+          });
+        }
       }
-      if (publicKey && signature) {
-        signJWT({
-          address,
-          signature,
-          publicKey,
-        }).then((res) => {
-          localStorage.setItem(
-            'provenanceJWT',
-            JSON.stringify({ jwt: res.result.signedJWT, expires: res.result.expires })
-          );
-          setAuthToken(res.result.signedJWT);
-        });
-      }
-    }
-  }, [
-    status,
-    setIsLoggedIn,
-    address,
-    setWalletAddress,
-    authToken,
-    signedJWT,
-    publicKey,
-    signature,
-    signArbitrary,
-    setAuthToken,
-  ]);
+    };
+
+    initialSigningEvent();
+  }, [address, authToken, publicKey, setAuthToken, signArbitrary, signature, signedJWT, status]);
 
   const handleLoginClick = () => {
     connect();

@@ -55,7 +55,7 @@ const SpotlightContainer = styled.div`
 const Title = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   margin: 10px 0;
-  font-size: 1.7rem;
+  font-size: 1.063rem;
 `;
 
 const Description = styled.div`
@@ -110,7 +110,7 @@ const ValidatorSpotlight = () => {
     visibility: { visible: showOperatorAddressPopup, setVisible: setShowOperatorAddressPopup },
     noteMinWidth: '300px',
     position: 'left',
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -217,7 +217,7 @@ const ValidatorSpotlight = () => {
             {/* <ValidatorMetrics /> */}
           </Grid>
         </>
-      )}
+      ) as any}
     </Content>
   );
 };

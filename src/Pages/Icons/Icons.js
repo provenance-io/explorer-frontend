@@ -28,7 +28,7 @@ const FormItem = styled.div`
 `;
 
 const FlexContainer = styled.div`
-  margin: 2rem auto;
+  margin: 1.25rem auto;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
@@ -40,8 +40,8 @@ const IconWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem;
-  min-height: 15rem;
+  padding: 0.625rem;
+  min-height: 9.375rem;
   border-radius: 4px;
   text-align: center;
   background-color: lightgray;

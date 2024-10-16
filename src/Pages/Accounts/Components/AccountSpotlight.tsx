@@ -47,7 +47,7 @@ export const AccountSpotlight = () => {
 
   const popupNoteKeyType = {
     visibility: { visible: showKeyPopup, setVisible: setShowKeyPopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -62,7 +62,7 @@ export const AccountSpotlight = () => {
 
   const popupNoteAccountAUM = {
     visibility: { visible: showAUMPopup, setVisible: setShowAUMPopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -77,7 +77,7 @@ export const AccountSpotlight = () => {
 
   const popupNoteName = {
     visibility: { visible: showNamePopup, setVisible: setShowNamePopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -94,7 +94,7 @@ export const AccountSpotlight = () => {
 
   const popupNoteNumber = {
     visibility: { visible: showNumberPopup, setVisible: setShowNumberPopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -110,7 +110,7 @@ export const AccountSpotlight = () => {
 
   const popupNoteSequence = {
     visibility: { visible: showSequencePopup, setVisible: setShowSequencePopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [
@@ -180,7 +180,7 @@ export const AccountSpotlight = () => {
               {item.button && item.button}
               {item.link ? <Link to={item.link}>{item.value}</Link> : item.value}
               {item.copy && (
-                <CopyValue value={item.copy} title={`Copy ${item.title}`} size="2rem" />
+                <CopyValue value={item.copy} title={`Copy ${item.title}`} size="1.25rem" />
               )}
             </Group>
           </DataCard>

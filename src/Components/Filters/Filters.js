@@ -25,7 +25,7 @@ const FilterItem = styled.div`
   }
 `;
 const FilterTitle = styled.div`
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_TITLE_INFO};
   margin-bottom: 4px;

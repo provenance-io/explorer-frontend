@@ -395,7 +395,7 @@ export const formatTableData = (data = [], tableHeaders) => {
             value: '',
             icon: serverValue ? 'CHECK' : dataName === 'didVote' ? 'CLEAR' : '',
             iconColor: serverValue ? 'rgb(78, 210, 44)' : 'red',
-            size: '2.0rem',
+            size: '1.25rem',
           };
           break;
         // Accordion information

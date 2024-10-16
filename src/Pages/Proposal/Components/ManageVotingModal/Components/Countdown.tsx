@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Section = styled.div`
   display: flex;
-  margin: 1.6rem 0;
+  margin: 1rem 0;
   padding: 20px;
   border: ${({ theme }) => theme.POSITIVE_CHANGE}
     1px solid;
@@ -17,14 +17,14 @@ const Title = styled.div`
   margin: 10px;
 `;
 const Label = styled.label`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
 `;
 const Timer = styled.div`
   color: ${({ theme }) => theme.NEGATIVE_CHANGE};
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.125rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLDEST};
   margin: 20px;
 `;
