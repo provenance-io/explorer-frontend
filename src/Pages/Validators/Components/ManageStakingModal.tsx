@@ -24,7 +24,6 @@ import {
 import { capitalize, currencyFormat, formatDenom, maxLength, numberFormat } from '../../../utils';
 import { MIN_HASH_AFTER_STAKING, STAKING_TYPES } from '../../../consts';
 import { useTx } from '../../../hooks/useTxs';
-import { CreateDelegateMessage } from './functions';
 
 // Styled Components
 const SpotlightContainer = styled.div`
@@ -150,13 +149,12 @@ export const ManageStakingModal = ({
 }: StakingModalProps) => {
   // Hooks
   const { tx } = useTx(CHAIN_NAME);
-  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading } =
+  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading, getAllValidators } =
     useValidators();
   const theme = useTheme();
   const { accountAssets } = useAccounts();
   const { delegateAction, redelegateAction, undelegateAction, withdrawRewardsAction } =
     useStaking();
-  // const { walletConnectService: wcs } = useWalletConnect();
   const { address: delegatorAddress } = useChain(CHAIN_NAME);
   // State variables
   const [isOpen, setIsOpen] = useState(false); // Is the modal open
@@ -219,25 +217,27 @@ export const ManageStakingModal = ({
   const handleSubmit = async (amount?: number) => {
     const { action, data: submissionData } = actionSelector(amount);
     const { data } = await action(submissionData as any);
-    await tx(
+    const typeUrl = data.json.messages[0]['@type'];
+    delete data.json.messages[0]['@type'];
+    const value = data.json.messages[0];
+    const response = await tx(
       [
         {
-          typeUrl: data.json.messages[0]['@type'],
-          value: data.base64[0],
+          typeUrl,
+          value,
         },
       ],
-      {
-        gas: {
-          amount: [
-            {
-              amount: '1000000000',
-              denom: 'nhash',
-            },
-          ],
-          gas: '200000',
-        },
-      }
     );
+    if (response.isSuccess) {
+      // Wait a few seconds until refreshing the validators list
+      setTimeout(() => {
+        getAllValidators({
+          page: 1,
+          count: 100,
+          status: 'all',
+        });
+      }, 3000)
+    }
   };
   // Close Modal
   const handleModalClose = () => {

@@ -80,7 +80,7 @@ const Accordion = ({
             flipX
             color={theme.FONT_PRIMARY}
             icon={ICON_NAMES.CHEVRON}
-            size="1.6rem"
+            size="1rem"
             spin={isOpen ? -90 : null}
             style={{ justifySelf: 'end' }}
           />

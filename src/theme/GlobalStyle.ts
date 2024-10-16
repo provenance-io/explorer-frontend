@@ -4,9 +4,7 @@ import styledNormalize from 'styled-normalize';
 export const GlobalStyle = createGlobalStyle`
   ${styledNormalize}
  
-  html {
-    font-size: 62.5%; /* =10px and will allow for all rem sizing to be easier, 1.4 rem => 14px*/
-  }
+  
 
   html, *, ::after, ::before {
     box-sizing: border-box;
@@ -21,27 +19,27 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
-    font-size: 2.8rem;
+    font-size: 1.75rem;
   }
 
   h2 {
-    font-size: 2.0rem;
+    font-size: 1.25rem;
   }
 
   h3 {
-    font-size: 1.8rem;
+    font-size: 1.125rem;
   }
 
   h4 {
-    font-size: 1.6rem;
+    font-size: 1rem;
   }
 
   h5, h6 {
-    font-size: 1.4rem;
+    font-size: 0.875rem;
   }
 
   p, span, li, footer {
-    font-size: 1.4rem;
+    font-size: 0.875rem;
     font-weight: 200;
     line-height: 1.75;
   }

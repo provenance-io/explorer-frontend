@@ -53,7 +53,7 @@ const CopyValue = ({ value, className, size, icon, title }) => {
       <Sprite size={size} icon={icon} />
       {justCopied && (
         <CopiedNotice>
-          <Caret icon="CARET" size="1.8rem" flipY />
+          <Caret icon="CARET" size="1.125rem" flipY />
           Copied!
         </CopiedNotice>
       )}
@@ -70,7 +70,7 @@ CopyValue.propTypes = {
 };
 CopyValue.defaultProps = {
   className: '',
-  size: '1.8rem',
+  size: '1.125rem',
   icon: 'REPORTS',
   title: 'Copy Text',
   value: '',

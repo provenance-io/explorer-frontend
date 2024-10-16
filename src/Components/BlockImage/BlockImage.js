@@ -17,7 +17,7 @@ const BlockImageContainer = styled.div`
 `;
 
 const BlockImageLetter = styled.span`
-  font-size: ${({ sizeText }) => (sizeText ? `${sizeText}px` : '7rem')};
+  font-size: ${({ sizeText }) => (sizeText ? `${sizeText}px` : '4.375rem')};
   color: ${({ theme, color }) => (color ? color : theme.FONT_PRIMARY)};
   font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : '')};
   text-transform: uppercase;
