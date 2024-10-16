@@ -90,7 +90,7 @@ export const Footer = () => {
           rel="noreferrer"
           title="Visit Provenance Blockchain"
         >
-          <Sprite icon="PROVENANCE" size="1.8rem" color="WHITE" />
+          <Sprite icon="PROVENANCE" size="1.125rem" color="WHITE" />
         </SocialLink>
         <SocialLink
           href={SOCIAL_GITHUB_URL}
@@ -98,7 +98,7 @@ export const Footer = () => {
           rel="noreferrer"
           title="Provenance Blockchain Explorer GitHub"
         >
-          <Sprite icon="GITHUB" size="1.8rem" color="WHITE" />
+          <Sprite icon="GITHUB" size="1.125rem" color="WHITE" />
         </SocialLink>
         {/* <SocialLink
           href={SOCIAL_SLACK_URL}
@@ -106,7 +106,7 @@ export const Footer = () => {
           rel="noreferrer"
           title="Join Provenance.io on Slack"
         >
-          <Sprite icon="SLACK" size="1.8rem" color="WHITE" />
+          <Sprite icon="SLACK" size="1.125rem" color="WHITE" />
         </SocialLink> */}
         <SocialLink
           href={SOCIAL_DISCORD_URL}
@@ -114,7 +114,7 @@ export const Footer = () => {
           rel="noreferrer"
           title="Provenance Blockchain Explorer Discord"
         >
-          <Sprite icon="DISCORD" size="2.2rem" color="WHITE" />
+          <Sprite icon="DISCORD" size="1.375rem" color="WHITE" />
         </SocialLink>
         <FooterVersion>v{version ? version : '?.?.?'}</FooterVersion>
       </FooterSocial>

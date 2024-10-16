@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { PopupNote, Sprite } from '../../Components';
 import { Link } from 'react-router-dom';
+import { PopupNote, Sprite } from '../../Components';
 
 const NoteContainer = styled.div<{ fontColor: string }>`
   position: relative;
@@ -46,7 +46,7 @@ interface PopupDataProps {
 export const BuildPopupNote = (popupData: PopupDataProps) => {
   const {
     visibility = { visible: false, setVisible: () => {} },
-    icon = { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon = { name: 'HELP_OUTLINE', size: '1.063rem' },
     method = ['click'],
     fontColor = 'FONT_WHITE',
     data = [],

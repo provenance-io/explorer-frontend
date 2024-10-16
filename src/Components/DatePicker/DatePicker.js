@@ -30,7 +30,7 @@ const DatepickContainer = styled.div`
   justify-content: space-between;
   /* Unfortunatly, need to finetune datepicker due to rem sizing */
   .react-datepicker {
-    font-size: 1.5rem;
+    font-size: 0.938;
     .react-datepicker__header {
       background: ${({ theme }) => theme.BACKGROUND_THEME};
     }
@@ -39,15 +39,15 @@ const DatepickContainer = styled.div`
     }
     .react-datepicker__day,
     .react-datepicker__day-name {
-      width: 2.7rem;
-      line-height: 2.7rem;
+      width: 1.688rem;
+      line-height: 1.688rem;
       color: ${({ theme }) => theme.FONT_PRIMARY};
     }
     .react-datepicker__day-name {
       color: ${({ theme }) => theme.FONT_PRIMARY};
     }
     .react-datepicker__current-month {
-      font-size: 1.4rem;
+      font-size: 0.875rem;
       color: ${({ theme }) => theme.FONT_PRIMARY};
     }
     .react-datepicker__day--selected {
@@ -59,7 +59,7 @@ const DatepickContainer = styled.div`
   }
 `;
 const StyledLabel = styled.label`
-  font-size: 1.5rem;
+  font-size: 0.938rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_PRIMARY};
   margin-right: 8px;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Sprite } from '../../../Components';
 import { useHistory, useParams } from 'react-router-dom';
+import { Sprite } from '../../../Components';
 
 const BlockPaginationContainer = styled.div`
   display: flex;
@@ -44,11 +44,11 @@ export const AnnouncementPagination = ({
   return (
     <BlockPaginationContainer>
       <PaginationButton disabled={!backAllowed} onClick={() => backAllowed && handleClick('back')}>
-        <Sprite icon="CHEVRON" size="1.3rem" color={backAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'} />
+        <Sprite icon="CHEVRON" size="0.813rem" color={backAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'} />
       </PaginationButton>
       <PaginationValue>{pageAnnounceNum}</PaginationValue>
       <PaginationButton disabled={!forwardAllowed} onClick={() => forwardAllowed && handleClick('forward')}>
-        <Sprite icon="CHEVRON" size="1.3rem" spin="180" color={forwardAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'} />
+        <Sprite icon="CHEVRON" size="0.813rem" spin="180" color={forwardAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'} />
       </PaginationButton>
     </BlockPaginationContainer>
   );

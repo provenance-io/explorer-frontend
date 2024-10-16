@@ -13,12 +13,12 @@ const HeaderInfo = styled.span`
 
 const Title = styled.div`
   grid-column-start: 2;
-  font-size: 2rem;
+  font-size: 1.25rem;
   align-items: center;
 `;
 
 const SubTitle = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   grid-column-start: 2;
 `;
 
@@ -26,7 +26,7 @@ const Data = styled.div`
   grid-column-start: 3;
   text-align: right;
   align-self: end;
-  font-size: 1.2rem;
+  font-size: 0.75rem;
 `;
 
 const Stats = styled.span`

@@ -45,10 +45,10 @@ const ItemWrapper = styled.div<{ theme: string }>`
     display: inline-block;
   }
   .rstm-toggle-icon-symbol {
-    width: 2rem;
-    height: 2rem;
+    width: 1.25rem;
+    height: 1.25rem;
     text-align: center;
-    line-height: 2rem;
+    line-height: 1.25rem;
   }
 
   .rstm-tree-item-group {
@@ -60,7 +60,7 @@ const ItemWrapper = styled.div<{ theme: string }>`
   }
 
   .rstm-tree-item {
-    padding: 0.75rem 1rem;
+    padding: 0.469rem 0.625rem;
     cursor: pointer;
     color: ${({ theme }) => theme.FONT_PRIMARY};
     background: none;
@@ -80,7 +80,7 @@ const ItemWrapper = styled.div<{ theme: string }>`
   }
 
   .rstm-search {
-    padding: 1rem 1.5rem;
+    padding: 0.625rem 0.938rem;
     border: none;
     width: 100%;
   }
@@ -173,6 +173,7 @@ export const FileFinder = ({
       </TreeMenu>
       {info && (
         <Sticky>
+          {/* @ts-ignore */}
           <Content>{info}</Content>
         </Sticky>
       )}

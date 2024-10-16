@@ -7,19 +7,19 @@ import { maxLength, capitalize } from '../../../utils';
 import { breakpoints } from '../../../consts';
 
 const Title = styled.div`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: bold;
   margin-top: 5px;
   @media ${breakpoints.down('sm')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 const Info = styled.div<{ copy: boolean }>`
   display: ${({ copy }) => (copy ? 'flex' : 'inherit')};
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   padding: 5px 10px;
   @media ${breakpoints.down('sm')} {
-    font-size: 1rem;
+    font-size: 0.625rem;
   }
 `;
 

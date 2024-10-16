@@ -33,7 +33,7 @@ const Banner = ({
       iconColor="FONT_NAV"
       show={showNotify}
       titleMargin='0 0 10px 0'
-      titleSize='1.8rem'
+      titleSize='1.125rem'
     >
       <NotifyMessage {...NotifyProps}/>
     </DataCard>

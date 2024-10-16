@@ -9,7 +9,7 @@ import { TxByHour, TxDaysOfWeek, TxHeatmap, TxHistory /*TxNodeLink*/ } from './C
 
 const MainTitle = styled.div`
   text-align: center;
-  font-size: 3.6rem;
+  font-size: 2.25rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
 `;
 
@@ -27,8 +27,8 @@ const MainTitle = styled.div`
 //   padding: 6px 6px 6px 6px;
 //   margin-right: 10px;
 //   width: 350px;
-//   font-size: 1.4rem;
-//   line-height: 2.2rem;
+//   font-size: 0.875rem;
+//   line-height: 1.375rem;
 //   &:focus {
 //     outline: none;
 //     box-shadow: 0 0 1px 1px ${({ theme }) => theme.INPUT_OUTLINE_DARK};

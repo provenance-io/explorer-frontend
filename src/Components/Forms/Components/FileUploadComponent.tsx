@@ -1,7 +1,7 @@
 import { FieldInputProps } from 'formik';
 import styled from 'styled-components';
-import Sprite from '../../../Components/Sprite';
 import { useCallback, useState } from 'react';
+import Sprite from '../../../Components/Sprite';
 import { bytesToFileSize } from '../../../utils';
 import Loading from '../../../Components/Loading';
 
@@ -13,8 +13,8 @@ const Container = styled.div<{ dragActive: boolean }>`
     `${dragActive ? '2px solid' : '1px dashed'} ${theme.INPUT_BORDER_LIGHT}`};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: 1.2rem;
-  line-height: 2.2rem;
+  font-size: 0.75rem;
+  line-height: 1.375rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
   height: 100px;
   &:focus {
@@ -169,7 +169,7 @@ const FileUploadComponent = ({
         <FileUpload>
           <Input type="file" {...field} {...props} onChange={upload} />
           <SpriteHolder>
-            <Sprite icon="UPGRADE" size="3rem" />
+            <Sprite icon="UPGRADE" size="1.875rem" />
           </SpriteHolder>
           Upload .wasm file
         </FileUpload>
@@ -179,7 +179,7 @@ const FileUploadComponent = ({
             <div>File: {fileName}</div>
             <div>Size: {fileSize}</div>
           </FileData>
-          <Sprite icon="TRASH" size="5rem" onClick={handleFileDelete} />
+          <Sprite icon="TRASH" size="3.125rem" onClick={handleFileDelete} />
         </Uploaded>
       ) : (
         <LoadingContainer />

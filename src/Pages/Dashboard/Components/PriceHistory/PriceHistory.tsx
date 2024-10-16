@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import styled from 'styled-components';
 import { Content, Loading, Filters } from '../../../../Components';
 import { useOrderbook } from '../../../../redux/hooks';
 import { subtractDays } from '../../../../utils';
-import styled from 'styled-components';
 import { breakpoints } from '../../../../consts';
 import { PriceChart } from './Components';
 
@@ -18,7 +18,7 @@ const FilterError = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_ERROR};
   @media ${breakpoints.between('sm', 'md')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 
@@ -175,7 +175,7 @@ const PriceHistory = () => {
         </>
       ) : (
         <Loading />
-      )}
+      ) as any}
     </Content>
   );
 };

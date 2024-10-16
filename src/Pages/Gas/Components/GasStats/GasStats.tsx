@@ -19,7 +19,7 @@ const FilterError = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_ERROR};
   @media ${breakpoints.between('sm', 'md')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 
@@ -166,7 +166,7 @@ const GasStats = () => {
     {
       title: 'Message Type:',
       type: 'dropdown',
-      maxHeight: '30rem',
+      maxHeight: '18.75rem',
       options: gasTxTypes, //txTypesAll,
       setDefaults: {
         Filter: 'Send',
@@ -227,7 +227,7 @@ const GasStats = () => {
         />
       ) : (
         <Section>{`No data exists for ${filterType} message type`}</Section>
-      )}
+      ) as any}
     </Content>
   );
 };

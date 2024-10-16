@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef, Ref } from 'react';
 import { Formik, FormikProps } from 'formik';
 import styled from 'styled-components';
+import qs from 'query-string';
 import { Button as Basebutton, Modal, Forms } from '../../../../../Components';
 import { downloadData as data, downloadValidations as validations, maxLength } from '../../../../../utils';
 import { ACCOUNT_INFO_V3_URL, TX_V3_URL } from '../../../../../consts';
-import qs from 'query-string';
 import { GranularityProps } from '../../../../../redux/services';
 
 const Button = styled(Basebutton)`
@@ -14,16 +14,16 @@ const Button = styled(Basebutton)`
 
 const Title = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   margin: 20px 0;
 `;
 const Notice = styled.div<{ show?: boolean }>`
   display: ${({ show }) => (show ? 'flex' : 'none')};
-  margin: 1.6rem 0;
+  margin: 1rem 0;
   padding: 20px;
   border: ${({ theme }) => theme.ORANGE_PRIMARY} 1px solid;
-  border-radius: 0.6rem;
+  border-radius: 0.375rem;
   color: ${({ theme }) => theme.ORANGE_PRIMARY};
   flex-direction: column;
   text-align: justify;

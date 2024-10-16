@@ -70,12 +70,12 @@ const Pagination = styled(BasePagination)`
 `;
 const LoadingContainer = styled.td``;
 const Notes = styled.ul`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   padding: 5px 0 10px 5px;
   list-style-type: '- ';
 `;
 const List = styled.li`
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   margin-left: 30px;
 `;
 const FlexContainer = styled.div`
@@ -204,7 +204,7 @@ const Table = ({
             <TableData key={dataName} title="View Data">
               <Sprite
                 style={{ cursor: 'pointer' }}
-                size="1.5rem"
+                size="0.938rem"
                 icon="CHEVRON"
                 spin={isOpen[index] ? '90' : '-90'}
                 onClick={() => setIsOpen({ [index]: !isOpen[index] })}
@@ -232,7 +232,7 @@ const Table = ({
           scheduled = false,
           iconColor = theme.FONT_LINK,
           color = '',
-          size = '1.4rem',
+          size = '0.875rem',
           copy = false,
           blockImage = {},
           raw = '',

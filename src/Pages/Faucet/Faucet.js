@@ -41,7 +41,7 @@ const TitleContainer = styled.div`
   text-align: center;
 `;
 const Title = styled.div`
-  font-size: 2.4rem;
+  font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   flex-basis: 100%;
 `;
@@ -91,7 +91,7 @@ const FaucetIcon = styled(Sprite)`
   }
 `;
 const ErrorText = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   color: ${({ theme }) => theme.FONT_ERROR};
   position: absolute;
   top: -20px;
@@ -115,8 +115,8 @@ const TextInput = styled.input`
   border-radius: 4px;
   padding: 6px 10px;
   min-width: 300px;
-  font-size: 1.4rem;
-  line-height: 2.2rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
   margin-right: 20px;
   &:disabled {
     cursor: not-allowed;
@@ -143,7 +143,7 @@ const Button = styled(BaseButton)`
   }
 `;
 const ServerResponse = styled.div`
-  font-size: 1.5rem;
+  font-size: 0.938rem;
   margin-top: 8px;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   font-style: italic;
@@ -263,11 +263,11 @@ const Faucet = () => {
             <FaucetContainer>
               <FaucetIconContainer>
                 <FaucetIconHolder>
-                  <FaucetIcon icon="HASH" size="20rem" />
-                  <FaucetIcon icon="HASH" size="20rem" />
-                  <FaucetIcon icon="HASH" size="20rem" />
-                  <FaucetIcon icon="HASH" size="20rem" />
-                  <FaucetIcon icon="HASH" size="20rem" />
+                  <FaucetIcon icon="HASH" size="12.5rem" />
+                  <FaucetIcon icon="HASH" size="12.5rem" />
+                  <FaucetIcon icon="HASH" size="12.5rem" />
+                  <FaucetIcon icon="HASH" size="12.5rem" />
+                  <FaucetIcon icon="HASH" size="12.5rem" />
                 </FaucetIconHolder>
               </FaucetIconContainer>
               <TitleContainer>
@@ -275,7 +275,7 @@ const Faucet = () => {
                 <InfoIconContainer>
                   <Sprite
                     icon="HELP_OUTLINE"
-                    size="2.0rem"
+                    size="1.25rem"
                     onClick={() => setShowPopup(!showPopup)}
                     onMouseEnter={() => setShowPopup(true)}
                     onMouseLeave={() => setShowPopup(false)}
@@ -311,7 +311,7 @@ const Faucet = () => {
               {isLoading && (
                 <LoadingContainer>
                   Processing...
-                  <Loading size="2rem" />
+                  <Loading size="1.25rem" />
                 </LoadingContainer>
               )}
             </FaucetContainer>

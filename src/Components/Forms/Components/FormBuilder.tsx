@@ -25,8 +25,8 @@ const Field = styled(BaseField)<{ $issub: boolean; height?: string; $noShadow?: 
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: ${({ $issub }) => ($issub ? '1.2rem' : '1.4rem')};
-  line-height: 2.2rem;
+  font-size: ${({ $issub }) => ($issub ? '0.75rem' : '0.875rem')};
+  line-height: 1.375rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
   height: ${({ height }) => height && height};
 
@@ -47,8 +47,8 @@ const TextArea = styled.textarea<{ $issub: boolean }>`
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: ${({ $issub }) => ($issub ? '1.2rem' : '1.4rem')};
-  line-height: 2.2rem;
+  font-size: ${({ $issub }) => ($issub ? '0.75rem' : '0.875rem')};
+  line-height: 1.375rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
 
   &:focus {
@@ -64,7 +64,7 @@ const TextArea = styled.textarea<{ $issub: boolean }>`
 `;
 
 const ThisField = styled.div<{ grid: boolean; noBorder?: boolean }>`
-  padding: 1.6rem 0 1.6rem 0;
+  padding: 1rem 0 1rem 0;
   display: ${({ grid }) => grid && 'grid'};
   grid-template-columns: ${({ grid }) => grid && ' 3fr 0.75fr'};
   border-bottom: ${({ grid, theme, noBorder }) =>
@@ -73,7 +73,7 @@ const ThisField = styled.div<{ grid: boolean; noBorder?: boolean }>`
 
 const Label = styled.label<{ $issub: boolean; grid: boolean }>`
   margin-top: ${({ grid }) => grid && '10px'};
-  font-size: ${({ $issub }) => ($issub ? '1.4rem' : '1.6rem')};
+  font-size: ${({ $issub }) => ($issub ? '0.875rem' : '1rem')};
   font-weight: ${({ theme, $issub }) => !$issub && theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
   align-self: center;

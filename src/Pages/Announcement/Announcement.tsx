@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Wrapper, Header, Section, Loading } from '../../Components';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
+import { Wrapper, Header, Section, Loading } from '../../Components';
 import { useNotifications } from '../../redux/hooks';
 import { isEmpty } from '../../utils';
 import { AnnouncementPagination } from './Components';
 
 const Title = styled.div`
   padding-top: 20px;
-  font-size: 3.0rem;
+  font-size: 1.875rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   align-self: center;
 `;
 const Date = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
 `;
 
 interface ParamsProps {
@@ -41,6 +41,7 @@ const Announcement = () => {
       {announcementInfoLoading || isEmpty(announcementInfo) ? <Loading /> :
       <>
         <Section header>
+          {/* @ts-ignore */}
           <Title>{title}</Title>
         </Section>
         <Date>{`Posted on ${timestamp.slice(0,10)}`}</Date>

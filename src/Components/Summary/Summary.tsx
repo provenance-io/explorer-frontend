@@ -82,7 +82,7 @@ export interface PopupDataProps {
 const buildPopupNote = (popupData: PopupDataProps) => {
   const {
     visibility = { visible: false, setVisible: () => {} },
-    icon = { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon = { name: 'HELP_OUTLINE', size: '1.063rem' },
     method = ['click'],
     fontColor = 'FONT_WHITE',
     data = [],

@@ -15,7 +15,7 @@ import { Countdown } from '../../Proposal/Components/ManageVotingModal/Component
 
 const Title = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
 `;
 
@@ -35,8 +35,8 @@ const Field = styled(BaseField)`
   border: 1px solid ${({ theme }) => theme.INPUT_BORDER_LIGHT};
   border-radius: 4px;
   color: ${({ theme }) => theme.INPUT_FONT_LIGHT};
-  font-size: 1.4rem;
-  line-height: 2.2rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
   background-color: ${({ theme }) => theme.INPUT_BG_LIGHT};
 
   &:focus {
@@ -50,11 +50,11 @@ const Field = styled(BaseField)`
 `;
 
 const ThisField = styled.div`
-  padding-top: 1.6rem;
+  padding-top: 1rem;
 `;
 
 const Label = styled.label`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
 `;
@@ -62,8 +62,8 @@ const Label = styled.label`
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  padding-top: 1.6rem;
+  gap: 0.625rem;
+  padding-top: 1rem;
 `;
 
 interface NewModalProps {

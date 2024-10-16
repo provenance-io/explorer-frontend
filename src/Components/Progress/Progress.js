@@ -26,7 +26,7 @@ const KeyContainer = styled.div`
   margin: 10px 0 0;
   display: flex;
   width: 100%;
-  gap: 1.6rem;
+  gap: 1rem;
   flex-direction: column;
 
   @media ${breakpoints.up('md')} {
@@ -37,9 +37,9 @@ const KeyContainer = styled.div`
 const Key = styled.div`
   display: flex;
   align-items: center;
-  flex-basis: calc(25% - 1.6rem);
-  gap: 0.8rem;
-  font-size: 1.4rem;
+  flex-basis: calc(25% - 1rem);
+  gap: 0.5rem;
+  font-size: 0.875;
   font-weight: 200;
   line-height: 1.75;
 `;

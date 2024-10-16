@@ -19,7 +19,7 @@ const FilterError = styled.div`
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_NORMAL};
   color: ${({ theme }) => theme.FONT_ERROR};
   @media ${breakpoints.between('sm', 'md')} {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
   }
 `;
 

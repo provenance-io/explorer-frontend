@@ -14,14 +14,14 @@ const TextWrapper = styled.div`
   padding: 100px 0;
 `;
 const GiantText = styled.div`
-  font-size: 10rem;
+  font-size: 6.25rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLDEST};
   color: ${({ theme }) => theme.FONT_PRIMARY};
   flex-basis: 100%;
   text-align: center;
 `;
 const InfoText = styled.div`
-  font-size: 2rem;
+  font-size: 1.25rem;
   color: ${({ theme }) => theme.FONT_TITLE_INFO};
   margin: 40px 0;
   flex-basis: 100%;

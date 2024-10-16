@@ -19,7 +19,7 @@ const ModalContainer = styled.div<{ isOpen: boolean }>`
 
 const Title = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   margin-bottom: 20px;
   margin-right: 10px;
@@ -32,36 +32,36 @@ const Description = styled.div`
   margin-bottom: 20px;
 `;
 const PairTitle = styled.div`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
 `;
 const ThisField = styled.div`
-  padding-top: 1.6rem;
+  padding-top: 1rem;
 `;
 const Label = styled.label`
-  font-size: 1.6rem;
+  font-size: 1rem;
   font-weight: ${({ theme }) => theme.FONT_WEIGHT_BOLD};
   line-height: 1.75;
 `;
 const MenuEnd = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.625rem;
 `;
 const ButtonGroup = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  padding-top: 1.6rem;
+  gap: 0.625rem;
+  padding-top: 1rem;
 `;
 const VoteWarning = styled.div<{ color?: string }>`
   display: flex;
-  margin: 1.6rem 0;
+  margin: 1rem 0;
   padding: 20px;
   border: ${({ theme, color }) =>
     color ? `${color} 1px solid` : `${theme.ORANGE_PRIMARY} 1px solid`};
-  border-radius: 0.6rem;
+  border-radius: 0.375rem;
   color: ${({ theme, color }) => (color ? color : theme.ORANGE_PRIMARY)};
   flex-direction: column;
   text-align: justify;
@@ -78,16 +78,16 @@ const WarningButton = styled.div`
 const CheckboxLabel = styled.label`
   display: flex;
   align-self: center;
-  padding-top: 1.8rem;
+  padding-top: 1.125rem;
 `;
 const Checkbox = styled.input`
   margin-right: 5px;
-  width: 2rem;
-  height: 2rem;
+  width: 1.25rem;
+  height: 1.25rem;
 `;
 const Total = styled.div`
-  padding: 1.6rem 0 1.6rem 0;
-  font-size: 1.8rem;
+  padding: 1rem 0 1rem 0;
+  font-size: 1.125rem;
   line-height: 1.75;
   display: grid;
   grid-template-columns: 3fr 0.5fr;
@@ -97,7 +97,7 @@ const Value = styled.div`
   align-self: center;
   margin-right: 10px;
   text-align: right;
-  font-size: 1.6rem;
+  font-size: 1rem;
   line-height: 1.75;
   color: ${({ color }) => color && color};
 `;

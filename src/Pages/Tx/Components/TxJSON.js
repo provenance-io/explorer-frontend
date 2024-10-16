@@ -10,14 +10,14 @@ const FullTxInfoContainer = styled.div`
   margin-top: 20px;
   font-style: italic;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 0.75rem;
 `;
 const FullJSONWrapper = styled.div`
   padding: 18px;
   margin-top: 10px;
   border: 1px solid ${({ theme }) => theme.BORDER_PRIMARY};
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 0.75rem;
 `;
 const FullJSON = styled.div`
   color: ${({ theme }) => theme.FONT_PRIMARY};

@@ -44,7 +44,7 @@ const BlockPagination = () => {
       <PaginationButton disabled={!backAllowed} onClick={() => backAllowed && handleClick('back')}>
         <Sprite
           icon="CHEVRON"
-          size="1.3rem"
+          size="0.813rem"
           color={backAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'}
         />
       </PaginationButton>
@@ -55,7 +55,7 @@ const BlockPagination = () => {
       >
         <Sprite
           icon="CHEVRON"
-          size="1.3rem"
+          size="0.813rem"
           spin="180"
           color={forwardAllowed ? 'ICON_PRIMARY' : 'ICON_DISABLED'}
         />

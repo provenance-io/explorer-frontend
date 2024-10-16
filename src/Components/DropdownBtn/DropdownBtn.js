@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const ButtonGroup = styled.div`
   position: relative;
-  padding-right: 1.6rem;
+  padding-right: 1rem;
 `;
 
 const Button = styled(OgButton)`
@@ -109,7 +109,7 @@ const DropdownBtn = ({ className, color, initial, onClick, options, type }) => {
           {initial}
         </Button>
         <SelectArrow $color={$color} onClick={toggleDropdown} type={type}>
-          <Sprite icon="CARET" size="0.9rem" color={theme[`BUTTON_${$color}_FONT`]} />
+          <Sprite icon="CARET" size="0.563rem" color={theme[`BUTTON_${$color}_FONT`]} />
         </SelectArrow>
       </ButtonGroup>
       <DropdownList show={showDropdown}>

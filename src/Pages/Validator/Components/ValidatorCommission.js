@@ -44,7 +44,7 @@ const ValidatorCommission = () => {
 
   const popupNoteBondedTokens = {
     visibility: { visible: showBondedPopup, setVisible: setShowBondedPopup },
-    icon: { name: 'HELP_OUTLINE', size: '1.7rem' },
+    icon: { name: 'HELP_OUTLINE', size: '1.063rem' },
     method: ['click', 'hover'],
     fontColor: 'FONT_WHITE',
     data: [

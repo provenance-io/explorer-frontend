@@ -9,9 +9,9 @@ const Item = styled.div`
   justify-content: flex-end;
   margin-left: auto;
   font-weight: 500;
-  font-size: 2.5rem;
+  font-size: 1.563rem;
   @media ${breakpoints.between('xs', 'sm', 'md')} {
-    font-size: 1.8rem;
+    font-size: 1.125rem;
   }
 `;
 

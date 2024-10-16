@@ -50,7 +50,7 @@ const DropdownUL = styled.ul`
 const Link = styled(BaseLink)`
   display: flex;
   background: ${({ theme }) => theme.BACKGROUND_SUBHEADER};
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   opacity: 1;
   :visited {
     color: ${({ theme }) => theme.FONT_NAV_VISITED};

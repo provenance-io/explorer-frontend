@@ -6,7 +6,7 @@ import { capitalize } from '../../../utils';
 import { breakpoints } from '../../../consts';
 
 const Message = styled.div`
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   @media ${breakpoints.down('md')} {
     min-width: 300px;
   }
@@ -32,7 +32,7 @@ const Bold = styled.span`
 
 const Link = styled(BaseLink)`
   color: ${({ theme }) => theme.FONT_PRIMARY}; 
-  font-size: 1.4rem;
+  font-size: 0.875rem;
   &&& {
     :hover {
       opacity: 1;
