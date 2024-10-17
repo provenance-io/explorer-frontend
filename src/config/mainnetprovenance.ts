@@ -412,47 +412,6 @@ export const MainnetChainConfig: Chain = {
     }]
 }
 
-// export const MainnetChainConfig: Chain = {
-//   chain_type: 'cosmos',
-//   chain_name: 'provenancemainnet',
-//   chain_id: 'pio-mainnet-1',
-//   status: 'live',
-//   network_type: 'mainnet',
-//   pretty_name: 'Provenance Mainnet',
-//   bech32_prefix: 'pb',
-//   slip44: 505,
-//   key_algos: ['secp256k1'],
-//   staking: {
-//     staking_tokens: [
-//       {
-//         denom: 'nhash',
-//       },
-//     ],
-//   },
-//   fees: {
-//     fee_tokens: [
-//       {
-//         denom: 'nhash',
-//         fixed_min_gas_price: 1905000,
-//         low_gas_price: 1905000,
-//         average_gas_price: 2100000,
-//         high_gas_price: 2500000,
-//       },
-//     ],
-//   },
-//   logo_URIs: {
-//     png: '/prov.png',
-//     svg: '/prov.svg',
-//   },
-//   images: [{
-//     png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/provenance/images/prov.png',
-//     svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/provenance/images/prov.svg',
-//     theme: {
-//       primary_color_hex: '#4c7cdc'
-//     }
-//   }]
-// };
-
 export const MainnetChainAssets: AssetList = {
   chain_name: 'provenance',
   assets: [{

@@ -26,7 +26,10 @@ export const currencyFormat = (value = 0, initialDenom: string, toBase = false) 
   // pull the needed denom info
   const { base, display, denomUnits } = denomInfo;
   // find the exponent from the denom units
-  let { exponent } = denomUnits.find(({ denom }: { denom: string }) => denom === display);
+  // Note: There appears to be a bug where one token isn't supplying exponents :shrug:
+  // let { exponent } = denomUnits.find(({ denom }: { denom: string }) => denom === display);
+  const denom = denomUnits.find(({ denom }: { denom: string }) => denom === display);
+  let exponent = denom?.exponent ? denom.exponent : 0;
   // If converting to the base denom invert the exponent
   exponent = toBase ? exponent : exponent * -1;
   // The denom that the new amount is in
