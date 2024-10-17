@@ -134,6 +134,7 @@ interface StakingModalProps {
   modalOpen: boolean;
   onClose: () => void;
   validator: CurrentValidator;
+  validatorPower?: number;
 }
 
 interface DelegationFormProps {
@@ -146,11 +147,17 @@ export const ManageStakingModal = ({
   modalOpen,
   onClose,
   validator,
+  validatorPower,
 }: StakingModalProps) => {
   // Hooks
   const { tx } = useTx(CHAIN_NAME);
-  const { allValidators, getValidatorSpotlight, validatorSpotlight, validatorSpotlightLoading, getAllValidators } =
-    useValidators();
+  const {
+    allValidators,
+    getValidatorSpotlight,
+    validatorSpotlight,
+    validatorSpotlightLoading,
+    getAllValidators,
+  } = useValidators();
   const theme = useTheme();
   const { accountAssets } = useAccounts();
   const { delegateAction, redelegateAction, undelegateAction, withdrawRewardsAction } =
@@ -220,14 +227,12 @@ export const ManageStakingModal = ({
     const typeUrl = data.json.messages[0]['@type'];
     delete data.json.messages[0]['@type'];
     const value = data.json.messages[0];
-    const response = await tx(
-      [
-        {
-          typeUrl,
-          value,
-        },
-      ],
-    );
+    const response = await tx([
+      {
+        typeUrl,
+        value,
+      },
+    ]);
     if (response.isSuccess) {
       // Wait a few seconds until refreshing the validators list
       setTimeout(() => {
@@ -236,7 +241,7 @@ export const ManageStakingModal = ({
           count: 100,
           status: 'all',
         });
-      }, 3000)
+      }, 3000);
     }
   };
   // Close Modal
@@ -278,7 +283,7 @@ export const ManageStakingModal = ({
   );
 
   return (
-    <Modal isOpen={isOpen} onClose={handleModalClose}>
+    <Modal isOpen={isOpen} onClose={handleModalClose} largeModal>
       {validatorSpotlightLoading || validator.addressId !== validatorSpotlight.operatorAddress ? (
         <Loading />
       ) : (
@@ -396,7 +401,6 @@ export const ManageStakingModal = ({
                   </ButtonGroup>
                 </>
               )}
-
               {/* Delegating to a Validator */}
               {stakingType === STAKING_TYPES.DELEGATE && (
                 <Info>
@@ -412,6 +416,28 @@ export const ManageStakingModal = ({
                       </DisclaimerText>
                     </div>
                   </Disclaimer>
+                  {validator.votingPower &&
+                    numberFormat(
+                      (validator.votingPower.count / (validator.votingPower.total || 1)) * 100,
+                      0
+                    ) === Math.floor(Number(32)).toString() && (
+                      <Disclaimer>
+                        <DisclaimerIcon>
+                          <Sprite icon="WARNING" size="2rem" color={theme.FONT_WARNING} />
+                        </DisclaimerIcon>
+                        <div>
+                          <DisclaimerTitle>
+                            {validator.moniker} is close to voting capacity
+                          </DisclaimerTitle>
+                          <DisclaimerText>
+                            This validator is near the maximum staking concentration limits.
+                            Depending on the size of your delegation it may not be possible to
+                            delegate. Please consider choosing one of the lower ranked validators
+                            for your delegation to improve the decentralization of the network.
+                          </DisclaimerText>
+                        </div>
+                      </Disclaimer>
+                    )}
                   {/* Pops a warning if you'll only have 5 hash left, otherwise you might get stuck */}
                   {new Big(formik.values.amount || 0).gt(
                     new Big(hashAmount || 0).minus(MIN_HASH_AFTER_STAKING).toNumber()

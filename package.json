@@ -12,6 +12,7 @@
   "sideEffects": false,
   "dependencies": {
     "@chain-registry/types": "0.47.0",
+    "@cosmos-kit/leap-mobile": "2.13.1",
     "@cosmos-kit/react": "2.20.0",
     "@esbuild-plugins/node-globals-polyfill": "0.2.3",
     "@interchain-ui/react": "1.25.3",
