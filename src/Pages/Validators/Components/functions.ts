@@ -1,6 +1,7 @@
 import { Coin } from '@cosmjs/stargate';
 import { cosmos, provenance } from '@provlabs/provenancejs';
 import { MsgDelegate } from '@provlabs/provenancejs/cosmos/staking/v1beta1/tx';
+import { SignatureDescriptor_Data, SignatureDescriptors } from '@provlabs/provenancejs/cosmos/tx/signing/v1beta1/signing';
 import { Payment } from '@provlabs/provenancejs/provenance/exchange/v1/payments';
 
 export function CreatePaymentMessage(
@@ -46,6 +47,11 @@ export function CreateAcceptPaymentMessage(
 export function CreateDelegateMessage(msg: MsgDelegate) {
   const typeUrl = cosmos.staking.v1beta1.MsgDelegate.typeUrl;
   return { typeUrl, value: cosmos.staking.v1beta1.MsgDelegate.toAmino(msg) };
+}
+
+export function CreateSignatureMessage(msg: SignatureDescriptor_Data) {
+  const typeUrl = cosmos.tx.signing.v1beta1.SignatureDescriptor_Data.typeUrl;
+  return { typeUrl, value: cosmos.tx.signing.v1beta1.SignatureDescriptor_Data.toAmino(msg)}
 }
 
 export function CreateRejectPaymentMessage(source: string, target: string, externalId: string) {

@@ -17,14 +17,25 @@ export const TestnetChainConfig: Chain = {
       },
     ],
   },
+  // fees: {
+  //   fee_tokens: [
+  //     {
+  //       denom: 'nhash',
+  //       fixed_min_gas_price: 1905000,
+  //       low_gas_price: 1905000,
+  //       average_gas_price: 2100000,
+  //       high_gas_price: 2500000,
+  //     },
+  //   ],
+  // },
   fees: {
     fee_tokens: [
       {
         denom: 'nhash',
-        fixed_min_gas_price: 1905000,
-        low_gas_price: 1905000,
-        average_gas_price: 2100000,
-        high_gas_price: 2500000,
+        fixed_min_gas_price: 1905,
+        low_gas_price: 1905,
+        average_gas_price: 2100,
+        high_gas_price: 2500,
       },
     ],
   },

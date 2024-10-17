@@ -7,6 +7,7 @@ import useOnEscape from 'react-tiny-hooks/use-on-escape';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useChain } from '@cosmos-kit/react';
+import { cosmos } from '@provlabs/provenancejs';
 import { signJWT } from '../../utils/jwt';
 import { CHAIN_NAME } from '../../config';
 import { ICON_NAMES } from '../../consts';
@@ -39,7 +40,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
-  const { status, connect, address, signArbitrary } = useChain(CHAIN_NAME);
+  const { status, connect, address, signArbitrary, getSigningStargateClient, getAccount, wallet } =
+    useChain(CHAIN_NAME);
   const { setAuthToken, authToken } = useApp();
   const provJWT = localStorage.getItem('provenanceJWT');
   const jwtInfo = provJWT ? JSON.parse(provJWT) : '';
@@ -79,13 +81,58 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   // This is the effect that signs the local JWT to access the explorer service
   useEffect(() => {
     const initialSigningEvent = async () => {
-      if (!authToken && status === 'Connected' && address && !localStorage.getItem('provenanceJWT')) {
-        const response = await signArbitrary(address, 'Approve the connection to Provenance');
-        if (response) {
+      if (
+        !authToken &&
+        status === 'Connected' &&
+        address &&
+        wallet &&
+        !localStorage.getItem('provenanceJWT')
+      ) {
+        let publicKey = '';
+        let signature = '';
+        if (wallet.name === 'leap-extension') {
+          const response = await signArbitrary(address, 'Approve the connection to Provenance');
+          signature = response.signature;
+          publicKey = response.pub_key.value;
+        } else {
+          const client = await getSigningStargateClient();
+          const account = await getAccount();
+          const signed = await client.sign(
+            address,
+            [
+              {
+                typeUrl: '/cosmos.bank.v1beta1.MsgSend',
+                value: {
+                  fromAddress: '',
+                  toAddress: '',
+                  amount: [
+                    {
+                      amount: '0',
+                      denom: 'nhash',
+                    },
+                  ],
+                },
+              },
+            ],
+            {
+              amount: [
+                {
+                  amount: '0',
+                  denom: 'nhash',
+                },
+              ],
+              gas: '0',
+            },
+            'Approve the connection to Provenance. Because the signArbitrary method is not supported by Leap, signing into your account will cost a small amount of hash. We are working to resolve this issue.'
+          );
+          publicKey = cosmos.crypto.ed25519.PubKey.toAmino({ key: account.pubkey }).key as string;
+          signature = (cosmos.tx.v1beta1.TxRaw.toAmino(signed).signatures ? [0] : '') as string;
+        }
+        if (publicKey && signature) {
           const jwtResponse = await signJWT({
             address,
-            signature: response.signature,
-            publicKey: response.pub_key.value,
+            publicKey,
+            signature,
           });
           if (jwtResponse) {
             localStorage.setItem(
@@ -101,7 +148,17 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
       }
     };
     initialSigningEvent();
-  }, [address, authToken, setAuthToken, signArbitrary, signedJWT, status]);
+  }, [
+    address,
+    authToken,
+    getAccount,
+    getSigningStargateClient,
+    setAuthToken,
+    signArbitrary,
+    signedJWT,
+    status,
+    wallet,
+  ]);
 
   const handleLoginClick = () => {
     connect();
