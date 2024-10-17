@@ -34,36 +34,34 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const theme = useTheme();
   const position = isMobile ? 'above' : 'left';
   const [visible, setVisible] = useState(false);
-  const [publicKey, setPublicKey] = useState<string>();
-  const [signature, setSignature] = useState<string>();
 
   const [, , , deactivateShowPopup] = useToggle();
   const containerRef = useOnClickOutside(deactivateShowPopup);
   useOnEscape(deactivateShowPopup);
 
-  const { status, connect, address, signArbitrary, isWalletDisconnected } = useChain(CHAIN_NAME);
+  const { status, connect, address, signArbitrary } = useChain(CHAIN_NAME);
   const { setAuthToken, authToken } = useApp();
   const provJWT = localStorage.getItem('provenanceJWT');
   const jwtInfo = provJWT ? JSON.parse(provJWT) : '';
   const signedJWT = jwtInfo.expires < Date.now() / 1000 ? '' : jwtInfo.jwt;
 
   useEffect(() => {
-    if (isWalletDisconnected) {
+    if (status === 'Disconnected') {
+      localStorage.removeItem('provenanceJWT');
       setIsLoggedIn(false);
-      setPublicKey('');
-      setSignature('');
+      setAuthToken('');
       setWalletAddress('');
     }
-  }, [setAuthToken, setWalletAddress, status, isWalletDisconnected, setIsLoggedIn]);
+  }, [setAuthToken, setWalletAddress, status, setIsLoggedIn]);
 
   useEffect(() => {
     if (jwtInfo && jwtInfo.expires < Date.now() / 1000) {
       localStorage.removeItem('provenanceJWT');
-      setPublicKey('');
-      setSignature('');
+      setIsLoggedIn(false);
+      setAuthToken('');
       setWalletAddress('');
     }
-  }, [jwtInfo, setWalletAddress]);
+  }, [jwtInfo, setAuthToken, setIsLoggedIn, setWalletAddress]);
 
   useEffect(() => {
     if (signedJWT) {
@@ -78,32 +76,32 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
     }
   }, [status, address, setIsLoggedIn, setWalletAddress]);
 
+  // This is the effect that signs the local JWT to access the explorer service
   useEffect(() => {
     const initialSigningEvent = async () => {
-      if (!authToken && !signedJWT && status === 'Connected' && address) {
-        if ((!publicKey || !signature) && !authToken) {
-          const response = await signArbitrary(address, 'Approve the connection to Provenance');
-          setPublicKey(response.pub_key.value);
-          setSignature(response.signature);
-        }
-        if (publicKey && signature && !localStorage.getItem('provenanceJWT')) {
-          signJWT({
+      if (!authToken && status === 'Connected' && address && !localStorage.getItem('provenanceJWT')) {
+        const response = await signArbitrary(address, 'Approve the connection to Provenance');
+        if (response) {
+          const jwtResponse = await signJWT({
             address,
-            signature,
-            publicKey,
-          }).then((res) => {
+            signature: response.signature,
+            publicKey: response.pub_key.value,
+          });
+          if (jwtResponse) {
             localStorage.setItem(
               'provenanceJWT',
-              JSON.stringify({ jwt: res.result.signedJWT, expires: res.result.expires })
+              JSON.stringify({
+                jwt: jwtResponse.result.signedJWT,
+                expires: jwtResponse.result.expires,
+              })
             );
-            setAuthToken(res.result.signedJWT);
-          });
+            setAuthToken(jwtResponse.result.signedJWT);
+          }
         }
       }
     };
-
     initialSigningEvent();
-  }, [address, authToken, publicKey, setAuthToken, signArbitrary, signature, signedJWT, status]);
+  }, [address, authToken, setAuthToken, signArbitrary, signedJWT, status]);
 
   const handleLoginClick = () => {
     connect();

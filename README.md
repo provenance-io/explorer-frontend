@@ -52,6 +52,10 @@ Visit our [Docker Hub](https://hub.docker.com/u/provenanceio) to grab an image a
       * You don't need to have any other app or service running for this method, it's the fastest and easiest way to start working locally
       * `npm run start:test`
 
+## Local Development Notes
+While under heavy development, the use of polyfills in the frontend code is extensive. In order to run locally, you must first
+comment out the `nodePolyfills()` (line 33 at the time of this writing) plugin in the `vite.config.mjs` file.
+
 ## Status
 [![Latest Release][release-badge]][release-latest]
 [![Apache 2.0 License][license-badge]][license-url]

@@ -1,4 +1,4 @@
-import { ChainWalletBase, SignerOptions } from 'cosmos-kit';
+import { SignerOptions } from 'cosmos-kit';
 import { wallets } from '@cosmos-kit/leap-extension';
 import { ChainProvider } from '@cosmos-kit/react';
 import { assets, chains } from 'chain-registry';
@@ -6,13 +6,13 @@ import { Chain } from '@chain-registry/types';
 import { GasPrice } from '@cosmjs/stargate';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ThemeProvider } from '@interchain-ui/react';
-import { Button } from '../Components';
 import {
   CHAIN_NAME,
   RPC_ENDPOINT,
   getSigningProvenanceClientOptions,
   CHAIN_CONFIG,
   CHAIN_ASSETS,
+  REST_ENDPOINT,
 } from '../config';
 
 import '@interchain-ui/react/styles';
@@ -27,7 +27,6 @@ const queryClient = new QueryClient({
 });
 
 export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
-  // const { themeClass } = useTheme();
 
   const signerOptions: SignerOptions = {
     // @ts-ignore
@@ -53,34 +52,6 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
     },
   };
 
-  interface WalletListViewProps {
-    onClose: () => void;
-    wallets: ChainWalletBase[];
-  }
-
-  // const WalletListView = ({ onClose, wallets }: WalletListViewProps) => ({
-  //   head: <></>,
-  //   content: wallets.map((w) => {
-  //     const {
-  //       walletInfo: { prettyName, logo },
-  //       mainWallet: { connect },
-  //     } = w;
-  //     return (
-  //       <div>
-  //         <Button
-  //           onClick={() => {
-  //             connect();
-  //             onClose();
-  //           }}
-  //         >
-  //           {prettyName}{' '}
-  //           <img src={typeof logo === 'string' ? logo : logo?.major} alt={prettyName} />
-  //         </Button>
-  //       </div>
-  //     );
-  //   }),
-  // });
-
   return (
     <ThemeProvider
       themeDefs={[
@@ -105,35 +76,12 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
         assetLists={[...assets, CHAIN_ASSETS]}
         wallets={wallets}
         walletModal={undefined}
-        // modalViews={{
-          // WalletList: WalletListView,
-          // Connecting: "Connecting",
-          // Connected: ConnectedView,
-          // Error: "Error",
-        // }}
         endpointOptions={{
           endpoints: {
             [CHAIN_CONFIG.chain_name]: {
               rpc: [RPC_ENDPOINT],
-              rest: ['https://api.test.provenance.io'],
+              rest: [REST_ENDPOINT],
             },
-            // localprovenance: {
-            //   rpc: [RPC_ENDPOINT],
-            //   rest: ['https://api.test.provenance.io'],
-            // },
-            // provenancetestnet: {
-            //   rpc: [RPC_ENDPOINT],
-            //   rest: [
-            //     'https://api.test.provenance.io',
-            //     'https://api.test.provenance.io',
-            //     'https://api.test.provenance.io',
-            //     'https://api.test.provenance.io',
-            //   ],
-            // },
-            // provenancemainnet: {
-            //   rpc: [RPC_ENDPOINT],
-            //   rest: ['https://api.provenance.io'],
-            // },
           },
         }}
         walletConnectOptions={{
@@ -152,13 +100,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
         signerOptions={signerOptions}
       >
         <QueryClientProvider client={queryClient}>
-          {/* <Box
-            className={themeClass}
-            minHeight="100dvh"
-            backgroundColor={useColorModeValue('$white', '$background')}
-          > */}
           {children}
-          {/* </Box> */}
         </QueryClientProvider>
       </ChainProvider>
     </ThemeProvider>
