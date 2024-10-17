@@ -77,7 +77,12 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
         wallets={wallets}
         walletModal={undefined}
         endpointOptions={{
+          isLazy: true,
           endpoints: {
+            provenance: {
+              rpc: ['https://rpc.provenance.io/'],
+              rest: [REST_ENDPOINT],
+            },
             [CHAIN_CONFIG.chain_name]: {
               rpc: [RPC_ENDPOINT],
               rest: [REST_ENDPOINT],
