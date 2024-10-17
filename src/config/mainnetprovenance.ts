@@ -290,91 +290,15 @@ export const MainnetChainConfig: Chain = {
   apis: {
     rpc: [
       {
-        address: 'https://rpc-provenance.takeshi.team/',
-        provider: 'TAKESHI'
-      },
-      {
         address: 'https://rpc.provenance.io/',
         provider: 'Figure'
       },
-      {
-        address: 'https://rpc-provenance-ia.cosmosia.notional.ventures/',
-        provider: 'Notional'
-      },
-      {
-        address: 'https://provenance-mainnet-rpc.autostake.com:443',
-        provider: 'AutoStake 🛡️ Slash Protected'
-      },
-      {
-        address: 'https://provenance-rpc.ibs.team',
-        provider: 'Inter Blockchain Services'
-      },
-      {
-        address: 'https://provenance-rpc.highstakes.ch',
-        provider: 'High Stakes 🇨🇭'
-      },
-      {
-        address: 'https://rpc.provenance.blockval.io/',
-        provider: 'Blockval'
-      },
-      {
-        address: 'https://provenance-rpc.panthea.eu',
-        provider: 'Panthea EU'
-      },
-      {
-        address: 'https://provenance_mainnet_rpc.chain.whenmoonwhenlambo.money',
-        provider: '🚀 WHEN MOON 🌕 WHEN LAMBO 🔥'
-      },
-      {
-        address: 'https://rpc.pio-mainnet-1.provenance.aviaone.com',
-        provider: 'AVIAONE 🟢'
-      }
     ],
     rest: [
-      {
-        address: 'https://api-provenance.takeshi.team',
-        provider: 'TAKESHI'
-      },
-      {
-        address: 'https://provenance-mainnet-lcd.autostake.com:443',
-        provider: 'AutoStake 🛡️ Slash Protected'
-      },
       {
         address: 'https://api.provenance.io',
         provider: 'Figure'
       },
-      {
-        address: 'https://provenance.api.m.stavr.tech',
-        provider: '🔥STAVR🔥'
-      },
-      {
-        address: 'https://api-provenance-ia.cosmosia.notional.ventures/',
-        provider: 'Notional'
-      },
-      {
-        address: 'https://provenance-api.ibs.team',
-        provider: 'Inter Blockchain Services'
-      },
-      {
-        address: 'https://provenance-api.highstakes.ch',
-        provider: 'High Stakes 🇨🇭'
-      },
-      {
-        address: 'https://api.provenance.blockval.io',
-        provider: 'Blockval'
-      },
-      {
-        address: 'https://provenance-api.panthea.eu',
-        provider: 'Panthea EU'
-      },
-      {
-        address: 'https://provenance_mainnet_api.chain.whenmoonwhenlambo.money',
-        provider: '🚀 WHEN MOON 🌕 WHEN LAMBO 🔥'
-      },
-      {
-        address: 'https://api.pio-mainnet-1.provenance.aviaone.com',
-        provider: 'AVIAONE 🟢'
-      }
     ],
     grpc: [
       {
