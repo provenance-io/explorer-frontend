@@ -1,5 +1,6 @@
 import { SignerOptions } from 'cosmos-kit';
-import { wallets } from '@cosmos-kit/leap-extension';
+import { wallets as extension } from '@cosmos-kit/leap-extension';
+import { wallets as mobile } from '@cosmos-kit/leap-mobile';
 import { ChainProvider } from '@cosmos-kit/react';
 import { assets, chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
@@ -74,7 +75,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
       <ChainProvider
         chains={[...chains, CHAIN_CONFIG]}
         assetLists={[...assets, CHAIN_ASSETS]}
-        wallets={wallets}
+        wallets={[...extension, ...mobile]}
         walletModal={undefined}
         endpointOptions={{
           isLazy: true,
@@ -89,18 +90,18 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
             },
           },
         }}
-        // walletConnectOptions={{
-        //   signClient: {
-        //     projectId: 'a8510432ebb71e6948cfd6cde54b70f7',
-        //     relayUrl: 'wss://relay.walletconnect.org',
-        //     metadata: {
-        //       name: 'CosmosKit Template',
-        //       description: 'CosmosKit dapp template',
-        //       url: 'https://docs.cosmology.zone/cosmos-kit/',
-        //       icons: [],
-        //     },
-        //   },
-        // }}
+        walletConnectOptions={{
+          signClient: {
+            projectId: '6451479b4eb6d2967465521cb99ff677',
+            relayUrl: 'wss://relay.walletconnect.org',
+            metadata: {
+              name: 'CosmosKit Template',
+              description: 'CosmosKit dapp template',
+              url: 'https://docs.cosmology.zone/cosmos-kit/',
+              icons: [],
+            },
+          },
+        }}
         // @ts-ignore
         signerOptions={signerOptions}
       >
