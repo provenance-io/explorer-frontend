@@ -4,6 +4,7 @@ import ReactGA from 'react-ga4';
 import TagManager from 'react-gtm-module';
 // eslint-disable-next-line
 import { Maintenance } from 'Pages';
+import { WalletConnectContextProvider } from '@provenanceio/walletconnect-js';
 import { store } from '../src/redux/app/store';
 import { isProd } from '../src/consts';
 import App from './App';
@@ -24,8 +25,10 @@ if (gtmId) TagManager.initialize({ gtmId });
 ReactDOM.render(
   <Provider store={store()}>
     <CosmosProvider>
+      <WalletConnectContextProvider>
       <App />
       {/* <Maintenance /> */}
+      </WalletConnectContextProvider>
       </CosmosProvider>
   </Provider>,
   document.getElementById('root')

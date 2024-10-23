@@ -6,7 +6,7 @@ import { assets, chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
 import { GasPrice } from '@cosmjs/stargate';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { ThemeProvider } from '@interchain-ui/react';
+import { ThemeProvider, ConnectModal } from '@interchain-ui/react';
 import {
   CHAIN_NAME,
   RPC_ENDPOINT,
@@ -76,7 +76,6 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
         chains={[...chains, CHAIN_CONFIG]}
         assetLists={[...assets, CHAIN_ASSETS]}
         wallets={[...extension, ...mobile]}
-        walletModal={undefined}
         endpointOptions={{
           isLazy: true,
           endpoints: {

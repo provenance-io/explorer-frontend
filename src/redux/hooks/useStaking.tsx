@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
-import { useChain } from '@cosmos-kit/react';
-import { CHAIN_NAME } from '../../config';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {
   selectStaking as selector,
@@ -78,7 +76,7 @@ export const useStaking = () => {
   const [isDelegate, setIsDelegate] = useState(false);
   const [validator, setValidator] = useState<CurrentValidator>();
   // const { walletConnectService: wcs } = useWalletConnect();
-  const { address: delegatorAddress } = useChain(CHAIN_NAME);
+  const { walletAddress: delegatorAddress } = useApp();
   const {
     getAccountDelegations,
     getAccountAssets,

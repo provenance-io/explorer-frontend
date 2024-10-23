@@ -203,6 +203,7 @@ const ValidatorList = () => {
         modalOpen={modalFns.modalOpen}
         onClose={modalFns.deactivateModalOpen}
         validator={validator || {}}
+        validatorPower={validatorPower}
       />
       {isActive && <p>*Maximum voting power is currently {validatorPower}</p>}
     </ValidatorListContainer>

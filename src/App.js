@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { useAssets, useColorScheme } from '../src/redux/hooks';
+import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import { useAssets, useColorScheme, useApp } from '../src/redux/hooks';
 import { Navigation, Footer, SpriteSheet, BaseStyle } from '../src/Components';
 import { GlobalStyle } from '../src/theme';
 import { isProd } from '../src/consts';
@@ -42,6 +43,12 @@ import {
 const App = () => {
   const { activeTheme } = useColorScheme();
 
+  const { setAuthToken } = useApp();
+
+  const {
+    walletConnectState: { signedJWT },
+  } = useWalletConnect();
+
   const { assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed } =
     useAssets();
 
@@ -50,6 +57,12 @@ const App = () => {
       getAssetMetadata();
     }
   }, [assetMetadata, assetMetadataLoading, getAssetMetadata, assetMetadataFailed]);
+
+  useEffect(() => {
+    if (signedJWT) {
+      setAuthToken(signedJWT);
+    }
+  }, [setAuthToken, signedJWT]);
 
   return (
     <BrowserRouter basename={import.meta.env.PUBLIC_URL || ''}>
