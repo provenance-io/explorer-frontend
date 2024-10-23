@@ -9,9 +9,15 @@ import {
   WithdrawRewardsProps,
 } from 'redux/features/staking/stakingSlice';
 import Big from 'big.js';
-import { useChain } from '@cosmos-kit/react';
+import { useWalletConnect } from '@provenanceio/walletconnect-js';
 import { CHAIN_NAME } from '../../../config';
-import { CurrentValidator, useAccounts, useStaking, useValidators } from '../../../redux/hooks';
+import {
+  CurrentValidator,
+  useAccounts,
+  useApp,
+  useStaking,
+  useValidators,
+} from '../../../redux/hooks';
 import {
   Button,
   DropdownBtn,
@@ -134,7 +140,6 @@ interface StakingModalProps {
   modalOpen: boolean;
   onClose: () => void;
   validator: CurrentValidator;
-  validatorPower?: number;
 }
 
 interface DelegationFormProps {
@@ -147,10 +152,10 @@ export const ManageStakingModal = ({
   modalOpen,
   onClose,
   validator,
-  validatorPower,
 }: StakingModalProps) => {
   // Hooks
   const { tx } = useTx(CHAIN_NAME);
+  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
   const {
     allValidators,
     getValidatorSpotlight,
@@ -162,7 +167,7 @@ export const ManageStakingModal = ({
   const { accountAssets } = useAccounts();
   const { delegateAction, redelegateAction, undelegateAction, withdrawRewardsAction } =
     useStaking();
-  const { address: delegatorAddress } = useChain(CHAIN_NAME);
+  const { walletAddress: delegatorAddress } = useApp();
   // State variables
   const [isOpen, setIsOpen] = useState(false); // Is the modal open
   const [stakingType, setStakingType] = useState(''); // Sets staking type for managing delegations
@@ -227,21 +232,29 @@ export const ManageStakingModal = ({
     const typeUrl = data.json.messages[0]['@type'];
     delete data.json.messages[0]['@type'];
     const value = data.json.messages[0];
-    const response = await tx([
-      {
-        typeUrl,
-        value,
-      },
-    ]);
-    if (response.isSuccess) {
-      // Wait a few seconds until refreshing the validators list
-      setTimeout(() => {
-        getAllValidators({
-          page: 1,
-          count: 100,
-          status: 'all',
-        });
-      }, 3000);
+    // If we are connected with Figure Wallet, then just send that one
+    if (walletConnectState.connected) {
+      wcs.sendMessage({
+        description: 'Submit Delegation',
+        message: data.base64,
+      });
+    } else {
+      const response = await tx([
+        {
+          typeUrl,
+          value,
+        },
+      ]);
+      if (response.isSuccess) {
+        // Wait a few seconds until refreshing the validators list
+        setTimeout(() => {
+          getAllValidators({
+            page: 1,
+            count: 100,
+            status: 'all',
+          });
+        }, 3000);
+      }
     }
   };
   // Close Modal
