@@ -34,6 +34,9 @@ export default defineConfig({
     react(),
   ],
   dedupe: ['react-dom', 'styled-components', 'react', '@interchain-ui/react'],
+  build: {
+    commonjsOptions: { transformMixedEsModules: true } // Change
+  },
   optimizeDeps: {
     force: true,
     esbuildOptions: {
