@@ -1,7 +1,7 @@
 import { defineConfig, transformWithEsbuild } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
@@ -35,7 +35,7 @@ export default defineConfig({
   ],
   dedupe: ['react-dom', 'styled-components', 'react', '@interchain-ui/react'],
   build: {
-    commonjsOptions: { transformMixedEsModules: true } // Change
+    commonjsOptions: { transformMixedEsModules: true }, // Change
   },
   optimizeDeps: {
     force: true,
@@ -45,19 +45,23 @@ export default defineConfig({
       },
       // Node.js global to browser globalThis
       define: {
-        global: 'globalThis'
-    },
-    // Enable esbuild polyfill plugins
-    plugins: [
+        global: 'globalThis',
+      },
+      // Enable esbuild polyfill plugins
+      plugins: [
         NodeGlobalsPolyfillPlugin({
-            buffer: true
-        })
-    ]
+          buffer: true,
+        }),
+      ],
     },
   },
+  // define: {
+  //   // By default, Vite doesn't include shims for NodeJS/
+  //   // necessary for segment analytics lib to work
+  //   global: {},
+  // },
+  // Node.js global to browser globalThis
   define: {
-    // By default, Vite doesn't include shims for NodeJS/
-    // necessary for segment analytics lib to work
-    global: {},
+    global: 'globalThis',
   },
 });
