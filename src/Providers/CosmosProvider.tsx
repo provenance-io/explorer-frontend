@@ -94,9 +94,9 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
             projectId: '6451479b4eb6d2967465521cb99ff677',
             relayUrl: 'wss://relay.walletconnect.org',
             metadata: {
-              name: 'CosmosKit Template',
-              description: 'CosmosKit dapp template',
-              url: 'https://docs.cosmology.zone/cosmos-kit/',
+              name: 'Provenance Explorer',
+              description: 'Navigate and interact with the Provenance Blockchain.',
+              url: 'https://explorer.provenance.io/',
               icons: [],
             },
           },

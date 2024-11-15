@@ -6,6 +6,7 @@
 - Fix signers link in Txs Information block #484
 - Fix feegranter display #492
 - Fix wasm params #495
+- Fix metadata in CosmosProvider to be explorer related #542
 
 ### Features
 - Update wcjs and wallet utils versions #481
