@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import qs from 'query-string';
 import { RootState } from "redux/app/store";
-import { 
-  CONTRACT_CODE_URL, 
-  CODES_URL, 
-  CONTRACT_DETAILS_URL, 
+import {
+  CONTRACT_CODE_URL,
+  CODES_URL,
+  CONTRACT_DETAILS_URL,
   CONTRACTS_ALL_URL,
-  CONTRACT_TRANSACTIONS_URL, 
+  CONTRACT_TRANSACTIONS_URL,
   CONTRACT_LABELS_URL,
 } from '../../../consts';
 import { TransactionsModule } from '../asset/assetSlice';
@@ -222,7 +222,7 @@ export const getContractsByCode = createAsyncThunk(
     id: string,
     page: number,
     count: number,
-  }) => 
+  }) =>
     ajax({
       url: `${CONTRACT_CODE_URL}/${id}/contracts/?${qs.stringify({ page, count })}`,
     })
@@ -235,14 +235,14 @@ export const getCodes = createAsyncThunk(
     count = 10,
     creator = '',
     hasContracts = '',
-  } : {
+  }: {
     page: number,
     count: number,
     creator: string,
     hasContracts: string,
-  }) => 
+  }) =>
     ajax({
-      url: `${CODES_URL}/?count=${count}&page=${page}${creator && `&creator=${creator}`}${hasContracts && `&has_contracts=${hasContracts}`}`,
+      url: `${CODES_URL}?count=${count}&page=${page}${creator && `&creator=${creator}`}${hasContracts && `&has_contracts=${hasContracts}`}`,
     })
 );
 
@@ -250,19 +250,19 @@ export const getContractDetails = createAsyncThunk(
   GET_CONTRACT_DETAILS,
   ({
     id = '',
-  } : {
+  }: {
     id: string,
   }) =>
-  ajax({
-    url: `${CONTRACT_DETAILS_URL}/${id}`,
-  })
+    ajax({
+      url: `${CONTRACT_DETAILS_URL}/${id}`,
+    })
 );
 
 export const getContractHistory = createAsyncThunk(
   GET_CONTRACT_HISTORY,
   ({
     id = '',
-  } : {
+  }: {
     id: string,
   }) =>
     ajax({
@@ -278,7 +278,7 @@ export const getContracts = createAsyncThunk(
     creator = '',
     admin = '',
     label = '',
-  } : {
+  }: {
     page: number,
     count: number,
     creator: string,
@@ -286,7 +286,7 @@ export const getContracts = createAsyncThunk(
     label: string,
   }) =>
     ajax({
-      url: `${CONTRACTS_ALL_URL}/?count=${count}&page=${page}${creator ? `&creator=${creator}` : ''}${admin ? `&admin=${admin}` : ''}${label ? `&label=${label}` : ''}`,
+      url: `${CONTRACTS_ALL_URL}?count=${count}&page=${page}${creator ? `&creator=${creator}` : ''}${admin ? `&admin=${admin}` : ''}${label ? `&label=${label}` : ''}`,
     })
 );
 
@@ -299,7 +299,7 @@ export const getContractTxs = createAsyncThunk(
     fromDate = '',
     toDate = '',
     status = '',
-  } : {
+  }: {
     id: string,
     page: number,
     count: number,
@@ -321,7 +321,7 @@ export const getCodeTxs = createAsyncThunk(
     fromDate = '',
     toDate = '',
     status = '',
-  } : {
+  }: {
     id: string,
     page: number,
     count: number,
@@ -489,7 +489,7 @@ export const contractSlice = createSlice({
       .addCase(getContractLabels.rejected, (state) => {
         state.contractLabelsLoading = false;
       });
-  } ,
+  },
 });
 /* -----------------
 SELECTORS
