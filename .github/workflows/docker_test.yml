@@ -1,20 +1,23 @@
-name: build
+name: build-testnet
 
 on:
   push:
     branches:
-      - main
+      - fix/deployment-workflow
 
 jobs:
-  build:
+  build-testnet:
     runs-on: ubuntu-latest
+
     steps:
+      - name: "Announce version"
+        run: echo "Building version for ${{ github.ref_name }}"
       - uses: actions/checkout@main
 
       - name: Use Node.js 18.17.1
         uses: actions/setup-node@v1
         with:
-          node-version: '18.17.1'
+          node-version: "18.17.1"
 
       - name: Install npm packages
         run: |
@@ -46,21 +49,4 @@ jobs:
           context: .
           push: true
           tags: provenanceio/explorer-frontend:latest
-
-      - name: Build and push mainnet
-        uses: docker/build-push-action@v2
-        with:
-          target: runner
-          file: Dockerfile-prod
-          context: .
-          push: true
-          tags: provenanceio/explorer-frontend:production
-          build-args: VITE_APP_ENV=production
-
-      - name: Build and push compose
-        uses: docker/build-push-action@v2
-        with:
-          file: Dockerfile
-          context: .
-          push: true
-          tags: provenanceio/explorer-frontend-generic:latest
+          build-args: VITE_APP_ENV=test
