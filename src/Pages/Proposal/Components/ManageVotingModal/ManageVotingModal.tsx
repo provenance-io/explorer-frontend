@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Formik, FormikProps } from 'formik';
 import styled, { useTheme } from 'styled-components';
+import { useWalletConnect } from "@provenanceio/walletconnect-js";
 import { Button, Modal, Forms } from '../../../../Components';
 import { isEmpty, votingData as data, votingValidations as validations } from '../../../../utils';
 import { useGovernance, useAccounts } from '../../../../redux/hooks';
 import { VotingChart, Countdown } from './Components';
+import { useTx } from "../../../../hooks/useTxs";
+import { CHAIN_NAME } from "../../../../config";
 
 const ModalContainer = styled.div<{ isOpen: boolean }>`
   display: ${({ isOpen }) => (isOpen ? 'inherit' : 'none')};
@@ -137,7 +140,9 @@ const ManageVotingModal = ({
   // Delegations are pulled when the vote button is clicked
   const hasDelegations = parseInt(accountDelegationsTotal.amount) > 0;
   const [voteAnyway, setVoteAnyway] = useState(false);
-  // const { walletConnectService: wcs } = useWalletConnect();
+  const { tx } = useTx(CHAIN_NAME);
+  const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
+  const [ voteInProgress, setVoteInProgress ] = useState(false);
 
   useEffect(() => {
     setIsOpen(isLoggedIn && modalOpen);
@@ -216,6 +221,7 @@ const ManageVotingModal = ({
           validationSchema={validations(voteType)}
           onSubmit={async (values: VotingProps, { resetForm }) => {
             // Format votes into correct array format
+            setVoteInProgress(true);
             let votes;
             if (voteType === 'weighted') {
               votes = Object.keys(values).map((item) => ({
@@ -235,16 +241,35 @@ const ManageVotingModal = ({
             }
             // Submit proposal message
             if (!voted) {
-              const { data } = await submitVotes({
+              const {data} = await submitVotes({
                 proposalId,
                 voter: voterId,
                 votes,
               });
-              // TODO: Update this to send vote message
-              // wcs.sendMessage({
-              //   description: 'Submit Proposal',
-              //   message: data.base64,
-              // });
+              if (walletConnectState.connected) {
+                wcs.sendMessage({
+                  description: `Vote on Proposal ${proposalId}`,
+                  message: data.base64,
+                }).then(() => {
+                  setVoted(true);
+                  setVoteInProgress(false);
+                }).catch((e) => {
+                  console.error(e);
+                });
+              } else {
+                const typeUrl = data.json.messages[0]['@type'];
+                delete data.json.messages[0]['@type'];
+                const value = data.json.messages[0];
+
+                const response = await tx([{
+                  typeUrl,
+                  value,
+                }]);
+                if (response.isSuccess) {
+                  setVoted(true);
+                }
+                setVoteInProgress(false);
+              }
             }
             // Clear the form
             resetForm();
@@ -292,10 +317,11 @@ const ManageVotingModal = ({
                       <Checkbox type="checkbox" onChange={handleWeightedVoting} />
                       Submit weighted votes
                     </CheckboxLabel>
+                    {voteInProgress && (<Label>Check Your Wallet to Confirm Your Vote</Label>) }
                     <ButtonGroup>
                       <Button
                         type="submit"
-                        disabled={voteType === 'weighted' && getVals(formik, false) !== '100'}
+                        disabled={(voteType === 'weighted' && getVals(formik, false) !== '100') || voteInProgress }
                       >
                         Submit
                       </Button>

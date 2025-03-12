@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useChain } from '@cosmos-kit/react';
+import { useWalletConnect } from "@provenanceio/walletconnect-js";
 import { Table, Section as BaseSection, Loading } from '../../../Components';
 import { isEmpty } from '../../../utils';
 import { ManageProposalModal } from '.';
@@ -21,6 +22,9 @@ const ProposalsList = () => {
     proposalsPages: tablePages,
   } = useGovernance();
   const { address } = useChain(CHAIN_NAME);
+  const { walletConnectState } = useWalletConnect();
+
+  const walletAddress = address ? address : walletConnectState.address;
   const { ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
   const [proposalMax, setProposalMax] = useState(1);
 
@@ -54,13 +58,13 @@ const ProposalsList = () => {
     <>
       {isLoggedIn && (
         <Section header>
-          {!address ? <Loading /> : <ManageProposalBtn />}
+          {!walletAddress ? <Loading /> : <ManageProposalBtn />}
           <ManageProposalModal
             isLoggedIn={isLoggedIn}
             modalOpen={modalFns.modalOpen}
             onClose={modalFns.deactivateModalOpen}
             proposalId={`${proposalMax}`}
-            proposerId={String(address)}
+            proposerId={String(walletAddress)}
             submitted={submitted}
             setSubmitted={setSubmitted}
           />

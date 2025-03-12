@@ -1,5 +1,6 @@
 import React from 'react';
 import { useChain } from '@cosmos-kit/react';
+import { useWalletConnect } from "@provenanceio/walletconnect-js";
 import { Loading } from '../../../Components';
 import { useVoting, useGovernance, useApp } from '../../../redux/hooks';
 import ManageVotingModal from './ManageVotingModal';
@@ -15,6 +16,9 @@ const ProposalVoting = () => {
   } = proposal;
 
   const { address } = useChain(CHAIN_NAME);
+  const { walletConnectState } = useWalletConnect();
+
+  const walletAddress = address ? address : walletConnectState.address;
 
   return (
     <>
@@ -26,7 +30,7 @@ const ProposalVoting = () => {
           onClose={modalFns.deactivateModalOpen}
           proposalId={proposalId as number}
           description={description as string}
-          voterId={String(address)}
+          voterId={String(walletAddress)}
           title={title as string}
           voted={voted}
           setVoted={setVoted}
