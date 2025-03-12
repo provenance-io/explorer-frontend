@@ -12,7 +12,7 @@ const Section = styled(BaseSection)`
 `;
 
 const ProposalsList = () => {
-  const { tableCount } = useApp();
+  const { tableCount, isLoggedIn } = useApp();
   const [tableCurrentPage, setTableCurrentPage] = useState(1);
   const {
     getAllProposals,
@@ -21,7 +21,6 @@ const ProposalsList = () => {
     proposalsPages: tablePages,
   } = useGovernance();
   const { address } = useChain(CHAIN_NAME);
-  const { isLoggedIn } = useApp();
   const { ManageProposalBtn, modalFns, submitted, setSubmitted } = useProposal();
   const [proposalMax, setProposalMax] = useState(1);
 
