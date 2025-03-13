@@ -17,8 +17,8 @@ import '@interchain-ui/react/styles'
          instead of the App component.
 */
 
-const trackingId = isProd && import.meta.env.VITE_APP_PROD_GA4_ID;
-const gtmId = isProd && import.meta.env.VITE_APP_PROD_GTM_ID;
+const trackingId = isProd && import.meta.env.VITE_APP_GA4_ID;
+const gtmId = isProd && import.meta.env.VITE_APP_GTM_ID;
 if (trackingId) ReactGA.initialize(trackingId);
 if (gtmId) TagManager.initialize({ gtmId });
 
@@ -26,10 +26,10 @@ ReactDOM.render(
   <Provider store={store()}>
     <CosmosProvider>
       <WalletConnectContextProvider>
-      <App />
-      {/* <Maintenance /> */}
+        <App />
+        {/* <Maintenance /> */}
       </WalletConnectContextProvider>
-      </CosmosProvider>
+    </CosmosProvider>
   </Provider>,
   document.getElementById('root')
 );
