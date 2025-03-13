@@ -74,7 +74,7 @@ jobs:
       - name: Build and Push testnet Explorer Frontend 
         uses: docker/build-push-action@v2
         with:
-          file: ./docker/Dockerfile
+          file: ./Dockerfile
           context: .
           push: true
           tags: ${{ steps.docker_tag.outputs.TAGS }}
