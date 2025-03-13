@@ -24,6 +24,7 @@ const ProposalInformation = () => {
       status,
       title,
       type,
+      metadata,
     },
   } = proposal;
 
@@ -101,6 +102,7 @@ const ProposalInformation = () => {
     { title: 'Proposer', value: moniker || address, link: `/accounts/${address}` },
     { title: 'Type', value: type },
     { title: 'Description', value: description, nobreak: true },
+    { title: 'Metadata', value: metadata },
   ].filter((sd) => sd);
 
   return (
