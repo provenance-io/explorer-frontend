@@ -142,7 +142,7 @@ const ManageVotingModal = ({
   const [voteAnyway, setVoteAnyway] = useState(false);
   const { tx } = useTx(CHAIN_NAME);
   const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  const [ voteInProgress, setVoteInProgress ] = useState(false);
+  const [voteInProgress, setVoteInProgress] = useState(false);
 
   useEffect(() => {
     setIsOpen(isLoggedIn && modalOpen);
@@ -188,6 +188,20 @@ const ManageVotingModal = ({
       return `${total}`;
     }
   };
+
+  const leapWalletVoteOptionConverter = (option: string) => {
+    switch (option) {
+      case 'VOTE_OPTION_YES':
+        return 1;
+      case 'VOTE_OPTION_ABSTAIN':
+        return 2;
+      case 'VOTE_OPTION_NO':
+        return 3;
+      case 'VOTE_OPTION_NO_WITH_VETO':
+        return 4;
+    }
+    return 0;
+  }
 
   const votingMessage = (
     <>
@@ -241,7 +255,7 @@ const ManageVotingModal = ({
             }
             // Submit proposal message
             if (!voted) {
-              const {data} = await submitVotes({
+              const { data } = await submitVotes({
                 proposalId,
                 voter: voterId,
                 votes,
@@ -261,13 +275,27 @@ const ManageVotingModal = ({
                 delete data.json.messages[0]['@type'];
                 const value = data.json.messages[0];
 
+                //leap uses the abci interface to simulate the tx first
+                //the abci requires that the option be a number equivalent
+                //to the option enumarations
+                if (value.option) {
+                  value.option = leapWalletVoteOptionConverter(value.option);
+                } else if (value.options) {
+                  value.options.map((option: any) => {
+                    option.option = leapWalletVoteOptionConverter(option.option);
+                  });
+                }
+
                 const response = await tx([{
                   typeUrl,
                   value,
                 }]);
                 if (response.isSuccess) {
                   setVoted(true);
+                } else {
+                  console.log(response.error);
                 }
+
                 setVoteInProgress(false);
               }
             }
@@ -317,11 +345,11 @@ const ManageVotingModal = ({
                       <Checkbox type="checkbox" onChange={handleWeightedVoting} />
                       Submit weighted votes
                     </CheckboxLabel>
-                    {voteInProgress && (<Label>Check Your Wallet to Confirm Your Vote</Label>) }
+                    {voteInProgress && (<Label>Check Your Wallet to Confirm Your Vote</Label>)}
                     <ButtonGroup>
                       <Button
                         type="submit"
-                        disabled={(voteType === 'weighted' && getVals(formik, false) !== '100') || voteInProgress }
+                        disabled={(voteType === 'weighted' && getVals(formik, false) !== '100') || voteInProgress}
                       >
                         Submit
                       </Button>
