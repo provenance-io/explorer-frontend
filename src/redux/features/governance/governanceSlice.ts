@@ -53,6 +53,7 @@ interface Proposal {
     status: string;
     title: string;
     type: string;
+    metadata?: string;
   };
   timings: {
     deposit: {
