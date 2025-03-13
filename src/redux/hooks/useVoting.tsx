@@ -4,6 +4,7 @@ import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useChain } from '@cosmos-kit/react';
+import { useWalletConnect } from "@provenanceio/walletconnect-js";
 import { useApp, useAccounts } from '../hooks';
 import OgButton from '../../Components/Button';
 import { CHAIN_NAME } from '../../config';
@@ -22,12 +23,15 @@ export const useVoting = () => {
   const [voted, setVoted] = useState(false);
 
   // Get the address
+  const { walletConnectState } = useWalletConnect();
   const { address } = useChain(CHAIN_NAME);
+
+  const walletAddress = address ? address : walletConnectState.address;
 
   // Yep we need the wallet
   useEffect(() => {
-    setIsLoggedIn(!!address);
-  }, [address, setIsLoggedIn]);
+    setIsLoggedIn(!!walletAddress);
+  }, [walletAddress, setIsLoggedIn]);
 
   // Event listeners for wallet messages
   // TODO: Add this back in at some point
@@ -53,7 +57,7 @@ export const useVoting = () => {
   // }, [wcs, deactivateModalOpen]);
 
   const handleManageVotingClick = () => {
-    getAccountDelegations({ address: String(address) });
+    getAccountDelegations({ address: String(walletAddress) });
     activateModalOpen();
   };
 

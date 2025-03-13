@@ -3,6 +3,7 @@ import styled from 'styled-components';
 // @ts-ignore
 import useToggle from 'react-tiny-hooks/use-toggle';
 import { useChain } from '@cosmos-kit/react';
+import { useWalletConnect } from "@provenanceio/walletconnect-js";
 import { useApp } from '../hooks';
 import OgButton from '../../Components/Button';
 import { CHAIN_NAME } from '../../config';
@@ -13,7 +14,7 @@ const Button = styled(OgButton)`
 
 export const useProposal = () => {
   const [shouldPull, setShouldPull] = useState(true);
-  // const { walletConnectService: wcs } = useWalletConnect();
+  const { walletConnectState } = useWalletConnect();
   const { address } = useChain(CHAIN_NAME);
   // We are opening a modal, so need this
   const [modalOpen, toggleModalOpen, activateModalOpen, deactivateModalOpen] = useToggle(false);
@@ -21,10 +22,11 @@ export const useProposal = () => {
   const { isLoggedIn, setIsLoggedIn } = useApp();
   const [submitted, setSubmitted] = useState(false);
 
+  const walletAddress = address ? address : walletConnectState.address;
   // Yep we need the wallet
   useEffect(() => {
-    setIsLoggedIn(!!address);
-  }, [address, setIsLoggedIn]);
+    setIsLoggedIn(!!walletAddress);
+  }, [walletAddress, setIsLoggedIn]);
 
   // Event listeners for wallet messages
   // TODO: Update this if needed

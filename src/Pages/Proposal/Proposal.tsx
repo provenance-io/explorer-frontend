@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useChain } from '@cosmos-kit/react';
+import { useWalletConnect } from "@provenanceio/walletconnect-js";
 import { CHAIN_NAME } from '../../config';
 import { Wrapper, Header, Section, Loading } from '../../Components';
 import { isEmpty } from '../../utils';
@@ -26,7 +27,8 @@ const Proposal = () => {
   const { timings } = proposal;
   const { accountAssets, getAccountAssets } = useAccounts();
   const { isLoggedIn } = useApp();
-  const { address } = useChain(CHAIN_NAME);
+  const { walletConnectState } = useWalletConnect(); //WC 1 wallets
+  const { address } = useChain(CHAIN_NAME); // Leap wallet
   const hashBalance: { amount: string; denom: string } = accountAssets?.find(
     (b: { amount: string; denom: string }) => b.denom === 'nhash'
   ) as { amount: string; denom: string };
@@ -43,12 +45,13 @@ const Proposal = () => {
 
   const canVote = !isEmpty(timings) && votingIsOpen && isLoggedIn && hasHash;
 
+    const walletAddress = address ? address : walletConnectState.address;
   useEffect(() => {
-    if (address) {
+    if (walletAddress) {
       // TODO: Need an endpoint that only returns a users hash value
-      getAccountAssets({ address, count: 100 });
+        getAccountAssets({ address: walletAddress, count: 100 });
     }
-  }, [getAccountAssets, address]);
+  }, [getAccountAssets, walletAddress]);
 
   useEffect(() => {
     getProposal(proposalId);
