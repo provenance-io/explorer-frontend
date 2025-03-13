@@ -1,6 +1,5 @@
-FROM node:18.17.1
+FROM nginx:alpine
 
-WORKDIR /usr/src/app
-COPY . ./
-EXPOSE 3000
-CMD ["npm", "run", "start"]
+ADD dist/ /usr/share/nginx/html/
+
+COPY nginx.conf /etc/nginx/nginx.conf

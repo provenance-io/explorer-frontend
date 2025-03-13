@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-mainnet:
@@ -12,16 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@main
 
-      - name: Use Node.js 18.17.1
-        uses: actions/setup-node@v1
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: "18.17.1"
+          node-version: "20"
 
-      - name: Install npm packages
-        run: |
-          npm i
-        env:
-          CI: true
+      - name: Install npm Packages
+        run: npm ci
+
+      - name: Build
+        run: npm run build
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -32,12 +37,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push mainnet
+      - name: Build and Push mainnet Explorer Frontend
         uses: docker/build-push-action@v2
         with:
-          target: runner
-          file: Dockerfile-prod
+          file: ./Dockerfile
           context: .
           push: true
-          tags: provenanceio/explorer-frontend:${{ github.ref_name }}
-          build-args: VITE_APP_ENV=production
+          tags: |
+            provenanceio/explorer-frontend:${{ github.ref_name }}
+            provenanceio/explorer-frontend:mainnet-latest

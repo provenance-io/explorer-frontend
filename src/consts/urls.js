@@ -1,33 +1,13 @@
-// Use the override if it exists, if it doesn't get the value from the build
-const viteAppEnv = import.meta.env.VITE_APP_ENV;
-// We allow
-// Determine current environment
-const isLocal = viteAppEnv === 'local';
-const isTest = viteAppEnv === 'test' || window.location.href.includes('test.');
-export const isProd = viteAppEnv === 'production';
-// Base URL for all calls to use
-let BASE_URL = '';
-let BASE_URL_V3 = '';
-export let FAUCET_URL = '';
-if (isLocal) {
-  BASE_URL = `http://${import.meta.env.VITE_APP_LOCAL_HOSTNAME}/api/v2`;
-  BASE_URL_V3 = `http://${import.meta.env.VITE_APP_LOCAL_HOSTNAME}/api/v3`;
-  FAUCET_URL = import.meta.env.VITE_APP_LOCAL_FAUCET_HOSTNAME;
-} else if (isTest) {
-  BASE_URL = `https://${import.meta.env.VITE_APP_TEST_SERVER_HOSTNAME}/api/v2`;
-  BASE_URL_V3 = `https://${import.meta.env.VITE_APP_TEST_SERVER_HOSTNAME}/api/v3`;
-  FAUCET_URL = import.meta.env.VITE_APP_TEST_FAUCET_HOSTNAME;
-} else if (isProd) {
-  BASE_URL = `https://${import.meta.env.VITE_APP_PROD_SERVER_HOSTNAME}/api/v2`;
-  BASE_URL_V3 = `https://${import.meta.env.VITE_APP_PROD_SERVER_HOSTNAME}/api/v3`;
-}
+export const isProd = import.meta.env.VITE_APP_ENV === 'production';
 
-export const FIGURE_WALLET_URL = isProd
-  ? import.meta.env.VITE_APP_PROD_FIGURE_WALLET_URL
-  : import.meta.env.VITE_APP_TEST_FIGURE_WALLET_URL;
-export const PROVENANCE_WALLET_URL = isProd
-  ? import.meta.env.VITE_APP_PROD_PROVENANCE_WALLET_URL
-  : import.meta.env.VITE_APP_TEST_PROVENANCE_WALLET_URL;
+export const BASE_URL = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/api/v2`;
+export const BASE_URL_V3 = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/api/v3`;
+
+export const FAUCET_URL = import.meta.env.VITE_APP_FAUCET_HOSTNAME;
+
+// Wallets
+export const FIGURE_WALLET_URL = import.meta.env.VITE_APP_FIGURE_WALLET_URL
+export const PROVENANCE_WALLET_URL = import.meta.env.VITE_APP_PROVENANCE_WALLET_URL
 
 // Actual API URLs
 // -- Accounts

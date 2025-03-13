@@ -40,7 +40,7 @@ export const rootReducer = combineReducers({
 
 export const store = (preloadedState?: PreloadedState<RootState>) =>
   configureStore({
-    devTools: import.meta.env.VITE_APP_ENV === 'local',
+    devTools: import.meta.env.VITE_APP_ENV === 'development',
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
