@@ -271,10 +271,12 @@ const ManageVotingModal = ({
                   console.error(e);
                 });
               } else {
+                // Cosmos Kit wallets (arculus, leap)
                 const typeUrl = data.json.messages[0]['@type'];
                 delete data.json.messages[0]['@type'];
                 const value = data.json.messages[0];
 
+                // TODO does this work for arculus?
                 //leap uses the abci interface to simulate the tx first
                 //the abci requires that the option be a number equivalent
                 //to the option enumarations

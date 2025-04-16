@@ -1,12 +1,13 @@
 import { SignerOptions } from 'cosmos-kit';
-import { wallets as extension } from '@cosmos-kit/leap-extension';
-import { wallets as mobile } from '@cosmos-kit/leap-mobile';
+import { wallets as leapExtension } from '@cosmos-kit/leap-extension';
+import { wallets as leapMobile } from '@cosmos-kit/leap-mobile';
+import { wallets as arculus } from '@cosmos-kit/arculus';
 import { ChainProvider } from '@cosmos-kit/react';
 import { assets, chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
 import { GasPrice } from '@cosmjs/stargate';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { ThemeProvider, ConnectModal } from '@interchain-ui/react';
+import { ThemeProvider } from '@interchain-ui/react';
 import {
   CHAIN_NAME,
   RPC_ENDPOINT,
@@ -75,7 +76,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
       <ChainProvider
         chains={[...chains, CHAIN_CONFIG]}
         assetLists={[...assets, CHAIN_ASSETS]}
-        wallets={[...extension, ...mobile]}
+        wallets={[...leapExtension, ...arculus, ...leapMobile]}
         endpointOptions={{
           isLazy: true,
           endpoints: {
