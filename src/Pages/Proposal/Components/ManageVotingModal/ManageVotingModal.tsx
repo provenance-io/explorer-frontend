@@ -295,6 +295,7 @@ const ManageVotingModal = ({
                 if (response.isSuccess) {
                   setVoted(true);
                 } else {
+                  alert(response.error);
                   console.log(response.error);
                 }
 

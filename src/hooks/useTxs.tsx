@@ -1,12 +1,11 @@
-import { cosmos, getSigningCosmosClient } from '@provlabs/provenancejs';
+import { cosmos } from '@provlabs/provenancejs';
 import { useChain } from '@cosmos-kit/react';
 import { Coin, DeliverTxResponse, isDeliverTxSuccess, StdFee } from '@cosmjs/stargate';
-import { RPC_ENDPOINT } from '../config';
 
 export type Msg = {
   typeUrl: string;
   value: { [key: string]: any };
-}
+};
 
 export type TxOptions = {
   gas?: StdFee;
@@ -54,9 +53,11 @@ export function useTx(chainName: string) {
 
     try {
       const txRaw = cosmos.tx.v1beta1.TxRaw;
-      const gas = options.gas || await estimateFee(msgs);
+      const fee = options.gas || await estimateFee(msgs);
+      console.log(`options: ${JSON.stringify(options)} calculated fee: ${JSON.stringify(fee)}`);
+
       const client = await getSigningStargateClient();
-      const signed = await client.sign(address, msgs, gas, '');
+      const signed = await client.sign(address, msgs, fee, '');
 
       if (!client) return new TxResult({ error: new TxError('Invalid stargate client') });
       if (!signed) return new TxResult({ error: new TxError('Invalid transaction') });

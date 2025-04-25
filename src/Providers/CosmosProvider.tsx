@@ -37,7 +37,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
       if (chain.chain_name === CHAIN_NAME) {
         return {
           ...getSigningProvenanceClientOptions,
-          gasPrice: GasPrice.fromString('1905000nhash'),
+          gasPrice: GasPrice.fromString(import.meta.env.VITE_APP_BASE_GAS_PRICE),
         };
       }
 
