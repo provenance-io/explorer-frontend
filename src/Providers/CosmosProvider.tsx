@@ -2,6 +2,7 @@ import { SignerOptions } from 'cosmos-kit';
 import { wallets as leapExtension } from '@cosmos-kit/leap-extension';
 import { wallets as leapMobile } from '@cosmos-kit/leap-mobile';
 import { wallets as arculus } from '@cosmos-kit/arculus';
+import { wallets as keplr } from '@cosmos-kit/keplr';
 import { ChainProvider } from '@cosmos-kit/react';
 import { assets, chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
@@ -74,9 +75,10 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
       customTheme="Provenance"
     >
       <ChainProvider
+        throwErrors={true}
         chains={[...chains, CHAIN_CONFIG]}
         assetLists={[...assets, CHAIN_ASSETS]}
-        wallets={[...leapExtension, ...arculus, ...leapMobile]}
+        wallets={[...leapExtension, ...arculus, ...leapMobile, ...keplr]}
         endpointOptions={{
           isLazy: true,
           endpoints: {

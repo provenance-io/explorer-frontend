@@ -189,7 +189,7 @@ const ManageVotingModal = ({
     }
   };
 
-  const leapWalletVoteOptionConverter = (option: string) => {
+  const cosmosKitWalletVoteOptionConverter = (option: string) => {
     switch (option) {
       case 'VOTE_OPTION_YES':
         return 1;
@@ -271,20 +271,20 @@ const ManageVotingModal = ({
                   console.error(e);
                 });
               } else {
-                // Cosmos Kit wallets (arculus, leap)
+                // Cosmos Kit wallets (arculus, leap, keplr)
                 const typeUrl = data.json.messages[0]['@type'];
                 delete data.json.messages[0]['@type'];
                 const value = data.json.messages[0];
 
-                // TODO does this work for arculus?
+                // TODO does this work for arculus or keplr? or, wait, is this in the Prov config files?
                 //leap uses the abci interface to simulate the tx first
                 //the abci requires that the option be a number equivalent
                 //to the option enumarations
                 if (value.option) {
-                  value.option = leapWalletVoteOptionConverter(value.option);
+                  value.option = cosmosKitWalletVoteOptionConverter(value.option);
                 } else if (value.options) {
                   value.options.map((option: any) => {
-                    option.option = leapWalletVoteOptionConverter(option.option);
+                    option.option = cosmosKitWalletVoteOptionConverter(option.option);
                   });
                 }
 
