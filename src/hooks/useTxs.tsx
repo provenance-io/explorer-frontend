@@ -53,7 +53,8 @@ export function useTx(chainName: string) {
 
     try {
       const txRaw = cosmos.tx.v1beta1.TxRaw;
-      const fee = options.gas || await estimateFee(msgs);
+      //update multiplier to 1.675 to help with out-of-gas issues
+      const fee = options.gas || await estimateFee(msgs, undefined, undefined, 1.7);
       console.log(`options: ${JSON.stringify(options)} calculated fee: ${JSON.stringify(fee)}`);
 
       const client = await getSigningStargateClient();
