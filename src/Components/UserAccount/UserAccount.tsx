@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
-import { wallets } from '@cosmos-kit/leap-extension';
+import { wallets as leapExtension } from '@cosmos-kit/leap-extension';
+import { wallets as arculus } from '@cosmos-kit/arculus';
+import { wallets as keplr } from '@cosmos-kit/keplr';
 import { QRCodeModal, useWalletConnect } from '@provenanceio/walletconnect-js';
 import { Link as BaseLink } from 'react-router-dom';
 // @ts-ignore
@@ -26,7 +28,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const AccountBtn = styled(Button)<{ isLoggedIn?: boolean }>`
+const AccountBtn = styled(Button) <{ isLoggedIn?: boolean }>`
   border: none;
   background: none;
   /* animate.css @keyframe */
@@ -110,7 +112,7 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   useOnEscape(deactivateShowPopup);
   // This is the old Figure Wallet stuff
   const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
-  //  This is Leap
+  //  This is Cosmos Kit wallets (Leap, Keplr, Arculus) 
   const {
     status,
     connect,
@@ -124,6 +126,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   const provJWT = localStorage.getItem('provenanceJWT');
   const jwtInfo = provJWT ? JSON.parse(provJWT) : '';
   const signedJWT = jwtInfo.expires < Date.now() / 1000 ? '' : jwtInfo.jwt;
+
+  console.dir(wallet);
 
   useEffect(() => {
     if (isWalletDisconnected && !walletConnectState.connected) {
@@ -154,7 +158,7 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
     }
   }, [status, address, setIsLoggedIn, setWalletAddress, walletConnectState]);
 
-  // This only occurs when connecting to Leap wallets
+  // This only occurs when connecting to Cosmos Kit wallets 
   useEffect(() => {
     const initialSigningEvent = async () => {
       if (
@@ -236,7 +240,8 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   ]);
 
   const handleLoginClick = () => {
-    if (wallet?.name.includes('leap')) {
+    // Currently supported Cosmos Kit wallets - this is gross because each new wallet will need to be added here
+    if (wallet?.name.includes('leap') || wallet?.name.includes('arculus') || wallet?.name.includes('keplr')) {
       connect()
     } else {
       toggleShowPopup();
@@ -297,7 +302,25 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
               }}
             >
               <WalletTitle>Leap Wallet</WalletTitle>
-              <img src={wallets[0].walletInfo.logo as string} alt="Leap Wallet" />
+              <img src={leapExtension[0].walletInfo.logo as string} alt="Leap Wallet" />
+            </ModalWalletButton>
+            <ModalWalletButton
+              onClick={() => {
+                setOpenSelectWalletModal(false);
+                connect();
+              }}
+            >
+              <WalletTitle>Arculus</WalletTitle>
+              <img src={arculus[0].walletInfo.logo as string} alt="Arculus" />
+            </ModalWalletButton>
+            <ModalWalletButton
+              onClick={() => {
+                setOpenSelectWalletModal(false);
+                connect();
+              }}
+            >
+              <WalletTitle>Keplr</WalletTitle>
+              <img src={keplr[0].walletInfo.logo as string} alt="Keplr" />
             </ModalWalletButton>
             <ModalWalletButton
               onClick={() => {
