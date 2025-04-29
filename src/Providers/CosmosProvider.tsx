@@ -92,7 +92,11 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
             },
           },
         }}
-        walletConnectOptions={{
+      modalOptions={{
+      mobile: { displayQRCodeEveryTime: true }
+    }}
+
+      walletConnectOptions={{
           signClient: {
             projectId: '6451479b4eb6d2967465521cb99ff677',
             relayUrl: 'wss://relay.walletconnect.org',
@@ -102,6 +106,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
               url: 'https://explorer.provenance.io/',
               icons: [],
             },
+            autoConnect: false,
           },
         }}
         // @ts-ignore
