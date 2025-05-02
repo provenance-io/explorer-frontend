@@ -1,8 +1,5 @@
-import { SignerOptions } from 'cosmos-kit';
-import { wallets as leapExtension } from '@cosmos-kit/leap-extension';
-import { wallets as leapMobile } from '@cosmos-kit/leap-mobile';
+import { SignerOptions, wallets } from 'cosmos-kit';
 import { wallets as arculus } from '@cosmos-kit/arculus';
-import { wallets as keplr } from '@cosmos-kit/keplr';
 import { ChainProvider } from '@cosmos-kit/react';
 import { assets, chains } from 'chain-registry';
 import { Chain } from '@chain-registry/types';
@@ -30,7 +27,6 @@ const queryClient = new QueryClient({
 });
 
 export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
-
   const signerOptions: SignerOptions = {
     // @ts-ignore
     signingStargate: (chain: Chain) => {
@@ -78,7 +74,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
         throwErrors={true}
         chains={[...chains, CHAIN_CONFIG]}
         assetLists={[...assets, CHAIN_ASSETS]}
-        wallets={[...leapExtension, ...arculus, ...leapMobile, ...keplr]}
+        wallets={[...wallets, ...arculus]}
         endpointOptions={{
           isLazy: true,
           endpoints: {
@@ -92,11 +88,10 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
             },
           },
         }}
-      modalOptions={{
-      mobile: { displayQRCodeEveryTime: true }
-    }}
-
-      walletConnectOptions={{
+        modalOptions={{
+          mobile: { displayQRCodeEveryTime: true },
+        }}
+        walletConnectOptions={{
           signClient: {
             projectId: '6451479b4eb6d2967465521cb99ff677',
             relayUrl: 'wss://relay.walletconnect.org',
@@ -105,16 +100,13 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
               description: 'Navigate and interact with the Provenance Blockchain.',
               url: 'https://explorer.provenance.io/',
               icons: [],
-            },
-            autoConnect: false,
+            }
           },
         }}
         // @ts-ignore
         signerOptions={signerOptions}
       >
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </ChainProvider>
     </ThemeProvider>
   );
