@@ -51,6 +51,11 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
     },
   };
 
+  // filter wallets we know for certain work with the provenance chain
+  const walletRegex = /(leap|arculus|keplr|cosmostation-extension)/i;
+  const supportedWallets = wallets.filter( w=> {
+    return walletRegex.test(w.walletInfo.name);
+  });
   return (
     <ThemeProvider
       themeDefs={[
@@ -74,7 +79,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
         throwErrors={true}
         chains={[...chains, CHAIN_CONFIG]}
         assetLists={[...assets, CHAIN_ASSETS]}
-        wallets={[...wallets, ...arculus]}
+        wallets={[...supportedWallets, ...arculus]}
         endpointOptions={{
           isLazy: true,
           endpoints: {

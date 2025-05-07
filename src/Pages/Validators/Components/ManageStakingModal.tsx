@@ -246,14 +246,15 @@ export const ManageStakingModal = ({
         },
       ]);
       if (response.isSuccess) {
+        alert('Delegation succeeded');
         // Wait a few seconds until refreshing the validators list
-        setTimeout(() => {
-          getAllValidators({
-            page: 1,
-            count: 100,
-            status: 'all',
-          });
-        }, 3000);
+        getAllValidators({
+          page: 1,
+          count: 100,
+          status: 'all',
+        });
+      } else {
+        alert(`Delegation failed ${response.error?.message || 'Unknown Error'}`);
       }
     }
   };

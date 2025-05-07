@@ -68,6 +68,10 @@ export function useTx(chainName: string) {
         ? new TxResult({ response })
         : new TxResult({ response, error: new TxError(response.rawLog) });
     } catch (e: any) {
+      console.error(e);
+      if(e.codespace === 'sdk') {
+        return new TxResult({ error: new TxError(e.log || 'Tx Error') });
+      }
       return new TxResult({ error: new TxError(e.message || 'Tx Error') });
     }
   }
