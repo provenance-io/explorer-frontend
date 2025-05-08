@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: node --max-old-space-size=4096 ./node_modules/.bin/tsc -b && node --max-old-space-size=4096 ./node_modules/.bin/vite build
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
