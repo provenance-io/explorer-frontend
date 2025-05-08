@@ -52,7 +52,7 @@ export const CosmosProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // filter wallets we know for certain work with the provenance chain
-  const walletRegex = /(leap|arculus|keplr|cosmostation-extension)/i;
+  const walletRegex = new RegExp(import.meta.env.VITE_WALLETS_SUPPORTED, 'i');
   const supportedWallets = wallets.filter( w=> {
     return walletRegex.test(w.walletInfo.name);
   });
