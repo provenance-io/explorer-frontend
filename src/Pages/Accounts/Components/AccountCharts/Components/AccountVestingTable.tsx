@@ -12,19 +12,12 @@ export const AccountVestingTable = ({
   const nextVesting = data.periodicVestingList.find((element) => !element.isVested);
   // Calculate sum of vested tokens
   let currentlyVested = 0;
-  // Because we want to break as soon as we find an item not vested, use a for loop
-  const lengthOfVestingSched = Number(data.periodicVestingList.length);
-  const periodicVestingSched = data.periodicVestingList;
-  if (periodicVestingSched) {
-    for (let i = 0; i < lengthOfVestingSched; i++) {
-      if (periodicVestingSched[i].isVested) {
-        // Add all currently vested amounts
-        currentlyVested += Number(periodicVestingSched[i].coins[0].amount);
-      } else {
-        break;
-      }
-    }
-  }
+  data.currentlyVested
+    .filter((element) => element.denom === 'nhash')
+    .forEach((element) => {
+      currentlyVested += Number(element.amount);
+    });
+
   const tableData = [
     {
       param_name: 'Start',
