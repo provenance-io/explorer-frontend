@@ -5,6 +5,7 @@ import { HashDataProps } from 'redux/services';
 
 export interface AccountHashTotals {
   hashTotal: number;
+  hashSpendable: number;
   hashDelegations: number;
   hashRedelegations: number;
   hashUnbondings: number;
@@ -25,10 +26,12 @@ export const accountHashTotals = (hashData?: HashDataProps) => {
     ).toNumber();
     const hashRewards = new Big(hashData?.rewards?.total[0]?.amount || 0).toNumber();
     const hashAvailable = new Big(Number(hashData.assets.total.amount || 0)).toNumber();
+    const hashSpendable = new Big(Number(hashData.assets.spendable.amount || 0)).toNumber();
     const hashTotal =
       hashAvailable + hashDelegations + hashRedelegations + hashUnbondings + hashRewards;
     return {
       hashTotal,
+      hashSpendable,
       hashDelegations,
       hashRedelegations,
       hashUnbondings,
@@ -38,6 +41,7 @@ export const accountHashTotals = (hashData?: HashDataProps) => {
   } else {
     return {
       hashTotal: 0,
+      hashSpendable: 0,
       hashDelegations: 0,
       hashRedelegations: 0,
       hashUnbondings: 0,

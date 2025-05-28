@@ -66,6 +66,7 @@ export const AccountHashChart = ({
   const buildChartData = useCallback(() => {
     chartData.series[0].data[0].value = [
       hashData.hashAvailable,
+      hashData.hashSpendable,
       hashData.hashRewards,
       hashData.hashRedelegations,
       hashData.hashUnbondings,
@@ -73,6 +74,7 @@ export const AccountHashChart = ({
     ];
     chartData.radar.indicator = [
       { name: 'Available', max: hashData.hashTotal || 1 },
+      { name: 'Spendable', max: hashData.hashSpendable || 1 },
       { name: 'Reward', max: hashData.hashTotal || 1 },
       { name: 'Redelegated', max: hashData.hashTotal || 1 },
       { name: 'Unbonding', max: hashData.hashTotal || 1 },

@@ -24,6 +24,13 @@ export const AccountHashTable = ({
       },
     },
     {
+      hashBucket: 'Spendable',
+      hashAmount: {
+        amount: hashData.hashSpendable,
+        denom: 'nhash',
+      },
+    },
+    {
       hashBucket: 'Delegated',
       hashAmount: {
         amount: hashData.hashDelegations,

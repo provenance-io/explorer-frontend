@@ -1,11 +1,11 @@
 import styled, { useTheme } from 'styled-components';
 import * as echarts from 'echarts';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Big from 'big.js';
 import { useMediaQuery } from '../../../../../redux/hooks';
 import { breakpoints } from '../../../../../consts';
 import { isEmpty } from '../../../../../utils';
 import { VestingInfo } from '../../../../../redux/services';
-import Big from 'big.js';
 
 const StyledChart = styled.div<{ height?: string }>`
   width: 100%;
@@ -72,22 +72,13 @@ export const AccountVestingChart = ({ data }: { data: VestingInfo }) => {
     chartData.angleAxis.max = new Big(Number(data?.originalVestingList[0].amount))
       .div(1e9)
       .toNumber();
-    // Calculate sum of vested tokens
-    let currentlyVested = 0;
-    // Because we want to break as soon as we find an item not vested, use a for loop
-    const lengthOfVestingSched = Number(data.periodicVestingList.length);
-    const periodicVestingSched = data.periodicVestingList;
-    if (periodicVestingSched) {
-      for (let i = 0; i < lengthOfVestingSched; i++) {
-        if (periodicVestingSched[i].isVested) {
-          // Add all currently vested amounts
-          currentlyVested += Number(periodicVestingSched[i].coins[0].amount);
-        } else {
-          break;
-        }
-      }
-    }
     // Set currently vested amounts
+    let currentlyVested = 0;
+    data.currentlyVested
+      .filter((element) => element.denom === 'nhash')
+      .forEach((element) => {
+        currentlyVested += Number(element.amount);
+      });
     chartData.series.data = [new Big(currentlyVested || 0).div(1e9).toNumber()];
     // If fully vested, change color of the chart to green and remove axis ticks
     if (currentlyVested === Number(data?.originalVestingList[0].amount)) {

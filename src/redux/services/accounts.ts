@@ -19,6 +19,10 @@ export interface VestingInfo {
     vestingDate: string;
   }[];
   startTime: string;
+  currentlyVested: {
+    amount: string;
+    denom: string;
+  }[];
 }
 
 interface DenomProps {
