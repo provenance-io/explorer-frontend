@@ -217,12 +217,14 @@ export const formatTableData = (data = [], tableHeaders) => {
           break;
         // Denomination or marker value linking to the asset
         case 'denom': // fallthrough
-        case 'marker':
+        case 'marker': {
+          const isNFT = typeof serverValue === 'string' && serverValue.startsWith('nft/');
           finalObj[dataName] = {
             value: dataObj.displayDenom || serverValue,
-            link: `/asset/${serverValue}`,
+            link: isNFT ? `/${serverValue}` : `/asset/${serverValue}`,
           };
           break;
+        }
         // Name/moniker of a validator linking to its address
         case 'moniker': {
           // Build the link from the addressId or the proposerId or the ownerAddress or the holdingAccount
