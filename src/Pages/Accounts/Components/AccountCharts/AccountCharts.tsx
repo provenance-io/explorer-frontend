@@ -29,9 +29,6 @@ const Label = styled.label`
   margin-left: 10px;
 `;
 
-// Helper to convert enum to title case
-const toTitleCase = (str: string) => str.charAt(0) + str.slice(1).toLowerCase();
-
 export const AccountCharts = () => {
   const [activeTableTab, setActiveTableTab] = useState(0);
   const { addressId } = useParams<{ addressId: string }>();
@@ -91,7 +88,7 @@ export const AccountCharts = () => {
               <AccountVestingTable
                 data={vestingData}
                 isLoading={vestingDataLoading}
-                period={toTitleCase(continuousPeriod) as 'Day' | 'Month' | 'Year'}
+                period={continuousPeriod}
               />
             </Fragment>
           </MultiTable>
