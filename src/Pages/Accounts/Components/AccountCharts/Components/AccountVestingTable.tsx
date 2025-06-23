@@ -11,7 +11,7 @@ export const AccountVestingTable = ({
 }: {
   data: VestingInfo;
   isLoading: boolean;
-  period: 'DAY' | 'MONTH' | 'YEAR';
+  period: 'DAY' | 'MONTH' | 'YEAR' | null;
   accountType: string;
 }) => {
   const { accountInfo } = useAccounts();
@@ -42,6 +42,8 @@ export const AccountVestingTable = ({
           ? 'Monthly'
           : period === 'YEAR'
           ? 'Yearly'
+          : period === null
+          ? 'Next'
           : ''
       } Amount`,
       value: nextVesting

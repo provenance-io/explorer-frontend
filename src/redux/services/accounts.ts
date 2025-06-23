@@ -170,7 +170,7 @@ export const accountsApi = api.injectEndpoints({
     VestingInfo | null,
     {
       address: string;
-      continuousPeriod: 'DAY' | 'MONTH' | 'YEAR';
+      continuousPeriod: 'DAY' | 'MONTH' | 'YEAR'| null;
     }
     >({
       async queryFn({ address, continuousPeriod }, _queryApi, _extraOptions, baseQuery) {
@@ -187,7 +187,10 @@ export const accountsApi = api.injectEndpoints({
           },
         };
         if ((accountInfo as AccountInfo).isVesting && !accountInfoError) {
-          info = await baseQuery(`${ACCOUNT_INFO_V3_URL}/${address}/vesting?continuousPeriod=${continuousPeriod}`);
+          const vestingUrl = continuousPeriod
+            ? `${ACCOUNT_INFO_V3_URL}/${address}/vesting?continuousPeriod=${continuousPeriod}`
+            : `${ACCOUNT_INFO_V3_URL}/${address}/vesting`;
+          info = await baseQuery(vestingUrl);
         }
         return info;
       },
