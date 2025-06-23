@@ -167,12 +167,13 @@ export const accountsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     // Returns vesting information, but only runs the query if it is a vesting account
     getVestingData: builder.query<
-      VestingInfo | null,
-      {
-        address: string;
-      }
+    VestingInfo | null,
+    {
+      address: string;
+      continuousPeriod: 'DAY' | 'MONTH' | 'YEAR'| null;
+    }
     >({
-      async queryFn({ address }, _queryApi, _extraOptions, baseQuery) {
+      async queryFn({ address, continuousPeriod }, _queryApi, _extraOptions, baseQuery) {
         const { data: accountInfo, error: accountInfoError } = await baseQuery(
           `${ACCOUNT_INFO_URL}/${address}`
         );
@@ -186,7 +187,10 @@ export const accountsApi = api.injectEndpoints({
           },
         };
         if ((accountInfo as AccountInfo).isVesting && !accountInfoError) {
-          info = await baseQuery(`${ACCOUNT_INFO_V3_URL}/${address}/vesting`);
+          const vestingUrl = continuousPeriod
+            ? `${ACCOUNT_INFO_V3_URL}/${address}/vesting?continuousPeriod=${continuousPeriod}`
+            : `${ACCOUNT_INFO_V3_URL}/${address}/vesting`;
+          info = await baseQuery(vestingUrl);
         }
         return info;
       },
