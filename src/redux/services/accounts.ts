@@ -175,7 +175,7 @@ export const accountsApi = api.injectEndpoints({
     >({
       async queryFn({ address, continuousPeriod }, _queryApi, _extraOptions, baseQuery) {
         const { data: accountInfo, error: accountInfoError } = await baseQuery(
-          `${ACCOUNT_INFO_URL}/${address}?continuousPeriod=${continuousPeriod}`
+          `${ACCOUNT_INFO_URL}/${address}`
         );
         let info: any = {
           error: {
@@ -187,7 +187,7 @@ export const accountsApi = api.injectEndpoints({
           },
         };
         if ((accountInfo as AccountInfo).isVesting && !accountInfoError) {
-          info = await baseQuery(`${ACCOUNT_INFO_V3_URL}/${address}/vesting`);
+          info = await baseQuery(`${ACCOUNT_INFO_V3_URL}/${address}/vesting?continuousPeriod=${continuousPeriod}`);
         }
         return info;
       },
