@@ -5,9 +5,11 @@ import { formatDenom } from '../../../../../utils';
 export const AccountVestingTable = ({
   data,
   isLoading,
+  period
 }: {
   data: VestingInfo;
   isLoading: boolean;
+  period: 'Day' | 'Month' | 'Year';
 }) => {
   const nextVesting = data.periodicVestingList.find((element) => !element.isVested);
   // Calculate sum of vested tokens
@@ -28,7 +30,7 @@ export const AccountVestingTable = ({
       value: new Date(data.endTime).toLocaleDateString(),
     },
     {
-      param_name: 'Next Amount',
+      param_name: `End of ${period} Amount`,
       value: nextVesting
         ? formatDenom(Number(nextVesting.coins[0].amount), nextVesting.coins[0].denom, {
             decimal: 2,
