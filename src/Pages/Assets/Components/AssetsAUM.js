@@ -40,7 +40,7 @@ const AssetsAUM = () => {
 
   return (
     <Content
-      icon="PROVENANCE"
+      icon="HASH"
       title="Chain Value"
       headerContent={<Item>{provenanceAUM}</Item>}
       headerMargin="0 0 0px"

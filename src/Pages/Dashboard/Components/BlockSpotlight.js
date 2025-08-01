@@ -113,7 +113,7 @@ const BlockSpotlight = () => {
             </BlockPreviewLine>
           </Group>
           <Group size="70%">
-            <DataCard icon="PROVENANCE" title="Chain Value">
+            <DataCard icon="HASH" title="Chain Value">
               {`$${formatDenom(totalAum.amount, totalAum.denom, {
                 decimal: 2,
                 minimumFractionDigits: 2,
