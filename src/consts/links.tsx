@@ -11,7 +11,7 @@ interface LinksProps {
       };
     };
   };
-};
+}
 
 export const Links: LinksProps = {
   dashboard: {

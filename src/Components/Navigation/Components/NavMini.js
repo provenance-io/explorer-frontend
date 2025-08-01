@@ -57,6 +57,27 @@ const Link = styled(BaseLink)`
   ${({ $subMenuDrop }) => $subMenuDrop && 'margin: 0 0 0 10px;'}
 `;
 
+const ATag = styled.a`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.FONT_NAV};
+  opacity: 0.9;
+  :hover {
+    opacity: 1;
+  }
+  :visited {
+    color: ${({ theme }) => theme.FONT_NAV_VISITED};
+  }
+  ${({ $active, theme, $subMenuDrop }) =>
+    $active &&
+    `
+      opacity: 1;
+      font-weight: ${theme.FONT_WEIGHT_BOLDEST};
+      text-decoration: ${!$subMenuDrop && `underline solid ${theme.FONT_NAV} 2px`};
+      text-underline-offset: 3px;
+  `}
+  ${({ $subMenuDrop }) => $subMenuDrop && 'margin: 0 0 0 10px;'}
+`;
+
 const DropSprite = styled(Sprite)`
   position: absolute;
   margin: 4px 0 0 -35px;
@@ -178,6 +199,11 @@ const NavMini = () => {
           size="0.875rem"
           color="ICON_WHITE"
         />
+        <LinkWrapper>
+          <ATag href="https://www.provenance.io/pulse" target="_blank" rel="noopener noreferrer">
+            Pulse
+          </ATag>
+        </LinkWrapper>
         {buildLinks()}
         <AnnouncementMenu onClick={() => setShowMenu(false)} />
         <UserAccount isMobile />
