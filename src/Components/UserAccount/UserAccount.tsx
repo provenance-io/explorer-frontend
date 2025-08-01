@@ -112,12 +112,7 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
   // This is the old Figure Wallet stuff
   const { walletConnectService: wcs, walletConnectState } = useWalletConnect();
   //  This is Cosmos Kit wallets (Leap, Keplr, Arculus)
-  const {
-    status,
-    connect,
-    address,
-    wallet,
-  } = useChain(CHAIN_NAME);
+  const { status, connect, address, wallet } = useChain(CHAIN_NAME);
 
   useEffect(() => {
     setIsLoggedIn(status === 'Connected' || walletConnectState.status === 'connected');
@@ -195,7 +190,7 @@ const UserAccount = ({ isMobile }: { isMobile: boolean }) => {
               }}
             >
               <WalletTitle>Cosmos Wallets</WalletTitle>
-              <img src="/icon-144x144.png" alt="Provenance Wallets" />
+              <img src="/PB_Logo_Color_Dark.png" alt="Provenance Wallets" />
             </ModalWalletButton>
             <ModalWalletButton
               onClick={() => {
