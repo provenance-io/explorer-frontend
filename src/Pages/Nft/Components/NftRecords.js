@@ -47,6 +47,27 @@ const NftRecords = () => {
     ];
   };
 
+  const getRecordOutput = (record) => {
+    if (!record?.record?.outputs) return [];
+
+    const { outputs } = record.record;
+
+    return [
+      ...outputs
+        .flatMap((output) => {
+          const values = JSON.parse(output.hash);
+          if (values && Object.keys(values).length > 0) {
+            return Object.entries(values).map(([key, value]) => ({
+              title: capitalize(key),
+              value,
+            }));
+          }
+          return undefined;
+        })
+        .filter((o) => o),
+    ];
+  };
+
   const getSpecListItems = (item) => {
     const { contractSpecAddr, recordSpecAddr, responsibleParties } = item;
 
@@ -85,6 +106,14 @@ const NftRecords = () => {
                 <Fragment>
                   <Divider />
                   <Summary data={getRecordItems(record)} />
+                </Fragment>
+              )}
+
+              {record?.record?.outputs && (
+                <Fragment>
+                  <Divider />
+                  Record Output Hash
+                  <Summary data={getRecordOutput(record)} />
                 </Fragment>
               )}
 
