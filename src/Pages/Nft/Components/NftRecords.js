@@ -55,14 +55,18 @@ const NftRecords = () => {
     return [
       ...outputs
         .flatMap((output) => {
-          const values = JSON.parse(output.hash);
-          if (values && Object.keys(values).length > 0) {
-            return Object.entries(values).map(([key, value]) => ({
-              title: capitalize(key),
-              value,
-            }));
+          try {
+            const values = JSON.parse(output.hash);
+            if (values && Object.keys(values).length > 0) {
+              return Object.entries(values).map(([key, value]) => ({
+                title: capitalize(key),
+                value,
+              }));
+            }
+            return { title: 'Data', value: output.hash };
+          } catch (e) {
+            return { title: 'Data', value: output.hash };
           }
-          return undefined;
         })
         .filter((o) => o),
     ];
