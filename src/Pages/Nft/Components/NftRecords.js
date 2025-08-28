@@ -112,7 +112,7 @@ const NftRecords = () => {
               {record?.record?.outputs && (
                 <Fragment>
                   <Divider />
-                  Record Output Hash
+                  Record Data
                   <Summary data={getRecordOutput(record)} />
                 </Fragment>
               )}
