@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useNft } from '../../../redux/hooks';
 import { Accordion, Content, Loading, Summary } from '../../../Components';
-import { capitalize } from '../../../utils';
+import { camelToSentence, capitalize } from '../../../utils';
 
 const AccordionHeader = styled.div`
   display: grid;
@@ -47,7 +47,38 @@ const NftRecords = () => {
     ];
   };
 
-  const getRecordOutput = (record) => {
+  const getValues = (dataFields, values, currentKey = 'Record Data') => {
+    // Initialize the data field
+    dataFields.push({ key: currentKey, values: [] });
+    return values.forEach(([key, value]) => {
+      switch (typeof value) {
+        case 'object':
+          if (Array.isArray(value)) {
+            dataFields
+              .find((v) => v.key === currentKey)
+              ?.values.push({ title: camelToSentence(key), value: value.join(', ') });
+          } else {
+            return getValues(dataFields, Object.entries(value), key);
+          }
+          break;
+        default:
+          dataFields
+            .find((v) => v.key === currentKey)
+            .values.push({ title: camelToSentence(key), value });
+          break;
+      }
+      return undefined;
+    });
+  };
+
+  // Recursive formula to unwrap objects in the hash JSON
+  const formatFields = (values) => {
+    const dataFields = [];
+    getValues(dataFields, values);
+    return dataFields;
+  };
+
+  const recordOutputData = (record) => {
     if (!record?.record?.outputs) return [];
 
     const { outputs } = record.record;
@@ -58,14 +89,23 @@ const NftRecords = () => {
           try {
             const values = JSON.parse(output.hash);
             if (values && Object.keys(values).length > 0) {
-              return Object.entries(values).map(([key, value]) => ({
-                title: capitalize(key),
-                value,
-              }));
+              // Here, for every value, we want to write it to dataFields
+              const fieldArray = formatFields(Object.entries(values));
+              return fieldArray.map(({ key, values }) => (
+                <div key={key} style={{ padding: '10px' }}>
+                  {key !== 'Record Data' && (
+                    <p style={{ color: 'gray', borderBottom: '1px solid gray', width: '75%' }}>
+                      {camelToSentence(key)}
+                    </p>
+                  )}
+                  <Summary data={values} />
+                </div>
+              ));
             }
-            return { title: 'Data', value: output.hash };
+            return <Summary data={[{ title: 'Data', value: output.hash }]} />;
           } catch (e) {
-            return { title: 'Data', value: output.hash };
+            console.error(e);
+            return <Summary data={[{ title: 'Data', value: output.hash }]} />;
           }
         })
         .filter((o) => o),
@@ -117,7 +157,12 @@ const NftRecords = () => {
                 <Fragment>
                   <Divider />
                   Record Data
+                  {recordOutputData(record)}
+                  {/* Record Data
                   <Summary data={getRecordOutput(record)} />
+                  <p style={{ color: 'gray', fontSize: '0.8rem', borderBottom: '1px solid black' }}>
+                    Another Thing
+                  </p> */}
                 </Fragment>
               )}
 
