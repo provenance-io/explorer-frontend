@@ -6,7 +6,6 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  console.log('my env', env);
   return {
     // depending on your application, base can also be "/"
     base: '',
