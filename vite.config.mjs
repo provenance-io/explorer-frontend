@@ -6,6 +6,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
+  console.log('my env', env);
   return {
     // depending on your application, base can also be "/"
     base: '',
@@ -32,7 +33,7 @@ export default defineConfig(({ command, mode }) => {
       },
       viteTsconfigPaths,
       // Note, for local development, comment this out. For prod, uncomment it
-      env === 'PROD' ? nodePolyfills() : undefined,
+      env.NODE_ENV !== 'development' ? nodePolyfills() : undefined,
       react(),
     ],
     dedupe: ['react-dom', 'styled-components', 'react', '@interchain-ui/react'],
