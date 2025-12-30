@@ -171,23 +171,25 @@ const NavMini = () => {
   return (
     <NavigationWrapper>
       <InnerWrapper>
-        <Hamburger>
+        <div />
+        {/* <Hamburger>
           <Sprite
             icon="MENU"
             onClick={toggleMenu}
             size="1.875rem"
             color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
           />
-        </Hamburger>
-        <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
-          <Sprite icon="LOGO" height="32px" />
-        </LogoLink>
-        <Sprite
+        </Hamburger> */}
+        {/* <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home"> */}
+        <Sprite icon="LOGO" height="32px" />
+        {/* </LogoLink> */}
+        <div />
+        {/* <Sprite
           icon="SEARCH"
           onClick={toggleSearch}
           size="1.875rem"
           color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-        />
+        /> */}
       </InnerWrapper>
 
       <DropdownContainer show={showMenu}>

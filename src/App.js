@@ -2,8 +2,9 @@ import { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { useWalletConnect } from '@provenanceio/walletconnect-js';
+import EOL from './Pages/EOL';
 import { useAssets, useColorScheme, useApp } from '../src/redux/hooks';
-import { Navigation, Footer, SpriteSheet, BaseStyle } from '../src/Components';
+import { Footer, SpriteSheet, BaseStyle, Navigation } from '../src/Components';
 import { GlobalStyle } from '../src/theme';
 import { isProd } from '../src/consts';
 import { isEmpty } from '../src/utils';
@@ -72,9 +73,7 @@ const App = () => {
         <BaseStyle>
           <Navigation />
           <Switch>
-            <Route exact path="/">
-              <Redirect to="/dashboard" />
-            </Route>
+            <Route exact path="/" component={EOL} />
             <Route path="/accounts/:addressId" component={Accounts} />
             <Route path="/announcement/:announcementId" component={Announcement} />
             <Route path="/announcements" component={Announcements} />
