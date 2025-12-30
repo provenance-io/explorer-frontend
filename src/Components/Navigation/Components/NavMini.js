@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { Links, Path } from '../../../consts';
+import { isProd, Links, Path } from '../../../consts';
 // Direct import to prevent import order issues
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
@@ -172,24 +172,32 @@ const NavMini = () => {
     <NavigationWrapper>
       <InnerWrapper>
         <div />
-        {/* <Hamburger>
-          <Sprite
-            icon="MENU"
-            onClick={toggleMenu}
-            size="1.875rem"
-            color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-          />
-        </Hamburger> */}
-        {/* <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home"> */}
-        <Sprite icon="LOGO" height="32px" />
-        {/* </LogoLink> */}
+        {!isProd && (
+          <Hamburger>
+            <Sprite
+              icon="MENU"
+              onClick={toggleMenu}
+              size="1.875rem"
+              color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+            />
+          </Hamburger>
+        )}
+        {isProd ? (
+          <Sprite icon="LOGO" height="32px" />
+        ) : (
+          <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
+            <Sprite icon="LOGO" height="32px" />
+          </LogoLink>
+        )}
         <div />
-        {/* <Sprite
-          icon="SEARCH"
-          onClick={toggleSearch}
-          size="1.875rem"
-          color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-        /> */}
+        {!isProd && (
+          <Sprite
+            icon="SEARCH"
+            onClick={toggleSearch}
+            size="1.875rem"
+            color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+          />
+        )}
       </InnerWrapper>
 
       <DropdownContainer show={showMenu}>

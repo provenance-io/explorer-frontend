@@ -6,8 +6,8 @@ export const BASE_URL_V3 = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/
 export const FAUCET_URL = import.meta.env.VITE_APP_FAUCET_HOSTNAME;
 
 // Wallets
-export const FIGURE_WALLET_URL = import.meta.env.VITE_APP_FIGURE_WALLET_URL
-export const PROVENANCE_WALLET_URL = import.meta.env.VITE_APP_PROVENANCE_WALLET_URL
+export const FIGURE_WALLET_URL = import.meta.env.VITE_APP_FIGURE_WALLET_URL;
+export const PROVENANCE_WALLET_URL = import.meta.env.VITE_APP_PROVENANCE_WALLET_URL;
 
 // Actual API URLs
 // -- Accounts
