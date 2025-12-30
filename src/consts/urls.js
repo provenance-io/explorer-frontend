@@ -1,4 +1,4 @@
-export const isProd = import.meta.env.VITE_APP_ENV === 'production';
+export const isProd = import.meta.env.VITE_APP_ENV !== 'production';
 
 export const BASE_URL = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/api/v2`;
 export const BASE_URL_V3 = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/api/v3`;
