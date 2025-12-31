@@ -68,7 +68,7 @@ export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-fron
 export const SOCIAL_SLACK_URL =
   'https://join.slack.com/t/provenanceio/shared_invite/zt-vysymaqb-VqgW3frXoNNXNlyOiP7mog';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
-export const SOCIAL_DISCORD_URL = 'https://discord.com/invite/kNZC8nwCFP';
+export const SOCIAL_DISCORD_URL = 'http://discord.gg/provenance';
 // --Staking
 export const STAKING_DELEGATE_URL = `${BASE_URL_V3}/staking/delegate`;
 export const STAKING_REDELEGATE_URL = `${BASE_URL_V3}/staking/redelegate`;

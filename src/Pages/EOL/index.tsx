@@ -79,8 +79,8 @@ export default function EOL() {
       </Helmet>
       <TitleDiv>Provenance Explorer has reached its End of Life</TitleDiv>
       <Div>
-        Explorer services are now provided by Zonescan, Ping, Provenance Pulse, and the Figure
-        Markets app
+        Explorer services are now provided by Zonescan, Ping,
+        <br /> Provenance Pulse, and the Figure Markets app
       </Div>
       <Div>
         <ExternalLink
@@ -116,13 +116,13 @@ export default function EOL() {
           Visit Figure Markets
         </ExternalLink>
       </Div>
-      <Div style={{ paddingTop: '1rem', fontSize: '0.7rem' }}>
+      <Div
+        style={{ paddingTop: '1rem', fontSize: '0.7rem', display: 'flex', flexDirection: 'column' }}
+      >
         Governance and Delegations actions remain supported through other applications
         <Ul>
           <Li>Governance voting supported by Ping and Provenance Pulse.</Li>
-          <Li>
-            Delegation supported by Ping, Zonescan, Provenance Pulse, and the Figure Markets app
-          </Li>
+          <Li>Delegation supported by Ping, Provenance Pulse, and the Figure Markets app</Li>
         </Ul>
       </Div>
     </Wrapper>
