@@ -1,4 +1,4 @@
-export const isProd = import.meta.env.VITE_APP_ENV === 'production';
+export const isProd = import.meta.env.VITE_APP_ENV !== 'production';
 
 export const BASE_URL = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/api/v2`;
 export const BASE_URL_V3 = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/api/v3`;
@@ -6,8 +6,8 @@ export const BASE_URL_V3 = `https://${import.meta.env.VITE_APP_SERVER_HOSTNAME}/
 export const FAUCET_URL = import.meta.env.VITE_APP_FAUCET_HOSTNAME;
 
 // Wallets
-export const FIGURE_WALLET_URL = import.meta.env.VITE_APP_FIGURE_WALLET_URL
-export const PROVENANCE_WALLET_URL = import.meta.env.VITE_APP_PROVENANCE_WALLET_URL
+export const FIGURE_WALLET_URL = import.meta.env.VITE_APP_FIGURE_WALLET_URL;
+export const PROVENANCE_WALLET_URL = import.meta.env.VITE_APP_PROVENANCE_WALLET_URL;
 
 // Actual API URLs
 // -- Accounts
@@ -68,7 +68,7 @@ export const SOCIAL_GITHUB_URL = 'https://github.com/provenance-io/explorer-fron
 export const SOCIAL_SLACK_URL =
   'https://join.slack.com/t/provenanceio/shared_invite/zt-vysymaqb-VqgW3frXoNNXNlyOiP7mog';
 export const SOCIAL_PROVENANCE_URL = 'https://provenance.io/';
-export const SOCIAL_DISCORD_URL = 'https://discord.com/invite/kNZC8nwCFP';
+export const SOCIAL_DISCORD_URL = 'http://discord.gg/provenance';
 // --Staking
 export const STAKING_DELEGATE_URL = `${BASE_URL_V3}/staking/delegate`;
 export const STAKING_REDELEGATE_URL = `${BASE_URL_V3}/staking/redelegate`;

@@ -1,7 +1,6 @@
-import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Path } from '../../../consts';
+import { isProd, Path } from '../../../consts';
 import { useApp, useColorScheme } from '../../../redux/hooks';
 // Direct import to prevent import order issues
 import Sprite from '../../Sprite';
@@ -10,11 +9,11 @@ import Toggle from '../../Toggle';
 import UserAccount from '../../UserAccount';
 import AnnouncementMenu from '../../AnnouncementMenu';
 import NavHeaders from './NavHeaders';
-import Button from '../../Button';
 
 const NavigationWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   top: 0;
   left: 0;
@@ -63,17 +62,22 @@ const NavStandard = () => {
         <Link to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
         </Link>
-        <ExternalLink
-          href="https://www.provenance.io/pulse"
-          target="_blank"
-          rel="noopener noreferrer"
-          color="primary"
-        >
-          Pulse
-        </ExternalLink>
-        <SearchBar />
-        <AnnouncementMenu />
-        <UserAccount />
+        <div />
+        {!isProd && (
+          <>
+            <ExternalLink
+              href="https://www.provenance.io/pulse"
+              target="_blank"
+              rel="noopener noreferrer"
+              color="primary"
+            >
+              Pulse
+            </ExternalLink>
+            <SearchBar />
+            <AnnouncementMenu />
+            <UserAccount />
+          </>
+        )}
         <Toggle
           active={themeName === 'night'}
           optionA={{
@@ -103,7 +107,7 @@ const NavStandard = () => {
           }}
         />
       </NavigationWrapper>
-      <NavHeaders />
+      {!isProd && <NavHeaders />}
     </>
   );
 };
