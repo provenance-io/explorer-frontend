@@ -10,7 +10,7 @@ import Toggle from '../../Toggle';
 import UserAccount from '../../UserAccount';
 import AnnouncementMenu from '../../AnnouncementMenu';
 import NavHeaders from './NavHeaders';
-import Button from '../../Button';
+import EOLBanner from './EOLBanner';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -59,6 +59,7 @@ const NavStandard = () => {
 
   return (
     <>
+      <EOLBanner />
       <NavigationWrapper>
         <Link to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
           <Sprite icon="LOGO" height="32px" />

@@ -7,6 +7,7 @@ import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
 import UserAccount from '../../UserAccount';
 import AnnouncementMenu from '../../AnnouncementMenu';
+import EOLBanner from './EOLBanner';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -169,58 +170,61 @@ const NavMini = () => {
   };
 
   return (
-    <NavigationWrapper>
-      <InnerWrapper>
-        <Hamburger>
+    <>
+      <EOLBanner />
+      <NavigationWrapper>
+        <InnerWrapper>
+          <Hamburger>
+            <Sprite
+              icon="MENU"
+              onClick={toggleMenu}
+              size="1.875rem"
+              color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+            />
+          </Hamburger>
+          <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
+            <Sprite icon="LOGO" height="32px" />
+          </LogoLink>
           <Sprite
-            icon="MENU"
-            onClick={toggleMenu}
+            icon="SEARCH"
+            onClick={toggleSearch}
             size="1.875rem"
-            color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
+            color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
           />
-        </Hamburger>
-        <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
-          <Sprite icon="LOGO" height="32px" />
-        </LogoLink>
-        <Sprite
-          icon="SEARCH"
-          onClick={toggleSearch}
-          size="1.875rem"
-          color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-        />
-      </InnerWrapper>
+        </InnerWrapper>
 
-      <DropdownContainer show={showMenu}>
-        <CloseIcon
-          icon="CLOSE"
-          onClick={() => {
-            setShowMenu(false);
-          }}
-          size="0.875rem"
-          color="ICON_WHITE"
-        />
-        <LinkWrapper>
-          <ATag href="https://www.provenance.io/pulse" target="_blank" rel="noopener noreferrer">
-            Pulse
-          </ATag>
-        </LinkWrapper>
-        {buildLinks()}
-        <AnnouncementMenu onClick={() => setShowMenu(false)} />
-        <UserAccount isMobile />
-      </DropdownContainer>
+        <DropdownContainer show={showMenu}>
+          <CloseIcon
+            icon="CLOSE"
+            onClick={() => {
+              setShowMenu(false);
+            }}
+            size="0.875rem"
+            color="ICON_WHITE"
+          />
+          <LinkWrapper>
+            <ATag href="https://www.provenance.io/pulse" target="_blank" rel="noopener noreferrer">
+              Pulse
+            </ATag>
+          </LinkWrapper>
+          {buildLinks()}
+          <AnnouncementMenu onClick={() => setShowMenu(false)} />
+          <UserAccount isMobile />
+        </DropdownContainer>
 
-      <SearchContainer show={showSearch}>
-        <SearchClose
-          icon="CLOSE"
-          onClick={() => {
-            setShowSearch(false);
-          }}
-          size="0.875rem"
-          color="ICON_WHITE"
-        />
-        <SearchBar />
-      </SearchContainer>
-    </NavigationWrapper>
+        <SearchContainer show={showSearch}>
+          <SearchClose
+            icon="CLOSE"
+            onClick={() => {
+              setShowSearch(false);
+            }}
+            size="0.875rem"
+            color="ICON_WHITE"
+          />
+          <SearchBar />
+        </SearchContainer>
+      </NavigationWrapper>
+    </>
   );
 };
 
