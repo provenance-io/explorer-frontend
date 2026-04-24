@@ -10,7 +10,7 @@ import Toggle from '../../Toggle';
 import UserAccount from '../../UserAccount';
 import AnnouncementMenu from '../../AnnouncementMenu';
 import NavHeaders from './NavHeaders';
-import Button from '../../Button';
+import EOLBanner from './EolBanner';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -103,6 +103,7 @@ const NavStandard = () => {
           }}
         />
       </NavigationWrapper>
+      <EOLBanner />
       <NavHeaders />
     </>
   );
