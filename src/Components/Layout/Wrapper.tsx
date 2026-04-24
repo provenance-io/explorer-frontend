@@ -8,10 +8,10 @@ const PageWrapper = styled.div<{ noHeader: boolean }>`
   background-color: transparent;
   font-size: 0.875rem;
   @media ${breakpoints.down('lg')} {
-    padding: ${({ noHeader }) => (noHeader ? '126px 4%' : '110px 4%')};
+    padding: ${({ noHeader }) => (noHeader ? '156px 4%' : '136px 4%')};
   }
   @media ${breakpoints.down('md')} {
-    padding: ${({ noHeader }) => (noHeader ? '96px 4%' : '110px 4%')};
+    padding: ${({ noHeader }) => (noHeader ? '96px 4%' : '140px 4%')};
   }
 `;
 

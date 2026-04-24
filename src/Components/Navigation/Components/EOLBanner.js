@@ -18,6 +18,9 @@ const NavigationWrapper = styled.div`
   @media ${breakpoints.down('lg')} {
     padding: 0 4% 0 2%;
   }
+  @media ${breakpoints.down('md')} {
+    min-height: 40px;
+  }
 `;
 
 const EOLBanner = () => (

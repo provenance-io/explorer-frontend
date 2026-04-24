@@ -171,6 +171,7 @@ const NavMini = () => {
 
   return (
     <>
+      <EOLBanner />
       <NavigationWrapper>
         <InnerWrapper>
           <Hamburger>
@@ -223,7 +224,6 @@ const NavMini = () => {
           <SearchBar />
         </SearchContainer>
       </NavigationWrapper>
-      <EOLBanner />
     </>
   );
 };

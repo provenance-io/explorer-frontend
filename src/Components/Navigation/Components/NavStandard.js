@@ -59,6 +59,7 @@ const NavStandard = () => {
 
   return (
     <>
+      <EOLBanner />
       <NavigationWrapper>
         <Link to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
           <Sprite icon="LOGO" height="32px" />
@@ -103,7 +104,6 @@ const NavStandard = () => {
           }}
         />
       </NavigationWrapper>
-      <EOLBanner />
       <NavHeaders />
     </>
   );
