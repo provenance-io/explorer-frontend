@@ -7,7 +7,7 @@ import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
 import UserAccount from '../../UserAccount';
 import AnnouncementMenu from '../../AnnouncementMenu';
-import EOLBanner from './EolBanner';
+import EOLBanner from './EOLBanner';
 
 const NavigationWrapper = styled.div`
   display: flex;
