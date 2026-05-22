@@ -73,13 +73,7 @@ const App = () => {
         <BaseStyle>
           <Navigation />
           <Switch>
-            {isProd ? (
-              <Route exact path="/" component={EOL} />
-            ) : (
-              <Route exact path="/">
-                <Redirect to="/dashboard" />
-              </Route>
-            )}
+            <Route exact path="/" component={EOL} />
             <Route path="/accounts/:addressId" component={Accounts} />
             <Route path="/announcement/:announcementId" component={Announcement} />
             <Route path="/announcements" component={Announcements} />
@@ -90,7 +84,7 @@ const App = () => {
             <Route path="/code/:codeId" component={Code} />
             <Route path="/contract/:contractId" component={Contract} />
             <Route path="/contracts" component={Contracts} />
-            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/dashboard" component={EOL} />
             <Route path="/faucet">{isProd ? <Redirect to="/dashboard" /> : <Faucet />}</Route>
             <Route path="/hashstats" component={HashStats} />
             <Route path="/ibc" component={Ibc} />

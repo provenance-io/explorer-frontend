@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { isProd, Links, Path } from '../../../consts';
+import { Links } from '../../../consts';
 // Direct import to prevent import order issues
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
 import UserAccount from '../../UserAccount';
 import AnnouncementMenu from '../../AnnouncementMenu';
-import EOLBanner from './EOLBanner';
 
 const NavigationWrapper = styled.div`
   display: flex;
@@ -83,13 +82,6 @@ const DropSprite = styled(Sprite)`
   position: absolute;
   margin: 4px 0 0 -35px;
 `;
-const LogoLink = styled(BaseLink)`
-  display: flex;
-  align-items: center;
-`;
-const Hamburger = styled.div`
-  cursor: pointer;
-`;
 const DropdownContainer = styled.div`
   display: ${({ show }) => (show ? 'block' : 'none')}; ;
 `;
@@ -153,52 +145,12 @@ const NavMini = () => {
   const buildLinks = () =>
     Object.keys(Links).map((linkName) => buildLink(linkName, Links[linkName]));
 
-  const toggleMenu = () => {
-    showMenu ? setShowMenu(false) : openDropdown('menu');
-  };
-  const toggleSearch = () => {
-    showSearch ? setShowSearch(false) : openDropdown('search');
-  };
-  const openDropdown = (type) => {
-    if (type === 'menu') {
-      setShowSearch(false);
-      setShowMenu(true);
-    } else {
-      setShowSearch(true);
-      setShowMenu(false);
-    }
-  };
-
   return (
     <NavigationWrapper>
       <InnerWrapper>
         <div />
-        {!isProd && (
-          <Hamburger>
-            <Sprite
-              icon="MENU"
-              onClick={toggleMenu}
-              size="1.875rem"
-              color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-            />
-          </Hamburger>
-        )}
-        {isProd ? (
-          <Sprite icon="LOGO" height="32px" />
-        ) : (
-          <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
-            <Sprite icon="LOGO" height="32px" />
-          </LogoLink>
-        )}
+        <Sprite icon="LOGO" height="32px" />
         <div />
-        {!isProd && (
-          <Sprite
-            icon="SEARCH"
-            onClick={toggleSearch}
-            size="1.875rem"
-            color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
-          />
-        )}
       </InnerWrapper>
 
       <DropdownContainer show={showMenu}>
