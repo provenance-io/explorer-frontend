@@ -7,7 +7,7 @@ import CopyValue from '../CopyValue';
 
 const HeaderContainer = styled.div`
   position: absolute;
-  top: 110px;
+  top: 136px;
   left: 0;
   display: flex;
   width: 100%;
@@ -20,11 +20,11 @@ const HeaderContainer = styled.div`
 
   @media ${breakpoints.down('lg')} {
     padding: 14px 4%;
-    top: 110px;
+    top: 134px;
   }
   @media ${breakpoints.down('md')} {
     padding: 10px;
-    top: 52px;
+    top: 92px;
   }
 `;
 const Title = styled.h2`
@@ -55,14 +55,7 @@ interface HeaderProps {
   children?: any;
 }
 
-const Header = ({ 
-  title, 
-  copyValue, 
-  copyTitle, 
-  value, 
-  valueLink, 
-  children 
-}: HeaderProps) => {
+const Header = ({ title, copyValue, copyTitle, value, valueLink, children }: HeaderProps) => {
   const showLine = value || children;
 
   const renderValueContainer = () => (
