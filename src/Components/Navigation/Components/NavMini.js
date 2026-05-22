@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link as BaseLink, useLocation } from 'react-router-dom';
-import { Links, Path } from '../../../consts';
+import { isProd, Links, Path } from '../../../consts';
 // Direct import to prevent import order issues
 import SearchBar from '../../SearchBar';
 import Sprite from '../../Sprite';
@@ -170,10 +170,10 @@ const NavMini = () => {
   };
 
   return (
-    <>
-      <EOLBanner />
-      <NavigationWrapper>
-        <InnerWrapper>
+    <NavigationWrapper>
+      <InnerWrapper>
+        <div />
+        {!isProd && (
           <Hamburger>
             <Sprite
               icon="MENU"
@@ -182,49 +182,56 @@ const NavMini = () => {
               color={showMenu ? 'ICON_PRIMARY' : 'ICON_WHITE'}
             />
           </Hamburger>
+        )}
+        {isProd ? (
+          <Sprite icon="LOGO" height="32px" />
+        ) : (
           <LogoLink to={Path.HOME_URL} title="Provenance Blockchain Explorer | Home">
             <Sprite icon="LOGO" height="32px" />
           </LogoLink>
+        )}
+        <div />
+        {!isProd && (
           <Sprite
             icon="SEARCH"
             onClick={toggleSearch}
             size="1.875rem"
             color={showSearch ? 'ICON_PRIMARY' : 'ICON_WHITE'}
           />
-        </InnerWrapper>
+        )}
+      </InnerWrapper>
 
-        <DropdownContainer show={showMenu}>
-          <CloseIcon
-            icon="CLOSE"
-            onClick={() => {
-              setShowMenu(false);
-            }}
-            size="0.875rem"
-            color="ICON_WHITE"
-          />
-          <LinkWrapper>
-            <ATag href="https://www.provenance.io/pulse" target="_blank" rel="noopener noreferrer">
-              Pulse
-            </ATag>
-          </LinkWrapper>
-          {buildLinks()}
-          <AnnouncementMenu onClick={() => setShowMenu(false)} />
-          <UserAccount isMobile />
-        </DropdownContainer>
+      <DropdownContainer show={showMenu}>
+        <CloseIcon
+          icon="CLOSE"
+          onClick={() => {
+            setShowMenu(false);
+          }}
+          size="0.875rem"
+          color="ICON_WHITE"
+        />
+        <LinkWrapper>
+          <ATag href="https://www.provenance.io/pulse" target="_blank" rel="noopener noreferrer">
+            Pulse
+          </ATag>
+        </LinkWrapper>
+        {buildLinks()}
+        <AnnouncementMenu onClick={() => setShowMenu(false)} />
+        <UserAccount isMobile />
+      </DropdownContainer>
 
-        <SearchContainer show={showSearch}>
-          <SearchClose
-            icon="CLOSE"
-            onClick={() => {
-              setShowSearch(false);
-            }}
-            size="0.875rem"
-            color="ICON_WHITE"
-          />
-          <SearchBar />
-        </SearchContainer>
-      </NavigationWrapper>
-    </>
+      <SearchContainer show={showSearch}>
+        <SearchClose
+          icon="CLOSE"
+          onClick={() => {
+            setShowSearch(false);
+          }}
+          size="0.875rem"
+          color="ICON_WHITE"
+        />
+        <SearchBar />
+      </SearchContainer>
+    </NavigationWrapper>
   );
 };
 
