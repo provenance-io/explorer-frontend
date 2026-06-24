@@ -37,6 +37,7 @@ comment out the `nodePolyfills()` (line 33 at the time of this writing) plugin i
 [![Latest Release][release-badge]][release-latest]
 [![Apache 2.0 License][license-badge]][license-url]
 [![LOC][loc-badge]][loc-report]
+[![Build mainnet][build-badge]][build-url]
 
 [license-badge]: https://img.shields.io/github/license/provenance-io/explorer-frontend.svg
 [license-url]: https://github.com/provenance-io/explorer-frontend/blob/main/LICENSE
@@ -46,6 +47,8 @@ comment out the `nodePolyfills()` (line 33 at the time of this writing) plugin i
 [loc-report]: https://github.com/provenance-io/explorer-frontend
 [lint-badge]: https://github.com/provenance-io/explorer-frontend/workflows/Lint/badge.svg
 [provenance]: https://provenance.io/#overview
+[build-badge]: https://github.com/provenance-io/explorer-frontend/actions/workflows/docker_prod.yml/badge.svg
+[build-url]: https://github.com/provenance-io/explorer-frontend/actions/workflows/docker_prod.yml
 
 The Provenance Blockchain Explorer is under heavy development. The upcoming public blockchain is the evolution of the private Provenance network blockchain started in 2018.
 Current development is being supported by [Figure Technologies](https://figure.com).
