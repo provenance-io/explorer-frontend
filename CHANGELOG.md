@@ -7,6 +7,7 @@
 - Fix feegranter display #492
 - Fix wasm params #495
 - Fix metadata in CosmosProvider to be explorer related #542
+- Link the testnet EOL page to Zonescan testnet #583
 
 ### Features
 - Update wcjs and wallet utils versions #481
