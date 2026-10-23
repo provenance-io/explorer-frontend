@@ -61,6 +61,8 @@ const ExternalLink = styled.a`
   }
 `;
 
+const zonescanChain = import.meta.env.VITE_APP_ENV === 'test' ? 'provenancetestnet' : 'provenance';
+
 export default function EOL() {
   return (
     <Wrapper noHeader>
@@ -75,7 +77,7 @@ export default function EOL() {
       </Div>
       <Div>
         <ExternalLink
-          href="https://zonescan.io/provenance/overview"
+          href={`https://zonescan.io/${zonescanChain}/overview`}
           target="_blank"
           rel="noopener noreferrer"
           color="primary"
